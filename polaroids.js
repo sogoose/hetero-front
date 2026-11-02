@@ -47,7 +47,7 @@ function applyLocalDraft(record,patch){
  for(const key of ['year_status','approval_date','year_source','structure','structure_status','wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','notes']){
   if(Object.prototype.hasOwnProperty.call(reg,key))record[key]=String(reg[key]||'');
  }
- for(const key of ['description','material']){
+ for(const key of ['description','material','handwritten_note']){
   if(Object.prototype.hasOwnProperty.call(meta,key))record[key]=String(meta[key]||'');
  }
  if(record.location)record.title=record.location+(record.year?' ('+record.year+')':'');
@@ -433,6 +433,10 @@ function openDetail(record,source){
  }
  const sticker=source.querySelector('.polaroid-label-number');
  document.querySelector('#detail-label-number').textContent=sticker?.textContent||String(records.indexOf(record)+1).padStart(2,'0');
+ document.querySelector('#detail-number').textContent=String(records.indexOf(record)+1).padStart(3,'0');
+ const memo=document.querySelector('#detail-handwritten-note');
+ memo.value=record.handwritten_note||'';
+ document.querySelector('#detail-note-status').textContent='메모는 이 브라우저에 저장됩니다';
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
  for(const [key,label,formField] of [
   ['location','위치',null],
@@ -457,13 +461,6 @@ function openDetail(record,source){
   }
   fields.append(dt,dd);
  }
- const description=document.querySelector('#detail-description');
- const descriptionText=String(record.description||'').trim();
- description.textContent=descriptionText;
- description.hidden=!descriptionText;
- const credit=document.querySelector('#detail-credit');
- credit.textContent=record.credit||'';
- credit.hidden=!credit.textContent;
  const origin=source.getBoundingClientRect();
  dialog.showModal();source.classList.add('is-picked');
  const target=focusStage.getBoundingClientRect();
@@ -488,7 +485,16 @@ function closeDetail(){
 }
 document.querySelector('#detail-front').addEventListener('click',()=>setFlipped(true));
 document.querySelector('#detail-flip').addEventListener('click',()=>setFlipped(!flipped));
-document.querySelector('#detail-edit').addEventListener('click',()=>editDetailField(null));
+document.querySelector('#detail-edit').addEventListener('click',()=>editDetailField('handwritten_note'));
+document.querySelector('#detail-handwritten-note').addEventListener('input',event=>{
+ const record=detailRecord;
+ if(!record)return;
+ const text=event.target.value.slice(0,600);
+ record.handwritten_note=text;
+ const notice=document.querySelector('#detail-note-status');
+ notice.textContent='브라우저에 메모 저장 중…';
+ document.dispatchEvent(new CustomEvent('hetero:backnote-updated',{detail:{file:record.file,text}}));
+});
 document.addEventListener('hetero:record-draft-saved',event=>{
  const file=event.detail?.file,patch=event.detail?.patch;
  const record=records.find(record=>record.file===file);
