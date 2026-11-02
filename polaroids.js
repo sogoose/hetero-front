@@ -433,10 +433,6 @@ function openDetail(record,source){
  }
  const sticker=source.querySelector('.polaroid-label-number');
  document.querySelector('#detail-label-number').textContent=sticker?.textContent||String(records.indexOf(record)+1).padStart(2,'0');
- document.querySelector('#detail-number').textContent=String(records.indexOf(record)+1).padStart(3,'0');
- const memo=document.querySelector('#detail-handwritten-note');
- memo.value=record.handwritten_note||'';
- document.querySelector('#detail-note-status').textContent='메모는 이 브라우저에 저장됩니다';
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
  for(const [key,label,formField] of [
   ['location','위치',null],
@@ -485,16 +481,7 @@ function closeDetail(){
 }
 document.querySelector('#detail-front').addEventListener('click',()=>setFlipped(true));
 document.querySelector('#detail-flip').addEventListener('click',()=>setFlipped(!flipped));
-document.querySelector('#detail-edit').addEventListener('click',()=>editDetailField('handwritten_note'));
-document.querySelector('#detail-handwritten-note').addEventListener('input',event=>{
- const record=detailRecord;
- if(!record)return;
- const text=event.target.value.slice(0,600);
- record.handwritten_note=text;
- const notice=document.querySelector('#detail-note-status');
- notice.textContent='브라우저에 메모 저장 중…';
- document.dispatchEvent(new CustomEvent('hetero:backnote-updated',{detail:{file:record.file,text}}));
-});
+document.querySelector('#detail-edit').addEventListener('click',()=>editDetailField(null));
 document.addEventListener('hetero:record-draft-saved',event=>{
  const file=event.detail?.file,patch=event.detail?.patch;
  const record=records.find(record=>record.file===file);
