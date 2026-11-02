@@ -1,6 +1,6 @@
 (() => {
 'use strict';
-const LIMIT=24, FOLDER='assets/buildings/', CACHE='hetero-front-buildings-v1', TTL=15*60*1000;
+const LIMIT=24, FOLDER='assets/buildings/', CACHE='hetero-front-buildings-v2', TTL=15*60*1000;
 const board=document.querySelector('#photo-board'), status=document.querySelector('#photo-status'), count=document.querySelector('#photo-count');
 const scatter=document.querySelector('#scatter'), align=document.querySelector('#align'), shuffle=document.querySelector('#shuffle');
 const previous=document.querySelector('#previous'), next=document.querySelector('#next'), pager=document.querySelector('.photo-pagination');
@@ -62,7 +62,6 @@ function render(){
  pager.hidden=mode!=='gallery'||records.length<=LIMIT;
  previous.disabled=page===0;next.disabled=(page+1)*LIMIT>=records.length;
  document.querySelector('#page-number').textContent=(page+1)+' / '+Math.max(1,Math.ceil(records.length/LIMIT));
- document.querySelector('#photo-hint').textContent=mode==='scatter'?'사진을 누르면 자세히, 빈 공간을 누르면 다시 흩어집니다.':'사진을 누르면 자세한 정보를 볼 수 있습니다.';
  layout();
 }
 function layout(){
