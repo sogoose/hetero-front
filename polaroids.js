@@ -325,7 +325,7 @@ board.addEventListener('lostpointercapture',event=>finishDrag(event,true));
 board.addEventListener('wheel',wheelMix,{passive:false});
 board.addEventListener('dragstart',event=>event.preventDefault());
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopMotion();});
-let picked=null, flipped=false, closing=false;
+let picked=null, flipped=false, closing=false, detailRecord=null;
 const focusCard=document.querySelector('.focus-card'),focusStage=document.querySelector('.focus-stage');
 function setFlipped(value){
  flipped=value;focusCard.classList.toggle('is-flipped',value);
@@ -339,19 +339,42 @@ function setFlipped(value){
  if(value)document.querySelector('#detail-flip').focus();
 }
 function openDetail(record,source){
- stopMotion();picked=source;closing=false;setFlipped(false);
+ stopMotion();picked=source;closing=false;setFlipped(false);detailRecord=record;
  document.querySelector('#detail-title').textContent=record.title;
  document.querySelector('#detail-caption').textContent=record.title;
  document.querySelector('#detail-back-title').textContent=record.title;
- document.querySelector('#detail-number').textContent=String(records.indexOf(record)+1).padStart(3,'0');
  const image=document.querySelector('#detail-image');image.src=record.src;image.alt=record.title;
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
- for(const [key,label] of [['location','위치'],['year','건축 연도'],['approval_date','사용승인일'],['year_status','연도 상태'],['year_source','연도 근거'],['material','재료'],['structure','구조'],['wall_finish','외벽 마감'],['roof_finish','지붕 마감'],['railing','난간']]){
-  if(!record[key])continue;
-  const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;const confidence={structure:'structure_status',wall_finish:'wall_status',roof_finish:'roof_status',railing:'railing_status'}[key];dd.textContent=(key==='year_status'?yearStatusLabel(record[key]):record[key])+(confidence&&record[confidence]?' · '+yearStatusLabel(record[confidence]):'');fields.append(dt,dd);
+ for(const [key,label,formField] of [
+  ['location','위치',null],
+  ['year','건축연도','construction_year'],
+  ['structure','구조','structure'],
+  ['wall_finish','외벽 마감','wall_finish'],
+  ['roof_finish','지붕 마감','roof_finish'],
+  ['railing','난간','railing']
+ ]){
+  const dt=document.createElement('dt'),dd=document.createElement('dd');
+  dt.textContent=label;
+  const value=String(record[key]||'').trim();
+  if(value){dd.textContent=value;}
+  else if(formField){
+   const add=document.createElement('button');
+   add.type='button';add.className='detail-empty-edit';add.textContent='＋ 입력';
+   add.setAttribute('aria-label',label+' 정보 입력');
+   add.addEventListener('click',()=>editDetailField(formField));
+   dd.append(add);
+  }else{
+   dd.textContent='—';dd.classList.add('detail-unset');
+  }
+  fields.append(dt,dd);
  }
- document.querySelector('#detail-description').textContent=[record.description,record.notes].filter(Boolean).join('\n\n')||'아직 상세 기록이 등록되지 않았습니다.';
- document.querySelector('#detail-credit').textContent=record.credit||'';
+ const description=document.querySelector('#detail-description');
+ const descriptionText=String(record.description||'').trim();
+ description.textContent=descriptionText;
+ description.hidden=!descriptionText;
+ const credit=document.querySelector('#detail-credit');
+ credit.textContent=record.credit||'';
+ credit.hidden=!credit.textContent;
  const origin=source.getBoundingClientRect();
  dialog.showModal();source.classList.add('is-picked');
  const target=focusStage.getBoundingClientRect();
@@ -359,6 +382,13 @@ function openDetail(record,source){
   focusStage.animate([{transform:'translate('+(origin.left+origin.width/2-target.left-target.width/2)+'px,'+(origin.top+origin.height/2-target.top-target.height/2)+'px) scale('+(origin.width/target.width)+')',opacity:.65},{transform:'translate(0,0) scale(1)',opacity:1}],{duration:550,easing:'cubic-bezier(.2,.75,.2,1)'});
  }
  document.querySelector('#detail-front').focus();
+}
+function editDetailField(fieldName){
+ const target=detailRecord?.file;
+ if(!target)return;
+ if(dialog.open)dialog.close();
+ picked?.classList.remove('is-picked');picked=null;closing=false;detailRecord=null;
+ document.dispatchEvent(new CustomEvent('hetero:edit-record',{detail:{file:target,field:fieldName||null}}));
 }
 function closeDetail(){
  if(closing||!dialog.open)return;closing=true;
@@ -369,6 +399,7 @@ function closeDetail(){
 }
 document.querySelector('#detail-front').addEventListener('click',()=>setFlipped(true));
 document.querySelector('#detail-flip').addEventListener('click',()=>setFlipped(!flipped));
+document.querySelector('#detail-edit').addEventListener('click',()=>editDetailField(null));
 dialog.addEventListener('cancel',event=>{event.preventDefault();closeDetail();});
 scatter.addEventListener('click',()=>{if(mode==='scatter')scatterTargets();else{mode='scatter';board.classList.remove('is-gallery');layout();scatterTargets();scatter.setAttribute('aria-pressed','true');align.setAttribute('aria-pressed','false');pager.hidden=true;}});
 align.addEventListener('click',()=>{
