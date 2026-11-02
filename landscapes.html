@@ -1,1 +1,82 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>우리가 알고 있다고 생각했던 것들 — 혼종의 정면</title><meta name="description" content="익숙한 건물과 재료의 풍경을 펼쳐 보는 사진 아카이브."><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="polaroids.css?v=7"><script src="polaroids.js?v=7" defer></script></head><body><main class="photo-main"><h1 class="sr-only">풍경 사진 아카이브</h1><div class="photo-toolbar"><a class="photo-back" href="index.html" aria-label="혼종의 정면 메인으로">돌아가기</a><div class="view-switch" role="group" aria-label="사진 배치"><button id="scatter" aria-pressed="true">흩어 보기</button><button id="align" aria-pressed="false">정렬하기</button></div><button id="shuffle">다른 사진</button><span class="sr-only" id="photo-count" aria-live="polite"></span></div><p class="sr-only" id="photo-status" role="status">사진을 펼치는 중입니다.</p><section id="photo-board" class="photo-board" aria-label="건물과 재료 사진" aria-description="마우스로 가까이 가면 사진이 밀립니다. 사진을 드래그해 놓거나 휠로 뒤섞을 수 있습니다. 클릭하면 확대합니다."></section><div class="photo-pagination" hidden><button id="previous">← 이전</button><span id="page-number" aria-live="polite"></span><button id="next">다음 →</button></div></main><dialog id="photo-detail" aria-labelledby="detail-title"><h2 id="detail-title" class="sr-only"></h2><div class="focus-stage"><div class="focus-lift"><div class="focus-card"><button class="focus-face focus-front" id="detail-front" aria-label="폴라로이드를 뒤집어 정보 보기"><span class="focus-image"><img id="detail-image" alt=""></span><span id="detail-caption"></span></button><article class="focus-face focus-back" id="detail-back" aria-hidden="true" inert><div class="back-stamp">HETERO FRONT<br>FIELD ARCHIVE · <span id="detail-number"></span></div><h3 id="detail-back-title"></h3><dl id="detail-fields"></dl><p id="detail-description"></p><small id="detail-credit"></small><span class="back-rule"></span></article></div></div></div><div class="focus-controls"><button id="detail-flip" aria-pressed="false">뒷면 보기</button><button id="detail-close">내려놓기</button></div></dialog></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8f8f4">
+<title>우리가 알고 있다고 생각했던 것들 — 혼종의 정면</title>
+<meta name="description" content="익숙한 건물과 재료의 풍경을 펼쳐 보는 사진 아카이브.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="polaroids.css?v=9">
+<script src="polaroids.js?v=9" defer></script>
+</head>
+<body>
+<svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="ic-home" viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v9H4z"/><path d="M9 20v-7h6v7"/></symbol>
+<symbol id="ic-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="19" cy="7" r="1.5" fill="currentColor" stroke="none"/></symbol>
+<symbol id="ic-scatter" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="6" height="6" rx=".6" transform="rotate(-15 6.5 7.5)"/><rect x="15" y="2.7" width="5.5" height="5.5" rx=".6" transform="rotate(14 17.75 5.45)"/><rect x="5.7" y="14.7" width="6.2" height="6.2" rx=".6" transform="rotate(19 8.8 17.8)"/><path d="m15 15 5 5m0-5-5 5"/></symbol>
+<symbol id="ic-align" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+<symbol id="ic-shuffle" viewBox="0 0 24 24"><path d="M3 6h4c5 0 5 12 10 12h4m-4-4 4 4-4 4M3 18h4c2.2 0 3.6-2.7 5-5M15 6h6m-4-4 4 4-4 4"/></symbol>
+<symbol id="ic-stats" viewBox="0 0 24 24"><path d="M3 21V3M3 21h18M7 17v-5h3v5M12 17V6h3v11M17 17v-8h3v8"/></symbol>
+<symbol id="ic-left" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+<symbol id="ic-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+<symbol id="ic-flip" viewBox="0 0 24 24"><path d="M20 8V4h-4M4 16v4h4"/><path d="M5 9a7 7 0 0 1 12-3l3 2M4 16l3 2a7 7 0 0 0 12-3"/></symbol>
+<symbol id="ic-close" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
+</svg>
+<main class="photo-main">
+<h1 class="sr-only">풍경 사진 아카이브</h1>
+<div class="photo-navigation" aria-label="페이지 및 목차">
+<a class="icon-button nav-home" href="index.html" aria-label="혼종의 정면 홈으로" title="홈으로"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-home"></use></svg><span class="sr-only">홈으로</span></a>
+<button type="button" id="chapter-open" class="icon-button" title="목차 열기" aria-label="목차 열기" aria-haspopup="dialog" aria-controls="chapter-menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-menu"></use></svg><span class="sr-only">목차 열기</span></button>
+</div>
+<div class="photo-toolbar" role="toolbar" aria-label="사진 조작">
+<div class="view-switch" role="group" aria-label="사진 배치">
+<button type="button" id="scatter" class="icon-button" title="흩어 보기" aria-label="흩어 보기" aria-pressed="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-scatter"></use></svg><span class="sr-only">흩어 보기</span></button>
+<button type="button" id="align" class="icon-button" title="정렬하기" aria-label="정렬하기" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-align"></use></svg><span class="sr-only">정렬하기</span></button>
+</div>
+<span class="toolbar-divider" aria-hidden="true"></span>
+<button type="button" id="shuffle" class="icon-button" title="다른 사진 섞기" aria-label="다른 사진 섞기" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-shuffle"></use></svg><span class="sr-only">다른 사진 섞기</span></button>
+<span class="toolbar-divider" aria-hidden="true"></span>
+<button type="button" id="stats-open" class="icon-button" title="전체 건물 통계 보기" aria-label="전체 건물 통계 보기" aria-haspopup="dialog" aria-controls="archive-stats"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-stats"></use></svg><span class="sr-only">전체 건물 통계 보기</span></button>
+<span class="sr-only" id="photo-count" aria-live="polite"></span>
+</div>
+<p class="sr-only" id="photo-status" role="status">사진을 펼치는 중입니다.</p>
+<section id="photo-board" class="photo-board" aria-label="건물과 재료 사진" aria-description="사진을 드래그해 놓거나 휠로 뒤섞을 수 있습니다. 사진을 누르면 확대합니다."></section>
+<div class="photo-pagination" hidden>
+<button type="button" id="previous" class="icon-button" title="이전 페이지" aria-label="이전 페이지" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-left"></use></svg><span class="sr-only">이전 페이지</span></button>
+<span id="page-number" aria-live="polite"></span>
+<button type="button" id="next" class="icon-button" title="다음 페이지" aria-label="다음 페이지" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-right"></use></svg><span class="sr-only">다음 페이지</span></button>
+</div>
+</main>
+<dialog id="chapter-menu" class="chapter-menu" aria-labelledby="chapter-title">
+<div class="chapter-top"><span class="dialog-kicker">HETERO FRONT / INDEX</span><button type="button" id="chapter-close" class="icon-button" title="목차 닫기" aria-label="목차 닫기" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-close"></use></svg><span class="sr-only">목차 닫기</span></button></div>
+<h2 id="chapter-title">혼종의 정면<span class="chapter-asterisk">✳</span></h2>
+<nav aria-label="챕터 목차" class="chapter-list">
+<a href="index.html"><span>00</span><strong>INTRO</strong><span>소개</span></a>
+<a href="landscapes.html" aria-current="page"><span>01</span><strong>LANDSCAPES</strong><span>풍경</span></a>
+<a href="materials.html"><span>02</span><strong>MATERIALS</strong><span>재료</span></a>
+<a href="research.html"><span>03</span><strong>RESEARCH</strong><span>연구</span></a>
+<a href="interviews.html"><span>04</span><strong>INTERVIEWS</strong><span>인터뷰</span></a>
+<a href="exhibition.html"><span>05</span><strong>EXHIBITION</strong><span>전시</span></a>
+</nav>
+<p class="chapter-caption">ATELIER 作 · ARCHIVE 2026</p>
+</dialog>
+<dialog id="archive-stats" class="archive-stats" aria-labelledby="stats-title">
+<div class="stats-top"><span class="dialog-kicker">HETERO FRONT / FIELD DATA</span><button type="button" id="stats-close" class="icon-button" title="통계 닫기" aria-label="통계 닫기" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-close"></use></svg><span class="sr-only">통계 닫기</span></button></div>
+<div class="stats-header"><div><p class="stats-eyebrow">ARCHIVE INDEX — ALL RECORDS</p><h2 id="stats-title">건물 기록의 분포</h2></div><div class="stats-big"><strong id="stats-total">—</strong><span>ARCHIVED PHOTOGRAPHS</span></div></div>
+<div class="stats-summary"><div><span>연도 입력</span><strong id="stats-dated">—</strong></div><div><span>전후 / 추정</span><strong id="stats-approx">—</strong></div><div><span>연도 미입력</span><strong id="stats-unknown">—</strong></div></div>
+<div class="stats-selectors"><label>분석 항목<select id="stats-dimension"><option value="year">건축 연대</option><option value="structure">구조</option><option value="wall_finish">외벽 마감</option><option value="roof_finish">지붕 마감</option><option value="railing">난간</option></select></label><label id="stats-granularity-label">표시 단위<select id="stats-granularity"><option value="decade">10년 단위</option><option value="year">연도별</option></select></label></div>
+<div class="stats-chart" id="stats-plot" role="img" aria-label="전체 건물 기록의 통계 막대그래프"></div>
+<p class="stats-footnote" id="stats-footnote">등록된 전체 사진 기준으로 계산합니다.</p>
+<div class="stats-bottom"><span>DATA SOURCE / BUILDINGS REGISTRY</span><a href="https://github.com/sogoose/hetero-front/edit/main/assets/buildings/registry.csv" target="_blank" rel="noopener noreferrer">CSV 데이터 편집 ↗</a></div>
+</dialog>
+<dialog id="photo-detail" aria-labelledby="detail-title">
+<h2 id="detail-title" class="sr-only"></h2>
+<div class="focus-stage"><div class="focus-lift"><div class="focus-card">
+<button class="focus-face focus-front" id="detail-front" aria-label="폴라로이드를 뒤집어 정보 보기"><span class="focus-image"><img id="detail-image" alt=""></span><span id="detail-caption"></span></button>
+<article class="focus-face focus-back" id="detail-back" aria-hidden="true" inert><div class="back-stamp">HETERO FRONT<br>FIELD ARCHIVE · <span id="detail-number"></span></div><h3 id="detail-back-title"></h3><dl id="detail-fields"></dl><p id="detail-description"></p><small id="detail-credit"></small><span class="back-rule"></span></article>
+</div></div></div>
+<div class="focus-controls"><button type="button" id="detail-flip" class="icon-button" title="뒷면 보기" aria-label="뒷면 보기" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-flip"></use></svg><span class="sr-only">뒷면 보기</span></button><button type="button" id="detail-close" class="icon-button" title="사진 내려놓기" aria-label="사진 내려놓기" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-close"></use></svg><span class="sr-only">사진 내려놓기</span></button></div>
+</dialog>
+</body>
+</html>
