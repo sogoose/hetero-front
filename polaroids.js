@@ -419,7 +419,20 @@ function openDetail(record,source){
  document.querySelector('#detail-title').textContent=record.title;
  document.querySelector('#detail-caption').textContent=record.title;
  document.querySelector('#detail-back-title').textContent=record.title;
- const image=document.querySelector('#detail-image');image.src=record.thumbnail||record.src;image.alt=record.title;
+ // Always use the image the visitor actually clicked, not a second photo lookup.
+ // This prevents the focus card from diverging from its scattered/ordered source.
+ const preview=source.querySelector('.polaroid-image img');
+ const image=document.querySelector('#detail-image');
+ image.src=preview?.currentSrc||preview?.src||record.thumbnail||record.src;
+ image.alt=preview?.alt||record.title;
+ if(preview){
+  const previewStyle=getComputedStyle(preview);
+  image.style.objectFit=previewStyle.objectFit;
+  image.style.objectPosition=previewStyle.objectPosition;
+  image.style.filter=previewStyle.filter;
+ }
+ const sticker=source.querySelector('.polaroid-label-number');
+ document.querySelector('#detail-label-number').textContent=sticker?.textContent||String(records.indexOf(record)+1).padStart(2,'0');
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
  for(const [key,label,formField] of [
   ['location','위치',null],
