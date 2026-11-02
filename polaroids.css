@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
-/* Optional self-hosted face. Do not publish a font file without its web-use license. */
-@font-face{font-family:"PakYongjun";src:local("Pak_Yong_jun"),local("박용준 투사회보");font-style:normal;font-weight:400;font-display:swap}
+/* Griun Neat Handwriting: web embedding allowed by creator; source: Noonnu font_page/1926. Do not redistribute or modify font file. */
+@font-face{font-family:"GriunNeat";src:url("https://cdn.jsdelivr.net/gh/Project-Noonnu/2609271756@griun-neathandwriting-rg/griun-neathandwriting-rg/Griun_NeatHandwriting-Rg.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
 html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 .photo-main{position:fixed;inset:0;width:100%;height:100dvh;overflow:hidden;padding:0;min-height:0}
 .photo-board{position:absolute;inset:18px 20px 96px;min-height:0;max-width:none;margin:0;padding:0;overflow:hidden;isolation:isolate;touch-action:none;user-select:none;-webkit-user-select:none}
@@ -179,7 +179,7 @@ body:has(#photo-detail[open]){overflow:hidden}
 .polaroid img{filter:grayscale(.045) contrast(1.012) saturate(.975)}
 .polaroid-caption{gap:7px;padding:2px 3px 1px;line-height:1.15;min-height:0}
 .polaroid-title{
- font-family:"PakYongjun","Nanum Pen Script","Gaegu",cursive;
+ font-family:"GriunNeat","Nanum Pen Script",Pretendard,cursive;
  font-weight:400;letter-spacing:.008em;
  font-size:clamp(12px,1.08vw,17px);
  color:rgba(37,36,33,.80);
@@ -187,7 +187,7 @@ body:has(#photo-detail[open]){overflow:hidden}
  text-shadow:.15px 0 rgba(20,20,20,.25),0 .22px rgba(255,255,255,.3);
 }
 .polaroid-number{font-family:Pretendard,sans-serif;font-size:7px;color:rgba(75,72,66,.48)}
-#detail-caption{font-family:"PakYongjun","Nanum Pen Script",cursive;font-size:clamp(22px,2.2vw,29px);color:#393937}
+#detail-caption{font-family:"GriunNeat","Nanum Pen Script",Pretendard,cursive;font-size:clamp(22px,2.2vw,29px);color:#393937}
 .photo-navigation{gap:9px;align-items:center;flex-direction:row}
 .photo-toolbar,.photo-pagination,.focus-controls{
  background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;
