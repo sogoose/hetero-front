@@ -7,7 +7,7 @@
 <title>우리가 알고 있다고 생각했던 것들 — 혼종의 정면</title>
 <meta name="description" content="익숙한 건물과 재료의 풍경을 펼쳐 보는 사진 아카이브.">
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="polaroids.css?v=26">
+<link rel="stylesheet" href="polaroids.css?v=27">
 <script src="polaroids.js?v=19" defer></script>
 <script src="landscapes-editor.js?v=6" defer></script>
 </head>
@@ -27,6 +27,9 @@
 </svg>
 <main class="photo-main">
 <h1 class="sr-only">풍경 사진 아카이브</h1>
+<p class="sr-only" id="photo-status" role="status">사진을 펼치는 중입니다.</p>
+<section id="photo-board" class="photo-board" aria-label="건물과 재료 사진" aria-description="사진을 드래그해 놓거나 휠로 뒤섞을 수 있습니다. 사진을 누르면 확대합니다."></section>
+<footer class="archive-taskbar" aria-label="아카이브 도구 모음">
 <div class="photo-navigation" aria-label="페이지 및 목차">
 <a class="icon-button nav-home" href="index.html" aria-label="혼종의 정면 홈으로" title="홈으로"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-home"></use></svg><span class="sr-only">홈으로</span></a>
 <button type="button" id="chapter-open" class="icon-button" title="목차 열기" aria-label="목차 열기" aria-haspopup="dialog" aria-controls="chapter-menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-menu"></use></svg><span class="sr-only">목차 열기</span></button>
@@ -50,13 +53,12 @@
 <button type="button" id="stats-open" class="icon-button" title="전체 건물 통계 보기" aria-label="전체 건물 통계 보기" aria-haspopup="dialog" aria-controls="archive-stats"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-stats"></use></svg><span class="sr-only">전체 건물 통계 보기</span></button>
 <span class="sr-only" id="photo-count" aria-live="polite"></span>
 </div>
-<p class="sr-only" id="photo-status" role="status">사진을 펼치는 중입니다.</p>
-<section id="photo-board" class="photo-board" aria-label="건물과 재료 사진" aria-description="사진을 드래그해 놓거나 휠로 뒤섞을 수 있습니다. 사진을 누르면 확대합니다."></section>
 <div class="photo-pagination" hidden>
 <button type="button" id="previous" class="icon-button" title="이전 페이지" aria-label="이전 페이지" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-left"></use></svg><span class="sr-only">이전 페이지</span></button>
 <span id="page-number" aria-live="polite"></span>
 <button type="button" id="next" class="icon-button" title="다음 페이지" aria-label="다음 페이지" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-right"></use></svg><span class="sr-only">다음 페이지</span></button>
 </div>
+</footer>
 </main>
 <dialog id="chapter-menu" class="chapter-menu" aria-labelledby="chapter-title">
 <div class="chapter-top"><span class="dialog-kicker">HETERO FRONT / INDEX</span><button type="button" id="chapter-close" class="icon-button" title="목차 닫기" aria-label="목차 닫기" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-close"></use></svg><span class="sr-only">목차 닫기</span></button></div>
