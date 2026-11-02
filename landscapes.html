@@ -7,8 +7,8 @@
 <title>우리가 알고 있다고 생각했던 것들 — 혼종의 정면</title>
 <meta name="description" content="익숙한 건물과 재료의 풍경을 펼쳐 보는 사진 아카이브.">
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="polaroids.css?v=19">
-<script src="polaroids.js?v=15" defer></script>
+<link rel="stylesheet" href="polaroids.css?v=20">
+<script src="polaroids.js?v=16" defer></script>
 <script src="landscapes-editor.js?v=4" defer></script>
 </head>
 <body>
@@ -37,6 +37,13 @@
 <button type="button" id="scatter" class="icon-button" title="흩어 보기" aria-label="흩어 보기" aria-pressed="true"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-scatter"></use></svg><span class="sr-only">흩어 보기</span></button>
 <button type="button" id="align" class="icon-button" title="정렬하기" aria-label="정렬하기" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-align"></use></svg><span class="sr-only">정렬하기</span></button>
 </div>
+<label class="gallery-sort-control" id="gallery-sort-control" hidden>
+ <span class="sr-only">갤러리 정렬 기준</span>
+ <select id="gallery-sort" aria-label="갤러리 정렬 기준">
+  <option value="name">가나다순</option>
+  <option value="year">건축연도 · 오래된 순</option>
+ </select>
+</label>
 <span class="toolbar-divider" aria-hidden="true"></span>
 <button type="button" id="shuffle" class="icon-button" title="다른 사진 섞기" aria-label="다른 사진 섞기" ><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-shuffle"></use></svg><span class="sr-only">다른 사진 섞기</span></button>
 <span class="toolbar-divider" aria-hidden="true"></span>
