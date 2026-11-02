@@ -2,12 +2,12 @@ file,construction_year,year_status,year_source,approval_date,structure,structure
 photo-90c0017cdd68.webp,1971,unverified,,,,,,,,,,,
 photo-80f8238b0e57.webp,1990,unverified,,,,,,,,,,,
 photo-2c019721d597.webp,1991,unverified,,,,,,,,,,,
-photo-01a4f0b10194.webp,1986,verified,"건축HUB 기반 공개 건물정보 교차확인(집품·자리톡, 2026-11)",,,,,,,,,,외부 자료에서 1986년 6월 준공으로 표기. 건축물대장 원문 직접 대조 전.
+photo-01a4f0b10194.webp,1986,crosschecked,"건축HUB 기반 공개 건물정보 교차확인(집품·자리톡, 2026-11)",,,,,,,,,,외부 자료에서 1986년 6월 준공으로 표기. 건축물대장 원문 직접 대조 전.
 photo-775b74831b23.webp,1986,unverified,,,,,,,,,,,
 photo-6872cdf8605f.webp,1992,unverified,,,,,,,,,,,
 photo-ba6c9c55a9b4.webp,1980전후,estimated,,,,,,,,,,,
 photo-17a6d53d27c5.webp,1991,unverified,,,,,,,,,,,
-photo-3863a7031d97.webp,1991,verified,"국토교통부 건축HUB 연계 재게시 자료(집품, 2026-08)",,,,,,,,,,다가구용단독주택(5가구)으로 표시. 구조와 세부 마감 미검증.
+photo-3863a7031d97.webp,1991,crosschecked,"국토교통부 건축HUB 연계 재게시 자료(집품, 2026-08)",,,,,,,,,,다가구용단독주택(5가구)으로 표시. 구조와 세부 마감 미검증.
 photo-ff7fe45a9e68.webp,1991,unverified,,,,,,,,,,,
 photo-2a0fdf9f5f9c.webp,1990,unverified,,,,,,,,,,,
 photo-14c16a0e1915.webp,1989,unverified,,,,,,,,,,,
@@ -26,7 +26,7 @@ photo-2470ec0302eb.webp,1990,unverified,,,,,,,,,,,
 photo-12153ffc9034.webp,1977,unverified,,,,,,,,,,,
 photo-2824a73dcab0.webp,1976,unverified,,,,,,,,,,,
 photo-0609d14a9cf9.webp,1977,unverified,,,,,,,,,,,
-photo-052a153dd459.webp,1982,verified,"국토교통부 건축HUB 표제부 재게시 정보(주소DB, 2026-08)",1982-10-08,벽돌구조,verified,,,,,,,"사용승인일 1982-10-08, 주구조 벽돌. 건축물대장 재게시 자료 대조."
+photo-052a153dd459.webp,1982,crosschecked,"국토교통부 건축HUB 표제부 재게시 정보(주소DB, 2026-08)",1982-10-08,벽돌구조,crosschecked,,,,,,,"사용승인일 1982-10-08, 주구조 벽돌. 건축물대장 재게시 자료 대조."
 photo-5b4bc5bdfa10.webp,1975,unverified,,,,,,,,,,,
 photo-4b23c03e7c9b.webp,1982,unverified,,,,,,,,,,,
 photo-7d4c9e28dec5.webp,1976,unverified,,,,,,,,,,,
