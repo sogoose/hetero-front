@@ -1,4 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Nanum+Pen+Script&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Special+Elite&display=swap');
+/* Monoplex KR: Korean monospace/typewriter-inspired archive font, SIL OFL 1.1. */
+@font-face{
+  font-family:"MonoplexKR";
+  src:url("https://cdn.jsdelivr.net/gh/Project-Noonnu/2610102358@kr/kr/MonoplexKR-Regular.woff2") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"MonoplexKR";
+  src:url("https://cdn.jsdelivr.net/gh/Project-Noonnu/2610102358@kr/kr/MonoplexKR-Medium.woff2") format("woff2");
+  font-weight:500;font-style:normal;font-display:swap;
+}
 /* Griun Police Human Rights handwritten font. Noonnu font_page/1776 allows web embedding. */
 @font-face{font-family:"NostalgicPoliceHumanRights";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/Griun_PolHumanrights-Rg.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
@@ -692,15 +703,15 @@ body:has(#photo-detail[open]){overflow:hidden}
 }
 .focus-back #detail-back-title{
  flex:0 0 auto;
- padding:0 0 11px;
- margin:0 0 clamp(13px,3.6%,19px);
+ padding:0;
+ margin:0 0 clamp(22px,5.2%,29px);
  max-width:100%;
  font-family:"NostalgicPoliceHumanRights","Nanum Pen Script",cursive;
  font-size:clamp(21px,2.28vw,30px);
  font-weight:700;font-synthesis:weight;
  line-height:1.23;letter-spacing:-.03em;
  color:#f0e9d9;
- border:0;border-bottom:1px solid rgba(227,224,213,.15);
+ border:0;
  text-shadow:.15px .18px rgba(247,242,226,.45),-.15px 0 rgba(247,242,226,.18);
  -webkit-text-stroke:.24px rgba(241,236,219,.74);
  transform:rotate(-.45deg);
@@ -714,7 +725,7 @@ body:has(#photo-detail[open]){overflow:hidden}
  margin:0;
  padding:0;
  overflow:visible;
- font-family:"IBM Plex Sans KR",Pretendard,-apple-system,sans-serif;
+ font-family:"MonoplexKR","D2Coding","Nanum Gothic Coding",monospace;
  font-size:12px;
  font-weight:500;
  line-height:1.45;
@@ -722,7 +733,7 @@ body:has(#photo-detail[open]){overflow:hidden}
 }
 .focus-back #detail-fields dt{
  margin:0;padding:0;
- font-family:inherit;font-size:11px;font-weight:400;line-height:1.45;
+ font-family:inherit;font-size:11px;font-weight:400;line-height:1.45;letter-spacing:-.025em;
  color:rgba(225,227,219,.55);
  white-space:nowrap;
  align-self:start;
@@ -770,8 +781,13 @@ body:has(#photo-detail[open]){overflow:hidden}
  height:clamp(21px,6vw,36px);
  object-fit:contain;
  object-position:left center;
- opacity:.64;
- filter:contrast(.83);
+ opacity:.60;
+ filter:contrast(.91) blur(.12px);
+ /* Sparse crisp square-ink wear; prevents the wordmark feeling too literal. */
+ -webkit-mask-image:url("assets/archive/ink-mosaic-mask.svg");
+ mask-image:url("assets/archive/ink-mosaic-mask.svg");
+ -webkit-mask-repeat:repeat;mask-repeat:repeat;
+ -webkit-mask-size:144px 50px;mask-size:144px 50px;
 }
 .reverse-stub #detail-edit{
  flex:0 0 auto;
@@ -780,7 +796,7 @@ body:has(#photo-detail[open]){overflow:hidden}
  border-radius:0;
  background:transparent;
  color:rgba(54,54,50,.71);
- font:400 10px/1.2 "Special Elite","IBM Plex Sans KR",monospace;
+ font:400 10px/1.2 "Special Elite","MonoplexKR",monospace;
  letter-spacing:.03em;
  padding:5px 0 3px;
  cursor:pointer;
@@ -792,7 +808,7 @@ body:has(#photo-detail[open]){overflow:hidden}
  .reverse-written-content{padding:16px 14px 9px}
  .focus-back #detail-back-title{
    font-size:clamp(18px,5vw,24px);
-   margin-bottom:11px;padding-bottom:8px;
+   margin-bottom:18px;padding-bottom:0;
  }
  .focus-back #detail-fields{
    grid-template-columns:56px minmax(0,1fr);
@@ -807,7 +823,7 @@ body:has(#photo-detail[open]){overflow:hidden}
 }
 @media(max-height:620px){
  .reverse-written-content{padding-top:14px;padding-bottom:5px}
- .focus-back #detail-back-title{font-size:clamp(18px,2vw,24px);margin-bottom:8px;padding-bottom:7px}
+ .focus-back #detail-back-title{font-size:clamp(18px,2vw,24px);margin-bottom:12px;padding-bottom:0}
  .focus-back #detail-fields{gap:5px 9px}
  .reverse-stub{flex-basis:58px}
 }
