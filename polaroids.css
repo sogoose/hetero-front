@@ -604,13 +604,13 @@ body:has(#photo-detail[open]){overflow:hidden}
 .polaroid-title{
  font-weight:700;
  font-synthesis:weight;
- -webkit-text-stroke:.34px rgba(43,37,33,.75);
+ -webkit-text-stroke:.49px rgba(43,37,33,.78);
  text-shadow:.18px 0 rgba(36,31,28,.30),-.18px .12px rgba(40,35,30,.22);
 }
 #detail-caption{
  font-weight:700;
  font-synthesis:weight;
- -webkit-text-stroke:.42px rgba(44,38,34,.70);
+ -webkit-text-stroke:.62px rgba(44,38,34,.75);
  letter-spacing:-.025em;
  text-shadow:.25px .05px rgba(40,35,31,.24);
 }
