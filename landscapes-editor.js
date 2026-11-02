@@ -111,7 +111,7 @@
   status.textContent='이 브라우저에 초안 저장 완료. 공개 반영은 아래 CSV / JSON 내보내기로 진행해 주세요.';
  }
  function download(name,content,type){
-  const blob=new Blob(['\uFEFF',content],{type:type+';charset=utf-8'});
+  const blob=new Blob([type==='text/csv'?'\uFEFF':'',content],{type:type+';charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const link=document.createElement('a');link.href=url;link.download=name;
   document.body.append(link);link.click();link.remove();
