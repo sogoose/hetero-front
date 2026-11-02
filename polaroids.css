@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Special+Elite&display=swap');
 /* Griun Police Human Rights handwritten font. Noonnu font_page/1776 allows web embedding. */
 @font-face{font-family:"NostalgicPoliceHumanRights";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/Griun_PolHumanrights-Rg.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
@@ -496,3 +496,40 @@ body:has(#photo-detail[open]){overflow:hidden}
  .polaroid-title{font-size:11.2px}
  .polaroid-label{left:3px;top:3px}
 }
+
+
+/* 2026-11-03 / inked archive captions */
+.polaroid-label-number{
+  font-family:"Special Elite","American Typewriter","Courier New",monospace;
+  font-weight:400;
+  font-size:clamp(7.2px,calc(var(--card-width,200px) * .058),10px);
+  letter-spacing:-.04em;
+  color:rgba(52,44,42,.87);
+  text-shadow:.16px .18px rgba(40,33,29,.27),0 .35px rgba(255,255,255,.31);
+  transform:rotate(5deg) translateY(1px);
+}
+.polaroid-title{
+  position:relative;
+  font-family:"NostalgicPoliceHumanRights","Nanum Pen Script",Pretendard,cursive;
+  font-weight:600;
+  font-synthesis:weight;
+  color:rgba(33,31,29,.92);
+  letter-spacing:-.024em;
+  text-shadow:
+     .22px .05px rgba(40,35,30,.42),
+    -.12px .21px rgba(40,35,30,.22),
+     0 .38px rgba(255,255,255,.25);
+}
+/* A very fine fibrous interference gives the handwritten ink a dry-print edge. */
+.polaroid-title::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:url("assets/archive/paper-grain.svg");
+  background-size:90px 90px;
+  mix-blend-mode:screen;
+  opacity:.13;
+  pointer-events:none;
+}
+/* Focus uses exactly the same cropped preview as the scattered card. */
+#detail-image{object-position:center center;}
