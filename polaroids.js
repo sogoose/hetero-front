@@ -35,6 +35,26 @@ function parseRegistryCSV(input){
 }
 const yearStatusLabel=value=>({verified:'공식 확인',crosschecked:'외부 교차확인',estimated:'추정',unverified:'미검증',recorded:'기록(미검증)',unknown:'미상'})[value]||value||'미검증';
 
+
+/* Display browser-local editing drafts; these are not published to the repository. */
+function applyLocalDraft(record,patch){
+ if(!patch||typeof patch!=='object')return;
+ const reg=patch.registry&&typeof patch.registry==='object'?patch.registry:{};
+ const meta=patch.meta&&typeof patch.meta==='object'?patch.meta:{};
+ if(Object.prototype.hasOwnProperty.call(reg,'construction_year'))record.year=String(reg.construction_year||'');
+ for(const key of ['year_status','approval_date','year_source','structure','structure_status','wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','notes']){
+  if(Object.prototype.hasOwnProperty.call(reg,key))record[key]=String(reg[key]||'');
+ }
+ for(const key of ['description','material']){
+  if(Object.prototype.hasOwnProperty.call(meta,key))record[key]=String(meta[key]||'');
+ }
+ if(record.location)record.title=record.location+(record.year?' ('+record.year+')':'');
+}
+function readLocalDrafts(){
+ try{const value=JSON.parse(localStorage.getItem('hetero-front-editor-drafts-v1')||'{}');return value&&typeof value==='object'?value:{}}
+ catch{return {}}
+}
+
 function coarseLocation(value){
  const text=String(value||'').replace(/_/g,' ');
  const aliases={'서울':'서울시','서울특별시':'서울시','천안':'천안시','전주':'전주시'};
@@ -103,6 +123,8 @@ async function load(force=false){
    if(typeof info.thumbnail==='string'&&/^thumbs\/[a-zA-Z0-9._-]+\.webp$/.test(info.thumbnail))record.thumbnail=FOLDER+info.thumbnail;
    return record;
   });
+  const savedDrafts=readLocalDrafts();
+  for(const record of records){if(savedDrafts[record.file])applyLocalDraft(record,savedDrafts[record.file]);}
   galleryOrder=records.slice();page=0;render();
  }finally{loading=false;shuffle.disabled=false;}
 }
@@ -392,7 +414,7 @@ function editDetailField(fieldName){
 }
 function closeDetail(){
  if(closing||!dialog.open)return;closing=true;
- const done=()=>{dialog.close();picked?.classList.remove('is-picked');picked?.focus({preventScroll:true});picked=null;closing=false;};
+ const done=()=>{dialog.close();picked?.classList.remove('is-picked');picked?.focus({preventScroll:true});picked=null;closing=false;detailRecord=null;};
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){done();return;}
  const animation=focusStage.animate([{transform:'translateY(0) scale(1)',opacity:1},{transform:'translateY(18px) scale(.94)',opacity:0}],{duration:180,easing:'ease-in'});
  animation.onfinish=done;
@@ -400,6 +422,19 @@ function closeDetail(){
 document.querySelector('#detail-front').addEventListener('click',()=>setFlipped(true));
 document.querySelector('#detail-flip').addEventListener('click',()=>setFlipped(!flipped));
 document.querySelector('#detail-edit').addEventListener('click',()=>editDetailField(null));
+document.addEventListener('hetero:record-draft-saved',event=>{
+ const file=event.detail?.file,patch=event.detail?.patch;
+ const record=records.find(record=>record.file===file);
+ if(!record||!patch)return;
+ applyLocalDraft(record,patch);
+ for(const body of bodies){
+  if(body.record.file!==file)continue;
+  const title=body.el.querySelector('.polaroid-title');
+  if(title){title.textContent=record.title;body.el.setAttribute('aria-label',record.title+' — 상세 보기')}
+  const img=body.el.querySelector('img');
+  if(img)img.alt=record.title;
+ }
+});
 dialog.addEventListener('cancel',event=>{event.preventDefault();closeDetail();});
 scatter.addEventListener('click',()=>{if(mode==='scatter')scatterTargets();else{mode='scatter';board.classList.remove('is-gallery');layout();scatterTargets();scatter.setAttribute('aria-pressed','true');align.setAttribute('aria-pressed','false');pager.hidden=true;}});
 align.addEventListener('click',()=>{
