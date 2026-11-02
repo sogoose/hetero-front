@@ -348,7 +348,7 @@ function openDetail(record,source){
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
  for(const [key,label] of [['location','위치'],['year','건축 연도'],['year_status','연도 상태'],['year_source','연도 근거'],['material','재료'],['structure','구조'],['wall_finish','외벽 마감'],['roof_finish','지붕 마감'],['railing','난간']]){
   if(!record[key])continue;
-  const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=key==='year_status'?yearStatusLabel(record[key]):record[key];fields.append(dt,dd);
+  const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;const confidence={structure:'structure_status',wall_finish:'wall_status',roof_finish:'roof_status',railing:'railing_status'}[key];dd.textContent=(key==='year_status'?yearStatusLabel(record[key]):record[key])+(confidence&&record[confidence]?' · '+yearStatusLabel(record[confidence]):'');fields.append(dt,dd);
  }
  document.querySelector('#detail-description').textContent=[record.description,record.notes].filter(Boolean).join('\n\n')||'아직 상세 기록이 등록되지 않았습니다.';
  document.querySelector('#detail-credit').textContent=record.credit||'';
