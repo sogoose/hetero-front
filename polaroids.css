@@ -502,11 +502,12 @@ body:has(#photo-detail[open]){overflow:hidden}
 .polaroid-label-number{
   font-family:"Special Elite","American Typewriter","Courier New",monospace;
   font-weight:400;
-  font-size:clamp(7.2px,calc(var(--card-width,200px) * .058),10px);
+  font-size:clamp(6.6px,calc(var(--card-width,200px) * .05),8.8px);
   letter-spacing:-.04em;
   color:rgba(52,44,42,.87);
-  text-shadow:.16px .18px rgba(40,33,29,.27),0 .35px rgba(255,255,255,.31);
-  transform:rotate(5deg) translateY(1px);
+  text-shadow:.13px .15px rgba(40,33,29,.22),0 .3px rgba(255,255,255,.31);
+  /* No counter-rotation: the number follows its -5deg paper label. */
+  transform:translateY(.55px);
 }
 .polaroid-title{
   position:relative;
