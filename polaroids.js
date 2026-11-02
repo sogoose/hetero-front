@@ -33,7 +33,7 @@ function parseRegistryCSV(input){
  }
  return data;
 }
-const yearStatusLabel=value=>({verified:'확인',estimated:'추정',unverified:'미검증',recorded:'기록(미검증)',unknown:'미상'})[value]||value||'미검증';
+const yearStatusLabel=value=>({verified:'공식 확인',crosschecked:'외부 교차확인',estimated:'추정',unverified:'미검증',recorded:'기록(미검증)',unknown:'미상'})[value]||value||'미검증';
 
 function coarseLocation(value){
  const text=String(value||'').replace(/_/g,' ');
@@ -93,7 +93,7 @@ async function load(force=false){
    const record={file,src:FOLDER+encodeURIComponent(file),title:titleOf(file)};
    for(const key of ['title','location','year','material','description','credit'])if(typeof info[key]==='string'&&info[key].trim())record[key]=info[key];
    if(entry.construction_year)record.year=entry.construction_year;
-   for(const field of ['year_source','structure','structure_status','wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','notes'])if(entry[field])record[field]=entry[field];
+   for(const field of ['year_source','approval_date','structure','structure_status','wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','notes'])if(entry[field])record[field]=entry[field];
    record.year_status=entry.year_status||(/전후|경|추정/.test(record.year||'')?'estimated':'unverified');
    record.location=coarseLocation(record.location)||coarseLocation(record.title);
    if(record.location){
@@ -346,7 +346,7 @@ function openDetail(record,source){
  document.querySelector('#detail-number').textContent=String(records.indexOf(record)+1).padStart(3,'0');
  const image=document.querySelector('#detail-image');image.src=record.src;image.alt=record.title;
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
- for(const [key,label] of [['location','위치'],['year','건축 연도'],['year_status','연도 상태'],['year_source','연도 근거'],['material','재료'],['structure','구조'],['wall_finish','외벽 마감'],['roof_finish','지붕 마감'],['railing','난간']]){
+ for(const [key,label] of [['location','위치'],['year','건축 연도'],['approval_date','사용승인일'],['year_status','연도 상태'],['year_source','연도 근거'],['material','재료'],['structure','구조'],['wall_finish','외벽 마감'],['roof_finish','지붕 마감'],['railing','난간']]){
   if(!record[key])continue;
   const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;const confidence={structure:'structure_status',wall_finish:'wall_status',roof_finish:'roof_status',railing:'railing_status'}[key];dd.textContent=(key==='year_status'?yearStatusLabel(record[key]):record[key])+(confidence&&record[confidence]?' · '+yearStatusLabel(record[confidence]):'');fields.append(dt,dd);
  }
