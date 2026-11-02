@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Nanum+Pen+Script&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Nanum+Pen+Script&family=Special+Elite&display=swap');
 /* Griun Police Human Rights handwritten font. Noonnu font_page/1776 allows web embedding. */
 @font-face{font-family:"NostalgicPoliceHumanRights";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/2601-6@1.0/Griun_PolHumanrights-Rg.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
@@ -615,196 +615,199 @@ body:has(#photo-detail[open]){overflow:hidden}
  text-shadow:.25px .05px rgba(40,35,31,.24);
 }
 
-/* Silverish paper tab, dark film sheet, and a pale serial-paper footer. */
+
+/* Actual instant-film reverse: fixed image-sized back, no inner scrollbars.
+   Warm paper borders / graphite film / supplied vector exhibition mark. */
 .focus-face.focus-back{
- padding:0;
  display:flex;
  flex-direction:column;
- overflow:hidden;
+ position:absolute;
+ inset:0;
+ height:100%;
+ width:100%;
+ min-height:0;
+ box-sizing:border-box;
+ padding:0;
+ overflow:hidden!important;
+ overscroll-behavior:none;
  background:
-   url("assets/archive/paper-grain.svg") repeat 0 0/154px 154px,
-   linear-gradient(116deg,#f8f7f1 0%,#edece4 100%);
- color:#272b2b;
+  url("assets/archive/paper-grain.svg") 0 0/154px 154px repeat,
+  linear-gradient(120deg,#f9f8f2,#eceae3);
+ color:#242625;
 }
-.focus-back::before{opacity:.11;z-index:5;pointer-events:none}
+.focus-back::before{
+ content:"";inset:0;z-index:4;
+ background:url("assets/archive/paper-grain.svg") 0 0/154px 154px repeat;
+ opacity:.20;pointer-events:none;
+}
 .reverse-top-seal{
- position:absolute;z-index:3;
- top:1px;left:50%;
- transform:translateX(-50%) rotate(.7deg);
- width:69%;height:17px;
- border-bottom:1px solid rgba(110,114,110,.22);
+ position:absolute;
+ top:0;left:50%;z-index:5;
+ width:70%;height:15px;
+ transform:translateX(-50%) rotate(.5deg);
+ pointer-events:none;
  background:
-  url("assets/archive/paper-grain.svg") repeat 0 0/154px 154px,
-  linear-gradient(to bottom,rgba(250,249,245,.87),rgba(221,224,218,.55));
- box-shadow:0 2px 5px rgba(16,18,17,.12),inset 0 1px 0 #fff;
- opacity:.95;pointer-events:none;
+  url("assets/archive/paper-grain.svg") 0 0/154px 154px repeat,
+  linear-gradient(180deg,rgba(254,254,250,.96),rgba(221,220,212,.81));
+ border-bottom:1px solid rgba(99,102,98,.22);
+ box-shadow:0 2px 4px rgba(0,0,0,.16),inset 0 1px 0 #fff;
 }
-.reverse-top-seal span{
- display:block;width:100%;height:4px;
- border-top:1px dashed rgba(110,114,110,.14);
-}
+.reverse-top-seal span{display:block;margin-top:3px;border-top:1px dashed rgba(91,92,86,.12)}
 .reverse-film{
- position:relative;z-index:1;
- flex:1 1 auto;min-height:0;
- margin:17px 15px 0;
+ position:relative;
+ flex:1 1 auto;
+ min-height:0;
+ box-sizing:border-box;
+ margin:15px 14px 0;
  border-radius:2px 2px 0 0;
  overflow:hidden;
  background:
-   radial-gradient(ellipse at 40% 15%,rgba(100,104,101,.14),transparent 62%),
-   linear-gradient(125deg,#2b2d2b 0%,#202322 58%,#1c1e1d 100%);
+  radial-gradient(ellipse at 38% 17%,rgba(91,95,92,.15),transparent 65%),
+  linear-gradient(120deg,#292d2b,#1c201e);
  box-shadow:
-  inset 0 1px 2px rgba(255,255,255,.08),
-  inset 0 0 0 1px rgba(9,12,11,.48),
-  0 0 0 1px rgba(88,93,91,.17);
+  inset 0 0 0 1px rgba(1,4,3,.50),
+  inset 0 2px 5px rgba(0,0,0,.15),
+  0 0 0 1px rgba(78,82,78,.16);
 }
 .reverse-film::before{
- content:"";
- position:absolute;inset:0;z-index:0;pointer-events:none;
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
  background:
-   url("assets/archive/paper-grain.svg") repeat 0 0/154px 154px,
-   repeating-linear-gradient(98deg,rgba(220,218,210,.024) 0 1px,transparent 1px 29px);
- opacity:.26;mix-blend-mode:screen;
+  url("assets/archive/paper-grain.svg") 0 0/154px 154px repeat,
+  repeating-linear-gradient(94deg,rgba(230,231,221,.012) 0 1px,transparent 1px 27px);
+ opacity:.24;mix-blend-mode:screen;
 }
 .reverse-film::after{
  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
- box-shadow:inset 0 2px 7px rgba(0,0,0,.33),inset 3px 0 10px rgba(0,0,0,.16);
+ box-shadow:inset 0 1px 7px rgba(0,0,0,.37),inset 4px 0 8px rgba(0,0,0,.12);
 }
 .reverse-written-content{
  position:relative;z-index:1;
+ display:flex;flex-direction:column;align-items:stretch;
  box-sizing:border-box;
- height:100%;
- padding:clamp(22px,5.3%,31px) clamp(19px,5.5%,27px) 17px;
- overflow-y:auto;overscroll-behavior:contain;
- scrollbar-width:thin;scrollbar-color:rgba(225,222,211,.30) transparent;
+ width:100%;height:100%;
+ min-height:0;
+ overflow:hidden!important;
+ overscroll-behavior:none;
+ padding:clamp(18px,5.2%,26px) clamp(17px,6%,27px) 12px;
 }
-.reverse-written-content::-webkit-scrollbar{width:3px}
-.reverse-written-content::-webkit-scrollbar-thumb{background:rgba(230,231,220,.24);border-radius:4px}
 .focus-back #detail-back-title{
- display:block;
- margin:0 0 clamp(16px,4%,23px);
- padding:0;
- border:0;
+ flex:0 0 auto;
+ padding:0 0 11px;
+ margin:0 0 clamp(13px,3.6%,19px);
  max-width:100%;
  font-family:"NostalgicPoliceHumanRights","Nanum Pen Script",cursive;
- font-size:clamp(22px,2.25vw,31px);
- font-style:normal;
+ font-size:clamp(21px,2.28vw,30px);
  font-weight:700;font-synthesis:weight;
- line-height:1.26;letter-spacing:-.03em;
- color:#f2eddb;
- text-shadow:.25px .2px rgba(240,234,216,.66),-.22px 0 rgba(240,234,216,.21);
- -webkit-text-stroke:.24px rgba(240,235,220,.8);
- transform:rotate(-.7deg);
- overflow-wrap:anywhere;word-break:keep-all;
+ line-height:1.23;letter-spacing:-.03em;
+ color:#f0e9d9;
+ border:0;border-bottom:1px solid rgba(227,224,213,.15);
+ text-shadow:.15px .18px rgba(247,242,226,.45),-.15px 0 rgba(247,242,226,.18);
+ -webkit-text-stroke:.24px rgba(241,236,219,.74);
+ transform:rotate(-.45deg);
+ word-break:keep-all;overflow-wrap:anywhere;
 }
 .focus-back #detail-fields{
  display:grid;
- grid-template-columns:minmax(62px,86px) minmax(0,1fr);
- column-gap:10px;row-gap:8px;
+ grid-template-columns:clamp(59px,22%,83px) minmax(0,1fr);
+ gap:clamp(7px,1.05vh,11px) 12px;
+ align-content:start;
  margin:0;
- font-family:"Nanum Gothic Coding","Special Elite","Courier New",monospace;
- font-size:clamp(10px,1.03vw,12px);
- font-weight:400;letter-spacing:-.035em;line-height:1.6;
+ padding:0;
+ overflow:visible;
+ font-family:"IBM Plex Sans KR",Pretendard,-apple-system,sans-serif;
+ font-size:12px;
+ font-weight:500;
+ line-height:1.45;
+ letter-spacing:-.024em;
 }
 .focus-back #detail-fields dt{
- color:rgba(221,224,217,.55);
- font-family:inherit;font-size:inherit;
- white-space:nowrap;align-self:start;line-height:1.6;
+ margin:0;padding:0;
+ font-family:inherit;font-size:11px;font-weight:400;line-height:1.45;
+ color:rgba(225,227,219,.55);
+ white-space:nowrap;
+ align-self:start;
 }
 .focus-back #detail-fields dd{
- color:rgba(239,238,226,.87);
- font-family:inherit;font-size:inherit;
- line-height:1.6;margin:0;font-weight:400;
- overflow-wrap:anywhere;word-break:keep-all;
+ margin:0;padding:0;min-width:0;
+ font-family:inherit;font-size:12px;font-weight:500;line-height:1.45;
+ letter-spacing:-.02em;
+ color:rgba(247,244,233,.94);
+ overflow-wrap:anywhere;
+ word-break:keep-all;
 }
-.focus-back #detail-fields dd.detail-unset{color:rgba(228,226,218,.35)}
+.focus-back #detail-fields dd.detail-unset{color:rgba(222,223,214,.39)}
 .focus-back .detail-empty-edit{
- border-bottom:1px dashed rgba(229,226,219,.25);
- color:rgba(235,231,220,.5);
- font-family:"Nanum Gothic Coding",monospace;
+ display:inline-block;
+ padding:0 0 2px;
+ border:0;border-bottom:1px dashed rgba(238,236,225,.29);
+ border-radius:0;
+ background:none;
+ color:rgba(234,234,221,.58);
+ font-family:inherit;font-size:11px;font-weight:400;
+ cursor:pointer;
 }
-.focus-back .detail-empty-edit:hover{color:#fff;border-bottom-color:rgba(255,255,255,.65)}
-.reverse-note-wrap{
- margin-top:clamp(16px,4.2%,25px);
- padding-top:12px;
- border-top:1px solid rgba(221,222,212,.18);
+.focus-back .detail-empty-edit:hover,
+.focus-back .detail-empty-edit:focus-visible{
+ color:#fff;border-bottom-color:rgba(255,255,255,.68);
 }
-.reverse-note-label{
- display:block;
- margin-bottom:4px;
- font:400 9px/1.2 "Nanum Gothic Coding",monospace;
- letter-spacing:.08em;
- color:rgba(213,212,205,.42);
-}
-#detail-handwritten-note{
- display:block;box-sizing:border-box;
- width:100%;min-height:72px;
- max-height:175px;padding:5px 2px 8px;
- resize:vertical;overflow-y:auto;
- border:0;border-radius:0;outline:0;
- background:transparent;
- font-family:"NostalgicPoliceHumanRights","Nanum Pen Script",cursive;
- font-size:clamp(18px,1.78vw,22px);
- font-weight:700;font-synthesis:weight;
- -webkit-text-stroke:.15px rgba(244,240,225,.5);
- line-height:1.25;letter-spacing:-.025em;
- color:rgba(247,241,225,.93);
- caret-color:#f9f7ee;
- text-shadow:.12px .1px rgba(244,238,218,.35);
-}
-#detail-handwritten-note::placeholder{
- color:rgba(237,235,222,.26);font-weight:400;
- -webkit-text-stroke:0 transparent;
-}
-#detail-handwritten-note:focus{box-shadow:inset 0 -1px rgba(240,235,224,.24)}
 .reverse-stub{
- position:relative;z-index:1;
- flex:0 0 76px;
- padding:14px 22px 13px;
- display:flex;flex-direction:column;
- justify-content:space-between;
+ position:relative;z-index:2;
+ flex:0 0 clamp(62px,17%,78px);
+ display:flex;align-items:center;justify-content:space-between;
+ gap:12px;
+ box-sizing:border-box;
+ min-height:0;
+ padding:12px 19px 10px;
  background:
-  url("assets/archive/paper-grain.svg") repeat 0 0/154px 154px,
-  linear-gradient(110deg,#f5f4ee 0%,#eae9e1 100%);
- border-top:1px solid rgba(96,96,90,.17);
+  url("assets/archive/paper-grain.svg") 0 0/154px 154px repeat,
+  linear-gradient(120deg,#f7f5ee,#e9e7df);
+ border-top:1px solid rgba(89,90,83,.16);
 }
-.reverse-stub-identification{display:flex;align-items:center;gap:8px}
-.reverse-index-box{
- width:22px;height:17px;display:inline-block;
- border:1px solid rgba(78,80,75,.43);
- box-shadow:inset 2px 0 0 rgba(248,247,242,.6),0 0 0 .6px rgba(80,80,75,.22);
+.reverse-logo{
+ display:block;
+ flex:0 1 auto;
+ width:min(58%,189px);
+ height:clamp(21px,6vw,36px);
+ object-fit:contain;
+ object-position:left center;
+ opacity:.64;
+ filter:contrast(.83);
 }
-.reverse-serial{
- font:400 10px/1.3 "Special Elite","Nanum Gothic Coding",monospace;
- color:rgba(59,61,58,.67);letter-spacing:.015em;
+.reverse-stub #detail-edit{
+ flex:0 0 auto;
+ display:inline-flex;align-items:center;gap:4px;
+ border:0;border-bottom:1px solid rgba(48,48,44,.31);
+ border-radius:0;
+ background:transparent;
+ color:rgba(54,54,50,.71);
+ font:400 10px/1.2 "Special Elite","IBM Plex Sans KR",monospace;
+ letter-spacing:.03em;
+ padding:5px 0 3px;
+ cursor:pointer;
 }
-.reverse-serial-sub{font-size:8px;letter-spacing:.04em}
-.reverse-stub-controls{
- display:flex;justify-content:space-between;align-items:center;gap:9px;
-}
-#detail-note-status{
- flex:1;min-width:0;
- font:400 8px/1.25 "Nanum Gothic Coding",monospace;
- color:rgba(85,84,79,.53);
-}
-.reverse-stub-controls #detail-edit{
- flex:0 0 auto;border:0;border-bottom:1px solid rgba(70,69,65,.33);
- border-radius:0;padding:3px 0 4px;
- background:transparent;color:rgba(52,52,49,.73);
- font:400 10px/1 "Special Elite","Nanum Gothic Coding",monospace;
- letter-spacing:.045em;cursor:pointer;
-}
-.reverse-stub-controls #detail-edit:hover{color:#181919;border-bottom-color:#181919}
+.reverse-stub #detail-edit:hover{color:#1e201e;border-bottom-color:#1e201e}
 @media(max-width:550px){
- .reverse-top-seal{height:12px}
- .reverse-film{margin:12px 11px 0}
- .reverse-written-content{padding:19px 15px 9px}
- .focus-back #detail-back-title{font-size:clamp(18px,5.4vw,25px);margin-bottom:12px}
- .focus-back #detail-fields{grid-template-columns:54px minmax(0,1fr);gap:6px 6px;font-size:clamp(9px,2.65vw,11px)}
- .reverse-note-wrap{margin-top:12px;padding-top:8px}
- .reverse-note-label{font-size:8px}
- #detail-handwritten-note{font-size:17px;min-height:60px}
- .reverse-stub{flex-basis:63px;padding:10px 13px 9px}
- .reverse-serial{font-size:9px}
- .reverse-serial-sub{font-size:7px}
- #detail-note-status{font-size:7px}
+ .reverse-top-seal{height:11px}
+ .reverse-film{margin:11px 11px 0}
+ .reverse-written-content{padding:16px 14px 9px}
+ .focus-back #detail-back-title{
+   font-size:clamp(18px,5vw,24px);
+   margin-bottom:11px;padding-bottom:8px;
+ }
+ .focus-back #detail-fields{
+   grid-template-columns:56px minmax(0,1fr);
+   gap:6px 8px;
+   font-size:10.5px;
+ }
+ .focus-back #detail-fields dt{font-size:9.5px}
+ .focus-back #detail-fields dd{font-size:10.5px}
+ .focus-back .detail-empty-edit{font-size:10px}
+ .reverse-stub{flex-basis:57px;padding:9px 13px}
+ .reverse-logo{height:23px;max-width:65%}
+}
+@media(max-height:620px){
+ .reverse-written-content{padding-top:14px;padding-bottom:5px}
+ .focus-back #detail-back-title{font-size:clamp(18px,2vw,24px);margin-bottom:8px;padding-bottom:7px}
+ .focus-back #detail-fields{gap:5px 9px}
+ .reverse-stub{flex-basis:58px}
 }
