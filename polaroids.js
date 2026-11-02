@@ -1,6 +1,6 @@
 (() => {
 'use strict';
-const LIMIT=24, FOLDER='assets/buildings/', CACHE='hetero-front-buildings-v2', TTL=15*60*1000;
+const LIMIT=24, FOLDER='assets/buildings/', CACHE='hetero-front-buildings-v4', TTL=15*60*1000;
 const board=document.querySelector('#photo-board'), status=document.querySelector('#photo-status'), count=document.querySelector('#photo-count');
 const scatter=document.querySelector('#scatter'), align=document.querySelector('#align'), shuffle=document.querySelector('#shuffle');
 const previous=document.querySelector('#previous'), next=document.querySelector('#next'), pager=document.querySelector('.photo-pagination');
@@ -9,7 +9,26 @@ let records=[], visible=[], mode='scatter', page=0, demo=false, loading=false, r
 const fallback=[
 ['elevation.webp','주택 입면'],['specimens.webp','건축 요소의 수집'],['casting.webp','주물 제작 현장'],['brick-factory.webp','벽돌 생산 현장'],['tiles-photo.webp','기와의 기록'],['ornaments.webp','장식의 기록']
 ].map(([file,title])=>({file,title,src:'assets/archive/'+file,description:'기존 연구자료에서 가져온 미리보기 이미지입니다. 건물 사진을 업로드하면 실제 사진으로 대체됩니다.'}));
-function titleOf(file){return file.replace(/\.[^.]+$/,'').replace(/_/g,' ');}
+function coarseLocation(value){
+ const text=String(value||'').replace(/_/g,' ');
+ const aliases={'서울':'서울시','서울특별시':'서울시','천안':'천안시','전주':'전주시'};
+ const tokens=text.split('(')[0].split(/\s+/).map(t=>aliases[t]||t);
+ const result=[];
+ for(const token of tokens){
+  if(/^[가-힣]+(?:시|구|군|읍|면|동)$/.test(token)){
+   result.push(token);
+   if(/(?:동|읍|면)$/.test(token))break;
+  }
+ }
+ const city=result.findIndex(t=>t.endsWith('시'));
+ return (city>=0?result.slice(city):result).join(' ');
+}
+function titleOf(file){
+ const location=coarseLocation(file);
+ const year=String(file).match(/\(((?:19|20)\d{2}[^)]*)\)/)?.[1];
+ return location?location+(year?' ('+year+')':''):'풍경의 기록';
+}
+try{for(const key of ['hetero-front-buildings-v1','hetero-front-buildings-v2'])localStorage.removeItem(key);}catch{}
 function sample(items,limit){const result=items.slice();for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result.slice(0,limit);}
 function readCache(){try{const c=JSON.parse(localStorage.getItem(CACHE));if(c&&Array.isArray(c.files)&&c.files.every(f=>typeof f==='string'&&!f.includes('/')))return c;}catch{}return null;}
 async function listFiles(force){
@@ -25,7 +44,15 @@ async function listFiles(force){
   return files;
  }catch{
   sourceWarning=cached?'사진 목록을 갱신하지 못해 마지막 저장된 목록을 보여줍니다.':'사진 목록에 연결하지 못해 연구자료 미리보기를 보여줍니다. 잠시 후 다시 시도해 주세요.';
-  return cached?cached.files:[];
+  if(cached)return cached.files;
+  try{
+   const response=await fetch(FOLDER+'photos.json',{cache:'no-store'});
+   if(!response.ok)throw new Error('manifest');
+   const data=await response.json();
+   if(!Array.isArray(data)||!data.every(f=>typeof f==='string'&&!f.includes('/')))throw new Error('manifest');
+   sourceWarning='';
+   return data;
+  }catch{return [];}
  }
 }
 async function load(force=false){
@@ -37,6 +64,12 @@ async function load(force=false){
    const info=meta[file]&&typeof meta[file]==='object'?meta[file]:{};
    const record={file,src:FOLDER+encodeURIComponent(file),title:titleOf(file)};
    for(const key of ['title','location','year','material','description','credit'])if(typeof info[key]==='string'&&info[key].trim())record[key]=info[key];
+   record.location=coarseLocation(record.location)||coarseLocation(record.title);
+   if(record.location){
+    const year=record.year||record.title.match(/\(((?:19|20)\d{2}[^)]*)\)/)?.[1];
+    record.title=record.location+(year?' ('+year+')':'');
+   }
+   if(typeof info.thumbnail==='string'&&/^thumbs\/[a-zA-Z0-9._-]+\.webp$/.test(info.thumbnail))record.thumbnail=FOLDER+info.thumbnail;
    return record;
   });
   page=0;render();
@@ -48,7 +81,7 @@ function render(){
  for(const record of visible){
   const button=document.createElement('button');button.type='button';button.className='polaroid';button.setAttribute('aria-label',record.title+' — 상세 보기');
   const frame=document.createElement('span');frame.className='polaroid-image';
-  const image=document.createElement('img');image.src=record.src;image.alt=record.title;image.loading='lazy';image.decoding='async';image.width=600;image.height=556;
+  const image=document.createElement('img');image.src=record.thumbnail||record.src;image.alt=record.title;image.loading='lazy';image.decoding='async';image.width=600;image.height=556;
   image.addEventListener('error',()=>{image.hidden=true;frame.textContent='이미지를 불러올 수 없습니다.';frame.style.fontSize='11px';},{once:true});
   frame.append(image);
   const caption=document.createElement('span');caption.className='polaroid-caption';caption.title=record.title;
