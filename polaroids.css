@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+/* Optional self-hosted face. Do not publish a font file without its web-use license. */
+@font-face{font-family:"PakYongjun";src:url("assets/fonts/Pak_Yong_jun.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
 html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 .photo-main{position:fixed;inset:0;width:100%;height:100dvh;overflow:hidden;padding:0;min-height:0}
 .photo-board{position:absolute;inset:18px 20px 96px;min-height:0;max-width:none;margin:0;padding:0;overflow:hidden;isolation:isolate;touch-action:none;user-select:none;-webkit-user-select:none}
@@ -144,3 +147,166 @@ body:has(#photo-detail[open]){overflow:hidden}
 
 /* Explicitly hide inactive statistical subfilters. */
 .stats-selectors label[hidden]{display:none!important}
+
+
+/* === 2026-11 monochrome paper / floating independent glass controls === */
+:root{
+ --ui-blue:#23262a;--ui-deep:#26272b;--ui-ice:#f7f8fa;--ui-stroke:rgba(208,213,218,.66);
+ --glass-white:rgba(251,252,253,.61);--glass-ink:#242629;--glass-edge:rgba(255,255,255,.9);
+}
+.polaroid,.focus-face{
+ background-color:#faf9f5;
+ background-image:
+  radial-gradient(circle at 15% 20%,rgba(95,93,86,.052) 0 .55px,transparent 1.1px),
+  radial-gradient(circle at 70% 61%,rgba(115,109,94,.045) 0 .7px,transparent 1.2px),
+  repeating-linear-gradient(91deg,rgba(63,61,55,.012) 0 1px,transparent 1px 5px),
+  linear-gradient(125deg,#fdfcf9 0%,#f8f7f2 52%,#f4f3ef 100%);
+ background-size:11px 12px,17px 16px,auto,auto;
+ border-color:rgba(95,95,90,.12);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.96),0 1px 2px rgba(25,25,25,.1),0 7px 15px rgba(30,30,30,.085),0 19px 33px rgba(30,30,30,.075);
+}
+.polaroid-image,.focus-image{position:relative;isolation:isolate;box-shadow:0 0 0 1px rgba(45,44,40,.14),inset 0 2px 9px rgba(20,20,20,.1)}
+.polaroid-image::before,.focus-image::before{
+ content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+ background:radial-gradient(ellipse at 48% 45%,transparent 44%,rgba(20,19,17,.1) 88%,rgba(20,19,17,.16) 112%);
+ opacity:.60;
+}
+.polaroid-image::after,.focus-image::after{
+ content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+ background:linear-gradient(128deg,rgba(255,255,255,.18),transparent 31%,transparent 74%,rgba(255,255,255,.055));
+ mix-blend-mode:screen;opacity:.52;
+}
+.polaroid img{filter:grayscale(.045) contrast(1.012) saturate(.975)}
+.polaroid-caption{gap:7px;padding:2px 3px 1px;line-height:1.15;min-height:0}
+.polaroid-title{
+ font-family:"PakYongjun","Nanum Pen Script","Gaegu",cursive;
+ font-weight:400;letter-spacing:.008em;
+ font-size:clamp(12px,1.08vw,17px);
+ color:rgba(37,36,33,.80);
+ transform:rotate(-.3deg);
+ text-shadow:.15px 0 rgba(20,20,20,.25),0 .22px rgba(255,255,255,.3);
+}
+.polaroid-number{font-family:Pretendard,sans-serif;font-size:7px;color:rgba(75,72,66,.48)}
+#detail-caption{font-family:"PakYongjun","Nanum Pen Script",cursive;font-size:clamp(22px,2.2vw,29px);color:#393937}
+.photo-navigation{gap:9px;align-items:center;flex-direction:row}
+.photo-toolbar,.photo-pagination,.focus-controls{
+ background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+ padding:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+.photo-toolbar{gap:11px}
+.photo-toolbar .view-switch{gap:11px}
+.toolbar-divider{display:none!important}
+.photo-toolbar .icon-button,.photo-pagination .icon-button,.focus-controls .icon-button,
+.photo-navigation .icon-button,.edit-launch,.chapter-top .icon-button,.stats-top .icon-button,
+.editor-top .icon-button{
+ flex:none;display:inline-flex;align-items:center;justify-content:center;
+ width:47px;height:47px;padding:0;border-radius:50%;
+ color:#242629;background:rgba(248,250,253,.64);
+ border:1px solid rgba(255,255,255,.91);
+ box-shadow:0 2px 11px rgba(32,38,47,.10),inset 0 1px 0 rgba(255,255,255,.88),0 0 0 1px rgba(80,90,100,.055);
+ backdrop-filter:blur(16px) saturate(1.12);-webkit-backdrop-filter:blur(16px) saturate(1.12);
+ transition:background .2s,box-shadow .2s,transform .2s,color .2s,border-color .2s;
+}
+.photo-toolbar .icon-button:hover,.photo-pagination .icon-button:hover,.focus-controls .icon-button:hover,
+.photo-navigation .icon-button:hover,.edit-launch:hover,.chapter-top .icon-button:hover,.stats-top .icon-button:hover,
+.editor-top .icon-button:hover{
+ color:#111;background:rgba(255,255,255,.93);
+ border-color:rgba(255,255,255,.95);transform:translateY(-2px);
+ box-shadow:0 7px 20px rgba(27,33,38,.15),inset 0 1px 0 #fff;
+}
+.photo-toolbar .icon-button[aria-pressed="true"],.focus-controls .icon-button[aria-pressed="true"]{
+ color:#0f1215;background:rgba(255,255,255,.90);border-color:rgba(155,163,171,.65);
+ box-shadow:inset 0 0 0 1px rgba(90,96,101,.10),0 3px 13px rgba(32,38,47,.11);
+}
+.photo-toolbar .icon-button:focus-visible,.photo-pagination .icon-button:focus-visible,
+.focus-controls .icon-button:focus-visible,.photo-navigation .icon-button:focus-visible,.edit-launch:focus-visible{
+ outline:2px solid #45494c;outline-offset:3px;
+}
+.photo-toolbar .ui-icon,.photo-navigation .ui-icon,.focus-controls .ui-icon{width:21px;height:21px}
+.photo-pagination{gap:12px;bottom:86px}
+.photo-pagination #page-number{color:#252629;background:rgba(255,255,255,.68);border-radius:20px;padding:8px 11px}
+.focus-controls{gap:14px}
+.focus-controls .icon-button{width:47px;height:47px}
+.edit-launch{
+ appearance:none;gap:5px;width:auto;height:39px;border-radius:21px;
+ padding:0 13px;font:500 10px/1 Pretendard,sans-serif;letter-spacing:.12em;cursor:pointer;
+}
+.edit-launch .ui-icon{width:15px;height:15px}
+.chapter-menu,.archive-stats,.archive-editor{
+ color:#252628!important;border:1px solid rgba(255,255,255,.82)!important;
+ background:rgba(250,251,252,.91)!important;
+ box-shadow:0 16px 70px rgba(25,27,32,.23)!important;
+ backdrop-filter:blur(25px) saturate(.9);-webkit-backdrop-filter:blur(25px) saturate(.9);
+}
+.chapter-menu::backdrop,.archive-stats::backdrop,.archive-editor::backdrop{
+ background:rgba(235,237,237,.32);backdrop-filter:blur(6px);
+}
+.dialog-kicker,.stats-eyebrow,.chapter-caption,.stats-summary span,.stats-selectors label,
+.stats-label,.stats-value,.stats-footnote,.stats-bottom,.chapter-list a span{color:#616569!important}
+.chapter-asterisk,.chapter-list a[aria-current="page"] strong,.stats-big strong,.stats-bottom a{color:#17191b!important}
+.chapter-list a{border-color:rgba(80,80,80,.12)}
+.chapter-list a:hover{color:#17191b}
+.stats-summary{background:#dfe1e2;border-color:#dfe1e2}
+.stats-summary>div{background:#f8f9f9}
+.stats-selectors select{color:#2f3032;border-bottom-color:#b4b7b9}
+.stats-track{background:#e5e6e5}
+.stats-fill,.stats-row:nth-child(even) .stats-fill{background:#74787b}
+.stats-bottom a{border-bottom-color:#999}
+.stats-empty{color:#656769}
+/* In-page editor keeps a public GitHub CSV as the source of truth. */
+.archive-editor{
+ position:fixed;inset:0;margin:auto;padding:28px 31px 25px;
+ width:min(730px,calc(100vw - 30px));max-width:none;max-height:calc(100dvh - 30px);
+ border-radius:12px;overflow-y:auto;overscroll-behavior:contain;
+ font-family:Pretendard,-apple-system,sans-serif;
+}
+.editor-top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.editor-top .icon-button{width:35px;height:35px}
+.editor-top .ui-icon{width:17px;height:17px}
+.archive-editor h2{margin:16px 0 12px;font-size:clamp(29px,4vw,43px);font-weight:330;line-height:1.05;letter-spacing:-.04em}
+.editor-intro{font-size:12px;line-height:1.75;color:#68696b;max-width:600px;margin:0 0 23px}
+.editor-choose{display:grid;grid-template-columns:1fr auto;gap:9px 12px;align-items:end;padding:0 0 22px;border-bottom:1px solid #d9dadd}
+.editor-choose label{grid-column:1/-1;font-size:10px;letter-spacing:.04em;color:#6b6d6e}
+.editor-choose select,.editor-choose button,.editor-form input,.editor-form select,.editor-form textarea{font:400 12px/1.4 Pretendard,sans-serif;color:#27292b;border:1px solid rgba(130,133,137,.20);border-radius:4px;background:rgba(255,255,255,.73)}
+.editor-choose select{height:40px;min-width:0;padding:0 10px}
+.editor-choose button{height:40px;padding:0 14px;background:#f4f5f5;white-space:nowrap;cursor:pointer}
+.editor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px 15px;padding:23px 0 16px}
+.editor-grid label{display:flex;flex-direction:column;gap:7px;min-width:0;font-size:11px;color:#646668}
+.editor-grid input,.editor-grid select,.editor-grid textarea{width:100%;padding:11px 11px;outline-offset:2px;min-height:40px}
+.editor-grid textarea{resize:vertical}
+.editor-grid .editor-wide{grid-column:1/-1}
+.editor-grid [name=location]{background:#eceeef;color:#65696b}
+.editor-form-actions{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:10px 0 0}
+#editor-save-status{font-size:11px;color:#686969;line-height:1.5}
+.editor-primary,.editor-export-buttons button{appearance:none;cursor:pointer;border:1px solid #27292b;border-radius:3px;padding:12px 17px;background:#242628;color:#fff;font:400 11px/1 Pretendard,sans-serif}
+.editor-primary:hover{background:#4a4d50}
+.editor-publish{border-top:1px solid #d5d6d6;margin-top:27px;padding-top:22px}
+.editor-publish strong{font-size:11px;letter-spacing:.07em;font-weight:500}
+.editor-publish p{font-size:11px;color:#656769;line-height:1.7;margin:8px 0 12px}
+.editor-export-buttons,.editor-github-links{display:flex;flex-wrap:wrap;gap:10px}
+.editor-export-buttons button{background:rgba(255,255,255,.80);color:#242628;border-color:#bbc0c2}
+.editor-export-buttons button:hover{background:#f4f5f5}
+.editor-github-links{margin-top:17px}
+.editor-github-links a{font-size:11px;text-decoration:underline;text-underline-offset:3px;color:#45484a}
+@media(max-width:550px){
+ .photo-toolbar{gap:9px;padding:0!important}
+ .photo-toolbar .view-switch{gap:9px}
+ .photo-toolbar .icon-button{width:42px;height:42px}
+ .photo-navigation{gap:7px}
+ .photo-navigation .icon-button{width:41px;height:41px}
+ .edit-launch{height:37px;padding:0 10px;letter-spacing:.06em}
+ .photo-pagination{bottom:68px}
+ .polaroid-title{font-size:clamp(10px,2.9vw,14px)}
+ .polaroid-caption{gap:4px}
+ .archive-editor{padding:21px 17px}
+ .editor-grid{gap:14px 10px}
+ .editor-grid input,.editor-grid select,.editor-grid textarea{font-size:12px}
+ .editor-choose{grid-template-columns:1fr}
+ .editor-choose label{grid-column:1}
+ .editor-choose button{width:100%}
+ .stats-row{grid-template-columns:80px 1fr 30px}
+}
+@media(prefers-reduced-motion:reduce){
+ .photo-toolbar .icon-button,.photo-pagination .icon-button,.focus-controls .icon-button,
+ .photo-navigation .icon-button,.edit-launch{transition:none!important}
+}
