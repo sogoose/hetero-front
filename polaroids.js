@@ -140,9 +140,11 @@ function render(){
   image.addEventListener('error',()=>{image.hidden=true;frame.textContent='이미지를 불러올 수 없습니다.';frame.style.fontSize='11px';},{once:true});
   frame.append(image);
   const caption=document.createElement('span');caption.className='polaroid-caption';caption.title=record.title;
-  const number=document.createElement('span');number.className='polaroid-number';number.textContent=String(records.indexOf(record)+1).padStart(3,'0');
+  const sticker=document.createElement('span');sticker.className='polaroid-tape';sticker.setAttribute('aria-hidden','true');
+  const number=document.createElement('span');number.className='polaroid-tape-number';number.textContent=String(records.indexOf(record)+1).padStart(3,'0');
+  sticker.append(number);
   const title=document.createElement('span');title.className='polaroid-title';title.textContent=record.title;
-  caption.append(number,title);button.append(frame,caption);image.draggable=false;
+  caption.append(title);button.append(frame,caption,sticker);image.draggable=false;
   const body={el:button,record,x:0,y:0,r:0,vx:0,vy:0,vr:0,w:0,h:0,target:null};
   bodies.push(body);
   button.addEventListener('click',event=>{
@@ -160,6 +162,30 @@ function render(){
  previous.disabled=page===0;next.disabled=(page+1)*pageSize>=records.length;
  document.querySelector('#page-number').textContent=(page+1)+' / '+Math.max(1,Math.ceil(records.length/pageSize));
  layout();
+}
+/* Keep every location/year caption on one line, including very long Korean labels.
+   Widths use untransformed scrollWidth, so rotation and card dragging do not break fitting. */
+function fitCaption(card){
+ const caption=card.querySelector('.polaroid-caption');
+ const title=card.querySelector('.polaroid-title');
+ if(!caption||!title)return;
+ const computed=getComputedStyle(caption);
+ const available=Math.max(8,caption.clientWidth-(parseFloat(computed.paddingLeft)||0)-(parseFloat(computed.paddingRight)||0)-2);
+ if(!available)return;
+ title.style.fontSize='10px';
+ title.style.transform='scaleX(1)';
+ const natural=title.scrollWidth;
+ if(natural<=available)return;
+ const size=Math.max(6.8,Math.min(10,10*available/natural));
+ title.style.fontSize=size.toFixed(2)+'px';
+ const width=title.scrollWidth;
+ if(width>available){
+  const compression=Math.max(.35,Math.min(1,(available-2)/width));
+  title.style.transform='scaleX('+compression.toFixed(3)+')';
+ }
+}
+function fitAllCaptions(){
+ for(const body of bodies)fitCaption(body.el);
 }
 function capacity(){
  const w=board.clientWidth||window.innerWidth,h=board.clientHeight||window.innerHeight;
@@ -222,6 +248,7 @@ function layout(){
  const scatterWidth=clamp(Math.sqrt(boardWidth*boardHeight/(bodies.length*.72*1.27)),boardWidth<570?102:135,boardWidth<570?165:240);
  const width=mode==='gallery'?Math.max(35,grid.width):Math.min(scatterWidth,boardWidth*.55,boardHeight*.57);
  bodies.forEach(body=>{body.w=width;body.h=width/.79;body.el.style.setProperty('--card-width',width+'px');body.vx=body.vy=body.vr=0;});
+ fitAllCaptions();
  if(mode==='gallery'){
   const rowHeight=width/.79+grid.gap;
   const top=(boardHeight-(grid.rows*rowHeight-grid.gap))/2;
@@ -430,7 +457,7 @@ document.addEventListener('hetero:record-draft-saved',event=>{
  for(const body of bodies){
   if(body.record.file!==file)continue;
   const title=body.el.querySelector('.polaroid-title');
-  if(title){title.textContent=record.title;body.el.setAttribute('aria-label',record.title+' — 상세 보기')}
+  if(title){title.textContent=record.title;body.el.setAttribute('aria-label',record.title+' — 상세 보기');fitCaption(body.el)}
   const img=body.el.querySelector('img');
   if(img)img.alt=record.title;
  }
@@ -522,4 +549,8 @@ statGranularity.addEventListener('change',renderStatistics);
 for(const modal of [chapterDialog,statsDialog])modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
 
 load();
+if(document.fonts&&document.fonts.ready){
+ document.fonts.ready.then(fitAllCaptions).catch(()=>{});
+ document.fonts.addEventListener?.('loadingdone',fitAllCaptions);
+}
 })();
