@@ -9,6 +9,7 @@ This folder is the source of all buildings shown in `landscapes.html`.
 | Column | Meaning |
 |---|---|
 | file | Exact photo filename (stable unique ID; required) |
+| building_id | Anonymous building-group ID (B-001 etc). Identical buildings in different photos share an ID. Do not expose full addresses. |
 | construction_year | Recorded building year, e.g. `1987` or `1980전후` |
 | year_status | `verified` (direct official check), `crosschecked` (independent secondary republication checked), `estimated` (estimated), `unverified` (not independently checked) |
 | year_source | Documentary or survey basis for the date; avoid addresses or deep links exposing exact location |
@@ -21,12 +22,15 @@ This folder is the source of all buildings shown in `landscapes.html`.
 | roof_status | Confidence for roofing |
 | railing | Railing material / fabrication (e.g. `주물 난간`, `단조 난간`) |
 | railing_status | Confidence for railing |
+| primary_use | Primary building use when matched to external records |
+| floors_above | Aboveground number of floors when matched to external records |
+| record_source | Publicly safe summary of provenance (no private street address) |
 | notes | Free-text notes, source commentary, or later inference rationale |
 
 ### How the date statistics work
 
-- The histogram always counts **all currently listed photos**, not just the cards visible on screen.
-- Each photo is one record. If there are multiple photographs of the same building, the count is **not yet deduplicated to unique buildings**.
+- Current website statistics count all listed photographs; the CSV now contains `building_id` for deduplicating to unique buildings. There are 147 photos / 135 tentative unique buildings. Website deduplication is not yet enabled.
+- Each photo is one CSV row. The `building_id` keys group repeated photos of the same building. Grouping was based on historic original filename identity; unnamed exact-number locations remain provisional.
 - Dates in the legacy `metadata.json` were migrated here as **unverified**, not as independently verified building permit dates. Seven circa-year entries were marked `estimated`.
 - `1980전후` is tentatively placed in the 1980s and under 1980 in year-by-year mode. The statistics explicitly disclose this approximation.
 - Three initial archive cases were crosschecked against independent public republications of building-register data; they are marked `crosschecked`, not as original-government-register verification.
@@ -38,3 +42,7 @@ This folder is the source of all buildings shown in `landscapes.html`.
 https://github.com/sogoose/hetero-front/edit/main/assets/buildings/registry.csv
 
 No precise street addresses should be stored in this public CSV. Use coarse locations in `metadata.json`; do not add sensitive identifying information to notes.
+
+## Public register research, 2026-11-02
+
+15 buildings were individually crosschecked via public third-party republication of Architecture HUB building-register records (juso.zzxxccvv.com), for structure, use, number of aboveground floors, and occupancy approval dates. 2 earlier buildings were also crosschecked, giving 17 buildings with status `crosschecked`. That does not mean the official original register was read through an authenticated API. Exact addresses and per-building deep links were intentionally not added to public CSV. Roof finish, wall finish and railing remain blank until supported by evidence.
