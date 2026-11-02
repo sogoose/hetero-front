@@ -533,3 +533,36 @@ body:has(#photo-detail[open]){overflow:hidden}
 }
 /* Focus uses exactly the same cropped preview as the scattered card. */
 #detail-image{object-position:center center;}
+
+/* Sort control: independent translucent white chip, not a shared toolbar capsule. */
+.gallery-sort-control{
+ display:inline-flex;align-items:center;position:relative;
+ flex:none;min-height:42px;margin:0;max-width:180px;
+ background:rgba(248,250,253,.66);border:1px solid rgba(255,255,255,.89);
+ border-radius:999px;
+ box-shadow:0 2px 11px rgba(32,38,47,.10),inset 0 1px 0 rgba(255,255,255,.88);
+ backdrop-filter:blur(16px) saturate(1.1);
+ -webkit-backdrop-filter:blur(16px) saturate(1.1);
+}
+.gallery-sort-control[hidden]{display:none!important}
+.gallery-sort-control::after{
+ content:"";position:absolute;right:14px;top:16px;
+ width:6px;height:6px;border:solid rgba(36,38,40,.8);border-width:0 1px 1px 0;
+ transform:rotate(45deg);pointer-events:none;
+}
+#gallery-sort{
+ display:block;appearance:none;-webkit-appearance:none;
+ min-height:42px;max-width:100%;padding:0 30px 0 15px;margin:0;
+ font:400 11px/1.2 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.02em;
+ color:#26282a;background:transparent;border:0;border-radius:999px;cursor:pointer;
+}
+#gallery-sort:focus-visible{outline:2px solid #444;outline-offset:3px}
+@media(max-width:550px){
+ .photo-toolbar:has(.gallery-sort-control:not([hidden])){gap:5px}
+ .photo-toolbar:has(.gallery-sort-control:not([hidden])) .view-switch{gap:5px}
+ .photo-toolbar:has(.gallery-sort-control:not([hidden])) .icon-button{width:35px;height:35px}
+ .gallery-sort-control{min-height:35px;max-width:135px}
+ #gallery-sort{min-height:35px;font-size:10px;padding:0 22px 0 9px}
+ .gallery-sort-control::after{top:12px;right:10px;width:5px;height:5px}
+}
