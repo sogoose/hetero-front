@@ -108,7 +108,8 @@
   drafts[file]=patch;
   try{localStorage.setItem(KEY,JSON.stringify(drafts))}
   catch{status.textContent='브라우저 저장 공간이 제한되어 초안을 보관하지 못했습니다.';return}
-  status.textContent='이 브라우저에 초안 저장 완료. 공개 반영은 아래 CSV / JSON 내보내기로 진행해 주세요.';
+  document.dispatchEvent(new CustomEvent('hetero:record-draft-saved',{detail:{file,patch}}));
+  status.textContent='초안 저장 완료. 현재 브라우저의 카드에 반영됐습니다. 공개 반영은 CSV / JSON 내보내기로 진행해 주세요.';
  }
  function download(name,content,type){
   const blob=new Blob([type==='text/csv'?'\uFEFF':'',content],{type:type+';charset=utf-8'});
