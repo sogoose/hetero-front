@@ -12,6 +12,29 @@ const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 const fallback=[
 ['elevation.webp','주택 입면'],['specimens.webp','건축 요소의 수집'],['casting.webp','주물 제작 현장'],['brick-factory.webp','벽돌 생산 현장'],['tiles-photo.webp','기와의 기록'],['ornaments.webp','장식의 기록']
 ].map(([file,title])=>({file,title,src:'assets/archive/'+file,description:'기존 연구자료에서 가져온 미리보기 이미지입니다. 건물 사진을 업로드하면 실제 사진으로 대체됩니다.'}));
+
+function parseRegistryCSV(input){
+ const data={};if(!input||!input.trim())return data;
+ const rows=[];let row=[],cell='',quoted=false;
+ for(let i=0;i<input.length;i++){
+  const c=input[i];
+  if(c==='"'){if(quoted&&input[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}
+  else if(c===','&&!quoted){row.push(cell);cell='';}
+  else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&input[i+1]==='\n')i++;row.push(cell);if(row.some(v=>v))rows.push(row);row=[];cell='';}
+  else cell+=c;
+ }
+ row.push(cell);if(row.some(v=>v))rows.push(row);
+ if(!rows.length)return data;
+ const header=rows.shift().map(h=>h.trim().replace(/^\uFEFF/,''));
+ for(const values of rows){
+  const entry={};header.forEach((key,i)=>{if(key)entry[key]=String(values[i]||'').trim();});
+  const file=entry.file;
+  if(file&&/^[-a-zA-Z0-9_.]+\.(webp|jpe?g|png|avif)$/i.test(file))data[file]=entry;
+ }
+ return data;
+}
+const yearStatusLabel=value=>({verified:'확인',estimated:'추정',unverified:'미검증',recorded:'기록(미검증)',unknown:'미상'})[value]||value||'미검증';
+
 function coarseLocation(value){
  const text=String(value||'').replace(/_/g,' ');
  const aliases={'서울':'서울시','서울특별시':'서울시','천안':'천안시','전주':'전주시'};
@@ -62,11 +85,16 @@ async function load(force=false){
  if(loading)return; loading=true;shuffle.disabled=true;status.textContent='사진을 펼치는 중입니다.';metadataWarning='';sourceWarning='';
  try{
   const [names,meta]=await Promise.all([listFiles(force),fetch(FOLDER+'metadata.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('metadata');return r.json();}).then(v=>{if(!v||Array.isArray(v)||typeof v!=='object')throw new Error('metadata');return v;}).catch(()=>{metadataWarning='사진 정보 파일을 읽지 못해 파일명을 표시합니다.';return {};})]);
+  const registry=await fetch(FOLDER+'registry.csv',{cache:'no-store'}).then(r=>r.ok?r.text():'').then(parseRegistryCSV).catch(()=>({}));
   demo=names.length===0;
   records=demo?fallback:names.map(file=>{
    const info=meta[file]&&typeof meta[file]==='object'?meta[file]:{};
+   const entry=registry[file]||{};
    const record={file,src:FOLDER+encodeURIComponent(file),title:titleOf(file)};
    for(const key of ['title','location','year','material','description','credit'])if(typeof info[key]==='string'&&info[key].trim())record[key]=info[key];
+   if(entry.construction_year)record.year=entry.construction_year;
+   for(const field of ['year_source','structure','structure_status','wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','notes'])if(entry[field])record[field]=entry[field];
+   record.year_status=entry.year_status||(/전후|경|추정/.test(record.year||'')?'estimated':'unverified');
    record.location=coarseLocation(record.location)||coarseLocation(record.title);
    if(record.location){
     const year=record.year||record.title.match(/\(((?:19|20)\d{2}[^)]*)\)/)?.[1];
@@ -306,7 +334,8 @@ function setFlipped(value){
  document.querySelector('#detail-back').inert=!value;
  document.querySelector('#detail-back').setAttribute('aria-hidden',String(!value));
  document.querySelector('#detail-flip').setAttribute('aria-pressed',String(value));
- document.querySelector('#detail-flip').textContent=value?'사진 보기':'뒷면 보기';
+ document.querySelector('#detail-flip').setAttribute('aria-label',value?'사진 보기':'뒷면 보기');
+ document.querySelector('#detail-flip').title=value?'사진 보기':'뒷면 보기';
  if(value)document.querySelector('#detail-flip').focus();
 }
 function openDetail(record,source){
@@ -317,11 +346,11 @@ function openDetail(record,source){
  document.querySelector('#detail-number').textContent=String(records.indexOf(record)+1).padStart(3,'0');
  const image=document.querySelector('#detail-image');image.src=record.src;image.alt=record.title;
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
- for(const [key,label] of [['location','위치'],['year','연도'],['material','재료']]){
+ for(const [key,label] of [['location','위치'],['year','건축 연도'],['year_status','연도 상태'],['year_source','연도 근거'],['material','재료'],['structure','구조'],['wall_finish','외벽 마감'],['roof_finish','지붕 마감'],['railing','난간']]){
   if(!record[key])continue;
-  const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=record[key];fields.append(dt,dd);
+  const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=key==='year_status'?yearStatusLabel(record[key]):record[key];fields.append(dt,dd);
  }
- document.querySelector('#detail-description').textContent=record.description||'아직 상세 기록이 등록되지 않았습니다.';
+ document.querySelector('#detail-description').textContent=[record.description,record.notes].filter(Boolean).join('\n\n')||'아직 상세 기록이 등록되지 않았습니다.';
  document.querySelector('#detail-credit').textContent=record.credit||'';
  const origin=source.getBoundingClientRect();
  dialog.showModal();source.classList.add('is-picked');
@@ -356,5 +385,75 @@ next.addEventListener('click',()=>{if((page+1)*pageSize<records.length){page++;r
 document.querySelector('#detail-close').addEventListener('click',closeDetail);
 dialog.addEventListener('click',event=>{if(event.target===dialog)closeDetail();});
 window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(capacity()!==pageSize)render();else layout();},120);});
+
+/* Whole-archive statistics: never calculated from the visible 24-card subset. */
+const chapterDialog=document.querySelector('#chapter-menu');
+const statsDialog=document.querySelector('#archive-stats');
+const statDimension=document.querySelector('#stats-dimension');
+const statGranularity=document.querySelector('#stats-granularity');
+function readYear(record){
+ const raw=String(record.year||'').trim();
+ const match=raw.match(/(?:18|19|20)\d{2}/);
+ const year=match?Number(match[0]):null;
+ const approximate=Boolean(year)&&(/전후|경|약|추정|~|circa/i.test(raw)||record.year_status==='estimated');
+ return {year,approximate,status:record.year_status||'unverified'};
+}
+function renderStatistics(){
+ const all=demo?[]:records;
+ const parsed=all.map(readYear);
+ const dated=parsed.filter(v=>v.year!==null).length;
+ const approx=parsed.filter(v=>v.approximate).length;
+ document.querySelector('#stats-total').textContent=all.length.toLocaleString('ko-KR');
+ document.querySelector('#stats-dated').textContent=dated.toLocaleString('ko-KR');
+ document.querySelector('#stats-approx').textContent=approx.toLocaleString('ko-KR');
+ document.querySelector('#stats-unknown').textContent=(all.length-dated).toLocaleString('ko-KR');
+ const dimension=statDimension.value,yearMode=dimension==='year';
+ document.querySelector('#stats-granularity-label').hidden=!yearMode;
+ const buckets=new Map();let accounted=0;
+ if(yearMode){
+  parsed.forEach(v=>{
+   if(v.year===null)return;
+   accounted++;
+   const key=statGranularity.value==='decade'?String(Math.floor(v.year/10)*10)+'s':String(v.year);
+   buckets.set(key,(buckets.get(key)||0)+1);
+  });
+ }else{
+  all.forEach(record=>{
+   const raw=String(record[dimension]||'').trim();
+   if(!raw)return;
+   accounted++;
+   buckets.set(raw,(buckets.get(raw)||0)+1);
+  });
+ }
+ const items=[...buckets].sort((a,b)=>yearMode?a[0].localeCompare(b[0],undefined,{numeric:true}):b[1]-a[1]||a[0].localeCompare(b[0],'ko'));
+ const host=document.querySelector('#stats-plot');host.replaceChildren();
+ const max=Math.max(1,...items.map(item=>item[1]));
+ if(!items.length){
+  const blank=document.createElement('p');blank.className='stats-empty';
+  blank.textContent=yearMode?'아직 집계할 건축연도 기록이 없습니다.':'이 항목은 아직 작성된 기록이 없습니다. GitHub CSV에 값을 입력하면 통계가 자동으로 생성됩니다.';
+  host.append(blank);
+ }else{
+  for(const [label,count] of items){
+   const line=document.createElement('div');line.className='stats-row';
+   const title=document.createElement('span');title.className='stats-label';title.textContent=label;title.title=label;
+   const track=document.createElement('span');track.className='stats-track';
+   const bar=document.createElement('span');bar.className='stats-fill';bar.style.width=(count/max*100).toFixed(2)+'%';track.append(bar);
+   const value=document.createElement('span');value.className='stats-value';value.textContent=count;
+   line.append(title,track,value);host.append(line);
+  }
+ }
+ host.setAttribute('aria-label',(yearMode?'건축 연대':'재료')+' 분포, 총 '+all.length+'개 중 '+accounted+'개 입력; '+items.map(v=>v[0]+' '+v[1]+'개').join(', '));
+ document.querySelector('#stats-footnote').textContent=yearMode
+  ?'전체 '+all.length+'개 사진 기준 · 입력된 연도는 건축연도와 일치하는지 미검증일 수 있습니다. “전후” 및 추정값 '+approx+'개는 해당 연대에 잠정 배치했습니다. 동일 건물의 중복 사진은 개별 기록으로 집계합니다.'
+  :'전체 '+all.length+'개 사진 중 '+accounted+'개 항목 입력 · 미입력 '+(all.length-accounted)+'개. 재료 정보는 CSV에 입력한 내용이며, 확인·추정 여부는 카드 뒷면에서 확인할 수 있습니다. 동일 건물의 중복 사진은 개별 기록으로 집계합니다.';
+}
+document.querySelector('#chapter-open').addEventListener('click',()=>chapterDialog.showModal());
+document.querySelector('#chapter-close').addEventListener('click',()=>chapterDialog.close());
+document.querySelector('#stats-open').addEventListener('click',()=>{renderStatistics();statsDialog.showModal();});
+document.querySelector('#stats-close').addEventListener('click',()=>statsDialog.close());
+statDimension.addEventListener('change',renderStatistics);
+statGranularity.addEventListener('change',renderStatistics);
+for(const modal of [chapterDialog,statsDialog])modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
+
 load();
 })();
