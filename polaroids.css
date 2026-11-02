@@ -392,3 +392,101 @@ body:has(#photo-detail[open]){overflow:hidden}
  #detail-description{font-size:11px}
  .detail-back-actions{padding-top:12px}
 }
+
+
+/* === 2026-11-02 / tactile print revision ===
+   Original SVG noise and clear-tape artwork are in assets/archive/.
+   Designed to retain translucency without covering the image content. */
+.polaroid,.focus-face{
+ background-color:#f8f7f3;
+ background-image:
+  url("assets/archive/paper-grain.svg"),
+  radial-gradient(ellipse at 13% 7%,rgba(255,255,255,.80),transparent 62%),
+  repeating-linear-gradient(88deg,rgba(100,97,87,.012) 0 1px,transparent 1px 4px),
+  linear-gradient(120deg,#fcfbf7 0%,#f6f5ef 63%,#f1f0ea 100%);
+ background-size:154px 154px,cover,auto,cover;
+ background-blend-mode:multiply,normal,multiply,normal;
+ border-color:rgba(98,94,84,.17);
+}
+.polaroid{isolation:isolate;overflow:visible}
+.polaroid::before,
+.focus-face::before{
+ content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:inherit;
+ background-image:url("assets/archive/paper-grain.svg");
+ background-repeat:repeat;background-size:154px 154px;
+ opacity:.57;mix-blend-mode:multiply;
+}
+.focus-face::before{z-index:2;opacity:.34}
+.polaroid-image,.focus-image{
+ isolation:isolate;
+ box-shadow:0 0 0 1px rgba(30,31,29,.2),inset 0 0 10px rgba(0,0,0,.2);
+}
+.polaroid-image::before,.focus-image::before{
+ content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+ background:
+  radial-gradient(ellipse at 49% 46%,transparent 23%,rgba(12,15,18,.055) 53%,rgba(12,15,18,.18) 78%,rgba(8,10,12,.41) 105%),
+  linear-gradient(to bottom,rgba(18,22,24,.10),transparent 18%,transparent 84%,rgba(17,21,22,.16));
+ opacity:.88;mix-blend-mode:multiply;
+}
+.polaroid-image::after,.focus-image::after{
+ content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+ background:linear-gradient(128deg,rgba(255,255,255,.18),rgba(255,255,255,.025) 24%,transparent 52%,rgba(255,255,255,.045) 90%);
+ mix-blend-mode:screen;opacity:.50;
+}
+.polaroid img{filter:grayscale(.035) contrast(1.04) saturate(.955)}
+/* The number is printed over a transparent, wrinkled circular adhesive. */
+.polaroid-tape{
+ position:absolute;
+ left:-8px;top:-8px;
+ width:clamp(18px,calc(var(--card-width,200px) * .25),50px);
+ aspect-ratio:1;
+ z-index:7;pointer-events:none;
+ display:flex;align-items:center;justify-content:center;
+ background:url("assets/archive/clear-tape-sticker.svg") center/contain no-repeat;
+ filter:drop-shadow(0 1px 1px rgba(30,32,32,.18));
+ transform:rotate(-12deg);
+ transform-origin:center;
+}
+.polaroid-tape-number{
+ font-family:Pretendard,-apple-system,sans-serif;
+ font-variant-numeric:tabular-nums;
+ font-size:clamp(6px,calc(var(--card-width,200px) * .053),10px);
+ font-weight:500;
+ letter-spacing:.005em;
+ color:rgba(35,42,46,.75);
+ text-shadow:0 1px rgba(255,255,255,.7);
+ line-height:1;
+ transform:rotate(6deg);
+}
+/* Handwriting is deliberately understated and fitted per-card in JS. */
+.polaroid-caption{
+ display:flex;align-items:center;justify-content:flex-start;
+ min-width:0;gap:0;overflow:hidden;white-space:nowrap;
+ padding:0 5px 1px 5px;line-height:1;
+}
+.polaroid-title{
+ display:inline-block;
+ flex:none;
+ width:max-content;
+ max-width:none;
+ min-width:0;
+ overflow:visible;
+ text-overflow:clip;
+ white-space:nowrap;
+ font-family:"NostalgicPoliceHumanRights","Nanum Pen Script",Pretendard,cursive;
+ font-weight:400;
+ font-size:10px;
+ letter-spacing:-.035em;
+ line-height:1.25;
+ color:rgba(41,41,38,.8);
+ text-shadow:.08px 0 rgba(23,22,21,.15);
+ transform:none;
+ transform-origin:left center;
+}
+.polaroid-number{display:none}
+#detail-caption{font-size:clamp(14px,1.6vw,19px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:550px){
+ .polaroid-caption{padding:0 3px 1px;gap:0}
+ .polaroid-title{font-size:10px}
+ .polaroid-tape{left:-5px;top:-5px}
+}
