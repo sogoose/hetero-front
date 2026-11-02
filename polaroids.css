@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@700;800&family=Special+Elite&display=swap');
 /* Monoplex KR: Korean monospace/typewriter-inspired archive font, SIL OFL 1.1. */
 @font-face{
   font-family:"MonoplexKR";
@@ -960,4 +960,92 @@ body:has(#photo-detail[open]){overflow:hidden}
  .photo-main .archive-taskbar .gallery-sort-control::after{top:13px;right:7px;width:5px;height:5px}
  .photo-main .archive-taskbar #page-number{min-width:34px;font-size:9px;padding:0 1px!important}
  .photo-main .photo-board{inset:12px 10px calc(105px + env(safe-area-inset-bottom))}
+}
+
+
+/* ─── slim taskbar + independent Noto Serif floor statement ───
+   Only the navigation controls change size: Polaroid images/board stay as-is. */
+.photo-main .archive-taskbar{
+ height:50px!important;
+ min-height:50px!important;
+ padding:0 max(14px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(14px,env(safe-area-inset-left));
+}
+.photo-main .archive-taskbar .photo-navigation,
+.photo-main .archive-taskbar .photo-toolbar,
+.photo-main .archive-taskbar .photo-pagination{gap:5px}
+.photo-main .archive-taskbar .view-switch{gap:5px}
+.photo-main .archive-taskbar .icon-button,
+.photo-main .archive-taskbar .edit-launch{
+ width:32px;height:34px;min-height:0;
+}
+.photo-main .archive-taskbar .ui-icon{width:15px;height:15px}
+.photo-main .archive-taskbar .edit-launch{
+ width:auto;min-width:52px;height:34px;
+ padding:0 5px!important;
+ font-size:8.3px;letter-spacing:.04em;gap:4px;
+}
+.photo-main .archive-taskbar .edit-launch .ui-icon{width:12px;height:12px}
+.photo-main .archive-taskbar #page-number{min-width:35px;font-size:9px;padding:0 2px!important}
+.photo-main .archive-taskbar .gallery-sort-control{height:34px;min-height:34px;max-width:140px}
+.photo-main .archive-taskbar #gallery-sort{
+ height:34px;min-height:34px;
+ font-size:9px;padding:0 18px 0 5px;
+}
+.photo-main .archive-taskbar .gallery-sort-control::after{top:12px;right:7px;width:4px;height:4px}
+
+/* Under the randomly placed prints, centered towards the bottom of the floor. */
+.archive-floor-quote{
+ position:fixed;
+ left:50%;
+ bottom:clamp(91px,12.7vh,140px);
+ z-index:0;
+ width:max-content;
+ max-width:calc(100vw - 40px);
+ margin:0;
+ padding:0;
+ transform:translateX(-50%);
+ color:rgba(20,20,19,.95);
+ text-align:center;
+ font-family:"Noto Serif KR","Noto Serif",serif;
+ font-size:clamp(17px,1.7vw,29px);
+ font-weight:800;
+ line-height:1.42;
+ letter-spacing:-.063em;
+ word-break:keep-all;
+ pointer-events:none;
+ user-select:none;
+ -webkit-user-select:none;
+}
+.archive-floor-quote span{display:block}
+.photo-main .photo-board{z-index:1}
+.photo-main .photo-board.is-gallery ~ .archive-taskbar{z-index:10001}
+.photo-main:has(.photo-board.is-gallery) .archive-floor-quote{opacity:0}
+@media(max-width:700px){
+ .photo-main .archive-taskbar{
+   height:70px!important;min-height:70px!important;
+   grid-template-rows:26px 28px;
+   row-gap:1px;
+   padding:3px max(6px,env(safe-area-inset-right)) calc(3px + env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));
+ }
+ .photo-main .archive-taskbar .photo-navigation,
+ .photo-main .archive-taskbar .photo-toolbar,
+ .photo-main .archive-taskbar .photo-pagination{gap:2px}
+ .photo-main .archive-taskbar .icon-button{width:28px;height:27px}
+ .photo-main .archive-taskbar .ui-icon{width:14px;height:14px}
+ .photo-main .archive-taskbar .edit-launch{min-width:45px;height:27px;padding:0 3px!important;font-size:7.8px;gap:3px}
+ .photo-main .archive-taskbar .edit-launch .ui-icon{width:11px;height:11px}
+ .photo-main .archive-taskbar .view-switch{gap:3px}
+ .photo-main .archive-taskbar .gallery-sort-control{height:28px;min-height:28px;max-width:125px}
+ .photo-main .archive-taskbar #gallery-sort{height:28px;min-height:28px;font-size:9px;padding:0 15px 0 4px}
+ .photo-main .archive-taskbar .gallery-sort-control::after{top:9px;right:6px;width:4px;height:4px}
+ .photo-main .archive-taskbar #page-number{min-width:28px;font-size:8.5px;padding:0 1px!important}
+ .archive-floor-quote{
+   bottom:clamp(82px,13vh,117px);
+   font-size:clamp(13px,3.5vw,19px);
+   line-height:1.45;
+   letter-spacing:-.052em;
+ }
+}
+@media(max-height:620px) and (min-width:701px){
+ .archive-floor-quote{font-size:clamp(15px,1.45vw,22px);bottom:77px}
 }
