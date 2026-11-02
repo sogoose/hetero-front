@@ -140,8 +140,8 @@ function render(){
   image.addEventListener('error',()=>{image.hidden=true;frame.textContent='이미지를 불러올 수 없습니다.';frame.style.fontSize='11px';},{once:true});
   frame.append(image);
   const caption=document.createElement('span');caption.className='polaroid-caption';caption.title=record.title;
-  const sticker=document.createElement('span');sticker.className='polaroid-tape';sticker.setAttribute('aria-hidden','true');
-  const number=document.createElement('span');number.className='polaroid-tape-number';number.textContent=String(records.indexOf(record)+1).padStart(3,'0');
+  const sticker=document.createElement('span');sticker.className='polaroid-label';sticker.setAttribute('aria-hidden','true');
+  const number=document.createElement('span');number.className='polaroid-label-number';number.textContent=String(records.indexOf(record)+1).padStart(2,'0');
   sticker.append(number);
   const title=document.createElement('span');title.className='polaroid-title';title.textContent=record.title;
   caption.append(title);button.append(frame,caption,sticker);image.draggable=false;
@@ -169,19 +169,23 @@ function fitCaption(card){
  const caption=card.querySelector('.polaroid-caption');
  const title=card.querySelector('.polaroid-title');
  if(!caption||!title)return;
- const computed=getComputedStyle(caption);
- const available=Math.max(8,caption.clientWidth-(parseFloat(computed.paddingLeft)||0)-(parseFloat(computed.paddingRight)||0)-2);
+ const cs=getComputedStyle(caption);
+ const available=Math.max(8,caption.clientWidth-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0)-3);
  if(!available)return;
- title.style.fontSize='10px';
- title.style.transform='scaleX(1)';
- const natural=title.scrollWidth;
- if(natural<=available)return;
- const size=Math.max(6.8,Math.min(10,10*available/natural));
- title.style.fontSize=size.toFixed(2)+'px';
- const width=title.scrollWidth;
- if(width>available){
-  const compression=Math.max(.35,Math.min(1,(available-2)/width));
-  title.style.transform='scaleX('+compression.toFixed(3)+')';
+ // Favour readable type; use modest horizontal fitting only when the name is long.
+ const base=Math.min(13,Math.max(11.2,(card.clientWidth||160)*.074));
+ const minFont=Math.max(9.4,base*.81);
+ title.style.transform='none';
+ title.style.fontSize=base.toFixed(2)+'px';
+ const intrinsic=title.scrollWidth;
+ if(intrinsic>available){
+  const next=Math.max(minFont,base*available/intrinsic);
+  title.style.fontSize=next.toFixed(2)+'px';
+  const measured=title.scrollWidth;
+  if(measured>available){
+   const shrink=Math.max(.25,(available-1)/measured);
+   title.style.transform='scaleX('+shrink.toFixed(3)+')';
+  }
  }
 }
 function fitAllCaptions(){
@@ -200,7 +204,7 @@ function gridFor(n,w,h){
  const gap=w<570?12:22;
  for(let columns=1;columns<=Math.min(n,10);columns++){
   const rows=Math.ceil(n/columns);
-  const width=Math.min(210,(w-gap*(columns+1))/columns,(h-gap*(rows+1))/rows*.79);
+  const width=Math.min(210,(w-gap*(columns+1))/columns,(h-gap*(rows+1))/rows*.90);
   if(width>best.width)best={columns,rows,width,gap};
  }
  return best;
@@ -247,10 +251,10 @@ function layout(){
  const grid=gridFor(bodies.length,boardWidth,boardHeight);
  const scatterWidth=clamp(Math.sqrt(boardWidth*boardHeight/(bodies.length*.72*1.27)),boardWidth<570?102:135,boardWidth<570?165:240);
  const width=mode==='gallery'?Math.max(35,grid.width):Math.min(scatterWidth,boardWidth*.55,boardHeight*.57);
- bodies.forEach(body=>{body.w=width;body.h=width/.79;body.el.style.setProperty('--card-width',width+'px');body.vx=body.vy=body.vr=0;});
+ bodies.forEach(body=>{body.w=width;body.h=width/.90;body.el.style.setProperty('--card-width',width+'px');body.vx=body.vy=body.vr=0;});
  fitAllCaptions();
  if(mode==='gallery'){
-  const rowHeight=width/.79+grid.gap;
+  const rowHeight=width/.90+grid.gap;
   const top=(boardHeight-(grid.rows*rowHeight-grid.gap))/2;
   bodies.forEach((body,index)=>{
    const row=Math.floor(index/grid.columns),col=index%grid.columns;
