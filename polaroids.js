@@ -396,7 +396,7 @@ function openDetail(record,source){
  document.querySelector('#detail-title').textContent=record.title;
  document.querySelector('#detail-caption').textContent=record.title;
  document.querySelector('#detail-back-title').textContent=record.title;
- const image=document.querySelector('#detail-image');image.src=record.src;image.alt=record.title;
+ const image=document.querySelector('#detail-image');image.src=record.thumbnail||record.src;image.alt=record.title;
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
  for(const [key,label,formField] of [
   ['location','위치',null],
@@ -469,11 +469,14 @@ document.addEventListener('hetero:record-draft-saved',event=>{
 dialog.addEventListener('cancel',event=>{event.preventDefault();closeDetail();});
 scatter.addEventListener('click',()=>{if(mode==='scatter')scatterTargets();else{mode='scatter';board.classList.remove('is-gallery');layout();scatterTargets();scatter.setAttribute('aria-pressed','true');align.setAttribute('aria-pressed','false');pager.hidden=true;}});
 align.addEventListener('click',()=>{
- if(mode!=='gallery'){galleryOrder=[...visible,...records.filter(record=>!visible.includes(record))];page=0;}
- mode='gallery';board.classList.add('is-gallery');layout();
- scatter.setAttribute('aria-pressed','false');align.setAttribute('aria-pressed','true');pager.hidden=records.length<=pageSize;
- previous.disabled=page===0;next.disabled=(page+1)*pageSize>=records.length;
- document.querySelector('#page-number').textContent=(page+1)+' / '+Math.max(1,Math.ceil(records.length/pageSize));
+ // Index 01 begins at the first photo in the stable, numbered archive.
+ // Do not carry the randomized scatter selection into the gallery ordering.
+ if(mode!=='gallery'){
+  galleryOrder=records.slice();
+  page=0;
+ }
+ mode='gallery';
+ render();
 });
 shuffle.addEventListener('click',event=>{if(event.shiftKey||sourceWarning){load(true);return;}if(mode==='gallery'){mode='scatter';page=0;}render();});
 board.addEventListener('click',event=>{if(event.target===board&&mode==='scatter')scatterTargets();});
