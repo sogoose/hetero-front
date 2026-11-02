@@ -828,3 +828,136 @@ body:has(#photo-detail[open]){overflow:hidden}
  .focus-back #detail-fields{gap:5px 9px}
  .reverse-stub{flex-basis:58px}
 }
+
+
+/* ─── archive taskbar: one completely flat white Windows-style footer ───
+   No buttons floating above the page. No circular pills, separate tiles,
+   dividers, shadows, glass effects or boxed hover treatments. */
+.photo-main .archive-taskbar{
+ position:fixed;inset:auto 0 0 0;z-index:10001;
+ box-sizing:border-box;
+ display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+ align-items:center;
+ min-height:66px;
+ width:100%;
+ padding:0 max(20px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(20px,env(safe-area-inset-left));
+ margin:0;
+ background:#fff;
+ border:0;border-radius:0;box-shadow:none;
+ backdrop-filter:none;-webkit-backdrop-filter:none;
+}
+.photo-main .archive-taskbar .photo-navigation,
+.photo-main .archive-taskbar .photo-toolbar,
+.photo-main .archive-taskbar .photo-pagination{
+ position:static!important;inset:auto!important;top:auto!important;right:auto!important;
+ bottom:auto!important;left:auto!important;transform:none!important;
+ width:auto;max-width:none;min-width:0;
+ height:auto;padding:0!important;margin:0;
+ display:flex;flex-direction:row;align-items:center;
+ gap:7px;
+ background:transparent!important;
+ border:0!important;border-radius:0!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+.photo-main .archive-taskbar .photo-navigation{grid-column:1;justify-self:start}
+.photo-main .archive-taskbar .photo-toolbar{grid-column:2;justify-self:center;gap:9px}
+.photo-main .archive-taskbar .photo-pagination{grid-column:3;justify-self:end;gap:3px}
+.photo-main .archive-taskbar .photo-pagination[hidden]{display:none!important}
+.photo-main .archive-taskbar .view-switch{gap:9px}
+.photo-main .archive-taskbar .toolbar-divider{display:none!important}
+
+/* All icon buttons are bare symbols directly on the same white surface. */
+.photo-main .archive-taskbar .icon-button,
+.photo-main .archive-taskbar .edit-launch{
+ display:inline-flex;align-items:center;justify-content:center;gap:5px;
+ position:relative;
+ box-sizing:border-box;
+ flex:none;
+ width:42px;height:45px;min-height:0;min-width:0;
+ padding:0!important;margin:0;
+ border:0!important;border-radius:0!important;
+ outline:0;
+ background:transparent!important;
+ color:#666968!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+ filter:none!important;
+ transform:none!important;
+ text-decoration:none;
+ cursor:pointer;
+ transition:color .18s ease,opacity .18s ease;
+}
+.photo-main .archive-taskbar .edit-launch{width:auto;min-width:67px;padding:0 7px!important;font:500 10px/1 Pretendard,sans-serif;letter-spacing:.045em}
+.photo-main .archive-taskbar .icon-button:hover,
+.photo-main .archive-taskbar .edit-launch:hover{color:#141515!important;background:transparent!important;transform:none!important;box-shadow:none!important}
+.photo-main .archive-taskbar .icon-button[aria-pressed="true"]{
+ background:transparent!important;border:0!important;border-radius:0!important;
+ color:#161717!important;box-shadow:none!important;
+}
+.photo-main .archive-taskbar .icon-button:disabled{opacity:.22;pointer-events:none}
+.photo-main .archive-taskbar .icon-button:focus-visible,
+.photo-main .archive-taskbar .edit-launch:focus-visible{outline:1px solid #333!important;outline-offset:-4px}
+.photo-main .archive-taskbar .ui-icon{width:20px;height:20px}
+.photo-main .archive-taskbar .edit-launch .ui-icon{width:15px;height:15px}
+.photo-main .archive-taskbar #page-number{
+ display:inline-block;
+ background:transparent!important;
+ border:0!important;border-radius:0!important;
+ box-shadow:none!important;
+ padding:0 4px!important;
+ min-width:45px;text-align:center;
+ font:400 11px/1 "Special Elite",monospace;
+ color:#555!important;
+}
+/* The sorting select is also typography on white, not a glass chip. */
+.photo-main .archive-taskbar .gallery-sort-control{
+ position:relative;display:flex;align-items:center;
+ box-sizing:border-box;flex:none;
+ min-height:45px;height:45px;
+ max-width:180px;margin:0;padding:0;
+ border:0!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;
+ backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+.photo-main .archive-taskbar .gallery-sort-control[hidden]{display:none!important}
+.photo-main .archive-taskbar #gallery-sort{
+ min-height:45px;height:45px;
+ padding:0 21px 0 8px;margin:0;
+ background:transparent!important;
+ border:0!important;border-radius:0!important;
+ box-shadow:none!important;
+ font:400 11px/1.2 Pretendard,-apple-system,sans-serif;
+ color:#3b3d3b;
+ cursor:pointer;
+}
+.photo-main .archive-taskbar .gallery-sort-control::after{
+ right:8px;top:18px;
+ width:5px;height:5px;
+ border-color:#555;
+}
+.photo-main .archive-taskbar #gallery-sort:focus-visible{outline:1px solid #333;outline-offset:-3px}
+
+/* The Polaroids stop above the taskbar; the footer stays genuinely edge-to-edge. */
+.photo-main .photo-board{inset:15px 20px 80px}
+@media(max-width:700px){
+ .photo-main .archive-taskbar{
+  min-height:91px;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-rows:36px 37px;
+  row-gap:1px;
+  padding:5px max(7px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(7px,env(safe-area-inset-left));
+ }
+ .photo-main .archive-taskbar .photo-navigation{grid-column:1;grid-row:1;justify-self:start;gap:1px}
+ .photo-main .archive-taskbar .photo-pagination{grid-column:2;grid-row:1;justify-self:end;gap:0}
+ .photo-main .archive-taskbar .photo-toolbar{grid-column:1/-1;grid-row:2;justify-self:center;gap:5px}
+ .photo-main .archive-taskbar .icon-button{width:38px;height:37px}
+ .photo-main .archive-taskbar .edit-launch{min-width:57px;height:37px;font-size:9px}
+ .photo-main .archive-taskbar .ui-icon{width:19px;height:19px}
+ .photo-main .archive-taskbar .view-switch{gap:5px}
+ .photo-main .archive-taskbar .gallery-sort-control{height:37px;min-height:37px;max-width:145px}
+ .photo-main .archive-taskbar #gallery-sort{height:37px;min-height:37px;font-size:10px;padding:0 18px 0 5px}
+ .photo-main .archive-taskbar .gallery-sort-control::after{top:13px;right:7px;width:5px;height:5px}
+ .photo-main .archive-taskbar #page-number{min-width:34px;font-size:9px;padding:0 1px!important}
+ .photo-main .photo-board{inset:12px 10px calc(105px + env(safe-area-inset-bottom))}
+}
