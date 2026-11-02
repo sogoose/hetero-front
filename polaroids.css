@@ -436,20 +436,20 @@ body:has(#photo-detail[open]){overflow:hidden}
 .polaroid img{filter:grayscale(.035) contrast(1.04) saturate(.955)}
 /* Small paper index label, based on the supplied red double-frame filing sticker. */
 .polaroid-label{
- position:absolute;left:-3px;top:-5px;
+ position:absolute;left:4px;top:4px;
  z-index:7;pointer-events:none;
  display:flex;align-items:center;justify-content:center;
- width:clamp(27px,calc(var(--card-width,200px) * .20),43px);
+ width:clamp(22px,calc(var(--card-width,200px) * .16),34px);
  aspect-ratio:116 / 76;
- background:url("assets/archive/red-index-label.svg") center/100% 100% no-repeat;
- filter:drop-shadow(0 1px 1.3px rgba(33,33,33,.15));
+ background:url("assets/archive/red-index-label.svg?v=2") center/100% 100% no-repeat;
+ filter:drop-shadow(0 1px 1.1px rgba(33,33,33,.12));
  transform:rotate(-5deg);transform-origin:center;
 }
 .polaroid-label-number{
  display:block;font-family:Pretendard,-apple-system,sans-serif;
- font-size:clamp(7px,calc(var(--card-width,200px) * .057),10.8px);
- font-variant-numeric:tabular-nums;font-weight:550;
- color:#292622;letter-spacing:-.015em;line-height:1;
+ font-size:clamp(6.4px,calc(var(--card-width,200px) * .05),9.2px);
+ font-variant-numeric:tabular-nums;font-weight:520;
+ color:rgba(48,43,40,.78);letter-spacing:-.01em;line-height:1;
  transform:rotate(5deg) translateY(.3px);
 }
 /* Handwriting is deliberately understated and fitted per-card in JS. */
@@ -482,7 +482,7 @@ body:has(#photo-detail[open]){overflow:hidden}
 @media(max-width:550px){
  .polaroid-caption{padding:0 3px 1px;gap:0}
  .polaroid-title{font-size:10px}
- .polaroid-label{left:-2px;top:-3px}
+ .polaroid-label{left:3px;top:3px}
 }
 
 /* Compact polaroid: square image with an intentional, thinner caption border. */
@@ -494,5 +494,5 @@ body:has(#photo-detail[open]){overflow:hidden}
 @media(max-width:550px){
  .polaroid-caption{padding:0 3px 1px}
  .polaroid-title{font-size:11.2px}
- .polaroid-label{left:-2px;top:-3px}
+ .polaroid-label{left:3px;top:3px}
 }
