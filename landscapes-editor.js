@@ -17,7 +17,7 @@
  if(!modal||!openBtn||!board)return;
  const REG_FIELDS=['construction_year','year_status','approval_date','structure','structure_status',
   'wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','year_source','notes'];
- const META_FIELDS=['description','material','handwritten_note'];
+ const META_FIELDS=['description','material'];
  let headers=[], rows=[], rowMap=new Map(), metadata={}, ready=false, pending=null, picking=false;
  let drafts={};
  try{const fromStorage=JSON.parse(localStorage.getItem(KEY)||'{}');if(fromStorage&&typeof fromStorage==='object')drafts=fromStorage;}catch{}
@@ -130,27 +130,13 @@
   const copy=JSON.parse(JSON.stringify(metadata));
   for(const [file,patch] of Object.entries(drafts)){
    if(!copy[file]||!patch.meta)continue;
-   Object.assign(copy[file],patch.meta);
+   const fields={...patch.meta};
+   delete fields.handwritten_note; // Old local drafts may retain a removed memo; do not republish it.
+   Object.assign(copy[file],fields);
   }
   download('metadata.json',JSON.stringify(copy,null,2)+'\n','application/json');
   status.textContent='JSON 다운로드 완료. GitHub의 assets/buildings/metadata.json에 교체 업로드해야 공개 반영됩니다.';
  }
- document.addEventListener('hetero:backnote-updated',event=>{
-  const file=event.detail?.file;
-  if(!file||!/^photo-[a-z0-9-]+\.(webp|jpe?g|png|avif)$/i.test(file))return;
-  const text=String(event.detail?.text||'').slice(0,600);
-  const old=drafts[file]||{registry:{},meta:{}};
-  drafts[file]={...old,meta:{...(old.meta||{}),handwritten_note:text}};
-  try{
-   localStorage.setItem(KEY,JSON.stringify(drafts));
-   const notice=document.getElementById('detail-note-status');
-   if(notice)notice.textContent='이 브라우저에 저장됨 · 내보내기로 공개 반영';
-   if(recordSelect.value===file&&field('handwritten_note'))field('handwritten_note').value=text;
-  }catch{
-   const notice=document.getElementById('detail-note-status');
-   if(notice)notice.textContent='저장하지 못했습니다. 브라우저 저장 공간을 확인해 주세요.';
-  }
- });
  document.addEventListener('hetero:edit-record',async event=>{
   const file=event.detail?.file;
   const fieldName=event.detail?.field;
