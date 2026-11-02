@@ -134,6 +134,16 @@
   download('metadata.json',JSON.stringify(copy,null,2)+'\n','application/json');
   status.textContent='JSON 다운로드 완료. GitHub의 assets/buildings/metadata.json에 교체 업로드해야 공개 반영됩니다.';
  }
+ document.addEventListener('hetero:edit-record',async event=>{
+  const file=event.detail?.file;
+  const fieldName=event.detail?.field;
+  stopPicking();
+  await show(file);
+  if(fieldName){
+   const target=field(fieldName);
+   if(target&&!target.disabled)target.focus();
+  }
+ });
  openBtn.addEventListener('click',()=>{stopPicking();show();});
  closeBtn.addEventListener('click',()=>modal.close());
  recordSelect.addEventListener('change',()=>selectRecord(recordSelect.value));
