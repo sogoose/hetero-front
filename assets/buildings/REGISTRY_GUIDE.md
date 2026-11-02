@@ -10,10 +10,11 @@ This folder is the source of all buildings shown in `landscapes.html`.
 |---|---|
 | file | Exact photo filename (stable unique ID; required) |
 | construction_year | Recorded building year, e.g. `1987` or `1980전후` |
-| year_status | `verified` (checked), `estimated` (estimated), `unverified` (not independently checked) |
-| year_source | Documentary or survey basis for the date |
+| year_status | `verified` (direct official check), `crosschecked` (independent secondary republication checked), `estimated` (estimated), `unverified` (not independently checked) |
+| year_source | Documentary or survey basis for the date; avoid addresses or deep links exposing exact location |
+| approval_date | Occupancy approval date `YYYY-MM-DD` only when explicitly confirmed |
 | structure | Structural system (e.g. `조적조`, `철근콘크리트조`) |
-| structure_status | `verified`, `estimated`, or `unverified` |
+| structure_status | `verified`, `crosschecked`, `estimated`, or `unverified` |
 | wall_finish | Exterior wall finish (e.g. `점토벽돌`, `타일`) |
 | wall_status | Confidence for wall finish |
 | roof_finish | Roofing (e.g. `시멘트 기와`, `슬레이트`) |
@@ -28,6 +29,7 @@ This folder is the source of all buildings shown in `landscapes.html`.
 - Each photo is one record. If there are multiple photographs of the same building, the count is **not yet deduplicated to unique buildings**.
 - Dates in the legacy `metadata.json` were migrated here as **unverified**, not as independently verified building permit dates. Seven circa-year entries were marked `estimated`.
 - `1980전후` is tentatively placed in the 1980s and under 1980 in year-by-year mode. The statistics explicitly disclose this approximation.
+- Three initial archive cases were crosschecked against independent public republications of building-register data; they are marked `crosschecked`, not as original-government-register verification.
 - Blank materials fields stay unclassified, not guessed from the photograph. Fill material status fields when material information is verified or estimated.
 - The photograph's front caption and reverse information reflect edits to `registry.csv` after deployment. Existing title, location, thumbnails, and supplementary photo details remain in `metadata.json`.
 
