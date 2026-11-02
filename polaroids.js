@@ -4,6 +4,8 @@ const LIMIT=24, FOLDER='assets/buildings/', CACHE='hetero-front-buildings-v4', T
 const board=document.querySelector('#photo-board'), status=document.querySelector('#photo-status'), count=document.querySelector('#photo-count');
 const scatter=document.querySelector('#scatter'), align=document.querySelector('#align'), shuffle=document.querySelector('#shuffle');
 const previous=document.querySelector('#previous'), next=document.querySelector('#next'), pager=document.querySelector('.photo-pagination');
+const gallerySort=document.querySelector('#gallery-sort'), gallerySortControl=document.querySelector('#gallery-sort-control');
+const koreanNameSorter=new Intl.Collator('ko-KR',{numeric:true,sensitivity:'base'});
 const dialog=document.querySelector('#photo-detail');
 let records=[], visible=[], mode='scatter', page=0, demo=false, loading=false, resizeTimer, metadataWarning='', sourceWarning='';
 let galleryOrder=[],pageSize=24,bodies=[],drag=null,frame=0,lastFrame=0,topLayer=30,boardWidth=0,boardHeight=0;
@@ -69,6 +71,26 @@ function coarseLocation(value){
  const city=result.findIndex(t=>t.endsWith('시'));
  return (city>=0?result.slice(city):result).join(' ');
 }
+function yearNumber(record){
+ const value=String(record.year||'').match(/(?:18|19|20)\d{2}/);
+ return value?Number(value[0]):Infinity;
+}
+function compareByName(a,b){
+ // Region/title is the primary key; year and filename break identical-label ties.
+ return koreanNameSorter.compare(a.location||a.title||'',b.location||b.title||'')
+     || koreanNameSorter.compare(a.title||'',b.title||'')
+     || (yearNumber(a)-yearNumber(b) || koreanNameSorter.compare(a.file,b.file));
+}
+function compareByYear(a,b){
+ // A circa-year label is provisionally placed in that year, without claiming verification.
+ // Missing years appear after dated records.
+ const av=yearNumber(a), bv=yearNumber(b);
+ if(av!==bv)return av-bv;
+ return compareByName(a,b);
+}
+function getGalleryOrder(){
+ return [...records].sort(gallerySort.value==='year'?compareByYear:compareByName);
+}
 function titleOf(file){
  const location=coarseLocation(file);
  const year=String(file).match(/\(((?:19|20)\d{2}[^)]*)\)/)?.[1];
@@ -125,7 +147,8 @@ async function load(force=false){
   });
   const savedDrafts=readLocalDrafts();
   for(const record of records){if(savedDrafts[record.file])applyLocalDraft(record,savedDrafts[record.file]);}
-  galleryOrder=records.slice();page=0;render();
+  records.sort(compareByName); // Stable archive IDs begin with 01 in 가나다 order.
+  galleryOrder=getGalleryOrder();page=0;render();
  }finally{loading=false;shuffle.disabled=false;}
 }
 function render(){
@@ -458,16 +481,21 @@ document.addEventListener('hetero:record-draft-saved',event=>{
  const record=records.find(record=>record.file===file);
  if(!record||!patch)return;
  applyLocalDraft(record,patch);
+ records.sort(compareByName);
+ galleryOrder=getGalleryOrder();
  for(const body of bodies){
   if(body.record.file!==file)continue;
   const title=body.el.querySelector('.polaroid-title');
   if(title){title.textContent=record.title;body.el.setAttribute('aria-label',record.title+' — 상세 보기');fitCaption(body.el)}
   const img=body.el.querySelector('img');
   if(img)img.alt=record.title;
+  const number=body.el.querySelector('.polaroid-label-number');
+  if(number)number.textContent=String(records.indexOf(body.record)+1).padStart(2,'0');
  }
+ if(mode==='gallery'){page=0;render();}
 });
 dialog.addEventListener('cancel',event=>{event.preventDefault();closeDetail();});
-scatter.addEventListener('click',()=>{if(mode==='scatter')scatterTargets();else{mode='scatter';board.classList.remove('is-gallery');layout();scatterTargets();scatter.setAttribute('aria-pressed','true');align.setAttribute('aria-pressed','false');pager.hidden=true;}});
+scatter.addEventListener('click',()=>{if(mode==='scatter')scatterTargets();else{mode='scatter';gallerySortControl.hidden=true;board.classList.remove('is-gallery');layout();scatterTargets();scatter.setAttribute('aria-pressed','true');align.setAttribute('aria-pressed','false');pager.hidden=true;}});
 align.addEventListener('click',()=>{
  // Index 01 begins at the first photo in the stable, numbered archive.
  // Do not carry the randomized scatter selection into the gallery ordering.
@@ -476,9 +504,18 @@ align.addEventListener('click',()=>{
   page=0;
  }
  mode='gallery';
+ gallerySortControl.hidden=false;
+ galleryOrder=getGalleryOrder();
  render();
 });
-shuffle.addEventListener('click',event=>{if(event.shiftKey||sourceWarning){load(true);return;}if(mode==='gallery'){mode='scatter';page=0;}render();});
+gallerySort.addEventListener('change',()=>{
+ // Choosing a sort mode also activates the ordered gallery.
+ mode='gallery';page=0;
+ gallerySortControl.hidden=false;
+ galleryOrder=getGalleryOrder();
+ render();
+});
+shuffle.addEventListener('click',event=>{if(event.shiftKey||sourceWarning){load(true);return;}if(mode==='gallery'){mode='scatter';page=0;gallerySortControl.hidden=true;}render();});
 board.addEventListener('click',event=>{if(event.target===board&&mode==='scatter')scatterTargets();});
 previous.addEventListener('click',()=>{if(page>0){page--;render();}});
 next.addEventListener('click',()=>{if((page+1)*pageSize<records.length){page++;render();}});
