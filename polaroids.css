@@ -46,3 +46,6 @@ body:has(#photo-detail[open]){overflow:hidden}
 .focus-controls button:hover{color:#242421}
 @media(max-width:550px){.focus-back h3{font-size:18px}.focus-back p{font-size:12px}.focus-back dl{font-size:11px}#photo-detail{padding:30px 20px 65px}}
 @media(prefers-reduced-motion:reduce){.focus-card,.focus-lift{transition:none!important}}
+
+/* Cards may leave the viewport; gather controls bring them back. */
+.photo-board{overflow:visible}

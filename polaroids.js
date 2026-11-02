@@ -218,7 +218,6 @@ function tick(time){
    body.vy=clamp(body.vy,-30,30)*Math.pow(.90,dt);
    body.vr=clamp(body.vr,-3.5,3.5)*Math.pow(.90,dt);
    body.x+=body.vx*dt;body.y+=body.vy*dt;body.r=clamp(body.r+body.vr*dt,-65,65);
-   contain(body);
   }
   paint(body);
   if(body.target||Math.abs(body.vx)+Math.abs(body.vy)+Math.abs(body.vr)>.055)active=true;
@@ -250,7 +249,7 @@ function movePointer(event){
    const vx=(p.x-drag.last.x)/elapsed*16.667,vy=(p.y-drag.last.y)/elapsed*16.667;
    body.vx=clamp(body.vx*.35+vx*.65,-28,28);body.vy=clamp(body.vy*.35+vy*.65,-28,28);
    body.vr=clamp(body.vx*.055,-1.2,1.2);
-   body.x=p.x-drag.offsetX;body.y=p.y-drag.offsetY;contain(body,false);paint(body);
+   body.x=p.x-drag.offsetX;body.y=p.y-drag.offsetY;paint(body);
   }
   drag.last=p;drag.time=now;
   return;
