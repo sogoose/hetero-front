@@ -6,7 +6,7 @@ const scatter=document.querySelector('#scatter'), align=document.querySelector('
 const previous=document.querySelector('#previous'), next=document.querySelector('#next'), pager=document.querySelector('.photo-pagination');
 const dialog=document.querySelector('#photo-detail');
 let records=[], visible=[], mode='scatter', page=0, demo=false, loading=false, resizeTimer, metadataWarning='', sourceWarning='';
-let pageSize=24,bodies=[],drag=null,frame=0,lastFrame=0,topLayer=30,boardWidth=0,boardHeight=0;
+let galleryOrder=[],pageSize=24,bodies=[],drag=null,frame=0,lastFrame=0,topLayer=30,boardWidth=0,boardHeight=0;
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 const fallback=[
@@ -75,13 +75,13 @@ async function load(force=false){
    if(typeof info.thumbnail==='string'&&/^thumbs\/[a-zA-Z0-9._-]+\.webp$/.test(info.thumbnail))record.thumbnail=FOLDER+info.thumbnail;
    return record;
   });
-  page=0;render();
+  galleryOrder=records.slice();page=0;render();
  }finally{loading=false;shuffle.disabled=false;}
 }
 function render(){
  stopMotion();
  pageSize=capacity();page=clamp(page,0,Math.max(0,Math.ceil(records.length/pageSize)-1));
- visible=mode==='scatter'?sample(records,pageSize):records.slice(page*pageSize,(page+1)*pageSize);
+ visible=mode==='scatter'?sample(records,pageSize):galleryOrder.slice(page*pageSize,(page+1)*pageSize);
  board.classList.toggle('is-gallery',mode==='gallery');board.replaceChildren();bodies=[];
  for(const record of visible){
   const button=document.createElement('button');button.type='button';button.className='polaroid';button.setAttribute('aria-label',record.title+' — 상세 보기');
@@ -343,7 +343,13 @@ document.querySelector('#detail-front').addEventListener('click',()=>setFlipped(
 document.querySelector('#detail-flip').addEventListener('click',()=>setFlipped(!flipped));
 dialog.addEventListener('cancel',event=>{event.preventDefault();closeDetail();});
 scatter.addEventListener('click',()=>{if(mode==='scatter')scatterTargets();else{mode='scatter';board.classList.remove('is-gallery');layout();scatterTargets();scatter.setAttribute('aria-pressed','true');align.setAttribute('aria-pressed','false');pager.hidden=true;}});
-align.addEventListener('click',()=>{mode='gallery';board.classList.add('is-gallery');layout();scatter.setAttribute('aria-pressed','false');align.setAttribute('aria-pressed','true');pager.hidden=records.length<=pageSize;});
+align.addEventListener('click',()=>{
+ if(mode!=='gallery'){galleryOrder=[...visible,...records.filter(record=>!visible.includes(record))];page=0;}
+ mode='gallery';board.classList.add('is-gallery');layout();
+ scatter.setAttribute('aria-pressed','false');align.setAttribute('aria-pressed','true');pager.hidden=records.length<=pageSize;
+ previous.disabled=page===0;next.disabled=(page+1)*pageSize>=records.length;
+ document.querySelector('#page-number').textContent=(page+1)+' / '+Math.max(1,Math.ceil(records.length/pageSize));
+});
 shuffle.addEventListener('click',event=>{if(event.shiftKey||sourceWarning){load(true);return;}if(mode==='gallery'){mode='scatter';page=0;}render();});
 board.addEventListener('click',event=>{if(event.target===board&&mode==='scatter')scatterTargets();});
 previous.addEventListener('click',()=>{if(page>0){page--;render();}});
