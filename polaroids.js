@@ -54,7 +54,9 @@ function render(){
   const caption=document.createElement('span');caption.className='polaroid-caption';caption.title=record.title;
   const number=document.createElement('span');number.className='polaroid-number';number.textContent=String(records.indexOf(record)+1).padStart(3,'0');
   caption.append(number,document.createTextNode(record.title));button.append(frame,caption);
-  button.addEventListener('click',event=>{event.stopPropagation();openDetail(record);});board.append(button);
+  button.addEventListener('click',event=>{event.stopPropagation();openDetail(record,button);});
+  button.addEventListener("pointermove",event=>{if(event.pointerType!=="mouse"||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;const r=button.getBoundingClientRect();button.style.setProperty("--tilt-x",((.5-(event.clientY-r.top)/r.height)*9)+"deg");button.style.setProperty("--tilt-y",(((event.clientX-r.left)/r.width-.5)*9)+"deg");});
+  button.addEventListener("pointerleave",()=>{button.style.setProperty("--tilt-x","0deg");button.style.setProperty("--tilt-y","0deg");});board.append(button);
  }
  scatter.setAttribute('aria-pressed',String(mode==='scatter'));align.setAttribute('aria-pressed',String(mode==='gallery'));
  count.textContent=demo?'미리보기 · '+visible.length+'장':records.length+'장 중 '+visible.length+'장';
@@ -83,26 +85,58 @@ function layout(){
   card.style.setProperty('--card-width',cardWidth+'px');card.style.setProperty('--x',x+'px');card.style.setProperty('--y',y+'px');card.style.setProperty('--r',(Math.random()*24-12)+'deg');card.style.zIndex=String(i+1);
  });
 }
-function openDetail(record){
+let picked=null, flipped=false, closing=false;
+const focusCard=document.querySelector('.focus-card'),focusStage=document.querySelector('.focus-stage');
+function setFlipped(value){
+ flipped=value;focusCard.classList.toggle('is-flipped',value);
+ document.querySelector('#detail-front').inert=value;
+ document.querySelector('#detail-front').setAttribute('aria-hidden',String(value));
+ document.querySelector('#detail-back').inert=!value;
+ document.querySelector('#detail-back').setAttribute('aria-hidden',String(!value));
+ document.querySelector('#detail-flip').setAttribute('aria-pressed',String(value));
+ document.querySelector('#detail-flip').textContent=value?'사진 보기':'뒷면 보기';
+ if(value)document.querySelector('#detail-flip').focus();
+}
+function openDetail(record,source){
+ picked=source;closing=false;setFlipped(false);
  document.querySelector('#detail-title').textContent=record.title;
+ document.querySelector('#detail-caption').textContent=record.title;
+ document.querySelector('#detail-back-title').textContent=record.title;
+ document.querySelector('#detail-number').textContent=String(records.indexOf(record)+1).padStart(3,'0');
  const image=document.querySelector('#detail-image');image.src=record.src;image.alt=record.title;
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
  for(const [key,label] of [['location','위치'],['year','연도'],['material','재료']]){
   if(!record[key])continue;
   const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=record[key];fields.append(dt,dd);
  }
- document.querySelector('#detail-description').textContent=record.description||'';
+ document.querySelector('#detail-description').textContent=record.description||'아직 상세 기록이 등록되지 않았습니다.';
  document.querySelector('#detail-credit').textContent=record.credit||'';
- dialog.showModal();
+ const origin=source.getBoundingClientRect();
+ dialog.showModal();source.classList.add('is-picked');
+ const target=focusStage.getBoundingClientRect();
+ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  focusStage.animate([{transform:'translate('+(origin.left+origin.width/2-target.left-target.width/2)+'px,'+(origin.top+origin.height/2-target.top-target.height/2)+'px) scale('+(origin.width/target.width)+')',opacity:.65},{transform:'translate(0,0) scale(1)',opacity:1}],{duration:550,easing:'cubic-bezier(.2,.75,.2,1)'});
+ }
+ document.querySelector('#detail-front').focus();
 }
+function closeDetail(){
+ if(closing||!dialog.open)return;closing=true;
+ const done=()=>{dialog.close();picked?.classList.remove('is-picked');picked?.focus({preventScroll:true});picked=null;closing=false;};
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){done();return;}
+ const animation=focusStage.animate([{transform:'translateY(0) scale(1)',opacity:1},{transform:'translateY(18px) scale(.94)',opacity:0}],{duration:180,easing:'ease-in'});
+ animation.onfinish=done;
+}
+document.querySelector('#detail-front').addEventListener('click',()=>setFlipped(true));
+document.querySelector('#detail-flip').addEventListener('click',()=>setFlipped(!flipped));
+dialog.addEventListener('cancel',event=>{event.preventDefault();closeDetail();});
 scatter.addEventListener('click',()=>{if(mode==='scatter')layout();else{mode='scatter';render();}});
 align.addEventListener('click',()=>{mode='gallery';page=0;render();});
 shuffle.addEventListener('click',event=>{if(event.shiftKey||sourceWarning){load(true);return;}if(mode==='gallery'){mode='scatter';page=0;}render();});
 board.addEventListener('click',event=>{if(event.target===board&&mode==='scatter')layout();});
 previous.addEventListener('click',()=>{if(page>0){page--;render();board.scrollIntoView({block:'start'});}});
 next.addEventListener('click',()=>{if((page+1)*LIMIT<records.length){page++;render();board.scrollIntoView({block:'start'});}});
-document.querySelector('#detail-close').addEventListener('click',()=>dialog.close());
-dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
+document.querySelector('#detail-close').addEventListener('click',closeDetail);
+dialog.addEventListener('click',event=>{if(event.target===dialog)closeDetail();});
 window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(layout,160);});
 load();
 })();
