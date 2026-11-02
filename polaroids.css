@@ -141,3 +141,6 @@ body:has(#photo-detail[open]){overflow:hidden}
 .stats-bottom{align-items:flex-start}
 }
 @media(prefers-reduced-motion:reduce){.icon-button,.stats-fill,.chapter-list a{transition:none!important}}
+
+/* Explicitly hide inactive statistical subfilters. */
+.stats-selectors label[hidden]{display:none!important}
