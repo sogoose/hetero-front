@@ -459,8 +459,17 @@ function openDetail(record,source){
  ]){
   const dt=document.createElement('dt'),dd=document.createElement('dd');
   dt.textContent=label;
-  const value=String(record[key]||'').trim();
-  if(value){dd.textContent=value;}
+  // Searching without an exact building-register match is not a structure type.
+  // Display the review status while leaving record.structure empty for statistics.
+  const searchedNotFound=key==='structure'&&!String(record.structure||'').trim()&&record.structure_status==='not_found';
+  const value=searchedNotFound?'못찾음':String(record[key]||'').trim();
+  if(value){
+   dd.textContent=value;
+   if(searchedNotFound){
+    dd.classList.add('detail-unset');
+    dd.title='공개 검색을 시도했지만 이 건물의 주구조는 확인되지 않았습니다.';
+   }
+  }
   else if(formField){
    const add=document.createElement('button');
    add.type='button';add.className='detail-empty-edit';add.textContent='＋ 입력';
