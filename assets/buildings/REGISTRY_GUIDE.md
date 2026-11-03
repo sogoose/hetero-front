@@ -29,7 +29,7 @@ This folder is the source of all buildings shown in `landscapes.html`.
 
 ### How the date statistics work
 
-- Current website statistics count all listed photographs; the CSV now contains `building_id` for deduplicating to unique buildings. There are 147 photos / 135 tentative unique buildings. Website deduplication is not yet enabled.
+- Current website statistics count all listed photographs; the CSV now contains `building_id` for deduplicating to unique buildings. There are 147 photos / 134 tentative unique buildings (one exact-address duplicate was reconciled in the fourth pass). Website deduplication is not yet enabled.
 - Each photo is one CSV row. The `building_id` keys group repeated photos of the same building. Grouping was based on historic original filename identity; unnamed exact-number locations remain provisional.
 - Dates in the legacy `metadata.json` were migrated here as **unverified**, not as independently verified building permit dates. Seven circa-year entries were marked `estimated`.
 - `1980전후` is tentatively placed in the 1980s and under 1980 in year-by-year mode. The statistics explicitly disclose this approximation.
@@ -49,7 +49,7 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 
 ## Structure verification progress — 2026-11-03
 
-- Structure recorded for **70 of 147 photo records**, covering **64 provisional unique buildings**; **77 photo records** remain without independently supported structure classifications.
+- Structure recorded for **74 of 147 photo records**, covering **67 provisional unique buildings**; **73 photo records** remain without independently supported structure classifications.
 - These are **secondary public building-register republications** (architecture HUB data via 주소주소, 집품, 빌딩샵AI). They are marked `structure_status=crosschecked` and must not be relabeled as direct government API verification.
 - The user's example Jootek parcel was matched to its archive photo via the historic filename and a public parcel record; that building's structure is crosschecked as 벽돌. The specific Jootek detail URL was not directly retrievable through the available external reader.
 - Some source approval years differ from the years recorded on original photo filenames. The project retains the original construction-year strings, marks the discrepancy in `notes`, and records independently reported `approval_date` where available. **Do not automatically equate approval dates with original construction dates.**
@@ -71,3 +71,12 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 - For B-007, the *current* address-level property database describes a building completed in 2023, while the archive photo has a circa-1980 year. That contemporary building cannot be treated as the building in the historical photo. No structure was inferred or assigned; a warning was added in `notes`.
 - Current-site reconstruction/redevelopment is a significant risk in matching 1980s/1990s photos. Verify the **identity and era of the depicted building**, not only the street address of a current building.
 - Do not introduce exact road addresses or parcel identifiers into the public repository.
+
+### Follow-up crosscheck — 2026-11-03 (fourth pass)
+
+- Added 4 photo records: B-057 (1973, 철근콘크리트구조, factory), B-104 (1992, 벽돌구조, detached multi-household dwelling), and B-114 plus B-126 (both photographs of a single 1987 철근콘크리트구조 building). Source: 집품 republication of Ministry of Land building register. All new structure statuses are `crosschecked`, not `verified`.
+- Reconciled the exact-address duplicate `B-126` to `B-114` in `building_id` only; `file` references and visible anonymized titles stay unchanged. Provisional building groups therefore decreased from 135 to 134, and today's confirmed structures cover 67 unique groups.
+- The 1987 building has mixed documented uses; register `primary_use` is 창고시설, but first-floor occupancy shows residence/storage. Do not simplify the register's usage or infer it is solely residential.
+- B-106 was checked but deliberately left without `structure`: original photo caption year 2000 vs a 1990 occupancy approval year for the currently registered address. The discrepancy is noted and needs archival identity checking.
+- A close neighboring address with the same road-name stem but a different street number was not treated as a match. Match the exact address and the depicted building era.
+- No new precise street address, original address-laden filename, or per-address property URL is included in the public CSV or this guide.
