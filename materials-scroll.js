@@ -32,6 +32,7 @@ let items=[],pieces=[],sheets=[],maxOffset=0,offset=0,target=0,raf=0,drag=null;
 let dragged=false,editing=false,activeItem=null,currentSheet=-1,perBoard=12;
 let userInteracted=false;
 let atlasMetrics=null;
+let coverCount=0;
 let changes={},focusedPiece=null;
 
 const fallbackItems=[
@@ -203,44 +204,53 @@ async function sortByPalette(entries){
 
 /* Like an annotated printed object atlas: the images share a dense invisible
    arrangement and the index is composed independently in small columns below. */
+function addAtlasAnnotation(column,piece){
+ const item=piece.item;
+ const entry=document.createElement('div');entry.className='material-annotation-entry';
+ entry.dataset.index=String(piece.index);
+ const number=document.createElement('span');number.className='material-annotation-number';
+ number.textContent=String(item.id).padStart(2,'0');
+ const copy=document.createElement('div');copy.className='material-annotation-copy';
+ const name=document.createElement('span');name.className='material-annotation-name';name.textContent=item.title;
+ const description=(item.description||'').trim();
+ const secondary=document.createElement('span');secondary.className='material-annotation-description';
+ secondary.textContent=description&&description!=='혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.'?description:(item.category||'');
+ copy.append(name,secondary);entry.append(number,copy);column.append(entry);
+}
 function renderAnnotations(){
  if(!atlasMetrics||!annotationHost)return;
- const {cols,rows,legendTop,sheetWidth}=atlasMetrics;
+ const {cols,rows,legendTop,sheetWidth,coverWidth}=atlasMetrics;
  const fragment=document.createDocumentFragment();
+ if(coverCount){
+  const panel=document.createElement('section');panel.className='material-annotation-board material-cover-annotations';
+  panel.style.left='14px';panel.style.top=legendTop+'px';
+  panel.style.width=(coverWidth-24)+'px';
+  const n=viewport.clientWidth<700?2:3;
+  panel.style.gridTemplateColumns='repeat('+n+',minmax(0,1fr))';
+  for(let col=0;col<n;col++){
+   const column=document.createElement('div');column.className='material-annotation-column';
+   for(let row=0;row<Math.ceil(coverCount/n);row++){
+    const piece=pieces[row*n+col];
+    if(piece&&piece.index<coverCount)addAtlasAnnotation(column,piece);
+   }
+   panel.append(column);
+  }
+  fragment.append(panel);
+ }
  for(let boardIndex=0;boardIndex<sheets.length;boardIndex++){
   const board=sheets[boardIndex];
-  const panel=document.createElement('section');
-  panel.className='material-annotation-board';
-  panel.style.left=board.start+'px';
-  panel.style.top=legendTop+'px';
+  const panel=document.createElement('section');panel.className='material-annotation-board';
+  panel.style.left=board.start+'px';panel.style.top=legendTop+'px';
   panel.style.width=sheetWidth+'px';
-  panel.style.gridTemplateColumns='repeat('+cols+', minmax(0,1fr))';
+  panel.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';
+  const skip=boardIndex===0?coverCount:0;
   for(let col=0;col<cols;col++){
-   const column=document.createElement('div');
-   column.className='material-annotation-column';
+   const column=document.createElement('div');column.className='material-annotation-column';
    for(let row=0;row<rows;row++){
-    const piece=pieces[boardIndex*perBoard+row*cols+col];
-    if(!piece)continue;
-    const item=piece.item;
-    const entry=document.createElement('div');
-    entry.className='material-annotation-entry';
-    entry.dataset.index=String(piece.index);
-    const number=document.createElement('span');
-    number.className='material-annotation-number';
-    number.textContent=String(item.id).padStart(2,'0');
-    const copy=document.createElement('div');
-    copy.className='material-annotation-copy';
-    const name=document.createElement('span');
-    name.className='material-annotation-name';
-    name.textContent=item.title;
-    const description=(item.description||'').trim();
-    const isPlaceholder=description==='혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.';
-    const secondary=document.createElement('span');
-    secondary.className='material-annotation-description';
-    secondary.textContent=description&&!isPlaceholder?description:(item.category||'');
-    copy.append(name,secondary);
-    entry.append(number,copy);
-    column.append(entry);
+    const index=boardIndex*perBoard+skip+row*cols+col;
+    if(index>=(boardIndex+1)*perBoard)continue;
+    const piece=pieces[index];
+    if(piece)addAtlasAnnotation(column,piece);
    }
    panel.append(column);
   }
@@ -251,16 +261,14 @@ function renderAnnotations(){
 function layout(){
  if(!pieces.length)return;
  const vw=viewport.clientWidth,vh=viewport.clientHeight;
- const mobile=vw<700;
- // A full plate can hold 20 mobile or 40 desktop specimens; a short
- // landscape viewport uses fewer rows rather than clipping the annotations.
- const cols=mobile?4:vw<1070?6:8;
+ const mobile=vw<700,cols=mobile?4:vw<1070?6:8;
  const rows=vh<440?3:5;
  perBoard=cols*rows;
+ coverCount=Math.min(mobile?5:7,perBoard-1,pieces.length);
  const sheetWidth=mobile?clamp(vw*1.16,420,620):clamp(vw*1.025,940,1540);
- const lead=mobile?Math.max(165,vw*.43):Math.max(360,vw*.34);
- const tail=mobile?vw*.25:vw*.29;
- const spacing=mobile?15:29;
+ const coverWidth=Math.round(mobile?Math.max(345,vw*.94):clamp(vw*.46,550,740));
+ const lead=coverWidth+(mobile?10:20);
+ const tail=mobile?vw*.25:vw*.29,spacing=mobile?15:29;
  const boardTop=clamp(vh*.035,12,32);
  const legendTop=Math.round(vh*(mobile?.735:.755));
  const imageBottom=legendTop-(mobile?16:23);
@@ -270,43 +278,63 @@ function layout(){
  const shiftsX=[-.035,.04,-.035,.025,.045,-.035,.025,-.035];
  const shiftsY=[-.035,.045,-.02,.015,.04,-.035,.015,-.02];
  const scales=[.96,1.02,.93,1.04,.98,1.03,.94,1];
+ // Hand-composed object pockets around the three serif phrases:
+ // left, top, maximum width and height as fractions of the cover.
+ const pockets=mobile?[
+  [.045,.03,.27,.17],[.57,.035,.28,.18],
+  [.015,.42,.22,.19],[.77,.59,.21,.22],[.48,.80,.29,.15]
+ ]:[
+  [.035,.025,.20,.19],[.34,.025,.22,.18],[.74,.045,.20,.22],
+  [.025,.41,.16,.22],[.795,.44,.18,.23],[.575,.77,.23,.16],[.275,.79,.19,.15]
+ ];
+ const intro=document.querySelector('.material-intro');
+ intro.style.width=coverWidth+'px';intro.style.height=imageBottom+'px';
  sheets=[];
  for(let g=0;g<groupCount;g++){
-  const x0=lead+g*(sheetWidth+spacing);
-  sheets.push({start:x0,centre:x0+sheetWidth*.5,width:sheetWidth,top:boardTop,height:imageHeight});
+  const start=lead+g*(sheetWidth+spacing);
+  sheets.push({start,centre:start+sheetWidth*.5,width:sheetWidth,top:boardTop,height:imageHeight});
  }
  pieces.forEach(piece=>{
   const {item,index,button,art}=piece;
-  const group=Math.floor(index/perBoard),cell=index%perBoard;
-  const col=cell%cols,row=Math.floor(cell/cols);
-  const board=sheets[group];
-  const x0=board.start+col*cellW,y0=boardTop+row*cellH;
-  // Fit alpha-trimmed object bounds into a tight cell without hard collisions.
   const iw=Math.max(1,Number(item.imageWidth)||300);
   const ih=Math.max(1,Number(item.imageHeight)||300);
   const aspect=iw/ih;
-  const scale=scales[index%scales.length];
-  const usableW=cellW-(mobile?13:23),usableH=cellH-(mobile?7:13);
-  const width=Math.max(14,Math.round(Math.min(usableW*scale,usableH*scale*aspect)));
-  const height=Math.max(14,Math.round(width/aspect));
+  let x,y,width,height;
+  if(index<coverCount){
+   const [rx,ry,rw,rh]=pockets[index];
+   const boxW=Math.max(24,coverWidth*rw),boxH=Math.max(24,imageHeight*rh);
+   width=Math.max(16,Math.round(Math.min(boxW,boxH*aspect)));
+   height=Math.max(16,Math.round(width/aspect));
+   x=Math.round(coverWidth*rx+(boxW-width)*.5);
+   y=Math.round(boardTop+imageHeight*ry+(boxH-height)*.5);
+  }else{
+   const group=Math.floor(index/perBoard);
+   const cell=group===0?index-coverCount:index%perBoard;
+   const col=cell%cols,row=Math.floor(cell/cols);
+   const board=sheets[group];
+   const cellX=board.start+col*cellW,cellY=boardTop+row*cellH;
+   const scale=scales[index%scales.length];
+   const usableW=cellW-(mobile?13:23),usableH=cellH-(mobile?7:13);
+   width=Math.max(14,Math.round(Math.min(usableW*scale,usableH*scale*aspect)));
+   height=Math.max(14,Math.round(width/aspect));
+   const rawX=cellX+(cellW-width)/2+shiftsX[index%shiftsX.length]*cellW;
+   const rawY=cellY+(cellH-height)/2+shiftsY[index%shiftsY.length]*cellH;
+   x=Math.round(clamp(rawX,cellX+3,cellX+cellW-width-4));
+   y=Math.round(clamp(rawY,cellY+2,cellY+cellH-height-3));
+  }
   piece.sizing={width,height};
   if(piece.lastWidth!==width||piece.lastHeight!==height){
    art.replaceChildren();piece.loaded=false;
    piece.lastWidth=width;piece.lastHeight=height;
   }
   art.style.width=width+'px';art.style.height=height+'px';
-  const rawX=x0+(cellW-width)/2+shiftsX[index%shiftsX.length]*cellW;
-  const rawY=y0+(cellH-height)/2+shiftsY[index%shiftsY.length]*cellH;
-  const x=Math.round(clamp(rawX,x0+3,x0+cellW-width-4));
-  const y=Math.round(clamp(rawY,y0+2,y0+cellH-height-3));
-  piece.position={x,y};
-  button.style.left=x+'px';button.style.top=y+'px';
+  piece.position={x,y};button.style.left=x+'px';button.style.top=y+'px';
   button.style.width=width+'px';button.style.height=height+'px';
   button.style.setProperty('--art-height',height+'px');
   piece.center=x+width*.5;
  });
  strip.style.width=Math.ceil(lead+groupCount*(sheetWidth+spacing)+tail)+'px';
- atlasMetrics={cols,rows,legendTop,sheetWidth};
+ atlasMetrics={cols,rows,legendTop,sheetWidth,coverWidth};
  renderAnnotations();
  maxOffset=Math.max(0,strip.offsetWidth-vw);
  offset=clamp(offset,0,maxOffset);
