@@ -833,3 +833,9 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 @media(prefers-reduced-motion:reduce){
  .material-piece,.material-piece .material-art{transition:none!important}
 }
+
+/* Keep tiny specimen indices beside the objects even in browsers without CSS division. */
+.material-piece .material-label-no{
+ left:auto!important;right:-14px!important;
+ top:calc(-1 * var(--art-height) * .50)!important;
+}
