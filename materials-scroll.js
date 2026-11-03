@@ -227,6 +227,7 @@ function renderAnnotations(){
  if(!atlasMetrics||!annotationHost)return;
  const {cols,rows,legendTop,sheetWidth,coverWidth}=atlasMetrics;
  const fragment=document.createDocumentFragment();
+ const numericIndex=[...pieces].sort((a,b)=>Number(a.item.id)-Number(b.item.id));
  for(let sheet=0;sheet<sheets.length;sheet++){
   const cover=sheet===0,ncols=cover?(viewport.clientWidth<700?2:3):cols;
   const panel=document.createElement('section');panel.className='material-annotation-board';
@@ -242,7 +243,7 @@ function renderAnnotations(){
     const index=cover?row*ncols+col:coverCount+(sheet-1)*perBoard+row*ncols+col;
     if(cover&&index>=coverCount)continue;
     if(!cover&&index>=coverCount+sheet*perBoard)continue;
-    if(pieces[index])drawAnnotation(column,pieces[index]);
+    if(numericIndex[index])drawAnnotation(column,numericIndex[index]);
    }
    panel.append(column);
   }
@@ -265,14 +266,23 @@ function layout(){
  const imageHeight=Math.max(190,imageBottom-boardTop);
  const cellW=sheetWidth/cols,cellH=imageHeight/rows;
  const nBoards=Math.ceil((pieces.length-coverCount)/perBoard);
+ // Opening plate: two-line centered headline above all specimens.
+ // The coordinate pockets are normalized to the image field (not viewport).
+ // 09/12/01 occupy the first row, 04/36/22 the lower row.
  const pockets=mobile?[
-  [.04,.035,.18,.23],[.39,.055,.45,.15],
-  [.025,.40,.18,.24],[.78,.37,.17,.29],
-  [.12,.75,.28,.16],[.58,.74,.29,.17]
+  [.035,.30,.235,.26],   // 09 tall stone
+  [.305,.315,.39,.18],   // 12 long railing
+  [.75,.30,.22,.26],     // 01 granite entrance
+  [.035,.64,.235,.275],  // 04 lion knocker
+  [.325,.70,.315,.18],   // 36 concrete wall
+  [.705,.67,.255,.215]   // 22 corner building
  ]:[
-  [.045,.04,.17,.24],[.40,.055,.45,.14],
-  [.025,.41,.18,.24],[.79,.40,.17,.29],
-  [.11,.76,.29,.17],[.56,.74,.30,.18]
+  [.06,.275,.22,.29],
+  [.33,.30,.345,.18],
+  [.755,.275,.19,.29],
+  [.065,.64,.225,.29],
+  [.355,.695,.315,.19],
+  [.745,.65,.225,.26]
  ];
  const intro=document.querySelector('.material-intro');
  intro.style.width=coverWidth+'px';intro.style.height=imageBottom+'px';
