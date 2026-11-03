@@ -240,41 +240,24 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 }
 .material-detail .material-detail-source:empty{display:none}
 
-/* Transparent cutouts: die-cut white silhouette and subtle lifted shadow. */
+/* Lighter die-cut silhouette: 2 filter layers instead of 10.
+   The soft white edge follows the actual alpha, not a rectangle. */
 .material-art{filter:none!important;overflow:visible!important}
 .material-piece{overflow:visible!important}
 .material-piece::after{display:none!important}
-.material-piece .material-object-image,.material-detail .material-object-image{
+.material-piece .material-object-image,
+.material-detail .material-object-image{
  filter:
-  drop-shadow( 2px 0 0 #fffdf8)
-  drop-shadow(-2px 0 0 #fffdf8)
-  drop-shadow( 0 2px 0 #fffdf8)
-  drop-shadow( 0 -2px 0 #fffdf8)
-  drop-shadow( 2px 2px 0 #fffdf8)
-  drop-shadow(-2px 2px 0 #fffdf8)
-  drop-shadow( 2px -2px 0 #fffdf8)
-  drop-shadow(-2px -2px 0 #fffdf8)
-  drop-shadow( 5px 10px 5px rgba(25,26,21,.20))
-  drop-shadow( 2px 3px 2px rgba(25,26,21,.12));
+   drop-shadow(0 0 1.4px rgba(255,255,255,.98))
+   drop-shadow(1px 3px 4px rgba(24,24,20,.15));
 }
 .material-detail .material-detail-media{filter:none!important;overflow:visible}
-.material-piece .material-piece-number,.material-piece .material-piece-title,.material-piece .material-piece-meta{pointer-events:none}
-.material-piece .material-piece-number{margin-top:9px;color:#9a978f}
-.material-piece .material-piece-title{margin-top:5px;font-size:clamp(15px,1.2vw,18px)}
-.material-piece .material-piece-meta{margin-top:3px;letter-spacing:.07em}
-@media(max-width:700px){
- .material-piece .material-object-image,.material-detail .material-object-image{
-  filter:
-   drop-shadow(1.5px 0 0 #fffdf8)
-   drop-shadow(-1.5px 0 0 #fffdf8)
-   drop-shadow(0 1.5px 0 #fffdf8)
-   drop-shadow(0 -1.5px 0 #fffdf8)
-   drop-shadow(1.5px 1.5px 0 #fffdf8)
-   drop-shadow(-1.5px 1.5px 0 #fffdf8)
-   drop-shadow(3px 7px 5px rgba(25,26,21,.20));
- }
-}
-
+.material-piece:hover,.material-piece:focus-visible{filter:none!important}
+.material-piece .material-piece-number,
+.material-piece .material-piece-title,
+.material-piece .material-piece-meta{pointer-events:none}
+.material-piece .material-piece-number{display:none!important}
+.material-piece .material-piece-meta{display:none!important}
 
 /* 2026-11 / condensed sticker-sheet layout
    The cutouts share a sheet; each has one tiny collectible-label, never a card. */
@@ -441,43 +424,64 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 }
 
 
-/* collectible name-chip refinement: small aqua serial + one unboxed name */
+/* Small black serial bullet, white numerals, transparent caption.
+   Deliberately not a Pokémon-style laminated sticker label. */
 .material-piece .material-piece-title{
  display:inline-flex!important;
- align-items:center;gap:5px;
- top:-9px;left:-4px;
- max-width:min(94%,199px);
+ align-items:center;
+ gap:6px;
+ top:-18px;left:0;
+ max-width:min(97%,215px);
  width:max-content;
- padding:2px 4px 2px 2px;
+ padding:0!important;
+ margin:0!important;
  border:0!important;
- background:rgba(250,249,245,.93);
+ border-radius:0!important;
+ background:transparent!important;
  box-shadow:none!important;
- border-radius:1px;
- line-height:1.1!important;
- transform:rotate(-1deg);
+ line-height:1.2!important;
+ transform:none!important;
 }
 .material-piece .material-label-no{
- display:inline-block;flex:none;
- min-width:13px;
- padding:2px 4px 1px;
- border-radius:100px;
- background:#d5e4df;
- color:#455753;
- font:600 9px/1.2 Pretendard,sans-serif;
- letter-spacing:-.03em;text-align:center;
+ display:inline-grid;place-items:center;flex:none;
+ width:19px;height:19px;min-width:19px;
+ padding:0!important;
+ border:0;border-radius:50%;
+ background:#252621!important;color:#fff!important;
+ font:500 9px/1 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.035em;
+ text-align:center;
+ box-shadow:none!important;
 }
 .material-piece .material-label-name{
  flex:0 1 auto;min-width:0;
+ color:#77766f!important;
+ font:400 10px/1.25 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.025em;
  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
- font:400 10px/1.2 Pretendard,sans-serif;
- letter-spacing:-.04em;color:#40413b;
 }
 .material-piece:hover .material-piece-title,
 .material-piece:focus-visible .material-piece-title{
- background:#f3f5e2;
+ background:transparent!important;box-shadow:none!important;
 }
+.material-piece:hover .material-label-name,
+.material-piece:focus-visible .material-label-name{color:#30312d!important}
+.material-intro{opacity:.88}
+.material-guide{opacity:.10!important}
+.material-belt{opacity:.14!important}
+.material-piece .material-art{transition:transform .25s ease-out}
 @media(max-width:700px){
- .material-piece .material-piece-title{gap:3px;padding:1px 2px;max-width:min(95%,154px)}
- .material-piece .material-label-no{font-size:8px;padding:2px 3px}
+ .material-piece .material-piece-title{
+   gap:4px;top:-15px;left:0;max-width:min(98%,175px);
+ }
+ .material-piece .material-label-no{
+   width:17px;height:17px;min-width:17px;font-size:8px;
+ }
  .material-piece .material-label-name{font-size:9px}
+ .material-piece .material-object-image,
+ .material-detail .material-object-image{
+   filter:
+     drop-shadow(0 0 1.2px rgba(255,255,255,.96))
+     drop-shadow(1px 2px 3px rgba(24,24,20,.13));
+ }
 }
