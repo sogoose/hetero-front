@@ -580,7 +580,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 }
 .material-detail .material-detail-copy{
  position:relative;box-sizing:border-box;flex:none;
- width:min(340px,calc(100vw - 36px));max-height:38dvh;overflow:auto;
+ width:min(340px,calc(100vw - 36px));max-height:38dvh;overflow:visible;
  padding:12px 35px 13px 14px;
  border:1px solid #bcb9af;border-radius:0;
  background:#f9f8f2;box-shadow:2px 3px 0 rgba(51,50,45,.08);
@@ -634,4 +634,10 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 }
 @media(prefers-reduced-motion:reduce){
  .material-detail .material-detail-copy{animation:none}
+}
+
+/* Short labels remain small even when a long description is edited. */
+.material-detail .material-detail-copy p:not([hidden]){
+ display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;
+ overflow:hidden;
 }
