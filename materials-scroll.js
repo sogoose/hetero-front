@@ -17,6 +17,7 @@ const detailTitle=document.querySelector('#material-detail-title');
 const detailType=document.querySelector('#material-detail-type');
 const detailDescription=document.querySelector('#material-detail-description');
 const detailSequence=document.querySelector('#material-detail-sequence');
+const detailSource=document.querySelector('#material-detail-source');
 const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 let items=[],pieces=[],maxOffset=0,offset=0,target=0,currentIndex=-1,raf=0,drag=null,dragMoved=false,arranged=false;
 const atlasSize=[546,942];
@@ -74,7 +75,7 @@ function makePiece(item,index){
 }
 function sizing(item){
  const mobile=window.innerWidth<700;
- const factor=mobile?.74:1;
+ const factor=mobile ? 0.74 : 1;
  const width=Math.min(item.width*factor,viewport.clientWidth*(mobile?.67:.39),mobile?280:380);
  const fb=item.fallback||{};
  const ratio=fb.type==='crop'&&fb.rect?fb.rect[3]/fb.rect[2]
@@ -187,10 +188,11 @@ function detailMedia(item,container,width){
 }
 function showDetail(piece){
  const item=piece.item;
- detailTitle.textContent=item.title;
+ detailTitle.textContent=item.detailTitle||item.title;
  detailType.textContent=item.category+' / MATERIAL ARCHIVE';
  detailSequence.textContent='STICKER '+item.id+' / '+items.length;
  detailDescription.textContent=item.description||'주택의 정면에서 수집한 건축 요소.';
+ detailSource.textContent=item.detailSource?'SOURCE / '+item.detailSource:'';
  detailMedia(item,imageWrap,Math.min(380,window.innerWidth*.7));
  detail.showModal();
 }
@@ -258,6 +260,25 @@ window.addEventListener('resize',()=>{
  setPosition(maxOffset*fraction);
 });
 
+// Keep published research annotations from the previous materials reader.
+// This public key is read-only, the same published source already used by app.js.
+async function hydratePublishedAnnotations(){
+ try{
+  const response=await fetch('https://xjhwzhqiixbombbudlpl.supabase.co/rest/v1/hetero_archive_entries?select=id,category,title,subtitle,body,source&published=eq.true&order=sort_order.asc',{
+   headers:{apikey:'sb_publishable_5agi4GlOLYN8wc3q4NxFAw_90Y2BKjn'}
+  });
+  if(!response.ok)return;
+  const rows=await response.json();
+  const match={brick:'04',tile:'02',gate:'03'};
+  for(const row of rows){
+   const sticker=items.find(item=>item.id===match[row.id]);
+   if(!sticker)continue;
+   if(row.title)sticker.detailTitle=row.title;
+   if(row.body)sticker.description=row.body;
+   if(row.source)sticker.detailSource=row.source;
+  }
+ }catch(error){console.info('Published annotations unavailable; keeping local descriptions.')}
+}
 async function start(){
  try{
   const response=await fetch('assets/materials/stickers.json',{cache:'no-cache'});
@@ -270,6 +291,7 @@ async function start(){
   items=fallbackItems;
  }
  for(const [index,item] of items.entries())makePiece(item,index);
+ void hydratePublishedAnnotations();
  layout();
  redraw();
 }
