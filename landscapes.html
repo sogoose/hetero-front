@@ -93,8 +93,8 @@
   .photo-main > #archive-essay-trigger{transition:none!important;}
 }
 </style>
-<script src="polaroids.js?v=26" defer></script>
-<script src="landscapes-editor.js?v=10" defer></script>
+<script src="polaroids.js?v=27" defer></script>
+
 <script src="archive-essay.js?v=2" defer></script>
 </head>
 <body>
@@ -109,7 +109,6 @@
 <symbol id="ic-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
 <symbol id="ic-flip" viewBox="0 0 24 24"><path d="M20 8V4h-4M4 16v4h4"/><path d="M5 9a7 7 0 0 1 12-3l3 2M4 16l3 2a7 7 0 0 0 12-3"/></symbol>
 <symbol id="ic-close" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
-<symbol id="ic-edit" viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4.6-.8L20 7.8a2.1 2.1 0 0 0-3-3L5.6 16.2 4 20z"/></symbol>
 </svg>
 <main class="photo-main">
 <h1 class="sr-only">풍경 사진 아카이브</h1>
@@ -134,7 +133,7 @@
 <div class="photo-navigation" aria-label="페이지 및 목차">
 <a class="icon-button nav-home" href="index.html" aria-label="혼종의 정면 홈으로" title="홈으로"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-home"></use></svg><span class="sr-only">홈으로</span></a>
 <button type="button" id="chapter-open" class="icon-button" title="목차 열기" aria-label="목차 열기" aria-haspopup="dialog" aria-controls="chapter-menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-menu"></use></svg><span class="sr-only">목차 열기</span></button>
-<button id="archive-edit-open" class="edit-launch" type="button" aria-label="건물 기록 편집" aria-haspopup="dialog" aria-controls="archive-editor" title="건물 기록 편집"><svg class="ui-icon" aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-edit"></use></svg><span>EDIT</span></button>
+
 </div>
 <div class="photo-toolbar" role="toolbar" aria-label="사진 조작">
 <div class="view-switch" role="group" aria-label="사진 배치">
@@ -181,54 +180,9 @@
 <div class="stats-selectors"><label>분석 항목<select id="stats-dimension"><option value="year">건축 연대</option><option value="structure">구조</option><option value="wall_finish">외벽 마감</option><option value="roof_finish">지붕 마감</option><option value="railing">난간</option></select></label><label id="stats-granularity-label">표시 단위<select id="stats-granularity"><option value="decade">10년 단위</option><option value="year">연도별</option></select></label></div>
 <div class="stats-chart" id="stats-plot" role="img" aria-label="전체 건물 기록의 통계 막대그래프"></div>
 <p class="stats-footnote" id="stats-footnote">등록된 전체 사진 기준으로 계산합니다.</p>
-<div class="stats-bottom"><span>DATA SOURCE / BUILDINGS REGISTRY</span><a href="https://github.com/sogoose/hetero-front/edit/main/assets/buildings/registry.csv" target="_blank" rel="noopener noreferrer">CSV 데이터 편집 ↗</a></div>
+<div class="stats-bottom"><span>DATA SOURCE / BUILDINGS REGISTRY</span></div>
 </dialog>
-<dialog id="archive-editor" class="archive-editor" aria-labelledby="editor-title">
- <div class="editor-top"><span class="dialog-kicker">HETERO FRONT / ARCHIVE EDITOR</span><button class="icon-button" id="archive-edit-close" type="button" aria-label="편집 창 닫기"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-close"></use></svg></button></div>
- <h2 id="editor-title">ARCHIVE / EDIT</h2>
- <p class="editor-intro">건축물 정보를 여기에서 수정할 수 있습니다. 초안은 현재 브라우저에 보관되며, 공개 사이트에 반영하려면 내보낸 파일을 GitHub에 커밋해야 합니다.</p>
- <div class="editor-choose"><label for="editor-record">기록 선택 / 147 photographs</label><select id="editor-record" aria-label="편집할 건물 선택"><option value="">건물 목록 불러오는 중…</option></select><button id="editor-pick" type="button">화면에서 카드 선택 <span aria-hidden="true">↗</span></button></div>
- <div class="editor-workspace">
- <form id="archive-editor-form" class="editor-form">
- <p id="editor-location-note" class="sr-only">정확한 주소를 공개하지 않기 위해 위치는 읽기 전용입니다.</p>
- <div class="editor-grid">
- <label>기록 위치 <input name="location" type="text" readonly aria-describedby="editor-location-note" placeholder="○○시 ○○구 ○○동" autocomplete="off"></label>
- <label>기록 연도 <input name="construction_year" type="text" placeholder="예: 1989 또는 1980전후"></label>
- <label>연도 검증 상태 <select name="year_status"><option value="unverified">미검증</option><option value="estimated">추정</option><option value="crosschecked">외부 교차확인</option><option value="verified">공식 원문 확인</option></select></label>
- <label>사용승인일 <input name="approval_date" type="text" placeholder="YYYY-MM-DD"></label>
- <label>주구조 <input name="structure" type="text" placeholder="예: 벽돌구조 / 철근콘크리트조"></label>
- <label>구조 검증 <select name="structure_status"><option value="">미입력</option><option value="unverified">미검증</option><option value="estimated">추정</option><option value="crosschecked">외부 교차확인</option><option value="verified">공식 원문 확인</option></select></label>
- <label>외벽 마감 <input name="wall_finish" type="text" placeholder="예: 점토벽돌"></label>
- <label>외벽 검증 <select name="wall_status"><option value="">미입력</option><option value="unverified">미검증</option><option value="estimated">추정</option><option value="crosschecked">외부 교차확인</option><option value="verified">공식 원문 확인</option></select></label>
- <label>지붕 마감 <input name="roof_finish" type="text" placeholder="예: 시멘트 기와"></label>
- <label>지붕 검증 <select name="roof_status"><option value="">미입력</option><option value="unverified">미검증</option><option value="estimated">추정</option><option value="crosschecked">외부 교차확인</option><option value="verified">공식 원문 확인</option></select></label>
- <label>난간 <input name="railing" type="text" placeholder="예: 주물 난간"></label>
- <label>난간 검증 <select name="railing_status"><option value="">미입력</option><option value="unverified">미검증</option><option value="estimated">추정</option><option value="crosschecked">외부 교차확인</option><option value="verified">공식 원문 확인</option></select></label>
- <label>자료 근거 <input name="year_source" type="text" placeholder="출처 · 조회일 · 조사 근거"></label>
- <label>재료 키워드 <input name="material" type="text" placeholder="벽돌 · 기와 · 주물"></label>
- <label class="editor-wide">상세 설명 / 연구 기록 <textarea name="description" rows="3" placeholder="이 건물의 재료와 형태에 관한 기록"></textarea></label>
- <label class="editor-wide">조사 메모 <textarea name="notes" rows="2" placeholder="추정 근거 / 향후 확인할 사항"></textarea></label>
- </div>
- <div class="editor-form-actions"><span id="editor-save-status" role="status" aria-live="polite"></span><button type="submit" class="editor-primary">초안 저장</button></div>
- </form>
- <aside class="editor-preview" aria-label="선택한 건물의 사진">
-  <div class="editor-preview-card">
-   <div class="editor-preview-head"><span>RECORD / IMAGE</span><span id="editor-preview-index">— / —</span></div>
-   <a id="editor-preview-link" class="editor-preview-image" target="_blank" rel="noopener noreferrer" aria-label="건물 사진 원본 새 창에서 보기">
-    <img id="editor-preview-image" alt="" decoding="async">
-    <span id="editor-preview-fallback" class="editor-preview-fallback" hidden>이미지를 불러올 수 없습니다.</span>
-   </a>
-   <p id="editor-preview-caption" class="editor-preview-caption">사진 선택 중…</p>
-   <p class="editor-preview-note">사진 클릭 시 원본 이미지가 열립니다.</p>
-  </div>
- </aside>
- </div>
- <div class="editor-publish">
- <div><strong>EXPORT / PUBLISH</strong><p>변경한 내용을 CSV와 JSON으로 내보내고 GitHub의 기존 파일과 교체하면 누구나 볼 수 있습니다.</p></div>
- <div class="editor-export-buttons"><button id="editor-export-csv" type="button">REGISTRY.CSV ↓</button><button id="editor-export-json" type="button">METADATA.JSON ↓</button></div>
- <div class="editor-github-links"><a href="https://github.com/sogoose/hetero-front/edit/main/assets/buildings/registry.csv" target="_blank" rel="noopener noreferrer">GitHub CSV ↗</a><a href="https://github.com/sogoose/hetero-front/edit/main/assets/buildings/metadata.json" target="_blank" rel="noopener noreferrer">GitHub Metadata ↗</a></div>
- </div>
-</dialog>
+
 <dialog id="photo-detail" aria-labelledby="detail-title">
 <h2 id="detail-title" class="sr-only"></h2>
 <div class="focus-stage"><div class="focus-lift"><div class="focus-card">
@@ -243,7 +197,7 @@
   </section>
   <footer class="reverse-stub">
     <img class="reverse-logo" src="assets/archive/hetero-logo.svg" alt="혼종의 정면">
-    <button id="detail-edit" type="button" aria-label="이 카드의 건물 정보 편집">EDIT <span aria-hidden="true">↗</span></button>
+    
   </footer>
 </article>
 </div></div></div>
