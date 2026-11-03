@@ -240,9 +240,11 @@ function renderAnnotations(){
   for(let col=0;col<ncols;col++){
    const column=document.createElement('div');column.className='material-annotation-column';
    for(let row=0;row<Math.ceil(slots/ncols);row++){
-    const index=cover?row*ncols+col:coverCount+(sheet-1)*perBoard+row*ncols+col;
-    if(cover&&index>=coverCount)continue;
-    if(!cover&&index>=coverCount+sheet*perBoard)continue;
+    // Print index down each column, then across: 01, 02, 03... in reading order.
+    const rowsInColumn=Math.ceil(slots/ncols);
+    const index=cover?col*rowsInColumn+row:coverCount+(sheet-1)*perBoard+col*rowsInColumn+row;
+    const end=cover?coverCount:Math.min(pieces.length,coverCount+sheet*perBoard);
+    if(index>=end)continue;
     if(numericIndex[index])drawAnnotation(column,numericIndex[index]);
    }
    panel.append(column);
