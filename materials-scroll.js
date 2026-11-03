@@ -7,6 +7,13 @@ const main=document.querySelector('.material-main');
 const viewport=document.querySelector('#material-window');
 const strip=document.querySelector('#material-strip');
 const host=document.querySelector('#material-stickers');
+// An unobtrusive Gunpla-style sprue framework lives behind the real cutouts.
+const svgNS='http://www.w3.org/2000/svg';
+const runnerSvg=document.createElementNS(svgNS,'svg');
+runnerSvg.classList.add('material-runner-network');
+runnerSvg.setAttribute('aria-hidden','true');
+runnerSvg.setAttribute('focusable','false');
+host.prepend(runnerSvg);
 const count=document.querySelector('#material-counter');
 const scrubber=document.querySelector('#material-scrubber');
 const chapter=document.querySelector('#chapter-menu');
@@ -169,6 +176,64 @@ function getSheetForOffset(scroll){
  }
  return best;
 }
+function svgElement(tag,attrs){
+ const element=document.createElementNS(svgNS,tag);
+ for(const [name,value] of Object.entries(attrs||{}))element.setAttribute(name,String(value));
+ return element;
+}
+function renderSprue(){
+ if(!pieces.length)return;
+ const vw=viewport.clientWidth;
+ const vh=viewport.clientHeight;
+ const mobile=vw<700;
+ runnerSvg.setAttribute('viewBox','0 0 '+Math.ceil(strip.offsetWidth)+' '+Math.ceil(vh));
+ runnerSvg.setAttribute('width',String(Math.ceil(strip.offsetWidth)));
+ runnerSvg.setAttribute('height',String(Math.ceil(vh)));
+ runnerSvg.replaceChildren();
+ const groupSize=mobile?4:8;
+ for(let g=0;g<sheets.length;g++){
+  const sheet=sheets[g];
+  const x=Math.round(sheet.start+sheet.width*.49);
+  const top=Math.round(Math.max(50,vh*.13));
+  const bottom=Math.round(Math.min(vh-82,vh*.85));
+  const group=svgElement('g',{'class':'material-runner-group'});
+  // Continuous understated vertical runner, paired with small bent ends.
+  const mainPath=[
+   'M',x,top,'V',bottom,
+   'M',x,top,'h',mobile?-15:-22,
+   'M',x,bottom,'h',mobile?15:22
+  ].join(' ');
+  group.append(svgElement('path',{'class':'material-runner-spine',d:mainPath}));
+  const members=pieces.slice(g*groupSize,(g+1)*groupSize);
+  members.forEach((piece,i)=>{
+   if(!piece.sizing)return;
+   const pos=piece.position;
+   const w=piece.sizing.width,h=piece.sizing.height;
+   const cy=pos.y+h*.5,cx=pos.x+w*.5;
+   let jointX,jointY,path;
+   const gap=mobile?7:10;
+   if(cx<x-w*.18){
+    jointX=pos.x+w+gap;jointY=clamp(cy,top+8,bottom-8);
+    path='M '+x+' '+Math.round(jointY)+' H '+Math.round(jointX);
+   }else if(cx>x+w*.18){
+    jointX=pos.x-gap;jointY=clamp(cy,top+8,bottom-8);
+    path='M '+x+' '+Math.round(jointY)+' H '+Math.round(jointX);
+   }else{
+    // When a silhouette crosses the runner, attach just outside its edge.
+    jointX=cx;
+    jointY=cy<vh*.5?pos.y+h+gap:pos.y-gap;
+    const atY=clamp(jointY,top+8,bottom-8);
+    path='M '+x+' '+Math.round(atY)+' H '+Math.round(jointX);
+   }
+   group.append(svgElement('path',{'class':'material-runner-branch',d:path}));
+   group.append(svgElement('circle',{'class':'material-runner-joint',cx:x,cy:Math.round(clamp(jointY,top+8,bottom-8)),r:mobile?2:2.35}));
+   if(i===0 || i===members.length-1){
+    group.append(svgElement('circle',{'class':'material-runner-terminal',cx:Math.round(jointX),cy:Math.round(clamp(jointY,top+8,bottom-8)),r:mobile?2.6:3.2}));
+   }
+  });
+  runnerSvg.append(group);
+ }
+}
 function layout(){
  if(!pieces.length)return;
  const vw=viewport.clientWidth,vh=viewport.clientHeight;
@@ -184,7 +249,7 @@ function layout(){
  for(let group=0;group<groupCount;group++){
   const x0=lead+group*(sheetWidth+sheetSpacing);
   const center=x0+sheetWidth*.5;
-  sheets.push({start:x0,centre:center});
+  sheets.push({start:x0,centre:center,width:sheetWidth});
  }
  pieces.forEach(piece=>{
   const {item,index,button,art}=piece;
@@ -202,20 +267,27 @@ function layout(){
   }
   art.style.width=width+'px';art.style.height=height+'px';
   const shiftX=aligned?0:sheetVariation*(mobile?3:8);
-  const shiftY=aligned?0:((index*7+group*11)%5-2)*(mobile?5:10);
+  const shiftY=aligned?0:((index*7+group*11)%5-2)*(mobile?3:5);
   // Scale the positions to the object footprints, allowing the light
   // silhouette shadows to overlap without piling every object in one spot.
   const left=sx*(sheetWidth-width)+shiftX;
-  const x=sheets[group].start+clamp(left+Number(item.nudgeX||0),8,sheetWidth-width-6);
+  const rawX=sheets[group].start+clamp(left+Number(item.nudgeX||0),8,sheetWidth-width-6);
   const avail=Math.max(40,vh-height-90);
-  const y=clamp(22+sy*avail+shiftY+Number(item.nudgeY||0),24,vh-height-46);
-  button.style.left=Math.round(x)+'px';
-  button.style.top=Math.round(y)+'px';
+  const rawY=clamp(22+sy*avail+shiftY+Number(item.nudgeY||0),24,vh-height-46);
+  // A soft invisible 12 px grid creates assembly-like organization without
+  // forcing identical cells on wildly different architectural silhouettes.
+  const snap=mobile?8:12;
+  const x=Math.round(rawX/snap)*snap;
+  const y=Math.round(rawY/snap)*snap;
+  piece.position={x,y};
+  button.style.left=x+'px';
+  button.style.top=y+'px';
   button.style.width=width+'px';
-  button.style.setProperty('--rotation',aligned?'0deg':(rotation+(item.rotation||0)*.16)+'deg');
+  button.style.setProperty('--rotation',aligned?'0deg':((rotation+(item.rotation||0)*.16)*.58)+'deg');
   piece.center=x+width*.5;
  });
  strip.style.width=Math.ceil(lead+groupCount*(sheetWidth+sheetSpacing)+tail)+'px';
+ renderSprue();
  maxOffset=Math.max(0,strip.offsetWidth-vw);
  offset=clamp(offset,0,maxOffset);
  target=clamp(target,0,maxOffset);
