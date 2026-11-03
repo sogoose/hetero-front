@@ -901,3 +901,61 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  .material-annotation-column{gap:3px}
  .material-annotation-entry{min-height:13px}
 }
+
+/* ARCHIVE ANNOTATIONS / longer, darker, editorial typesetting.
+   Keep the object layout and its color-sorting completely unchanged. */
+.material-annotation-column{
+ gap:clamp(6px,.85vh,10px);
+ padding-right:clamp(5px,.8vw,10px);
+}
+.material-annotation-entry{
+ grid-template-columns:16px minmax(0,1fr);
+ column-gap:4px;min-height:26px;
+}
+.material-annotation-number{
+ font-family:"Special Elite",monospace;
+ font-size:8px;font-weight:500;line-height:1.33;color:#4a4943;
+}
+.material-annotation-copy{gap:3px;overflow:visible}
+.material-annotation-name{
+ display:-webkit-box;
+ -webkit-box-orient:vertical;
+ -webkit-line-clamp:3;
+ font-family:Pretendard,-apple-system,sans-serif;
+ font-size:9px;font-weight:650;line-height:1.26;
+ letter-spacing:-.025em;color:#292a26;
+ white-space:normal;overflow:hidden;text-overflow:clip;
+ overflow-wrap:anywhere;word-break:keep-all;
+}
+.material-annotation-description{
+ display:-webkit-box;
+ -webkit-box-orient:vertical;
+ -webkit-line-clamp:3;
+ font-family:Pretendard,-apple-system,sans-serif;
+ font-size:8px;font-weight:400;line-height:1.36;
+ letter-spacing:-.012em;color:#77746d;
+ white-space:normal;overflow:hidden;text-overflow:clip;
+ overflow-wrap:anywhere;word-break:keep-all;
+}
+.material-main.is-editing .material-annotations,
+.material-main.is-editing .material-annotation-board,
+.material-main.is-editing .material-annotation-entry{
+ pointer-events:auto;
+}
+.material-main.is-editing .material-annotation-entry{cursor:text}
+.material-main.is-editing .material-annotation-entry:hover .material-annotation-name{
+ text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;
+}
+@media(max-width:700px){
+ .material-annotation-column{padding:0 5px 0 1px;gap:6px}
+ .material-annotation-entry{grid-template-columns:13px minmax(0,1fr);column-gap:3px;min-height:23px}
+ .material-annotation-number{font-size:7px;line-height:1.22}
+ .material-annotation-name{font-size:8.5px;line-height:1.25;font-weight:650;-webkit-line-clamp:3}
+ .material-annotation-description{font-size:7.5px;line-height:1.3;-webkit-line-clamp:3}
+ .material-annotation-copy{gap:2px}
+}
+@media(max-height:700px){
+ .material-annotation-column{gap:4px}
+ .material-annotation-name{-webkit-line-clamp:2}
+ .material-annotation-description{-webkit-line-clamp:2}
+}
