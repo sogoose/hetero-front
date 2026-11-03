@@ -33,26 +33,34 @@ let items=[],pieces=[],sheets=[],maxOffset=0,offset=0,target=0,raf=0,drag=null;
 let dragged=false,aligned=false,editing=false,activeItem=null,currentSheet=-1;
 let changes={};
 
+/* Lightly scattered editorial collage at three staggered heights. */
 const scatterSlots=[
- [.05,.04,1.08,-5], [.31,.54,.84,5],
- [.47,.08,.96,-3], [.76,.56,.80,6],
- [.78,.02,.78,-5], [.04,.62,.90,3],
- [.52,.65,.83,4], [.25,.07,.88,7]
+ [.06,.13,1.09,-4], [.28,.41,.87,3],
+ [.70,.06,1.03,-3], [.05,.73,.94,4],
+ [.76,.72,.91,-4], [.41,.74,.82,2],
+ [.72,.39,1.00,5], [.35,.08,.79,-2]
 ];
 const gridSlots=[
- [.06,.04,.93,0], [.29,.04,.90,0],
- [.53,.04,.93,0], [.77,.04,.90,0],
- [.06,.70,.93,0], [.29,.70,.90,0],
- [.53,.70,.93,0], [.77,.70,.90,0]
+ [.06,.08,.88,0], [.35,.08,.88,0],
+ [.66,.08,.88,0], [.06,.40,.88,0],
+ [.35,.40,.88,0], [.66,.40,.88,0],
+ [.21,.74,.88,0], [.56,.74,.88,0]
 ];
 const scatterMobile=[
- [.04,.09,1.00,-5], [.52,.04,.93,3],
- [.08,.70,.86,4], [.53,.67,1.0,-5]
+ [.04,.13,1.04,-3], [.52,.31,.89,4],
+ [.14,.69,.95,3], [.61,.71,1.02,-4]
 ];
 const gridMobile=[
- [.04,.08,.88,0], [.53,.08,.88,0],
- [.04,.71,.88,0], [.53,.71,.88,0]
+ [.05,.12,.91,0], [.53,.12,.91,0],
+ [.05,.66,.91,0], [.53,.66,.91,0]
 ];
+const slotOrders=[
+ [0,1,2,3,4,5,6,7],
+ [2,0,7,5,1,4,3,6],
+ [6,3,0,4,2,7,1,5],
+ [4,6,2,0,5,3,7,1]
+];
+
 const fallbackItems=[
  {id:'01',title:'주택의 정면',category:'주택',image:'assets/archive/specimens.webp',width:240,vertical:.22,rotation:0},
  {id:'02',title:'S형 시멘트 기와',category:'기와',image:'assets/archive/tile.webp',width:210,vertical:.48,rotation:0},
@@ -98,8 +106,8 @@ function makePiece(item,index){
 }
 function sizing(item,mobile,scale){
  const width=Math.round(clamp(
-  (Number(item.width)||260)*(mobile?.48:.64)*scale,
-  mobile?90:112,mobile?186:252));
+  (Number(item.width)||260)*(mobile?.46:.57)*scale,
+  mobile?85:102,mobile?173:239));
  const ratio=item.category==='지붕'?.68
   :item.category==='난간'?.60
   :item.category==='벽체'?.72
@@ -142,7 +150,7 @@ function layout(){
  const vw=viewport.clientWidth,vh=viewport.clientHeight;
  const mobile=vw<700;
  const perSheet=mobile?4:8;
- const sheetWidth=mobile?clamp(vw*1.1,350,480):clamp(vw*.67,710,945);
+ const sheetWidth=mobile?clamp(vw*1.06,350,460):clamp(vw*.66,710,935);
  const lead=mobile?Math.max(vw*.35,150):Math.max(vw*.35,440);
  const tail=mobile?vw*.42:vw*.50;
  const sheetSpacing=mobile?15:27;
@@ -158,7 +166,9 @@ function layout(){
   const {item,index,button,art}=piece;
   const group=Math.floor(index/perSheet);
   const cell=index%perSheet;
-  const [sx,sy,scale,rotation]=styleSlots[cell];
+  const slot=(!aligned&&!mobile)?slotOrders[group%slotOrders.length][cell]:cell;
+  const [sx,sy,scale,rotation]=styleSlots[slot];
+  const sheetVariation=aligned?0:(group%4-1.5);
   const shape=sizing(item,mobile,scale);
   const {width,height}=shape;
   piece.sizing=shape;
@@ -167,13 +177,16 @@ function layout(){
    piece.lastWidth=width;piece.lastHeight=height;
   }
   art.style.width=width+'px';art.style.height=height+'px';
-  const x=sheets[group].start+sx*(sheetWidth-width*.72);
-  const avail=Math.max(40,vh-height-65);
-  const y=15+sy*avail;
+  const shiftX=aligned?0:sheetVariation*(mobile?3:8);
+  const shiftY=aligned?0:((index*7+group*11)%5-2)*(mobile?5:10);
+  const left=sx*(sheetWidth-width*.84)+shiftX;
+  const x=sheets[group].start+clamp(left,10,sheetWidth-width*.82);
+  const avail=Math.max(40,vh-height-76);
+  const y=clamp(21+sy*avail+shiftY,22,vh-height-38);
   button.style.left=Math.round(x)+'px';
   button.style.top=Math.round(y)+'px';
   button.style.width=width+'px';
-  button.style.setProperty('--rotation',aligned?'0deg':(rotation+(item.rotation||0)*.28)+'deg');
+  button.style.setProperty('--rotation',aligned?'0deg':(rotation+(item.rotation||0)*.16)+'deg');
   piece.center=x+width*.5;
  });
  strip.style.width=Math.ceil(lead+groupCount*(sheetWidth+sheetSpacing)+tail)+'px';
