@@ -23,7 +23,7 @@
  const REG_FIELDS=['construction_year','year_status','approval_date','structure','structure_status',
   'wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','year_source','notes'];
  const META_FIELDS=['description','material'];
- let headers=[], rows=[], rowMap=new Map(), metadata={}, ready=false, pending=null, picking=false;
+ let headers=[], rows=[], allRows=[], rowMap=new Map(), metadata={}, ready=false, pending=null, picking=false;
  let drafts={};
  try{const fromStorage=JSON.parse(localStorage.getItem(KEY)||'{}');if(fromStorage&&typeof fromStorage==='object')drafts=fromStorage;}catch{}
  function parseCSV(text){
@@ -57,7 +57,8 @@
    throw Error('원장 형식을 확인할 수 없습니다.');
   headers=parsed.headers;
   // Mirror the visible gallery; the later duplicate remains archived in the source CSV.
-  rows=parsed.rows.filter(row=>validFile(row.file)&&row.file!=='photo-1ed9d6a5f507.webp');
+  allRows=parsed.rows.filter(row=>validFile(row.file));
+  rows=allRows.filter(row=>row.file!=='photo-1ed9d6a5f507.webp');
   rowMap=new Map(rows.map(row=>[row.file,row]));
   metadata=meta;
   recordSelect.replaceChildren();
@@ -162,7 +163,8 @@
  }
  function exportCSV(){
   if(!ready){status.textContent='원장 로딩이 끝난 뒤 내보내 주세요.';return}
-  const updated=rows.map(row=>({...row,...(drafts[row.file]?.registry||{})}));
+  // Export all records, even those whose photographs are hidden from the public gallery.
+  const updated=allRows.map(row=>({...row,...(drafts[row.file]?.registry||{})}));
   const content=[headers.map(csvCell).join(','),...updated.map(row=>headers.map(k=>csvCell(row[k])).join(','))].join('\r\n')+'\r\n';
   download('registry.csv',content,'text/csv');
   status.textContent='CSV 다운로드 완료. GitHub의 assets/buildings/registry.csv에 교체 업로드해야 공개 반영됩니다.';
