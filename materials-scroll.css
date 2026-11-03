@@ -1099,3 +1099,89 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 @media(prefers-reduced-motion:reduce){
  .material-intro .material-essay-trigger span{transition:none!important}
 }
+
+/* Opening-page reset: a conventional top-centre headline with specimens below.
+   Overrides the abandoned three-corner lettering and never alters the next sheets. */
+.material-strip .material-intro{
+ left:0!important;top:0!important;
+ transform:none!important;pointer-events:none!important;
+}
+.material-strip .material-intro h1{
+ position:absolute!important;inset:0!important;
+ margin:0!important;padding:0!important;
+}
+.material-strip .material-intro .material-essay-trigger{
+ position:absolute!important;
+ inset:clamp(34px,6.2vh,80px) 0 auto 0!important;
+ width:100%!important;height:auto!important;
+ display:block!important;pointer-events:auto!important;
+ margin:0!important;padding:0 8px!important;
+ text-align:center!important;
+ font:800 clamp(27px,3.1vw,43px)/1.32 "Noto Serif KR",serif!important;
+ letter-spacing:-.064em!important;
+}
+.material-strip .material-intro .material-essay-trigger span,
+.material-strip .material-intro .material-essay-trigger span:nth-child(1),
+.material-strip .material-intro .material-essay-trigger span:nth-child(2),
+.material-strip .material-intro .material-essay-trigger span:nth-child(3){
+ position:static!important;inset:auto!important;
+ display:block!important;width:auto!important;max-width:100%!important;
+ margin:0!important;padding:0!important;
+ transform:none!important;text-align:center!important;
+ white-space:nowrap!important;line-height:1.32!important;
+ font-size:1em!important;
+ pointer-events:auto!important;
+}
+.material-strip .material-intro .material-essay-trigger span:hover{
+ transform:none!important;
+}
+.material-intro .material-essay-trigger:focus-visible{
+ outline:1px solid #77756e!important;outline-offset:5px!important;
+}
+/* Numbered reference list is independent of visual color grouping. */
+.material-annotation-column{
+ gap:clamp(2px,.35vh,5px)!important;
+}
+.material-annotation-entry{
+ grid-template-columns:16px minmax(0,1fr);
+ min-height:0!important;
+ column-gap:4px!important;align-items:start;
+}
+.material-annotation-copy{gap:0!important}
+.material-annotation-number{
+ font:650 9px/1.2 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.025em!important;
+ color:#96938c!important;
+}
+.material-annotation-name{
+ font-weight:650!important;
+ line-height:1.19!important;
+}
+.material-annotation-description{
+ line-height:1.24!important;
+}
+@media(max-width:700px){
+ .material-strip .material-intro .material-essay-trigger{
+  top:clamp(35px,5.6vh,64px)!important;
+  font-size:clamp(19px,5.2vw,25px)!important;
+  letter-spacing:-.061em!important;
+ }
+ .material-annotation-column{gap:3px!important}
+ .material-annotation-entry{
+  grid-template-columns:13px minmax(0,1fr)!important;
+  min-height:0!important;
+  column-gap:3px!important;
+ }
+ .material-annotation-number{
+  font-size:7.5px!important;
+  font-weight:650!important;
+ }
+ .material-annotation-name{line-height:1.16!important}
+ .material-annotation-description{line-height:1.18!important}
+}
+@media(max-height:570px){
+ .material-strip .material-intro .material-essay-trigger{
+  top:18px!important;font-size:clamp(16px,2.2vw,27px)!important;
+ }
+ .material-annotation-column{gap:2px!important}
+}
