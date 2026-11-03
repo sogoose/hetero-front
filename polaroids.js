@@ -48,30 +48,6 @@ function standardizeFinish(key,value){
  return dictionaries[key]?.[term]||term;
 }
 
-/* Display browser-local editing drafts; these are not published to the repository. */
-function applyLocalDraft(record,patch){
- if(!patch||typeof patch!=='object')return;
- const reg=patch.registry&&typeof patch.registry==='object'?patch.registry:{};
- const meta=patch.meta&&typeof patch.meta==='object'?patch.meta:{};
- if(Object.prototype.hasOwnProperty.call(reg,'construction_year'))record.year=String(reg.construction_year||'');
- for(const key of ['year_status','approval_date','year_source','structure','structure_status','wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','notes']){
-  if(Object.prototype.hasOwnProperty.call(reg,key)){
-   const raw=String(reg[key]||'').trim();
-   // Do not hide independently crosschecked public records behind blank stale local drafts.
-   if(!raw&&['structure','structure_status','approval_date','year_source','notes'].includes(key)&&record[key])continue;
-   record[key]=standardizeFinish(key,raw);
-  }
- }
- for(const key of ['description','material','handwritten_note']){
-  if(Object.prototype.hasOwnProperty.call(meta,key))record[key]=String(meta[key]||'');
- }
- if(record.location)record.title=record.location+(record.year?' ('+record.year+')':'');
-}
-function readLocalDrafts(){
- try{const value=JSON.parse(localStorage.getItem('hetero-front-editor-drafts-v1')||'{}');return value&&typeof value==='object'?value:{}}
- catch{return {}}
-}
-
 function coarseLocation(value){
  const text=String(value||'').replace(/_/g,' ');
  const aliases={'서울':'서울시','서울특별시':'서울시','천안':'천안시','전주':'전주시'};
@@ -162,8 +138,6 @@ async function load(force=false){
    if(typeof info.thumbnail==='string'&&/^thumbs\/[a-zA-Z0-9._-]+\.webp$/.test(info.thumbnail))record.thumbnail=FOLDER+info.thumbnail;
    return record;
   });
-  const savedDrafts=readLocalDrafts();
-  for(const record of records){if(savedDrafts[record.file])applyLocalDraft(record,savedDrafts[record.file]);}
   records.sort(compareByName); // Stable archive IDs begin with 01 in 가나다 order.
   galleryOrder=getGalleryOrder();page=0;render();
  }finally{loading=false;shuffle.disabled=false;}
@@ -466,13 +440,13 @@ function openDetail(record,source){
  const sticker=source.querySelector('.polaroid-label-number');
  document.querySelector('#detail-label-number').textContent=sticker?.textContent||String(records.indexOf(record)+1).padStart(2,'0');
  const fields=document.querySelector('#detail-fields');fields.replaceChildren();
- for(const [key,label,formField] of [
-  ['location','위치',null],
-  ['year','건축연도','construction_year'],
-  ['structure','구조','structure'],
-  ['wall_finish','외벽 마감','wall_finish'],
-  ['roof_finish','지붕 마감','roof_finish'],
-  ['railing','난간','railing']
+ for(const [key,label] of [
+  ['location','위치'],
+  ['year','건축연도'],
+  ['structure','구조'],
+  ['wall_finish','외벽 마감'],
+  ['roof_finish','지붕 마감'],
+  ['railing','난간']
  ]){
   const dt=document.createElement('dt'),dd=document.createElement('dd');
   dt.textContent=label;
@@ -484,17 +458,11 @@ function openDetail(record,source){
    dd.textContent=value;
    if(searchedNotFound){
     dd.classList.add('detail-unset');
-    dd.title='공개 검색을 시도했지만 이 건물의 주구조는 확인되지 않았습니다.';
+    dd.title='주구조 미확인';
    }
   }
-  else if(formField){
-   const add=document.createElement('button');
-   add.type='button';add.className='detail-empty-edit';add.textContent='＋ 입력';
-   add.setAttribute('aria-label',label+' 정보 입력');
-   add.addEventListener('click',()=>editDetailField(formField));
-   dd.append(add);
-  }else{
-   dd.textContent='—';dd.classList.add('detail-unset');
+  else{
+   dd.textContent='-';dd.classList.add('detail-unset');
   }
   fields.append(dt,dd);
  }
@@ -506,13 +474,6 @@ function openDetail(record,source){
  }
  document.querySelector('#detail-front').focus();
 }
-function editDetailField(fieldName){
- const target=detailRecord?.file;
- if(!target)return;
- if(dialog.open)dialog.close();
- picked?.classList.remove('is-picked');picked=null;closing=false;detailRecord=null;
- document.dispatchEvent(new CustomEvent('hetero:edit-record',{detail:{file:target,field:fieldName||null}}));
-}
 function closeDetail(){
  if(closing||!dialog.open)return;closing=true;
  const done=()=>{dialog.close();picked?.classList.remove('is-picked');picked?.focus({preventScroll:true});picked=null;closing=false;detailRecord=null;};
@@ -522,27 +483,7 @@ function closeDetail(){
 }
 document.querySelector('#detail-front').addEventListener('click',()=>setFlipped(true));
 document.querySelector('#detail-flip').addEventListener('click',()=>setFlipped(!flipped));
-document.querySelector('#detail-edit').addEventListener('click',()=>editDetailField(null));
-document.addEventListener('hetero:record-draft-saved',event=>{
- const file=event.detail?.file,patch=event.detail?.patch;
- const record=records.find(record=>record.file===file);
- if(!record||!patch)return;
- applyLocalDraft(record,patch);
- records.sort(compareByName);
- galleryOrder=getGalleryOrder();
- // Saving an archive record must not discard the gallery page or rearrange
- // the cards currently being viewed. Update visible metadata in place instead.
- for(const body of bodies){
-  if(body.record.file===file){
-   const title=body.el.querySelector('.polaroid-title');
-   if(title){title.textContent=record.title;body.el.setAttribute('aria-label',record.title+' — 상세 보기');fitCaption(body.el)}
-   const img=body.el.querySelector('img');
-   if(img)img.alt=record.title;
-  }
-  const number=body.el.querySelector('.polaroid-label-number');
-  if(number)number.textContent=String(records.indexOf(body.record)+1).padStart(2,'0');
- }
-});
+
 dialog.addEventListener('cancel',event=>{event.preventDefault();closeDetail();});
 scatter.addEventListener('click',()=>{if(mode==='scatter')scatterTargets();else{mode='scatter';gallerySortControl.hidden=true;board.classList.remove('is-gallery');layout();scatterTargets();scatter.setAttribute('aria-pressed','true');align.setAttribute('aria-pressed','false');pager.hidden=true;}});
 align.addEventListener('click',()=>{
