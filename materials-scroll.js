@@ -122,12 +122,21 @@ function sizing(item,mobile,scale){
  const width=Math.round(clamp(
   (enlarged*.40+common*.60)*scale*responsive,
   mobile?145:194,mobile?231:315));
- const ratio=item.category==='지붕'?.73
+ // After alpha-trimming, use each object's actual visible aspect ratio.
+ // Category estimates remain only as a fallback for unpublished assets.
+ const fallbackRatio=item.category==='지붕'?.73
   :item.category==='난간'?.76
   :item.category==='벽체'?.77
   :item.category==='대문'?.94:1.02;
- const height=Math.round(Math.min(width*ratio,vh*.45));
- return {width,height};
+ const nativeW=Number(item.imageWidth),nativeH=Number(item.imageHeight);
+ const aspect=nativeW>0&&nativeH>0?nativeW/nativeH:1/fallbackRatio;
+ let displayWidth=width,displayHeight=Math.round(width/aspect);
+ const maxHeight=vh*(mobile?.44:.46);
+ if(displayHeight>maxHeight){
+  displayWidth=Math.round(width*maxHeight/displayHeight);
+  displayHeight=Math.round(maxHeight);
+ }
+ return {width:displayWidth,height:displayHeight};
 }
 function createImage(item,alt,onFailure){
  const img=new Image();
@@ -139,7 +148,8 @@ function createImage(item,alt,onFailure){
    retried=true;img.src=item.original;
   }else if(onFailure)onFailure();
  };
- img.src=item.image;
+ // A per-image revision invalidates stale browser-cached WebPs after trim.
+ img.src=item.image+(item.assetRevision?'?v='+encodeURIComponent(item.assetRevision):'');
  return img;
 }
 function attachImage(piece){
@@ -196,9 +206,9 @@ function layout(){
   // Scale the positions to the object footprints, allowing the light
   // silhouette shadows to overlap without piling every object in one spot.
   const left=sx*(sheetWidth-width)+shiftX;
-  const x=sheets[group].start+clamp(left,8,sheetWidth-width-6);
+  const x=sheets[group].start+clamp(left+Number(item.nudgeX||0),8,sheetWidth-width-6);
   const avail=Math.max(40,vh-height-90);
-  const y=clamp(22+sy*avail+shiftY,24,vh-height-46);
+  const y=clamp(22+sy*avail+shiftY+Number(item.nudgeY||0),24,vh-height-46);
   button.style.left=Math.round(x)+'px';
   button.style.top=Math.round(y)+'px';
   button.style.width=width+'px';
