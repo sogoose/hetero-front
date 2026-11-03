@@ -494,31 +494,32 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 }
 
 
-/* GUNDAM SPRUE / editorial structure
-   Thin warm-grey orthogonal runners unify each cluster without turning the
-   archive into a thick plastic model-kit frame. Everything sits under cutouts. */
+/* GUNPLA RUNNER / true organized eight-piece board
+   Each assembly frame is laid out before its parts; lines stay in cell
+   gutters and never determine image positions. Subtle like a technical plate. */
 .material-stickers .material-runner-network{
- position:absolute;top:0;left:0;
- display:block;z-index:0;
- overflow:visible;pointer-events:none;
- opacity:.74;
+ position:absolute;top:0;left:0;z-index:0;
+ display:block;overflow:visible;
+ pointer-events:none;
+ opacity:1;
 }
 .material-runner-group{
- fill:none;
- stroke-linecap:round;
- stroke-linejoin:round;
+ fill:none;stroke-linecap:round;stroke-linejoin:round;
 }
-.material-runner-spine{
- fill:none;stroke:#a5a69d;stroke-width:1.45;stroke-opacity:.51;
+.material-runner-frame{
+ fill:none;stroke:#a8aaa2;stroke-opacity:.55;stroke-width:1.65;
+}
+.material-runner-divider{
+ fill:none;stroke:#b4b6ac;stroke-opacity:.50;stroke-width:1.30;
 }
 .material-runner-branch{
- fill:none;stroke:#b2b2a7;stroke-width:1.15;stroke-opacity:.43;
+ fill:none;stroke:#a6a89e;stroke-opacity:.57;stroke-width:1.20;
 }
 .material-runner-joint{
- fill:#9fa098;stroke:none;opacity:.64;
+ fill:#faf9f5;stroke:#a8aaa0;stroke-width:1.15;stroke-opacity:.75;
 }
 .material-runner-terminal{
- fill:#faf9f5;stroke:#a0a299;stroke-width:1.05;opacity:.63;
+ fill:#a0a399;stroke:none;opacity:.80;
 }
 .material-stickers .material-piece{
  z-index:1;
@@ -527,14 +528,16 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 .material-stickers .material-piece:focus-visible{
  z-index:5;
 }
-.material-main.is-aligned .material-runner-network{
- opacity:.59;
+/* Layout remains clean when the user switches off the sprue framework. */
+.material-main:not(.is-aligned) .material-runner-network{
+ opacity:0;
 }
+.material-runner-network{transition:opacity .24s ease-out}
 @media(max-width:700px){
- .material-stickers .material-runner-network{opacity:.54}
- .material-runner-spine{stroke-width:1.25;stroke-opacity:.40}
- .material-runner-branch{stroke-width:1;stroke-opacity:.38}
+ .material-runner-frame{stroke-width:1.45;stroke-opacity:.53}
+ .material-runner-divider{stroke-width:1.1;stroke-opacity:.45}
+ .material-runner-branch{stroke-width:1.05}
 }
 @media(prefers-reduced-motion:reduce){
- .material-stickers .material-runner-network{transition:none}
+ .material-runner-network{transition:none}
 }
