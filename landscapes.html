@@ -67,13 +67,23 @@
   border:0!important;
   border-radius:0!important;
   outline-offset:8px;
-  z-index:3!important;
+  /* The headline belongs to the floor, below the Polaroid photographs. */
+  z-index:0!important;
   transition:bottom .78s cubic-bezier(.22,.78,.2,1),opacity .35s ease!important;
 }
 .photo-main.is-reading > #archive-essay-trigger{
   bottom:calc(100dvh - 121px)!important;
   z-index:51!important;
 }
+/* Let the uncovered floor statement receive clicks through the board,
+   while the actual Polaroids keep all drag, click and focus interactions. */
+.photo-main:not(.is-reading) > #photo-board{
+  pointer-events:none;
+}
+.photo-main:not(.is-reading) > #photo-board > .polaroid{
+  pointer-events:auto;
+}
+
 @media(max-width:700px){
   .photo-main.is-reading > #archive-essay-trigger{
     bottom:calc(100dvh - 105px)!important;
@@ -83,7 +93,7 @@
   .photo-main > #archive-essay-trigger{transition:none!important;}
 }
 </style>
-<script src="polaroids.js?v=19" defer></script>
+<script src="polaroids.js?v=20" defer></script>
 <script src="landscapes-editor.js?v=6" defer></script>
 <script src="archive-essay.js?v=2" defer></script>
 </head>
