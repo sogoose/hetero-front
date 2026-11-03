@@ -15,7 +15,7 @@ This folder is the source of all buildings shown in `landscapes.html`.
 | year_source | Documentary or survey basis for the date; avoid addresses or deep links exposing exact location |
 | approval_date | Occupancy approval date `YYYY-MM-DD` only when explicitly confirmed |
 | structure | Structural system (e.g. `조적조`, `철근콘크리트조`) |
-| structure_status | `verified`, `crosschecked`, `estimated`, or `unverified` |
+| structure_status | `verified`, `crosschecked`, `estimated`, `unverified`, or `not_found` (searched but no dependable structure evidence; the `structure` cell stays blank) |
 | wall_finish | Exterior wall finish (e.g. `점토벽돌`, `타일`) |
 | wall_status | Confidence for wall finish |
 | roof_finish | Roofing (e.g. `시멘트 기와`, `슬레이트`) |
@@ -49,7 +49,7 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 
 ## Structure verification progress — 2026-11-03
 
-- Structure recorded for **81 of 147 photo records**, covering **74 provisional unique buildings**; **66 photo records** remain without independently supported structure classifications.
+- Structure recorded for **82 of 147 photo records**, covering **75 provisional unique buildings**; **65 photo records** still lack independently supported structure classifications (**41 searched but not found**, **24 not searched in this pass**).
 - These are **secondary public building-register republications** (architecture HUB data via 주소주소, 집품, 빌딩샵AI). They are marked `structure_status=crosschecked` and must not be relabeled as direct government API verification.
 - The user's example Jootek parcel was matched to its archive photo via the historic filename and a public parcel record; that building's structure is crosschecked as 벽돌. The specific Jootek detail URL was not directly retrievable through the available external reader.
 - Some source approval years differ from the years recorded on original photo filenames. The project retains the original construction-year strings, marks the discrepancy in `notes`, and records independently reported `approval_date` where available. **Do not automatically equate approval dates with original construction dates.**
@@ -104,3 +104,12 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 - This municipal property inventory is **not** the original authenticated building-register title. It documents the present registered structure but does **not** establish the original photo filename's 1993 construction year. That year remains unverified and the distinction is recorded in public `notes`.
 - The notice PDF was text-indexed, but a rendered screenshot was not available from the external PDF reader; crosscheck status rather than directly verified is therefore retained. Do not promote this to an official building-register API verification.
 - B-076 (earlier sixth pass) was also updated with its exact 1986 brick-built multi-family property match. Totals now 81 of 147 photo records, 74 distinct building groups, 66 unconfirmed photographs.
+
+### Manual structure searches — 2026-11-03 (eighth pass)
+
+- An additional exact-address and same-era building-register match, **B-058**, was crosschecked in a public republication (집품, 건축HUB): `벽돌구조`, two aboveground floors, occupancy approval 1989-10-19. Original archive year retained. Its source summary does not publish an exact address.
+- **37 other distinct building IDs / 41 photo records** were searched online. Search results were missing a structural-system field, contained only an address directory or property listing, returned a **different numbered neighboring building**, or did not establish the historical identity of the pictured building. These were assigned `structure_status=not_found` and their `structure` fields were **not filled**.
+- In the archive photo reverse, `not_found` displays as **못찾음**. It describes an unsuccessful **search attempt**, **not** a building structure, a government declaration that the information does not exist, or a permanent determination. Further evidence can supersede it.
+- **24 other photo records** have not been examined in this particular search pass; their `structure_status`, `structure`, and other data were left untouched. Previous source and notes fields were preserved in searched records.
+- Avoid counting `not_found` as a material in statistics; count only the non-empty `structure` field. Totals are now: 82 confirmed structure photo rows, 41 searched-not-found rows, 24 otherwise unsearched/blank rows (147 photographs in all). These cover 75 provisional unique structurally classified buildings.
+- Exact street addresses and original address-laden filenames must remain out of the public CSV and the website.
