@@ -1056,48 +1056,45 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  .material-essay-trigger{transition:none!important}
 }
 
-/* First plate: handmade three-part typography interwoven with alpha-trimmed fragments. */
+/* COMPACT EDITORIAL COVER — an interlocking serif title and six curated specimens. */
 .material-strip .material-intro{
- position:absolute!important;top:0!important;left:0!important;transform:none!important;
- z-index:4!important;opacity:1!important;max-width:none!important;min-width:0!important;
- padding:0!important;margin:0!important;pointer-events:none!important;
+ position:absolute!important;left:0!important;top:0!important;transform:none!important;
+ z-index:4!important;max-width:none!important;min-width:0!important;
+ padding:0!important;margin:0!important;opacity:1!important;pointer-events:none!important;
 }
 .material-intro h1{position:absolute!important;inset:0!important;margin:0!important;padding:0!important}
 .material-intro .material-essay-trigger{
- position:absolute!important;inset:0!important;
- display:block!important;width:100%!important;height:100%!important;
- margin:0!important;padding:0!important;pointer-events:none!important;overflow:visible!important;
- background:transparent!important;
- font-family:"Noto Serif KR",serif!important;font-size:clamp(30px,2.85vw,44px)!important;
- font-weight:800!important;letter-spacing:-.07em!important;line-height:1.32!important;
+ position:absolute!important;inset:0!important;display:block!important;
+ width:100%!important;height:100%!important;
+ padding:0!important;margin:0!important;
+ pointer-events:none!important;overflow:visible!important;
+ font:800 clamp(34px,3.35vw,50px)/1.3 "Noto Serif KR",serif!important;
+ letter-spacing:-.07em!important;background:transparent!important;
 }
 .material-intro .material-essay-trigger span{
- position:absolute!important;display:block!important;width:max-content;max-width:none;
- height:auto;white-space:nowrap!important;pointer-events:auto!important;
- color:#171715!important;cursor:pointer;line-height:1.32!important;
- transition:opacity .23s ease,transform .23s ease;
+ display:block!important;position:absolute!important;width:max-content!important;
+ max-width:none!important;white-space:nowrap!important;
+ pointer-events:auto!important;color:#171715!important;line-height:1.3!important;
+ cursor:pointer;transition:transform .2s ease,opacity .2s ease!important;
 }
-.material-intro .material-essay-trigger span:nth-child(1){left:9%;top:25%}
-.material-intro .material-essay-trigger span:nth-child(2){left:36%;top:46%}
-.material-intro .material-essay-trigger span:nth-child(3){left:16%;top:66%;font-size:1.06em}
-.material-intro .material-essay-trigger span:hover{transform:translateY(-3px)}
+.material-intro .material-essay-trigger span:nth-child(1){left:17%;top:32%}
+.material-intro .material-essay-trigger span:nth-child(2){left:34%;top:44%}
+.material-intro .material-essay-trigger span:nth-child(3){left:25%;top:57%}
+.material-intro .material-essay-trigger span:hover{transform:translateY(-2px)}
 .material-intro .material-essay-trigger:focus-visible{outline:none!important}
-.material-intro .material-essay-trigger:focus-visible span{
- text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:7px;
-}
-.material-cover-annotations .material-annotation-column{padding-left:2px;padding-right:8px}
+.material-intro .material-essay-trigger:focus-visible span{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+.material-cover-annotations .material-annotation-column{padding:0 8px 0 2px}
 @media(max-width:700px){
- .material-strip .material-intro{left:0!important;top:0!important}
  .material-intro .material-essay-trigger{
-  font-size:clamp(19px,5.3vw,25px)!important;line-height:1.33!important;
+  font-size:clamp(23px,6.2vw,29px)!important;
  }
- .material-intro .material-essay-trigger span:nth-child(1){left:6%;top:24%}
- .material-intro .material-essay-trigger span:nth-child(2){left:38%;top:45%}
- .material-intro .material-essay-trigger span:nth-child(3){left:16%;top:67%;font-size:1.08em}
- .material-cover-annotations .material-annotation-column{padding:0 4px 0 1px}
+ .material-intro .material-essay-trigger span:nth-child(1){left:17%;top:32%}
+ .material-intro .material-essay-trigger span:nth-child(2){left:34%;top:43%}
+ .material-intro .material-essay-trigger span:nth-child(3){left:25%;top:54%}
+ .material-cover-annotations .material-annotation-column{padding:0 5px 0 1px}
 }
-@media(max-height:530px) and (min-width:701px){
- .material-intro .material-essay-trigger{font-size:clamp(22px,2.1vw,30px)!important}
+@media(max-height:480px) and (min-width:701px){
+ .material-intro .material-essay-trigger{font-size:clamp(25px,2.6vw,35px)!important}
 }
 @media(prefers-reduced-motion:reduce){
  .material-intro .material-essay-trigger span{transition:none!important}
