@@ -1049,3 +1049,132 @@ body:has(#photo-detail[open]){overflow:hidden}
 @media(max-height:620px) and (min-width:701px){
  .archive-floor-quote{font-size:clamp(15px,1.45vw,22px);bottom:77px}
 }
+
+
+/* ───────────────────────────────────────────────────────────────────
+   FLOOR STATEMENT → TWO-COLUMN ESSAY (reading mode)
+   A paper-like editorial layer is revealed as the quote rises upward.
+   The footer and Polaroid layout remain unchanged.
+   ─────────────────────────────────────────────────────────────────── */
+.photo-main .archive-essay{
+ position:fixed;
+ inset:0 0 50px;
+ z-index:40;
+ box-sizing:border-box;
+ background:rgba(252,251,248,.977);
+ overflow:hidden;
+ opacity:0;
+ visibility:hidden;
+ pointer-events:none;
+ transform:translateY(13px);
+ transition:opacity .48s ease,transform .68s cubic-bezier(.22,.78,.2,1),visibility 0s linear .65s;
+}
+.photo-main.is-reading .archive-essay{
+ opacity:1;
+ visibility:visible;
+ transform:translateY(0);
+ pointer-events:auto;
+ transition:opacity .55s ease .22s,transform .68s cubic-bezier(.22,.78,.2,1) .08s,visibility 0s;
+}
+.photo-main .archive-essay-scroll{
+ position:relative;
+ box-sizing:border-box;
+ width:100%;
+ height:100%;
+ overflow-y:auto;
+ overscroll-behavior:contain;
+ scrollbar-color:rgba(85,83,77,.27) transparent;
+ scrollbar-width:thin;
+}
+.photo-main .archive-essay-paper{
+ box-sizing:border-box;
+ width:min(970px,calc(100vw - 82px));
+ min-height:100%;
+ margin:0 auto;
+ padding:clamp(156px,19vh,190px) 0 48px;
+ color:#242422;
+ font-family:Pretendard,"Noto Sans KR",-apple-system,BlinkMacSystemFont,sans-serif;
+ font-size:clamp(14px,1.05vw,17px);
+ font-weight:400;
+ line-height:1.79;
+ letter-spacing:-.031em;
+ word-break:keep-all;
+}
+.archive-essay-columns{
+ column-count:2;
+ column-gap:clamp(32px,4.8vw,63px);
+ column-rule:0;
+ text-align:left;
+}
+.archive-essay-columns p{margin:0 0 1.52em;orphans:3;widows:3;break-inside:auto;}
+.archive-essay-columns strong{font-weight:700}
+.archive-essay-columns sup{font-size:.63em;vertical-align:super;line-height:0;}
+.archive-essay-footnote{
+ display:block;
+ box-sizing:border-box;
+ border-top:1px solid rgba(36,36,33,.78);
+ margin-top:21px;
+ padding:11px 0 0;
+ color:#50504c;
+ font-size:clamp(10px,.73vw,12px);
+ line-height:1.6;
+ letter-spacing:-.02em;
+}
+.archive-essay-close{
+ position:fixed;
+ z-index:3;
+ right:clamp(18px,4vw,48px);
+ top:clamp(20px,3vw,34px);
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ width:38px;
+ height:38px;
+ padding:0;
+ margin:0;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ color:#282827;
+ box-shadow:none;
+ appearance:none;
+ cursor:pointer;
+}
+.archive-essay-close .ui-icon{width:24px;height:24px;stroke-width:1.45}
+.archive-essay-close:hover{opacity:.53}
+.archive-essay-close:focus-visible{outline:1px solid #333;outline-offset:3px}
+.photo-main.is-reading .photo-board{
+ opacity:.12;
+ filter:blur(8px) grayscale(.15);
+ pointer-events:none;
+ transition:opacity .5s ease,filter .6s ease;
+}
+.photo-main:not(.is-reading) .photo-board{
+ transition:opacity .42s ease,filter .52s ease;
+}
+@media(max-width:700px){
+ .photo-main .archive-essay{bottom:70px}
+ .photo-main .archive-essay-paper{
+  width:calc(100vw - 45px);
+  padding-top:clamp(144px,20vh,171px);
+  padding-bottom:38px;
+  font-size:clamp(13px,3.55vw,15.5px);
+  line-height:1.81;
+ }
+ .archive-essay-columns{column-count:1}
+ .archive-essay-columns p{margin-bottom:1.55em}
+ .archive-essay-footnote{font-size:10px;margin-top:23px}
+ .archive-essay-close{top:14px;right:14px;width:32px;height:32px}
+ .archive-essay-close .ui-icon{width:20px;height:20px}
+}
+@media(min-width:701px) and (max-height:650px){
+ .photo-main .archive-essay-paper{padding-top:140px;padding-bottom:32px}
+}
+@media(prefers-reduced-motion:reduce){
+ .photo-main .archive-essay,
+ .photo-main.is-reading .archive-essay,
+ .photo-main.is-reading .photo-board,
+ .photo-main:not(.is-reading) .photo-board{
+  transition:none!important;
+ }
+}
