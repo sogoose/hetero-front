@@ -609,73 +609,84 @@ document.querySelector('#detail-close').addEventListener('click',closeDetail);
 dialog.addEventListener('click',event=>{if(event.target===dialog)closeDetail();});
 window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(capacity()!==pageSize)render();else layout();},120);});
 
-/* Whole-archive statistics: never calculated from the visible 24-card subset. */
+/* Editorial archive index: all public photographs, not just the current page. */
 const chapterDialog=document.querySelector('#chapter-menu');
 const statsDialog=document.querySelector('#archive-stats');
-const statDimension=document.querySelector('#stats-dimension');
-const statGranularity=document.querySelector('#stats-granularity');
+const statTabs=[...document.querySelectorAll('.stats-tabs [data-dimension]')];
+let statDimension='year';
+const statNames={
+ year:'건축 연대',structure:'구조',wall_finish:'외벽 마감',
+ roof_finish:'지붕 마감',railing:'난간'
+};
 function readYear(record){
  const raw=String(record.year||'').trim();
  const match=raw.match(/(?:18|19|20)\d{2}/);
- const year=match?Number(match[0]):null;
- const approximate=Boolean(year)&&(/전후|경|약|추정|~|circa/i.test(raw)||record.year_status==='estimated');
- return {year,approximate,status:record.year_status||'unverified'};
+ return {year:match?Number(match[0]):null,approximate:/전후|경|약|추정|~|circa/i.test(raw)||record.year_status==='estimated'};
 }
 function renderStatistics(){
  const all=demo?[]:records;
- const parsed=all.map(readYear);
- const dated=parsed.filter(v=>v.year!==null).length;
- const approx=parsed.filter(v=>v.approximate).length;
- document.querySelector('#stats-total').textContent=all.length.toLocaleString('ko-KR');
- document.querySelector('#stats-dated').textContent=dated.toLocaleString('ko-KR');
- document.querySelector('#stats-approx').textContent=approx.toLocaleString('ko-KR');
- document.querySelector('#stats-unknown').textContent=(all.length-dated).toLocaleString('ko-KR');
- const dimension=statDimension.value,yearMode=dimension==='year';
- document.querySelector('#stats-granularity-label').hidden=!yearMode;
- const buckets=new Map();let accounted=0;
- if(yearMode){
-  parsed.forEach(v=>{
-   if(v.year===null)return;
-   accounted++;
-   const key=statGranularity.value==='decade'?String(Math.floor(v.year/10)*10)+'s':String(v.year);
-   buckets.set(key,(buckets.get(key)||0)+1);
-  });
- }else{
-  all.forEach(record=>{
-   const raw=String(record[dimension]||'').trim();
-   if(!raw)return;
-   accounted++;
-   buckets.set(raw,(buckets.get(raw)||0)+1);
-  });
+ const yearMode=statDimension==='year';
+ const buckets=new Map();
+ let accounted=0,approximate=0;
+ for(const record of all){
+  let label='';
+  if(yearMode){
+   const {year,approximate:isApproximate}=readYear(record);
+   if(year===null)continue;
+   label=String(Math.floor(year/10)*10)+'년대';
+   if(isApproximate)approximate++;
+  }else{
+   label=String(record[statDimension]||'').trim();
+   if(!label)continue;
+  }
+  accounted++;
+  buckets.set(label,(buckets.get(label)||0)+1);
  }
- const items=[...buckets].sort((a,b)=>yearMode?a[0].localeCompare(b[0],undefined,{numeric:true}):b[1]-a[1]||a[0].localeCompare(b[0],'ko'));
- const host=document.querySelector('#stats-plot');host.replaceChildren();
- const max=Math.max(1,...items.map(item=>item[1]));
+ const items=[...buckets].sort((a,b)=>yearMode
+  ?Number.parseInt(a[0],10)-Number.parseInt(b[0],10)
+  :b[1]-a[1]||a[0].localeCompare(b[0],'ko'));
+ document.querySelector('#stats-total').textContent=all.length.toLocaleString('ko-KR');
+ document.querySelector('#stats-chart-title').textContent=statNames[statDimension];
+ document.querySelector('#stats-accounted').textContent=accounted.toLocaleString('ko-KR')+' / '+all.length.toLocaleString('ko-KR');
+ for(const tab of statTabs)tab.setAttribute('aria-pressed',String(tab.dataset.dimension===statDimension));
+ const host=document.querySelector('#stats-plot');
+ host.replaceChildren();
+ const max=Math.max(1,...items.map(([,count])=>count));
  if(!items.length){
-  const blank=document.createElement('p');blank.className='stats-empty';
-  blank.textContent=yearMode?'아직 집계할 건축연도 기록이 없습니다.':'이 항목은 아직 작성된 기록이 없습니다. GitHub CSV에 값을 입력하면 통계가 자동으로 생성됩니다.';
+  const blank=document.createElement('p');
+  blank.className='stats-empty';
+  blank.textContent='기록된 자료가 없습니다.';
   host.append(blank);
  }else{
   for(const [label,count] of items){
    const line=document.createElement('div');line.className='stats-row';
-   const title=document.createElement('span');title.className='stats-label';title.textContent=label;title.title=label;
+   const title=document.createElement('span');title.className='stats-label';title.textContent=label;
    const track=document.createElement('span');track.className='stats-track';
-   const bar=document.createElement('span');bar.className='stats-fill';bar.style.width=(count/max*100).toFixed(2)+'%';track.append(bar);
-   const value=document.createElement('span');value.className='stats-value';value.textContent=count;
+   const bar=document.createElement('span');bar.className='stats-fill';
+   bar.style.width=(count/max*100).toFixed(2)+'%';
+   track.append(bar);
+   const value=document.createElement('span');value.className='stats-value';
+   value.textContent=count.toLocaleString('ko-KR');
    line.append(title,track,value);host.append(line);
   }
  }
- host.setAttribute('aria-label',(yearMode?'건축 연대':'재료')+' 분포, 총 '+all.length+'개 중 '+accounted+'개 입력; '+items.map(v=>v[0]+' '+v[1]+'개').join(', '));
- document.querySelector('#stats-footnote').textContent=yearMode
-  ?'전체 '+all.length+'개 사진 기준 · 입력된 연도는 건축연도와 일치하는지 미검증일 수 있습니다. “전후” 및 추정값 '+approx+'개는 해당 연대에 잠정 배치했습니다. 동일 건물의 중복 사진은 개별 기록으로 집계합니다.'
-  :'전체 '+all.length+'개 사진 중 '+accounted+'개 항목 입력 · 미입력 '+(all.length-accounted)+'개. 재료 정보는 CSV에 입력한 내용이며, 확인·추정 여부는 카드 뒷면에서 확인할 수 있습니다. 동일 건물의 중복 사진은 개별 기록으로 집계합니다.';
+ const missing=all.length-accounted;
+ const note=yearMode
+  ?'사진별 기록 기준'+(approximate?' · 추정 연도 '+approximate+'건 포함':'')
+  :'사진별 기록 기준'+(missing?' · 미확인 / 미입력 '+missing+'건 제외':'');
+ document.querySelector('#stats-footnote').textContent=note;
+ host.setAttribute('aria-label',statNames[statDimension]+' 분포. '+all.length+'장 중 '+accounted+'장 집계. '+items.map(([label,count])=>label+' '+count+'장').join(', '));
 }
 document.querySelector('#chapter-open').addEventListener('click',()=>chapterDialog.showModal());
 document.querySelector('#chapter-close').addEventListener('click',()=>chapterDialog.close());
 document.querySelector('#stats-open').addEventListener('click',()=>{renderStatistics();statsDialog.showModal();});
 document.querySelector('#stats-close').addEventListener('click',()=>statsDialog.close());
-statDimension.addEventListener('change',renderStatistics);
-statGranularity.addEventListener('change',renderStatistics);
+for(const tab of statTabs){
+ tab.addEventListener('click',()=>{
+  statDimension=tab.dataset.dimension;
+  renderStatistics();
+ });
+}
 for(const modal of [chapterDialog,statsDialog])modal.addEventListener('click',event=>{if(event.target===modal)modal.close();});
 
 load();
