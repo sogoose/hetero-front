@@ -46,3 +46,12 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 ## Public register research, 2026-11-02
 
 35 buildings were individually crosschecked via public third-party republication of Architecture HUB building-register records (juso.zzxxccvv.com), for structure, use, number of aboveground floors, and occupancy approval dates. 2 earlier buildings were also crosschecked, giving 37 buildings with status `crosschecked`. That does not mean the official original register was read through an authenticated API. Exact addresses and per-building deep links were intentionally not added to public CSV. Roof finish, wall finish and railing remain blank until supported by evidence.
+
+## Structure verification progress — 2026-11-03
+
+- Structure recorded for **51 of 147 photo records**, covering **48 provisional unique buildings**; **96 photo records** remain without independently supported structure classifications.
+- These are **secondary public building-register republications** (architecture HUB data via 주소주소, 집품, 빌딩샵AI). They are marked `structure_status=crosschecked` and must not be relabeled as direct government API verification.
+- The user's example Jootek parcel was matched to its archive photo via the historic filename and a public parcel record; that building's structure is crosschecked as 벽돌. The specific Jootek detail URL was not directly retrievable through the available external reader.
+- Some source approval years differ from the years recorded on original photo filenames. The project retains the original construction-year strings, marks the discrepancy in `notes`, and records independently reported `approval_date` where available. **Do not automatically equate approval dates with original construction dates.**
+- None of the newly written source descriptions or notes contain specific road addresses or cadastral numbers. Private full-address references must never be published in the CSV.
+- Roof structure `(철근)콘크리트` is not automatically assigned to `roof_finish`. The latter is the visible roofing finish/material and requires separate evidence.
