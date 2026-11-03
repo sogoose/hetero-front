@@ -241,3 +241,38 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  letter-spacing:-.01em;word-break:break-word;
 }
 .material-detail .material-detail-source:empty{display:none}
+
+/* Transparent cutouts: die-cut white silhouette and subtle lifted shadow. */
+.material-art{filter:none!important;overflow:visible!important}
+.material-piece{overflow:visible!important}
+.material-piece::after{display:none!important}
+.material-piece .material-object-image,.material-detail .material-object-image{
+ filter:
+  drop-shadow( 2px 0 0 #fffdf8)
+  drop-shadow(-2px 0 0 #fffdf8)
+  drop-shadow( 0 2px 0 #fffdf8)
+  drop-shadow( 0 -2px 0 #fffdf8)
+  drop-shadow( 2px 2px 0 #fffdf8)
+  drop-shadow(-2px 2px 0 #fffdf8)
+  drop-shadow( 2px -2px 0 #fffdf8)
+  drop-shadow(-2px -2px 0 #fffdf8)
+  drop-shadow( 5px 10px 5px rgba(25,26,21,.20))
+  drop-shadow( 2px 3px 2px rgba(25,26,21,.12));
+}
+.material-detail .material-detail-media{filter:none!important;overflow:visible}
+.material-piece .material-piece-number,.material-piece .material-piece-title,.material-piece .material-piece-meta{pointer-events:none}
+.material-piece .material-piece-number{margin-top:9px;color:#9a978f}
+.material-piece .material-piece-title{margin-top:5px;font-size:clamp(15px,1.2vw,18px)}
+.material-piece .material-piece-meta{margin-top:3px;letter-spacing:.07em}
+@media(max-width:700px){
+ .material-piece .material-object-image,.material-detail .material-object-image{
+  filter:
+   drop-shadow(1.5px 0 0 #fffdf8)
+   drop-shadow(-1.5px 0 0 #fffdf8)
+   drop-shadow(0 1.5px 0 #fffdf8)
+   drop-shadow(0 -1.5px 0 #fffdf8)
+   drop-shadow(1.5px 1.5px 0 #fffdf8)
+   drop-shadow(-1.5px 1.5px 0 #fffdf8)
+   drop-shadow(3px 7px 5px rgba(25,26,21,.20));
+ }
+}
