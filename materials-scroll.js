@@ -172,6 +172,12 @@ function sampleImage(item){
   img.src=item.image+(item.assetRevision?'?v='+encodeURIComponent(item.assetRevision):'');
  });
 }
+const coverIDs=['09','12','01','04','36','22'];
+function curateCover(list){
+ const chosen=coverIDs.map(id=>list.find(v=>String(v.id).padStart(2,'0')===id)).filter(Boolean);
+ const seen=new Set(chosen);
+ list.splice(0,list.length,...chosen,...list.filter(v=>!seen.has(v)));
+}
 function paletteCompare(a,b){
  const ac=a._palette||{family:roughFamily(a),tone:.5};
  const bc=b._palette||{family:roughFamily(b),tone:.5};
@@ -204,53 +210,39 @@ async function sortByPalette(entries){
 
 /* Like an annotated printed object atlas: the images share a dense invisible
    arrangement and the index is composed independently in small columns below. */
-function addAtlasAnnotation(column,piece){
+
+function drawAnnotation(column,piece){
  const item=piece.item;
- const entry=document.createElement('div');entry.className='material-annotation-entry';
- entry.dataset.index=String(piece.index);
- const number=document.createElement('span');number.className='material-annotation-number';
- number.textContent=String(item.id).padStart(2,'0');
+ const el=document.createElement('div');el.className='material-annotation-entry';
+ el.dataset.index=String(piece.index);
+ const no=document.createElement('span');no.className='material-annotation-number';no.textContent=String(item.id).padStart(2,'0');
  const copy=document.createElement('div');copy.className='material-annotation-copy';
  const name=document.createElement('span');name.className='material-annotation-name';name.textContent=item.title;
- const description=(item.description||'').trim();
- const secondary=document.createElement('span');secondary.className='material-annotation-description';
- secondary.textContent=description&&description!=='혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.'?description:(item.category||'');
- copy.append(name,secondary);entry.append(number,copy);column.append(entry);
+ const sub=document.createElement('span');sub.className='material-annotation-description';
+ const desc=(item.description||'').trim();
+ sub.textContent=desc&&desc!=='혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.'?desc:(item.category||'');
+ copy.append(name,sub);el.append(no,copy);column.append(el);
 }
 function renderAnnotations(){
  if(!atlasMetrics||!annotationHost)return;
  const {cols,rows,legendTop,sheetWidth,coverWidth}=atlasMetrics;
  const fragment=document.createDocumentFragment();
- if(coverCount){
-  const panel=document.createElement('section');panel.className='material-annotation-board material-cover-annotations';
-  panel.style.left='14px';panel.style.top=legendTop+'px';
-  panel.style.width=(coverWidth-24)+'px';
-  const n=viewport.clientWidth<700?2:3;
-  panel.style.gridTemplateColumns='repeat('+n+',minmax(0,1fr))';
-  for(let col=0;col<n;col++){
-   const column=document.createElement('div');column.className='material-annotation-column';
-   for(let row=0;row<Math.ceil(coverCount/n);row++){
-    const piece=pieces[row*n+col];
-    if(piece&&piece.index<coverCount)addAtlasAnnotation(column,piece);
-   }
-   panel.append(column);
-  }
-  fragment.append(panel);
- }
- for(let boardIndex=0;boardIndex<sheets.length;boardIndex++){
-  const board=sheets[boardIndex];
+ for(let sheet=0;sheet<sheets.length;sheet++){
+  const cover=sheet===0,ncols=cover?(viewport.clientWidth<700?2:3):cols;
   const panel=document.createElement('section');panel.className='material-annotation-board';
-  panel.style.left=board.start+'px';panel.style.top=legendTop+'px';
-  panel.style.width=sheetWidth+'px';
-  panel.style.gridTemplateColumns='repeat('+cols+',minmax(0,1fr))';
-  const skip=boardIndex===0?coverCount:0;
-  for(let col=0;col<cols;col++){
+  if(cover)panel.classList.add('material-cover-annotations');
+  panel.style.left=(sheets[sheet].start+(cover?10:0))+'px';
+  panel.style.top=legendTop+'px';
+  panel.style.width=(cover?coverWidth-20:sheetWidth)+'px';
+  panel.style.gridTemplateColumns='repeat('+ncols+',minmax(0,1fr))';
+  const slots=cover?coverCount:perBoard;
+  for(let col=0;col<ncols;col++){
    const column=document.createElement('div');column.className='material-annotation-column';
-   for(let row=0;row<rows;row++){
-    const index=boardIndex*perBoard+skip+row*cols+col;
-    if(index>=(boardIndex+1)*perBoard)continue;
-    const piece=pieces[index];
-    if(piece)addAtlasAnnotation(column,piece);
+   for(let row=0;row<Math.ceil(slots/ncols);row++){
+    const index=cover?row*ncols+col:coverCount+(sheet-1)*perBoard+row*ncols+col;
+    if(cover&&index>=coverCount)continue;
+    if(!cover&&index>=coverCount+sheet*perBoard)continue;
+    if(pieces[index])drawAnnotation(column,pieces[index]);
    }
    panel.append(column);
   }
@@ -261,84 +253,66 @@ function renderAnnotations(){
 function layout(){
  if(!pieces.length)return;
  const vw=viewport.clientWidth,vh=viewport.clientHeight;
- const mobile=vw<700,cols=mobile?4:vw<1070?6:8;
- const rows=vh<440?3:5;
+ const mobile=vw<700,cols=mobile?4:vw<1070?6:8,rows=vh<440?3:5;
  perBoard=cols*rows;
- coverCount=Math.min(mobile?5:7,perBoard-1,pieces.length);
+ coverCount=Math.min(coverIDs.length,pieces.length,perBoard-1);
+ const coverWidth=mobile?clamp(vw*.99,330,460):clamp(vw*.52,620,820);
  const sheetWidth=mobile?clamp(vw*1.16,420,620):clamp(vw*1.025,940,1540);
- const coverWidth=Math.round(mobile?Math.max(345,vw*.94):clamp(vw*.46,550,740));
- const lead=coverWidth+(mobile?10:20);
- const tail=mobile?vw*.25:vw*.29,spacing=mobile?15:29;
+ const gap=mobile?16:28,spacing=mobile?15:29,tail=mobile?vw*.25:vw*.29;
  const boardTop=clamp(vh*.035,12,32);
  const legendTop=Math.round(vh*(mobile?.735:.755));
  const imageBottom=legendTop-(mobile?16:23);
  const imageHeight=Math.max(190,imageBottom-boardTop);
  const cellW=sheetWidth/cols,cellH=imageHeight/rows;
- const groupCount=Math.ceil(pieces.length/perBoard);
- const shiftsX=[-.035,.04,-.035,.025,.045,-.035,.025,-.035];
- const shiftsY=[-.035,.045,-.02,.015,.04,-.035,.015,-.02];
- const scales=[.96,1.02,.93,1.04,.98,1.03,.94,1];
- // Hand-composed object pockets around the three serif phrases:
- // left, top, maximum width and height as fractions of the cover.
+ const nBoards=Math.ceil((pieces.length-coverCount)/perBoard);
  const pockets=mobile?[
-  [.045,.03,.27,.17],[.57,.035,.28,.18],
-  [.015,.42,.22,.19],[.77,.59,.21,.22],[.48,.80,.29,.15]
+  [.04,.035,.18,.23],[.39,.055,.45,.15],
+  [.025,.40,.18,.24],[.78,.37,.17,.29],
+  [.12,.75,.28,.16],[.58,.74,.29,.17]
  ]:[
-  [.035,.025,.20,.19],[.34,.025,.22,.18],[.74,.045,.20,.22],
-  [.025,.41,.16,.22],[.795,.44,.18,.23],[.575,.77,.23,.16],[.275,.79,.19,.15]
+  [.045,.04,.17,.24],[.40,.055,.45,.14],
+  [.025,.41,.18,.24],[.79,.40,.17,.29],
+  [.11,.76,.29,.17],[.56,.74,.30,.18]
  ];
  const intro=document.querySelector('.material-intro');
  intro.style.width=coverWidth+'px';intro.style.height=imageBottom+'px';
- sheets=[];
- for(let g=0;g<groupCount;g++){
-  const start=lead+g*(sheetWidth+spacing);
-  sheets.push({start,centre:start+sheetWidth*.5,width:sheetWidth,top:boardTop,height:imageHeight});
+ sheets=[{start:0,centre:coverWidth/2,width:coverWidth,top:boardTop,height:imageHeight}];
+ for(let g=0;g<nBoards;g++){
+  const start=coverWidth+gap+g*(sheetWidth+spacing);
+  sheets.push({start,centre:start+sheetWidth/2,width:sheetWidth,top:boardTop,height:imageHeight});
  }
+ const sx=[-.035,.04,-.035,.025,.045,-.035,.025,-.035],sy=[-.035,.045,-.02,.015,.04,-.035,.015,-.02],sc=[.96,1.02,.93,1.04,.98,1.03,.94,1];
  pieces.forEach(piece=>{
-  const {item,index,button,art}=piece;
-  const iw=Math.max(1,Number(item.imageWidth)||300);
-  const ih=Math.max(1,Number(item.imageHeight)||300);
-  const aspect=iw/ih;
+  const {index,item,art,button}=piece;
+  const aspect=Math.max(1,Number(item.imageWidth)||300)/Math.max(1,Number(item.imageHeight)||300);
   let x,y,width,height;
   if(index<coverCount){
-   const [rx,ry,rw,rh]=pockets[index];
-   const boxW=Math.max(24,coverWidth*rw),boxH=Math.max(24,imageHeight*rh);
-   width=Math.max(16,Math.round(Math.min(boxW,boxH*aspect)));
-   height=Math.max(16,Math.round(width/aspect));
-   x=Math.round(coverWidth*rx+(boxW-width)*.5);
-   y=Math.round(boardTop+imageHeight*ry+(boxH-height)*.5);
+   const [px,py,pw,ph]=pockets[index];
+   const maxW=coverWidth*pw,maxH=imageHeight*ph;
+   width=Math.max(14,Math.round(Math.min(maxW,maxH*aspect)));height=Math.max(14,Math.round(width/aspect));
+   x=Math.round(coverWidth*px+(maxW-width)/2);
+   y=Math.round(boardTop+imageHeight*py+(maxH-height)/2);
   }else{
-   const group=Math.floor(index/perBoard);
-   const cell=group===0?index-coverCount:index%perBoard;
-   const col=cell%cols,row=Math.floor(cell/cols);
-   const board=sheets[group];
-   const cellX=board.start+col*cellW,cellY=boardTop+row*cellH;
-   const scale=scales[index%scales.length];
-   const usableW=cellW-(mobile?13:23),usableH=cellH-(mobile?7:13);
-   width=Math.max(14,Math.round(Math.min(usableW*scale,usableH*scale*aspect)));
+   const n=index-coverCount,group=Math.floor(n/perBoard),cell=n%perBoard;
+   const col=cell%cols,row=Math.floor(cell/cols),board=sheets[group+1];
+   const x0=board.start+col*cellW,y0=boardTop+row*cellH;
+   const maxW=cellW-(mobile?13:23),maxH=cellH-(mobile?7:13),scale=sc[n%sc.length];
+   width=Math.max(14,Math.round(Math.min(maxW*scale,maxH*scale*aspect)));
    height=Math.max(14,Math.round(width/aspect));
-   const rawX=cellX+(cellW-width)/2+shiftsX[index%shiftsX.length]*cellW;
-   const rawY=cellY+(cellH-height)/2+shiftsY[index%shiftsY.length]*cellH;
-   x=Math.round(clamp(rawX,cellX+3,cellX+cellW-width-4));
-   y=Math.round(clamp(rawY,cellY+2,cellY+cellH-height-3));
+   x=Math.round(clamp(x0+(cellW-width)/2+sx[n%sx.length]*cellW,x0+3,x0+cellW-width-4));
+   y=Math.round(clamp(y0+(cellH-height)/2+sy[n%sy.length]*cellH,y0+2,y0+cellH-height-3));
   }
   piece.sizing={width,height};
-  if(piece.lastWidth!==width||piece.lastHeight!==height){
-   art.replaceChildren();piece.loaded=false;
-   piece.lastWidth=width;piece.lastHeight=height;
-  }
+  if(piece.lastWidth!==width||piece.lastHeight!==height){art.replaceChildren();piece.loaded=false;piece.lastWidth=width;piece.lastHeight=height}
   art.style.width=width+'px';art.style.height=height+'px';
-  piece.position={x,y};button.style.left=x+'px';button.style.top=y+'px';
-  button.style.width=width+'px';button.style.height=height+'px';
+  button.style.left=x+'px';button.style.top=y+'px';button.style.width=width+'px';button.style.height=height+'px';
   button.style.setProperty('--art-height',height+'px');
-  piece.center=x+width*.5;
+  piece.center=x+width/2;
  });
- strip.style.width=Math.ceil(lead+groupCount*(sheetWidth+spacing)+tail)+'px';
- atlasMetrics={cols,rows,legendTop,sheetWidth,coverWidth};
- renderAnnotations();
+ strip.style.width=Math.ceil(Math.max(vw,coverWidth+gap+nBoards*(sheetWidth+spacing)+tail))+'px';
+ atlasMetrics={cols,rows,legendTop,sheetWidth,coverWidth};renderAnnotations();
  maxOffset=Math.max(0,strip.offsetWidth-vw);
- offset=clamp(offset,0,maxOffset);
- target=clamp(target,0,maxOffset);
+ offset=clamp(offset,0,maxOffset);target=clamp(target,0,maxOffset);
  currentSheet=-1;schedule();
 }
 function redraw(){
@@ -346,8 +320,8 @@ function redraw(){
  const sheet=getSheetForOffset(offset);
  if(sheet!==currentSheet){
   currentSheet=sheet;
-  const n=perBoard;
-  const start=sheet*n+1,end=Math.min(items.length,(sheet+1)*n);
+  const start=sheet===0?1:coverCount+(sheet-1)*perBoard+1;
+  const end=sheet===0?coverCount:Math.min(items.length,coverCount+sheet*perBoard);
   count.textContent=String(start).padStart(2,'0')+'–'+String(end).padStart(2,'0')+' / '+items.length;
  }
  previous.disabled=sheet===0&&offset<30;
@@ -574,14 +548,16 @@ async function start(){
   else uncached++;
  }
  items.sort(paletteCompare);
+ curateCover(items);
  items.forEach(makePiece);
  layout();
  redraw();
  if(uncached){
   // First visit: refine actual pixel colors without blocking the visible collection.
-  sortByPalette(items).then(()=>{
-   if(userInteracted)return; // Never reshuffle objects while a visitor is exploring.
+  sortByPalette([...items]).then(sorted=>{
+   if(userInteracted)return;
    const fraction=maxOffset?offset/maxOffset:0;
+   items=sorted;curateCover(items);
    for(const piece of pieces)piece.button.remove();
    pieces=[];currentSheet=-1;
    items.forEach(makePiece);
