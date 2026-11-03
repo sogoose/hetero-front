@@ -7,6 +7,7 @@ const main=document.querySelector('.material-main');
 const viewport=document.querySelector('#material-window');
 const strip=document.querySelector('#material-strip');
 const host=document.querySelector('#material-stickers');
+const annotationHost=document.querySelector('#material-annotations');
 const count=document.querySelector('#material-counter');
 const scrubber=document.querySelector('#material-scrubber');
 const chapter=document.querySelector('#chapter-menu');
@@ -27,6 +28,7 @@ const storageKey='hetero_materials_text_edits_v1';
 let items=[],pieces=[],sheets=[],maxOffset=0,offset=0,target=0,raf=0,drag=null;
 let dragged=false,editing=false,activeItem=null,currentSheet=-1,perBoard=12;
 let userInteracted=false;
+let atlasMetrics=null;
 let changes={},focusedPiece=null;
 
 const fallbackItems=[
@@ -50,12 +52,7 @@ function applyChanges(item){
  }
 }
 function fillLabel(node,item){
- node.replaceChildren();
- const number=document.createElement('span');number.className='material-label-no';
- number.textContent=String(item.id).padStart(2,'0');
- const title=document.createElement('span');title.className='material-label-name';
- title.textContent=item.title;
- node.append(number,title);
+ node.textContent=String(item.id).padStart(2,'0');
 }
 function makePiece(item,index){
  const button=document.createElement('button');
@@ -65,7 +62,7 @@ function makePiece(item,index){
  button.setAttribute('aria-label',item.title+' 자세히 보기');
  const art=document.createElement('span');art.className='material-art';
  const label=document.createElement('span');
- label.className='material-piece-title';fillLabel(label,item);
+ label.className='material-piece-index';fillLabel(label,item);
  button.append(art,label);
  host.append(button);
  const piece={item,index,button,art,label,center:0,loaded:false,sizing:null};
@@ -200,56 +197,111 @@ async function sortByPalette(entries){
  return entries.sort(paletteCompare);
 }
 
+
+/* Like an annotated printed object atlas: the images share a dense invisible
+   arrangement and the index is composed independently in small columns below. */
+function renderAnnotations(){
+ if(!atlasMetrics||!annotationHost)return;
+ const {cols,rows,legendTop,sheetWidth}=atlasMetrics;
+ const fragment=document.createDocumentFragment();
+ for(let boardIndex=0;boardIndex<sheets.length;boardIndex++){
+  const board=sheets[boardIndex];
+  const panel=document.createElement('section');
+  panel.className='material-annotation-board';
+  panel.style.left=board.start+'px';
+  panel.style.top=legendTop+'px';
+  panel.style.width=sheetWidth+'px';
+  panel.style.gridTemplateColumns='repeat('+cols+', minmax(0,1fr))';
+  for(let col=0;col<cols;col++){
+   const column=document.createElement('div');
+   column.className='material-annotation-column';
+   for(let row=0;row<rows;row++){
+    const piece=pieces[boardIndex*perBoard+row*cols+col];
+    if(!piece)continue;
+    const item=piece.item;
+    const entry=document.createElement('div');
+    entry.className='material-annotation-entry';
+    const number=document.createElement('span');
+    number.className='material-annotation-number';
+    number.textContent=String(item.id).padStart(2,'0');
+    const copy=document.createElement('div');
+    copy.className='material-annotation-copy';
+    const name=document.createElement('span');
+    name.className='material-annotation-name';
+    name.textContent=item.title;
+    const category=document.createElement('span');
+    category.className='material-annotation-category';
+    category.textContent=item.category||'';
+    copy.append(name,category);
+    entry.append(number,copy);
+    column.append(entry);
+   }
+   panel.append(column);
+  }
+  fragment.append(panel);
+ }
+ annotationHost.replaceChildren(fragment);
+}
 function layout(){
  if(!pieces.length)return;
  const vw=viewport.clientWidth,vh=viewport.clientHeight;
  const mobile=vw<700;
- const cols=vw<700?2:vw<1060?4:6;
- const rows=vh<490?2:3;
+ // A full plate can hold 20 mobile or 40 desktop specimens; a short
+ // landscape viewport uses fewer rows rather than clipping the annotations.
+ const cols=mobile?4:vw<1070?6:8;
+ const rows=vh<440?3:5;
  perBoard=cols*rows;
- const sheetWidth=mobile?clamp(vw*.98,360,500):clamp(vw*.94,830,1460);
- const lead=mobile?Math.max(185,vw*.49):Math.max(370,vw*.35);
- const tail=mobile?vw*.31:vw*.34;
- const spacing=mobile?35:60;
- const boardTop=clamp(vh*.062,24,64);
- const boardHeight=Math.max(220,vh-boardTop-(mobile?40:52));
- const cellW=sheetWidth/cols,cellH=boardHeight/rows;
+ const sheetWidth=mobile?clamp(vw*1.16,420,620):clamp(vw*1.025,940,1540);
+ const lead=mobile?Math.max(165,vw*.43):Math.max(360,vw*.34);
+ const tail=mobile?vw*.25:vw*.29;
+ const spacing=mobile?15:29;
+ const boardTop=clamp(vh*.035,12,32);
+ const legendTop=Math.round(vh*(mobile?.735:.755));
+ const imageBottom=legendTop-(mobile?16:23);
+ const imageHeight=Math.max(190,imageBottom-boardTop);
+ const cellW=sheetWidth/cols,cellH=imageHeight/rows;
  const groupCount=Math.ceil(pieces.length/perBoard);
- const shiftsX=[-.11,.04,.12,-.04,.06,-.09,.08,-.06,.1,-.07,.05,-.03];
- const shiftsY=[.03,-.04,.025,-.055,.035,-.02,.045,-.06,.015,.03,-.02,.02];
- const scales=[.94,1.04,.91,.99,1.06,.96,1.02,.91,1.08,.97,1.01,.95];
+ const shiftsX=[-.035,.04,-.035,.025,.045,-.035,.025,-.035];
+ const shiftsY=[-.035,.045,-.02,.015,.04,-.035,.015,-.02];
+ const scales=[.96,1.02,.93,1.04,.98,1.03,.94,1];
  sheets=[];
- for(let group=0;group<groupCount;group++){
-  const x0=lead+group*(sheetWidth+spacing);
-  sheets.push({start:x0,centre:x0+sheetWidth*.5,width:sheetWidth,top:boardTop,height:boardHeight});
+ for(let g=0;g<groupCount;g++){
+  const x0=lead+g*(sheetWidth+spacing);
+  sheets.push({start:x0,centre:x0+sheetWidth*.5,width:sheetWidth,top:boardTop,height:imageHeight});
  }
  pieces.forEach(piece=>{
-  const {item,index,button,art,label}=piece;
+  const {item,index,button,art}=piece;
   const group=Math.floor(index/perBoard),cell=index%perBoard;
   const col=cell%cols,row=Math.floor(cell/cols);
-  const board=sheets[group],x0=board.start+col*cellW,y0=board.top+row*cellH;
-  const usableW=cellW-(mobile?26:40),usableH=cellH-(mobile?26:36);
-  const iw=Number(item.imageWidth)||300,ih=Number(item.imageHeight)||300;
+  const board=sheets[group];
+  const x0=board.start+col*cellW,y0=boardTop+row*cellH;
+  // Fit alpha-trimmed object bounds into a tight cell without hard collisions.
+  const iw=Math.max(1,Number(item.imageWidth)||300);
+  const ih=Math.max(1,Number(item.imageHeight)||300);
   const aspect=iw/ih;
   const scale=scales[index%scales.length];
-  let width=Math.min(usableW*scale,usableH*scale*aspect);
-  let height=width/aspect;
-  width=Math.max(25,Math.round(width));height=Math.max(25,Math.round(height));
+  const usableW=cellW-(mobile?13:23),usableH=cellH-(mobile?7:13);
+  const width=Math.max(14,Math.round(Math.min(usableW*scale,usableH*scale*aspect)));
+  const height=Math.max(14,Math.round(width/aspect));
   piece.sizing={width,height};
   if(piece.lastWidth!==width||piece.lastHeight!==height){
-   art.replaceChildren();piece.loaded=false;piece.lastWidth=width;piece.lastHeight=height;
+   art.replaceChildren();piece.loaded=false;
+   piece.lastWidth=width;piece.lastHeight=height;
   }
   art.style.width=width+'px';art.style.height=height+'px';
-  const x=Math.round(clamp(x0+(cellW-width)/2+shiftsX[index%shiftsX.length]*cellW,x0+7,x0+cellW-width-7));
-  const y=Math.round(clamp(y0+(cellH-height-16)/2+shiftsY[index%shiftsY.length]*cellH,y0+6,y0+cellH-height-18));
+  const rawX=x0+(cellW-width)/2+shiftsX[index%shiftsX.length]*cellW;
+  const rawY=y0+(cellH-height)/2+shiftsY[index%shiftsY.length]*cellH;
+  const x=Math.round(clamp(rawX,x0+3,x0+cellW-width-4));
+  const y=Math.round(clamp(rawY,y0+2,y0+cellH-height-3));
   piece.position={x,y};
   button.style.left=x+'px';button.style.top=y+'px';
-  button.style.width=width+'px';button.style.height=(height+17)+'px';
+  button.style.width=width+'px';button.style.height=height+'px';
   button.style.setProperty('--art-height',height+'px');
-  button.style.setProperty('--annotation-width',Math.min(cellW-18,Math.max(width,104))+'px');
   piece.center=x+width*.5;
  });
  strip.style.width=Math.ceil(lead+groupCount*(sheetWidth+spacing)+tail)+'px';
+ atlasMetrics={cols,rows,legendTop,sheetWidth};
+ renderAnnotations();
  maxOffset=Math.max(0,strip.offsetWidth-vw);
  offset=clamp(offset,0,maxOffset);
  target=clamp(target,0,maxOffset);
@@ -335,6 +387,7 @@ function renamePiece(item){
  if(piece){
   fillLabel(piece.label,item);
   piece.button.setAttribute('aria-label',item.title+' 자세히 보기');
+  renderAnnotations();
  }
 }
 function exportJSON(){
