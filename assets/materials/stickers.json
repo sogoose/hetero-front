@@ -10,7 +10,10 @@
     "vertical": 0.2,
     "rotation": -5,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2699882
+    "file_size_bytes": 2699882,
+    "imageWidth": 1058,
+    "imageHeight": 1300,
+    "assetRevision": "trim1"
   },
   {
     "id": "02",
@@ -23,7 +26,10 @@
     "vertical": 0.48,
     "rotation": 3,
     "description": "문양과 색채가 다른 점토벽돌로 구성된 조적 벽체.",
-    "file_size_bytes": 7249683
+    "file_size_bytes": 7249683,
+    "imageWidth": 1600,
+    "imageHeight": 1218,
+    "assetRevision": "trim1"
   },
   {
     "id": "03",
@@ -36,7 +42,10 @@
     "vertical": 0.14,
     "rotation": -2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2118772
+    "file_size_bytes": 2118772,
+    "imageWidth": 1042,
+    "imageHeight": 997,
+    "assetRevision": "trim1"
   },
   {
     "id": "04",
@@ -49,7 +58,10 @@
     "vertical": 0.53,
     "rotation": 4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1587122
+    "file_size_bytes": 1587122,
+    "imageWidth": 726,
+    "imageHeight": 1224,
+    "assetRevision": "trim1"
   },
   {
     "id": "05",
@@ -62,7 +74,10 @@
     "vertical": 0.26,
     "rotation": 0,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1278062
+    "file_size_bytes": 1278062,
+    "imageWidth": 1600,
+    "imageHeight": 324,
+    "assetRevision": "trim1"
   },
   {
     "id": "06",
@@ -75,7 +90,10 @@
     "vertical": 0.55,
     "rotation": -4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 3162428
+    "file_size_bytes": 3162428,
+    "imageWidth": 1271,
+    "imageHeight": 1051,
+    "assetRevision": "trim1"
   },
   {
     "id": "07",
@@ -88,7 +106,10 @@
     "vertical": 0.35,
     "rotation": 2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2195206
+    "file_size_bytes": 2195206,
+    "imageWidth": 1331,
+    "imageHeight": 1024,
+    "assetRevision": "trim1"
   },
   {
     "id": "08",
@@ -101,7 +122,10 @@
     "vertical": 0.12,
     "rotation": 6,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 3299716
+    "file_size_bytes": 3299716,
+    "imageWidth": 1600,
+    "imageHeight": 392,
+    "assetRevision": "trim1"
   },
   {
     "id": "09",
@@ -114,7 +138,10 @@
     "vertical": 0.52,
     "rotation": -3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 7090908
+    "file_size_bytes": 7090908,
+    "imageWidth": 936,
+    "imageHeight": 1600,
+    "assetRevision": "trim1"
   },
   {
     "id": "10",
@@ -127,20 +154,26 @@
     "vertical": 0.32,
     "rotation": 1,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2851797
+    "file_size_bytes": 2851797,
+    "imageWidth": 1302,
+    "imageHeight": 912,
+    "assetRevision": "trim1"
   },
   {
     "id": "11",
     "title": "벽돌 표본 01",
     "category": "벽체",
-    "image": "assets/materials/brick_1.png",
+    "image": "assets/materials/optimized/sticker-11.webp",
     "original": "assets/materials/brick_1.png",
     "source_file": "brick_1.png",
     "width": 310,
     "vertical": 0.18,
     "rotation": -5,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 272212
+    "file_size_bytes": 272212,
+    "imageWidth": 402,
+    "imageHeight": 363,
+    "assetRevision": "trim1"
   },
   {
     "id": "12",
@@ -153,7 +186,10 @@
     "vertical": 0.47,
     "rotation": 3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1225960
+    "file_size_bytes": 1225960,
+    "imageWidth": 1600,
+    "imageHeight": 353,
+    "assetRevision": "trim1"
   },
   {
     "id": "13",
@@ -166,7 +202,10 @@
     "vertical": 0.15,
     "rotation": -2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 3227133
+    "file_size_bytes": 3227133,
+    "imageWidth": 1331,
+    "imageHeight": 979,
+    "assetRevision": "trim1"
   },
   {
     "id": "14",
@@ -179,20 +218,26 @@
     "vertical": 0.56,
     "rotation": 4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1556621
+    "file_size_bytes": 1556621,
+    "imageWidth": 1379,
+    "imageHeight": 776,
+    "assetRevision": "trim1"
   },
   {
     "id": "15",
     "title": "벽돌 표본 02",
     "category": "벽체",
-    "image": "assets/materials/brick_2.png",
+    "image": "assets/materials/optimized/sticker-15.webp",
     "original": "assets/materials/brick_2.png",
     "source_file": "brick_2.png",
     "width": 310,
     "vertical": 0.2,
     "rotation": 0,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 310956
+    "file_size_bytes": 310956,
+    "imageWidth": 419,
+    "imageHeight": 364,
+    "assetRevision": "trim1"
   },
   {
     "id": "16",
@@ -205,7 +250,10 @@
     "vertical": 0.48,
     "rotation": -4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2763328
+    "file_size_bytes": 2763328,
+    "imageWidth": 1536,
+    "imageHeight": 989,
+    "assetRevision": "trim1"
   },
   {
     "id": "17",
@@ -218,7 +266,10 @@
     "vertical": 0.14,
     "rotation": 2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2593594
+    "file_size_bytes": 2593594,
+    "imageWidth": 1536,
+    "imageHeight": 1024,
+    "assetRevision": "trim1"
   },
   {
     "id": "18",
@@ -231,7 +282,10 @@
     "vertical": 0.53,
     "rotation": 6,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 4156834
+    "file_size_bytes": 4156834,
+    "imageWidth": 1335,
+    "imageHeight": 846,
+    "assetRevision": "trim1"
   },
   {
     "id": "19",
@@ -244,20 +298,26 @@
     "vertical": 0.26,
     "rotation": -3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2472003
+    "file_size_bytes": 2472003,
+    "imageWidth": 1600,
+    "imageHeight": 723,
+    "assetRevision": "trim1"
   },
   {
     "id": "20",
     "title": "벽돌 표본 03",
     "category": "벽체",
-    "image": "assets/materials/brick_3.png",
+    "image": "assets/materials/optimized/sticker-20.webp",
     "original": "assets/materials/brick_3.png",
     "source_file": "brick_3.png",
     "width": 319,
     "vertical": 0.55,
     "rotation": 1,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 299210
+    "file_size_bytes": 299210,
+    "imageWidth": 400,
+    "imageHeight": 365,
+    "assetRevision": "trim1"
   },
   {
     "id": "21",
@@ -270,7 +330,10 @@
     "vertical": 0.35,
     "rotation": -5,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1996619
+    "file_size_bytes": 1996619,
+    "imageWidth": 1600,
+    "imageHeight": 394,
+    "assetRevision": "trim1"
   },
   {
     "id": "22",
@@ -283,7 +346,10 @@
     "vertical": 0.12,
     "rotation": 3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2812553
+    "file_size_bytes": 2812553,
+    "imageWidth": 1277,
+    "imageHeight": 1115,
+    "assetRevision": "trim1"
   },
   {
     "id": "23",
@@ -296,7 +362,10 @@
     "vertical": 0.52,
     "rotation": -2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2270852
+    "file_size_bytes": 2270852,
+    "imageWidth": 1137,
+    "imageHeight": 893,
+    "assetRevision": "trim1"
   },
   {
     "id": "24",
@@ -309,7 +378,10 @@
     "vertical": 0.32,
     "rotation": 4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2572305
+    "file_size_bytes": 2572305,
+    "imageWidth": 1600,
+    "imageHeight": 722,
+    "assetRevision": "trim1"
   },
   {
     "id": "25",
@@ -322,7 +394,10 @@
     "vertical": 0.18,
     "rotation": 0,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2575083
+    "file_size_bytes": 2575083,
+    "imageWidth": 1600,
+    "imageHeight": 767,
+    "assetRevision": "trim1"
   },
   {
     "id": "26",
@@ -335,7 +410,10 @@
     "vertical": 0.47,
     "rotation": -4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2004590
+    "file_size_bytes": 2004590,
+    "imageWidth": 1254,
+    "imageHeight": 739,
+    "assetRevision": "trim1"
   },
   {
     "id": "27",
@@ -348,7 +426,10 @@
     "vertical": 0.15,
     "rotation": 2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2466571
+    "file_size_bytes": 2466571,
+    "imageWidth": 1127,
+    "imageHeight": 1161,
+    "assetRevision": "trim1"
   },
   {
     "id": "28",
@@ -361,7 +442,10 @@
     "vertical": 0.56,
     "rotation": 6,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1632395
+    "file_size_bytes": 1632395,
+    "imageWidth": 1348,
+    "imageHeight": 890,
+    "assetRevision": "trim1"
   },
   {
     "id": "29",
@@ -374,7 +458,10 @@
     "vertical": 0.2,
     "rotation": -3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2081451
+    "file_size_bytes": 2081451,
+    "imageWidth": 1421,
+    "imageHeight": 847,
+    "assetRevision": "trim1"
   },
   {
     "id": "30",
@@ -387,7 +474,10 @@
     "vertical": 0.48,
     "rotation": 1,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2706136
+    "file_size_bytes": 2706136,
+    "imageWidth": 1600,
+    "imageHeight": 436,
+    "assetRevision": "trim1"
   },
   {
     "id": "31",
@@ -400,7 +490,10 @@
     "vertical": 0.14,
     "rotation": -5,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2183201
+    "file_size_bytes": 2183201,
+    "imageWidth": 1409,
+    "imageHeight": 999,
+    "assetRevision": "trim1"
   },
   {
     "id": "32",
@@ -413,7 +506,10 @@
     "vertical": 0.53,
     "rotation": 3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1850975
+    "file_size_bytes": 1850975,
+    "imageWidth": 1278,
+    "imageHeight": 1187,
+    "assetRevision": "trim1"
   },
   {
     "id": "33",
@@ -426,7 +522,10 @@
     "vertical": 0.26,
     "rotation": -2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2640712
+    "file_size_bytes": 2640712,
+    "imageWidth": 1600,
+    "imageHeight": 781,
+    "assetRevision": "trim1"
   },
   {
     "id": "34",
@@ -439,7 +538,10 @@
     "vertical": 0.55,
     "rotation": 4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2913480
+    "file_size_bytes": 2913480,
+    "imageWidth": 1374,
+    "imageHeight": 959,
+    "assetRevision": "trim1"
   },
   {
     "id": "35",
@@ -452,7 +554,10 @@
     "vertical": 0.35,
     "rotation": 0,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1401274
+    "file_size_bytes": 1401274,
+    "imageWidth": 1600,
+    "imageHeight": 481,
+    "assetRevision": "trim1"
   },
   {
     "id": "36",
@@ -465,7 +570,10 @@
     "vertical": 0.12,
     "rotation": -4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 3307145
+    "file_size_bytes": 3307145,
+    "imageWidth": 1335,
+    "imageHeight": 1126,
+    "assetRevision": "trim1"
   },
   {
     "id": "37",
@@ -478,7 +586,10 @@
     "vertical": 0.52,
     "rotation": 2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2592924
+    "file_size_bytes": 2592924,
+    "imageWidth": 1254,
+    "imageHeight": 1033,
+    "assetRevision": "trim1"
   },
   {
     "id": "38",
@@ -491,7 +602,10 @@
     "vertical": 0.32,
     "rotation": 6,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2919570
+    "file_size_bytes": 2919570,
+    "imageWidth": 1565,
+    "imageHeight": 805,
+    "assetRevision": "trim1"
   },
   {
     "id": "39",
@@ -504,7 +618,10 @@
     "vertical": 0.18,
     "rotation": -3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2541131
+    "file_size_bytes": 2541131,
+    "imageWidth": 1317,
+    "imageHeight": 1121,
+    "assetRevision": "trim1"
   },
   {
     "id": "40",
@@ -517,7 +634,10 @@
     "vertical": 0.47,
     "rotation": 1,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2648959
+    "file_size_bytes": 2648959,
+    "imageWidth": 1489,
+    "imageHeight": 972,
+    "assetRevision": "trim1"
   },
   {
     "id": "41",
@@ -530,7 +650,10 @@
     "vertical": 0.15,
     "rotation": -5,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2908770
+    "file_size_bytes": 2908770,
+    "imageWidth": 1130,
+    "imageHeight": 1174,
+    "assetRevision": "trim1"
   },
   {
     "id": "42",
@@ -543,7 +666,10 @@
     "vertical": 0.56,
     "rotation": 3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2357371
+    "file_size_bytes": 2357371,
+    "imageWidth": 1155,
+    "imageHeight": 1199,
+    "assetRevision": "trim1"
   },
   {
     "id": "43",
@@ -556,7 +682,10 @@
     "vertical": 0.2,
     "rotation": -2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1886271
+    "file_size_bytes": 1886271,
+    "imageWidth": 1600,
+    "imageHeight": 482,
+    "assetRevision": "trim1"
   },
   {
     "id": "44",
@@ -569,7 +698,10 @@
     "vertical": 0.48,
     "rotation": 4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2530262
+    "file_size_bytes": 2530262,
+    "imageWidth": 1445,
+    "imageHeight": 1018,
+    "assetRevision": "trim1"
   },
   {
     "id": "45",
@@ -582,7 +714,10 @@
     "vertical": 0.14,
     "rotation": 0,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2655713
+    "file_size_bytes": 2655713,
+    "imageWidth": 1600,
+    "imageHeight": 818,
+    "assetRevision": "trim1"
   },
   {
     "id": "46",
@@ -595,7 +730,10 @@
     "vertical": 0.53,
     "rotation": -4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 3084048
+    "file_size_bytes": 3084048,
+    "imageWidth": 1172,
+    "imageHeight": 1086,
+    "assetRevision": "trim1"
   },
   {
     "id": "47",
@@ -608,7 +746,10 @@
     "vertical": 0.26,
     "rotation": 2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 1850330
+    "file_size_bytes": 1850330,
+    "imageWidth": 1009,
+    "imageHeight": 1062,
+    "assetRevision": "trim1"
   },
   {
     "id": "48",
@@ -621,7 +762,10 @@
     "vertical": 0.55,
     "rotation": 6,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 3346424
+    "file_size_bytes": 3346424,
+    "imageWidth": 1600,
+    "imageHeight": 438,
+    "assetRevision": "trim1"
   },
   {
     "id": "49",
@@ -634,7 +778,10 @@
     "vertical": 0.35,
     "rotation": -3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 3828158
+    "file_size_bytes": 3828158,
+    "imageWidth": 1235,
+    "imageHeight": 1172,
+    "assetRevision": "trim1"
   },
   {
     "id": "50",
@@ -647,7 +794,10 @@
     "vertical": 0.12,
     "rotation": 1,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 3350762
+    "file_size_bytes": 3350762,
+    "imageWidth": 1262,
+    "imageHeight": 1225,
+    "assetRevision": "trim1"
   },
   {
     "id": "51",
@@ -660,7 +810,10 @@
     "vertical": 0.52,
     "rotation": -5,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2808578
+    "file_size_bytes": 2808578,
+    "imageWidth": 1434,
+    "imageHeight": 1017,
+    "assetRevision": "trim1"
   },
   {
     "id": "52",
@@ -673,7 +826,10 @@
     "vertical": 0.32,
     "rotation": 3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2538152
+    "file_size_bytes": 2538152,
+    "imageWidth": 1518,
+    "imageHeight": 842,
+    "assetRevision": "trim1"
   },
   {
     "id": "53",
@@ -686,7 +842,10 @@
     "vertical": 0.18,
     "rotation": -2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2615497
+    "file_size_bytes": 2615497,
+    "imageWidth": 1437,
+    "imageHeight": 992,
+    "assetRevision": "trim1"
   },
   {
     "id": "54",
@@ -699,7 +858,10 @@
     "vertical": 0.47,
     "rotation": 4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2625648
+    "file_size_bytes": 2625648,
+    "imageWidth": 1600,
+    "imageHeight": 510,
+    "assetRevision": "trim1"
   },
   {
     "id": "55",
@@ -712,7 +874,10 @@
     "vertical": 0.15,
     "rotation": 0,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2592955
+    "file_size_bytes": 2592955,
+    "imageWidth": 1448,
+    "imageHeight": 1022,
+    "assetRevision": "trim1"
   },
   {
     "id": "56",
@@ -725,7 +890,10 @@
     "vertical": 0.56,
     "rotation": -4,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2095846
+    "file_size_bytes": 2095846,
+    "imageWidth": 1600,
+    "imageHeight": 336,
+    "assetRevision": "trim1"
   },
   {
     "id": "57",
@@ -738,7 +906,10 @@
     "vertical": 0.2,
     "rotation": 2,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2356578
+    "file_size_bytes": 2356578,
+    "imageWidth": 1393,
+    "imageHeight": 1064,
+    "assetRevision": "trim1"
   },
   {
     "id": "58",
@@ -751,7 +922,10 @@
     "vertical": 0.48,
     "rotation": 6,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2637202
+    "file_size_bytes": 2637202,
+    "imageWidth": 1518,
+    "imageHeight": 959,
+    "assetRevision": "trim1"
   },
   {
     "id": "59",
@@ -764,7 +938,10 @@
     "vertical": 0.14,
     "rotation": -3,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2730005
+    "file_size_bytes": 2730005,
+    "imageWidth": 1503,
+    "imageHeight": 1012,
+    "assetRevision": "trim1"
   },
   {
     "id": "60",
@@ -777,6 +954,9 @@
     "vertical": 0.53,
     "rotation": 1,
     "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
-    "file_size_bytes": 2555926
+    "file_size_bytes": 2555926,
+    "imageWidth": 1523,
+    "imageHeight": 895,
+    "assetRevision": "trim1"
   }
 ]
