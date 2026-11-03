@@ -221,6 +221,7 @@ function renderAnnotations(){
     const item=piece.item;
     const entry=document.createElement('div');
     entry.className='material-annotation-entry';
+    entry.dataset.index=String(piece.index);
     const number=document.createElement('span');
     number.className='material-annotation-number';
     number.textContent=String(item.id).padStart(2,'0');
@@ -229,10 +230,12 @@ function renderAnnotations(){
     const name=document.createElement('span');
     name.className='material-annotation-name';
     name.textContent=item.title;
-    const category=document.createElement('span');
-    category.className='material-annotation-category';
-    category.textContent=item.category||'';
-    copy.append(name,category);
+    const description=(item.description||'').trim();
+    const isPlaceholder=description==='혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.';
+    const secondary=document.createElement('span');
+    secondary.className='material-annotation-description';
+    secondary.textContent=description&&!isPlaceholder?description:(item.category||'');
+    copy.append(name,secondary);
     entry.append(number,copy);
     column.append(entry);
    }
@@ -411,6 +414,14 @@ function moveDrag(e){
  if(dragged)setPosition(drag.start-dx);
 }
 function endDrag(){if(drag){drag=null;main.classList.remove('is-grabbing')}}
+// Editing stays in the original on-page editor; the annotation itself is also selectable.
+annotationHost.addEventListener('click',event=>{
+ if(!editing)return;
+ const entry=event.target.closest('.material-annotation-entry');
+ if(!entry)return;
+ const piece=pieces[Number(entry.dataset.index)];
+ if(piece)openEditor(piece.item);
+});
 viewport.addEventListener('pointerdown',startDrag);
 window.addEventListener('pointermove',moveDrag);
 window.addEventListener('pointerup',endDrag);
