@@ -1454,7 +1454,7 @@ body:has(#photo-detail[open]){overflow:hidden}
 }
 .archive-stats h2{
   margin:0;color:#292923;
-  font:400 clamp(47px,5.2vw,69px)/1.15 "NostalgicPoliceHumanRights","Nanum Pen Script",Pretendard,cursive;
+  font:350 clamp(47px,5.2vw,69px)/1.15 Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;
   letter-spacing:-.065em;
 }
 .archive-stats .stats-big{flex-shrink:0;align-items:flex-end;gap:3px}
@@ -1544,18 +1544,22 @@ body:has(#photo-detail[open]){overflow:hidden}
   font:350 20px/1.1 Pretendard,sans-serif;
   font-variant-numeric:tabular-nums;
 }
+/* One narrow line per year, with a full-width horizontal bar. */
 .archive-stats .stats-chart.is-yearly{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  align-items:start;align-content:start;gap:0 20px;
+  display:flex;flex-direction:column;align-items:stretch;
+  align-content:normal;gap:0;
 }
 .archive-stats .stats-chart.is-yearly .stats-row{
-  grid-template-columns:41px minmax(13px,1fr) 24px;
-  gap:8px;min-height:29px;max-height:none;padding:5px 0;
+  display:grid;flex:1 1 0;
+  grid-template-columns:52px minmax(0,1fr) 28px;
+  gap:13px;min-height:11px;max-height:17px;padding:0;
 }
 .archive-stats .stats-chart.is-yearly .stats-label{
-  font-size:12px;font-variant-numeric:tabular-nums;
+  font-size:10px;line-height:1;font-variant-numeric:tabular-nums;
 }
-.archive-stats .stats-chart.is-yearly .stats-value{font-size:14px}
+.archive-stats .stats-chart.is-yearly .stats-value{
+  font-size:10px;line-height:1;
+}
 .archive-stats .stats-chart.is-yearly .stats-track{
   height:1px;min-height:1px;
 }
@@ -1594,14 +1598,14 @@ body:has(#photo-detail[open]){overflow:hidden}
   .archive-stats .stats-label{font-size:12px}
   .archive-stats .stats-value{font-size:16px}
   .archive-stats .stats-chart.is-yearly{
-    grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px;
+    display:flex;flex-direction:column;gap:0;
   }
   .archive-stats .stats-chart.is-yearly .stats-row{
-    grid-template-columns:37px minmax(10px,1fr) 19px;
-    gap:5px;min-height:28px;padding:4px 0;
+    grid-template-columns:46px minmax(0,1fr) 25px;
+    gap:8px;min-height:13px;max-height:19px;padding:0;
   }
-  .archive-stats .stats-chart.is-yearly .stats-label{font-size:11px}
-  .archive-stats .stats-chart.is-yearly .stats-value{font-size:12px}
+  .archive-stats .stats-chart.is-yearly .stats-label{font-size:10px}
+  .archive-stats .stats-chart.is-yearly .stats-value{font-size:10px}
 }
 @media(max-width:370px){
   .archive-stats .stats-section-head{align-items:start;min-height:43px}
