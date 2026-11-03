@@ -49,7 +49,7 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 
 ## Structure verification progress — 2026-11-03
 
-- Structure recorded for **74 of 147 photo records**, covering **67 provisional unique buildings**; **73 photo records** remain without independently supported structure classifications.
+- Structure recorded for **79 of 147 photo records**, covering **72 provisional unique buildings**; **68 photo records** remain without independently supported structure classifications.
 - These are **secondary public building-register republications** (architecture HUB data via 주소주소, 집품, 빌딩샵AI). They are marked `structure_status=crosschecked` and must not be relabeled as direct government API verification.
 - The user's example Jootek parcel was matched to its archive photo via the historic filename and a public parcel record; that building's structure is crosschecked as 벽돌. The specific Jootek detail URL was not directly retrievable through the available external reader.
 - Some source approval years differ from the years recorded on original photo filenames. The project retains the original construction-year strings, marks the discrepancy in `notes`, and records independently reported `approval_date` where available. **Do not automatically equate approval dates with original construction dates.**
@@ -80,3 +80,12 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 - B-106 was checked but deliberately left without `structure`: original photo caption year 2000 vs a 1990 occupancy approval year for the currently registered address. The discrepancy is noted and needs archival identity checking.
 - A close neighboring address with the same road-name stem but a different street number was not treated as a match. Match the exact address and the depicted building era.
 - No new precise street address, original address-laden filename, or per-address property URL is included in the public CSV or this guide.
+
+### Follow-up crosscheck — 2026-11-03 (fifth pass)
+
+- Five new unique building records were researched and populated after exact-site and period matching: B-003, B-004, B-009 (Mapo-gu), B-049 (Seodaemun-gu), and B-079 (Gangdong-gu).
+- All five have a matching entry in public secondary republications of the Ministry of Land building register. Recorded main structural system: `벽돌구조` (stored as `structure=벽돌`, `structure_status=crosschecked`).
+- Verified public register dates, when specifically displayed, were saved as `approval_date`. Photo-year fields were preserved; one record without directly confirmed day-level approval kept its approval date blank.
+- Match exact historic property identity, not only neighborhood, property name, or adjacent house number. For instance, similar names in different neighborhoods and adjacent roads do not count as matches.
+- Public CSV intentionally keeps only broad-safe source names and does not include exact street addresses, parcel IDs or public deep links to individual houses.
+- Totals after this pass: 147 photographs; 134 provisional unique buildings; 79 photo rows / 72 unique building groups with structural classification; 68 unclassified photos.
