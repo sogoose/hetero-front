@@ -49,7 +49,7 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 
 ## Structure verification progress — 2026-11-03
 
-- Structure recorded for **82 of 147 photo records**, covering **75 provisional unique buildings**; **65 photo records** still lack independently supported structure classifications (**41 searched but not found**, **24 not searched in this pass**).
+- Structure recorded for **85 of 147 photo records**, covering **78 provisional unique buildings**; **62 photo records** still lack independently supported structure classifications (all marked `not_found` after search attempts; including three photos whose original description lacks a street number).
 - These are **secondary public building-register republications** (architecture HUB data via 주소주소, 집품, 빌딩샵AI). They are marked `structure_status=crosschecked` and must not be relabeled as direct government API verification.
 - The user's example Jootek parcel was matched to its archive photo via the historic filename and a public parcel record; that building's structure is crosschecked as 벽돌. The specific Jootek detail URL was not directly retrievable through the available external reader.
 - Some source approval years differ from the years recorded on original photo filenames. The project retains the original construction-year strings, marks the discrepancy in `notes`, and records independently reported `approval_date` where available. **Do not automatically equate approval dates with original construction dates.**
@@ -113,3 +113,12 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 - **24 other photo records** have not been examined in this particular search pass; their `structure_status`, `structure`, and other data were left untouched. Previous source and notes fields were preserved in searched records.
 - Avoid counting `not_found` as a material in statistics; count only the non-empty `structure` field. Totals are now: 82 confirmed structure photo rows, 41 searched-not-found rows, 24 otherwise unsearched/blank rows (147 photographs in all). These cover 75 provisional unique structurally classified buildings.
 - Exact street addresses and original address-laden filenames must remain out of the public CSV and the website.
+
+### Continued searches — 2026-11-03 (ninth pass)
+
+- Three additional photo records have independently supported structure classifications from public secondary building-register or property-valuation republications, not from the original authenticated government API: **B-072** (1983; 벽돌구조; 2 aboveground floors; 1983-05-17 approval; 집품 / 건축HUB), **B-134** (1994; 철근콘크리트구조; 15 aboveground floors; 1994-11-19 approval; public summary of a court appraisal for the matching LifeTown apartment complex), and **B-135** (1994; 철근콘크리트구조; 15 aboveground floors; 1994-05-07 approval; 주소주소 republication for the matching Jugoong 7 first-phase apartment complex). All three are marked `crosschecked`, not official-direct `verified`.
+- The old `not_found` status on B-134 and B-135 was replaced with a supported structure, demonstrating that it means **a search attempt failed**, not **the structure does not exist**.
+- The remaining 23 previously unmarked photo records were researched with targeted address/property searches and marked `structure_status=not_found` where an exact structural-system field could not be reliably substantiated. Existing `structure` values (none of these records had one) and recorded construction years were not guessed or overwritten. Address-only directories, similar-numbered neighboring lots, and building-use descriptions are insufficient to infer structure.
+- Three B-132 photo records share an original generic street label without a building number, so they cannot be connected to a specific building; the restriction is now recorded in their notes, with structure left blank.
+- This investigation's **current status** is 147 photos: 85 structure-confirmed (79 벽돌, 6 철근콘크리트) and 62 `not_found` (structure blank). The 85 supported photos represent 78 provisional unique building groups. Even after a `not_found` label, a future archival document can warrant reclassification.
+- Precise addresses, original historical filenames, cadastral identifiers, and any authentication keys are excluded from the publicly served CSV and documentation.
