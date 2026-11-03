@@ -79,26 +79,22 @@ function sizing(item){
  const width=Math.min(item.width*factor,viewport.clientWidth*(mobile?.67:.39),mobile?280:380);
  const fb=item.fallback||{};
  const ratio=fb.type==='crop'&&fb.rect?fb.rect[3]/fb.rect[2]
-  :item.category==='벽돌'?.43:item.category==='기와'?.77:1.02;
+  :item.category==='벽체'?.65:item.category==='난간'?.78:item.category==='지붕'?.9:1.02;
  const height=Math.min(width*ratio,viewport.clientHeight*.59);
  return {width,height};
 }
+function createCutoutImage(item,alt,onFailure){
+ const img=new Image();img.className='material-object-image';img.alt=alt;
+ img.draggable=false;img.decoding='async';let retried=false;
+ img.onerror=()=>{if(!retried&&item.original&&item.original!==item.image){retried=true;img.src=item.original;}
+   else if(onFailure)onFailure();};
+ img.src=item.image;return img;
+}
 function putArtwork(piece,width,height){
- const {item,art}=piece;
- art.replaceChildren();
- art.style.width=width+'px';
- art.style.height=height+'px';
- // Show the historical cutout first; upgrade automatically when the final image is uploaded.
- const backup=buildFallback(item,width);
- art.append(backup);
- const finalImage=new Image();
- finalImage.className='material-object-image';
- finalImage.alt='';
- finalImage.draggable=false;
- finalImage.decoding='async';
- finalImage.onload=()=>{art.replaceChildren(finalImage)};
- finalImage.onerror=()=>{};
- finalImage.src=item.image;
+ const {item,art}=piece;art.replaceChildren();
+ art.style.width=width+'px';art.style.height=height+'px';
+ const img=createCutoutImage(item,'',()=>{if(piece.loaded)art.replaceChildren(buildFallback(item,width))});
+ art.append(img);piece.loaded=true;
 }
 function layout(){
  if(!pieces.length)return;
@@ -111,9 +107,10 @@ function layout(){
   const {item,button,index}=piece;
   const {width,height}=sizing(item);
   if(!piece.lastWidth||Math.abs(piece.lastWidth-width)>1){
-   putArtwork(piece,width,height);
-   piece.lastWidth=width;
+   piece.art.replaceChildren();piece.loaded=false;piece.lastWidth=width;
   }
+  piece.sizing={width,height};
+  piece.art.style.width=width+'px';piece.art.style.height=height+'px';
   const y=clamp(vh*item.vertical,38,vh-height-(mobile?58:80));
   const x=lead+index*gap+(index%3===2?30:0);
   button.style.left=x+'px';
@@ -150,9 +147,14 @@ function redraw(){
  }
  scrubber.value=String(maxOffset?Math.round(offset/maxOffset*1000):0);
  scrubber.setAttribute('aria-valuetext','전체 길이의 '+Math.round((maxOffset?offset/maxOffset:0)*100)+'%');
+ const preload=viewport.clientWidth*1.35;
  pieces.forEach(piece=>{
   const position=piece.center-offset;
-  piece.button.classList.toggle('in-view',position>0&&position<viewport.clientWidth);
+  const visible=position>-piece.sizing.width*.5&&position<viewport.clientWidth+piece.sizing.width*.5;
+  piece.button.classList.toggle('in-view',visible);
+  if(position>-preload&&position<viewport.clientWidth+preload){
+   if(!piece.loaded)putArtwork(piece,piece.sizing.width,piece.sizing.height);
+  }else if(piece.loaded){piece.art.replaceChildren();piece.loaded=false;}
  });
 }
 function tick(){
@@ -172,25 +174,16 @@ function navigateTo(index){
 }
 function detailMedia(item,container,width){
  container.replaceChildren();
- const wrapper=document.createElement('span');
- wrapper.className='material-detail-media';
- wrapper.style.width=Math.min(width,350)+'px';
- const fb=buildFallback(item,Math.min(width,350));
- wrapper.append(fb);
- container.append(wrapper);
- const actual=new Image();
- actual.alt=item.title;
- actual.draggable=false;
- actual.decoding='async';
- actual.onload=()=>wrapper.replaceChildren(actual);
- actual.onerror=()=>{};
- actual.src=item.image;
+ const wrapper=document.createElement('span');wrapper.className='material-detail-media';
+ wrapper.style.width=Math.min(width,350)+'px';container.append(wrapper);
+ const image=createCutoutImage(item,item.title,()=>wrapper.replaceChildren(buildFallback(item,Math.min(width,350))));
+ wrapper.append(image);
 }
 function showDetail(piece){
  const item=piece.item;
  detailTitle.textContent=item.detailTitle||item.title;
  detailType.textContent=item.category+' / MATERIAL ARCHIVE';
- detailSequence.textContent='STICKER '+item.id+' / '+items.length;
+ detailSequence.textContent='ARCHIVE '+item.id+' / '+items.length;
  detailDescription.textContent=item.description||'주택의 정면에서 수집한 건축 요소.';
  detailSource.textContent=item.detailSource?'SOURCE / '+item.detailSource:'';
  detailMedia(item,imageWrap,Math.min(380,window.innerWidth*.7));
