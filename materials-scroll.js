@@ -36,8 +36,8 @@ let changes={};
 /* Lightly scattered editorial collage at three staggered heights. */
 const scatterSlots=[
  [.06,.13,1.09,-4], [.28,.41,.87,3],
- [.70,.06,1.03,-3], [.05,.73,.94,4],
- [.76,.72,.91,-4], [.41,.74,.82,2],
+ [.70,.06,1.03,-3], [.05,.78,.94,4],
+ [.76,.86,.91,-4], [.41,.87,.82,2],
  [.72,.39,1.00,5], [.35,.08,.79,-2]
 ];
 const gridSlots=[
@@ -105,9 +105,10 @@ function makePiece(item,index){
  return piece;
 }
 function sizing(item,mobile,scale){
+ const density=mobile?(viewport.clientWidth<380?.88:1):(viewport.clientWidth<1250?.89:1);
  const width=Math.round(clamp(
-  (Number(item.width)||260)*(mobile?.46:.57)*scale,
-  mobile?85:102,mobile?173:239));
+  (Number(item.width)||260)*(mobile?.46:.57)*scale*density,
+  mobile?81:97,mobile?173:239));
  const ratio=item.category==='지붕'?.68
   :item.category==='난간'?.60
   :item.category==='벽체'?.72
