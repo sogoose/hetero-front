@@ -613,7 +613,9 @@ window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setT
 const chapterDialog=document.querySelector('#chapter-menu');
 const statsDialog=document.querySelector('#archive-stats');
 const statTabs=[...document.querySelectorAll('.stats-tabs [data-dimension]')];
-let statDimension='year';
+const granularityGroup=document.querySelector('#stats-granularity');
+const granularityTabs=[...granularityGroup.querySelectorAll('[data-granularity]')];
+let statDimension='year',statGranularity='decade';
 const statNames={
  year:'건축 연대',structure:'구조',wall_finish:'외벽 마감',
  roof_finish:'지붕 마감',railing:'난간'
@@ -625,7 +627,7 @@ function readYear(record){
 }
 function renderStatistics(){
  const all=demo?[]:records;
- const yearMode=statDimension==='year';
+ const yearMode=statDimension==='year',annual=yearMode&&statGranularity==='year';
  const buckets=new Map();
  let accounted=0,approximate=0;
  for(const record of all){
@@ -633,11 +635,11 @@ function renderStatistics(){
   if(yearMode){
    const {year,approximate:isApproximate}=readYear(record);
    if(year===null)continue;
-   label=String(Math.floor(year/10)*10)+'년대';
+   label=annual?String(year):String(Math.floor(year/10)*10)+'s';
    if(isApproximate)approximate++;
   }else{
    label=String(record[statDimension]||'').trim();
-   if(!label)continue;
+   if(!label||(statDimension==='railing'&&(label==='-'||label==='없음')))continue;
   }
   accounted++;
   buckets.set(label,(buckets.get(label)||0)+1);
@@ -648,8 +650,11 @@ function renderStatistics(){
  document.querySelector('#stats-total').textContent=all.length.toLocaleString('ko-KR');
  document.querySelector('#stats-chart-title').textContent=statNames[statDimension];
  document.querySelector('#stats-accounted').textContent=accounted.toLocaleString('ko-KR')+' / '+all.length.toLocaleString('ko-KR');
+ granularityGroup.hidden=!yearMode;
  for(const tab of statTabs)tab.setAttribute('aria-pressed',String(tab.dataset.dimension===statDimension));
+ for(const tab of granularityTabs)tab.setAttribute('aria-pressed',String(tab.dataset.granularity===statGranularity));
  const host=document.querySelector('#stats-plot');
+ host.classList.toggle('is-yearly',annual);
  host.replaceChildren();
  const max=Math.max(1,...items.map(([,count])=>count));
  if(!items.length){
@@ -684,6 +689,12 @@ document.querySelector('#stats-close').addEventListener('click',()=>statsDialog.
 for(const tab of statTabs){
  tab.addEventListener('click',()=>{
   statDimension=tab.dataset.dimension;
+  renderStatistics();
+ });
+}
+for(const tab of granularityTabs){
+ tab.addEventListener('click',()=>{
+  statGranularity=tab.dataset.granularity;
   renderStatistics();
  });
 }
