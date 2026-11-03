@@ -536,7 +536,101 @@ gallerySort.addEventListener('change',()=>{
  galleryOrder=getGalleryOrder();
  render();
 });
-shuffle.addEventListener('click',event=>{if(event.shiftKey||sourceWarning){load(true);return;}if(mode==='gallery'){mode='scatter';page=0;gallerySortControl.hidden=true;}render();});
+/* The shuffle icon deals the actual deck: gather → brief stack → redistribute.
+   The departing cards move into one small pile before new photos are drawn there.
+   All timing is confined to shuffle, so normal drag/hover/scroll stays untouched. */
+let shuffleRunning=false;
+function shuffleImmediately(){
+ if(mode==='gallery'){mode='scatter';page=0;gallerySortControl.hidden=true;}
+ render();
+}
+function shuffleTransform(x,y,rotation,scale=1){
+ return 'translate3d('+x.toFixed(2)+'px,'+y.toFixed(2)+'px,0) rotate('+rotation.toFixed(2)+'deg) scale('+scale.toFixed(3)+')';
+}
+function pileTransform(body,index){
+ const centerX=(boardWidth-body.w)/2;
+ const centerY=(boardHeight-body.h)/2;
+ const smallX=Math.sin(index*2.17)*Math.min(7,body.w*.035);
+ const smallY=Math.cos(index*2.81)*Math.min(6,body.w*.03);
+ const rotation=((index*7)%13-6)*.8;
+ return shuffleTransform(centerX+smallX,centerY+smallY,rotation,.81);
+}
+async function shuffleWithGather(){
+ if(shuffleRunning)return;
+ if(reducedMotion.matches||!bodies.length||!boardWidth||!boardHeight||
+    typeof bodies[0].el.animate!=='function'){
+  shuffleImmediately();
+  return;
+ }
+ shuffleRunning=true;
+ shuffle.disabled=true;
+ scatter.disabled=true;
+ align.disabled=true;
+ gallerySort.disabled=true;
+ board.classList.add('is-shuffling');
+ board.setAttribute('aria-busy','true');
+ stopMotion();
+ try{
+  const departing=bodies.slice();
+  const gather=departing.map((body,index)=>{
+   body.target=null;
+   body.vx=body.vy=body.vr=0;
+   body.el.style.zIndex=String(40+index);
+   // Each photograph approaches the stack with a slight stagger.
+   return body.el.animate([
+    {transform:shuffleTransform(body.x,body.y,body.r)},
+    {transform:pileTransform(body,index)}
+   ],{
+    duration:510,
+    delay:Math.min(index*8,110),
+    easing:'cubic-bezier(.30,.02,.18,1)',
+    fill:'forwards'
+   });
+  });
+  await Promise.all(gather.map(animation=>animation.finished));
+  await new Promise(resolve=>setTimeout(resolve,95));
+  // Switch the contents only while the whole deck is stacked in one place.
+  shuffleImmediately();
+  const arriving=bodies.slice();
+  const deal=arriving.map((body,index)=>{
+   body.target=null;
+   body.vx=body.vy=body.vr=0;
+   body.el.style.zIndex=String(40+index);
+   return body.el.animate([
+    {transform:pileTransform(body,index),opacity:.94,offset:0},
+    {transform:shuffleTransform(body.x,body.y,body.r),opacity:1,offset:1}
+   ],{
+    duration:760,
+    delay:Math.min(index*13,195),
+    easing:'cubic-bezier(.14,.76,.23,1)',
+    fill:'none'
+   });
+  });
+  await Promise.all(deal.map(animation=>animation.finished));
+ }catch(error){
+  // Detached cards (e.g. a navigation or reload) may cancel WAAPI animations.
+  // Leave the final scatter in a usable state regardless.
+  if(board.isConnected&&!bodies.length)shuffleImmediately();
+ }finally{
+  board.classList.remove('is-shuffling');
+  board.removeAttribute('aria-busy');
+  shuffle.disabled=false;
+  scatter.disabled=false;
+  align.disabled=false;
+  gallerySort.disabled=false;
+  shuffleRunning=false;
+ }
+}
+shuffle.addEventListener('click',event=>{
+ if(shuffleRunning)return;
+ if(event.shiftKey||sourceWarning){load(true);return;}
+ // Clicking the button from the essay closes the reading layer first.
+ if(document.querySelector('.photo-main')?.classList.contains('is-reading')){
+  requestAnimationFrame(shuffleWithGather);
+ }else{
+  shuffleWithGather();
+ }
+});
 board.addEventListener('click',event=>{if(event.target===board&&mode==='scatter')scatterTargets();});
 previous.addEventListener('click',()=>{if(page>0){page--;render();}});
 next.addEventListener('click',()=>{if((page+1)*pageSize<records.length){page++;render();}});
