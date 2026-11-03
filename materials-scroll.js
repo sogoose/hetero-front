@@ -26,6 +26,7 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const storageKey='hetero_materials_text_edits_v1';
 let items=[],pieces=[],sheets=[],maxOffset=0,offset=0,target=0,raf=0,drag=null;
 let dragged=false,editing=false,activeItem=null,currentSheet=-1,perBoard=12;
+let userInteracted=false;
 let changes={},focusedPiece=null;
 
 const fallbackItems=[
@@ -170,6 +171,14 @@ function sampleImage(item){
   img.src=item.image+(item.assetRevision?'?v='+encodeURIComponent(item.assetRevision):'');
  });
 }
+function paletteCompare(a,b){
+ const ac=a._palette||{family:roughFamily(a),tone:.5};
+ const bc=b._palette||{family:roughFamily(b),tone:.5};
+ return ac.family-bc.family
+  ||(typeRanks[a.category]??8)-(typeRanks[b.category]??8)
+  ||ac.tone-bc.tone
+  ||Number(a.id)-Number(b.id);
+}
 async function sortByPalette(entries){
  let cached={};
  try{cached=JSON.parse(localStorage.getItem(paletteCacheKey)||'{}')||{}}catch{}
@@ -188,14 +197,7 @@ async function sortByPalette(entries){
  });
  await Promise.all(workers);
  try{localStorage.setItem(paletteCacheKey,JSON.stringify(cached))}catch{}
- return entries.sort((a,b)=>{
-  const ac=a._palette||{family:roughFamily(a),tone:.5};
-  const bc=b._palette||{family:roughFamily(b),tone:.5};
-  return ac.family-bc.family
-   || (typeRanks[a.category]??8)-(typeRanks[b.category]??8)
-   || ac.tone-bc.tone
-   || Number(a.id)-Number(b.id);
- });
+ return entries.sort(paletteCompare);
 }
 
 function layout(){
@@ -345,6 +347,7 @@ function exportJSON(){
 }
 function startDrag(e){
  if(e.button!==0||detail.open||chapter.open||editDialog.open)return;
+ userInteracted=true;
  drag={x:e.clientX,start:target};
  dragged=false;main.classList.add('is-grabbing');
 }
@@ -370,6 +373,7 @@ viewport.addEventListener('click',e=>{
 });
 window.addEventListener('wheel',e=>{
  if(detail.open||chapter.open||editDialog.open||e.ctrlKey)return;
+ userInteracted=true;
  e.preventDefault();
  let delta=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
  if(e.deltaMode===1)delta*=19;
@@ -385,7 +389,7 @@ window.addEventListener('keydown',e=>{
 });
 previous.addEventListener('click',()=>navigateSheet(currentSheet-1));
 next.addEventListener('click',()=>navigateSheet(currentSheet+1));
-scrubber.addEventListener('input',()=>setPosition(maxOffset*Number(scrubber.value)/1000));
+scrubber.addEventListener('input',()=>{userInteracted=true;setPosition(maxOffset*Number(scrubber.value)/1000)});
 document.querySelector('#chapter-open').addEventListener('click',()=>chapter.showModal());
 document.querySelector('#chapter-close').addEventListener('click',()=>chapter.close());
 chapter.addEventListener('click',e=>{if(e.target===chapter)chapter.close()});
@@ -449,13 +453,30 @@ async function start(){
  changes=readChanges();
  items=baseItems.map(v=>({...v}));
  items.forEach(applyChanges);
- const hint=document.querySelector('.material-instruction');
- if(hint)hint.textContent='ARRANGING BY COLOR / FORM';
- await sortByPalette(items);
+ // Show the atlas immediately. Cached real-color samples are used on return visits.
+ let cache={};
+ try{cache=JSON.parse(localStorage.getItem(paletteCacheKey)||'{}')||{}}catch{}
+ let uncached=0;
+ for(const item of items){
+  const key=item.image+'@'+(item.assetRevision||'');
+  if(cache[key]&&Number.isFinite(cache[key].family))item._palette=cache[key];
+  else uncached++;
+ }
+ items.sort(paletteCompare);
  items.forEach(makePiece);
  layout();
  redraw();
- if(hint)hint.textContent='SCROLL / INSPECT';
+ if(uncached){
+  // First visit: refine actual pixel colors without blocking the visible collection.
+  sortByPalette(items).then(()=>{
+   if(userInteracted)return; // Never reshuffle objects while a visitor is exploring.
+   const fraction=maxOffset?offset/maxOffset:0;
+   for(const piece of pieces)piece.button.remove();
+   pieces=[];currentSheet=-1;
+   items.forEach(makePiece);
+   layout();setPosition(maxOffset*fraction);
+  }).catch(error=>console.warn('Palette scan unavailable:',error));
+ }
 }
 start();
 })();
