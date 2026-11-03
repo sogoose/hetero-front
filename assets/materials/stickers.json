@@ -1,0 +1,324 @@
+[
+  {
+    "id": "01",
+    "title": "주택의 정면",
+    "category": "주택",
+    "image": "assets/materials/sticker-01.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        12,
+        5,
+        167,
+        108
+      ]
+    },
+    "width": 270,
+    "vertical": 0.22,
+    "rotation": -4,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "02",
+    "title": "S형 시멘트 기와",
+    "category": "기와",
+    "image": "assets/materials/sticker-02.webp",
+    "fallback": {
+      "type": "image",
+      "src": "assets/archive/tile.webp"
+    },
+    "width": 302,
+    "vertical": 0.44,
+    "rotation": 5,
+    "description": "전통 기와의 형상을 산업적 재료와 제작 방식으로 변주한 S형 기와."
+  },
+  {
+    "id": "03",
+    "title": "장식 주물 대문",
+    "category": "주물",
+    "image": "assets/materials/sticker-03.webp",
+    "fallback": {
+      "type": "image",
+      "src": "assets/archive/gate.webp"
+    },
+    "width": 290,
+    "vertical": 0.15,
+    "rotation": -3,
+    "description": "반복 주조된 장식이 주택의 정면으로 확장된 사례."
+  },
+  {
+    "id": "04",
+    "title": "벽돌 담장",
+    "category": "벽돌",
+    "image": "assets/materials/sticker-04.webp",
+    "fallback": {
+      "type": "image",
+      "src": "assets/archive/brick.webp"
+    },
+    "width": 328,
+    "vertical": 0.6,
+    "rotation": 2,
+    "description": "소성 재료와 조적의 표면을 기록한 벽돌 도상."
+  },
+  {
+    "id": "05",
+    "title": "주택의 입면",
+    "category": "주택",
+    "image": "assets/materials/sticker-05.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        352,
+        5,
+        186,
+        113
+      ]
+    },
+    "width": 300,
+    "vertical": 0.29,
+    "rotation": 3,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "06",
+    "title": "장식 난간",
+    "category": "난간",
+    "image": "assets/materials/sticker-06.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        0,
+        153,
+        148,
+        142
+      ]
+    },
+    "width": 249,
+    "vertical": 0.48,
+    "rotation": -5,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "07",
+    "title": "대문과 담장",
+    "category": "대문",
+    "image": "assets/materials/sticker-07.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        369,
+        148,
+        170,
+        138
+      ]
+    },
+    "width": 285,
+    "vertical": 0.15,
+    "rotation": 4,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "08",
+    "title": "담장과 기와",
+    "category": "담장",
+    "image": "assets/materials/sticker-08.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        155,
+        284,
+        196,
+        56
+      ]
+    },
+    "width": 310,
+    "vertical": 0.63,
+    "rotation": -2,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "09",
+    "title": "주택의 출입구",
+    "category": "출입구",
+    "image": "assets/materials/sticker-09.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        0,
+        307,
+        138,
+        135
+      ]
+    },
+    "width": 255,
+    "vertical": 0.22,
+    "rotation": 4,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "10",
+    "title": "지붕의 모서리",
+    "category": "기와",
+    "image": "assets/materials/sticker-10.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        336,
+        293,
+        204,
+        129
+      ]
+    },
+    "width": 304,
+    "vertical": 0.49,
+    "rotation": -4,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "11",
+    "title": "석물 장식",
+    "category": "장식",
+    "image": "assets/materials/sticker-11.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        15,
+        419,
+        125,
+        96
+      ]
+    },
+    "width": 210,
+    "vertical": 0.16,
+    "rotation": 7,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "12",
+    "title": "주물 장식판",
+    "category": "주물",
+    "image": "assets/materials/sticker-12.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        161,
+        408,
+        188,
+        116
+      ]
+    },
+    "width": 274,
+    "vertical": 0.44,
+    "rotation": -2,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "13",
+    "title": "난간과 장식",
+    "category": "난간",
+    "image": "assets/materials/sticker-13.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        221,
+        561,
+        219,
+        94
+      ]
+    },
+    "width": 323,
+    "vertical": 0.21,
+    "rotation": 4,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "14",
+    "title": "도시의 주택",
+    "category": "주택",
+    "image": "assets/materials/sticker-14.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        343,
+        435,
+        195,
+        124
+      ]
+    },
+    "width": 279,
+    "vertical": 0.53,
+    "rotation": -3,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "15",
+    "title": "장식 패널",
+    "category": "장식",
+    "image": "assets/materials/sticker-15.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        312,
+        701,
+        204,
+        91
+      ]
+    },
+    "width": 292,
+    "vertical": 0.25,
+    "rotation": 5,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "16",
+    "title": "계단과 난간",
+    "category": "난간",
+    "image": "assets/materials/sticker-16.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        0,
+        775,
+        172,
+        108
+      ]
+    },
+    "width": 293,
+    "vertical": 0.46,
+    "rotation": -5,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  },
+  {
+    "id": "17",
+    "title": "주택의 모서리",
+    "category": "주택",
+    "image": "assets/materials/sticker-17.webp",
+    "fallback": {
+      "type": "crop",
+      "src": "assets/archive/specimens.webp",
+      "rect": [
+        185,
+        1,
+        161,
+        128
+      ]
+    },
+    "width": 286,
+    "vertical": 0.13,
+    "rotation": 3,
+    "description": "산업화 시기 주택과 건축 요소를 수집한 아카이브 도상."
+  }
+]
