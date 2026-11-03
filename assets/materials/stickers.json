@@ -14,15 +14,15 @@
   },
   {
     "id": "02",
-    "title": "채집 이미지",
-    "category": "장식",
+    "title": "문양 점토벽돌",
+    "category": "벽체",
     "image": "assets/materials/optimized/sticker-02.webp",
     "original": "assets/materials/다운로드.png",
     "source_file": "다운로드.png",
     "width": 226,
     "vertical": 0.48,
     "rotation": 3,
-    "description": "혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.",
+    "description": "문양과 색채가 다른 점토벽돌로 구성된 조적 벽체.",
     "file_size_bytes": 7249683
   },
   {
