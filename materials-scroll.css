@@ -1,0 +1,236 @@
+/* HETERO FRONT — MATERIAL / unrolling specimen sheet.
+   The shared archive taskbar is inherited from polaroids.css. */
+
+html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
+.material-main{
+ position:fixed;inset:0;width:100%;height:100dvh;min-height:0;
+ background:#faf9f5;color:#292924;font-family:Pretendard,-apple-system,sans-serif;
+ overflow:hidden;isolation:isolate;
+}
+.material-main::before{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+ background-image:
+  radial-gradient(circle at 21% 18%,rgba(72,69,61,.032) 0 .5px,transparent 1.1px),
+  radial-gradient(circle at 76% 67%,rgba(76,72,62,.028) 0 .65px,transparent 1.1px);
+ background-size:17px 19px,27px 23px;
+ mix-blend-mode:multiply;
+}
+.material-window{
+ position:absolute;inset:0 0 71px;overflow:hidden;
+ cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
+ isolation:isolate;
+}
+.material-main.is-grabbing .material-window{cursor:grabbing}
+.material-window::before,.material-window::after{
+ content:"";position:absolute;top:0;bottom:0;width:clamp(28px,5vw,85px);
+ pointer-events:none;z-index:4;
+}
+.material-window::before{left:0;background:linear-gradient(90deg,#faf9f5 0%,rgba(250,249,245,0) 100%)}
+.material-window::after{right:0;background:linear-gradient(270deg,#faf9f5 0%,rgba(250,249,245,0) 100%)}
+.material-strip{
+ position:absolute;top:0;left:0;height:100%;min-width:100%;will-change:transform;
+ background:transparent;transform:translate3d(0,0,0);
+}
+.material-belt{
+ position:absolute;left:0;right:0;bottom:7.8%;height:15px;pointer-events:none;
+ border-top:1px solid rgba(75,72,63,.18);
+ background:repeating-linear-gradient(90deg,rgba(75,72,63,.21) 0 1px,transparent 1px 30px) left top/100% 6px no-repeat;
+ opacity:.52;
+}
+.material-belt::after{
+ content:"COLLECTED FRAGMENTS / MATERIALS / ATELIER 作 / HETERO FRONT / 2026";
+ position:absolute;left:50px;top:10px;
+ font:400 9px/1.3 "Special Elite",monospace;
+ letter-spacing:.09em;color:rgba(70,66,59,.62);
+}
+.material-guide{
+ position:absolute;left:0;right:0;top:49%;height:1px;
+ background:repeating-linear-gradient(90deg,rgba(104,102,91,.15) 0 7px,transparent 7px 23px);
+ opacity:.6;pointer-events:none;
+}
+.material-intro{
+ position:absolute;left:clamp(45px,7vw,125px);
+ top:36%;width:clamp(240px,27vw,425px);z-index:1;
+ pointer-events:none;transform:translateY(-50%);
+}
+.material-intro .material-eyebrow{
+ font:400 clamp(10px,.85vw,12px)/1.5 "Special Elite",monospace;
+ letter-spacing:.18em;color:#77756e;
+}
+.material-intro h1{
+ margin:22px 0 11px;
+ font:350 clamp(40px,4.8vw,73px)/1.07 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.075em;white-space:nowrap;color:#292a27;
+}
+.material-intro p{
+ font:350 clamp(13px,1.15vw,16px)/1.75 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.03em;color:#5e5d56;word-break:keep-all;
+}
+.material-intro .material-instruction{
+ display:flex;align-items:center;gap:17px;margin-top:57px;
+ font:400 10px/1.5 "Special Elite",monospace;
+ letter-spacing:.12em;color:#89877e;
+}
+.material-intro .material-instruction::after{
+ content:"";height:1px;width:49px;background:#aaa79c;
+}
+.material-stickers{position:absolute;inset:0}
+.material-piece{
+ position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+ gap:0;margin:0;padding:0;
+ border:0;outline-offset:7px;background:transparent;box-shadow:none;
+ color:#383732;cursor:pointer;
+ transform:rotate(var(--rotation,0deg));transform-origin:50% 50%;
+ transition:opacity .35s,filter .3s,scale .3s;
+ -webkit-tap-highlight-color:transparent;
+}
+.material-piece:hover,.material-piece:focus-visible{z-index:5;filter:brightness(.9)}
+.material-piece:hover .material-art,.material-piece:focus-visible .material-art{
+ transform:translateY(-7px) scale(1.045);
+}
+.material-piece:focus-visible{outline:1px solid #66635c}
+.material-art{
+ display:flex;align-items:center;justify-content:center;flex:none;position:relative;
+ filter:grayscale(.9) drop-shadow(2px 5px 3px rgba(38,38,34,.11));
+ transition:transform .36s cubic-bezier(.2,.8,.2,1);
+}
+.material-object-image{
+ display:block;width:100%;height:100%;object-fit:contain;object-position:center;
+ pointer-events:none;-webkit-user-drag:none;
+}
+.material-crop{
+ display:block;flex:0 0 auto;background-repeat:no-repeat;
+ pointer-events:none;
+}
+.material-piece-number{
+ display:block;align-self:flex-start;margin-top:14px;
+ font:400 clamp(10px,.85vw,12px)/1 "Special Elite",monospace;
+ letter-spacing:.075em;color:#88857d;
+}
+.material-piece-title{
+ align-self:flex-start;display:block;margin-top:7px;
+ font:350 clamp(17px,1.45vw,22px)/1.3 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.055em;color:#373631;
+}
+.material-piece-meta{
+ align-self:flex-start;margin-top:6px;
+ font:400 9px/1.3 "Special Elite",monospace;
+ letter-spacing:.12em;color:#8d8981;
+}
+.material-piece::after{
+ content:"";position:absolute;left:-12px;top:-11px;
+ width:16px;height:16px;
+ background:linear-gradient(#aaa69b,#aaa69b) center/1px 100% no-repeat,
+            linear-gradient(#aaa69b,#aaa69b) center/100% 1px no-repeat;
+ opacity:.47;pointer-events:none;
+}
+.material-main.is-aligned .material-piece{
+ top:49%!important;transform:translateY(-50%) rotate(0)!important;
+}
+.material-main.is-aligned .material-piece::after{opacity:.16}
+/* Reuse the spatial hierarchy of the landscape footer, with the bespoke material controls. */
+.material-main .archive-taskbar{z-index:50}
+.material-main .archive-taskbar .photo-pagination{
+ display:flex!important;align-items:center;gap:12px;
+}
+.material-main .archive-taskbar .photo-toolbar{gap:10px}
+.material-main .archive-taskbar .photo-toolbar .icon-button{width:43px}
+.material-main .archive-taskbar .photo-pagination .material-counter{
+ display:block!important;font:400 11px/1 "Special Elite",monospace;
+ font-variant-numeric:tabular-nums;color:#4d4c46;
+ white-space:nowrap;min-width:54px;text-align:right;
+}
+.material-main .archive-taskbar .photo-toolbar .icon-button:disabled{opacity:.25;cursor:default}
+.material-main .archive-taskbar .photo-toolbar #material-arrange[aria-pressed="true"]{color:#1c1c1b!important}
+.material-progress{
+ display:block;appearance:none;-webkit-appearance:none;
+ width:clamp(82px,12vw,174px);height:20px;margin:0;padding:0;
+ background:transparent;cursor:pointer;
+}
+.material-progress::-webkit-slider-runnable-track{height:2px;background:#bcbab2}
+.material-progress::-moz-range-track{height:2px;background:#bcbab2}
+.material-progress::-webkit-slider-thumb{
+ appearance:none;-webkit-appearance:none;
+ width:9px;height:9px;margin-top:-3.5px;border-radius:0;
+ border:0;background:#363732;box-shadow:none;
+}
+.material-progress::-moz-range-thumb{
+ width:9px;height:9px;border-radius:0;border:0;background:#363732;
+}
+/* A read-only close-up, not a property editor. */
+.material-detail{
+ box-sizing:border-box;
+ width:min(690px,calc(100vw - 32px));max-width:none;
+ height:min(680px,calc(100dvh - 40px));max-height:calc(100dvh - 40px);
+ padding:27px clamp(25px,4vw,46px) 35px;
+ overflow-y:auto;overscroll-behavior:contain;
+ border:1px solid #d8d5cc!important;border-radius:0!important;
+ background:#faf9f5!important;color:#292923!important;
+ box-shadow:0 15px 80px #1c1c192b!important;
+ font-family:Pretendard,-apple-system,sans-serif;
+}
+.material-detail::backdrop{background:rgba(231,230,224,.64);backdrop-filter:blur(5px)}
+.material-detail-top{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.material-detail-top span{
+ font:400 11px/1.3 "Special Elite",monospace;color:#77736b;letter-spacing:.075em;
+}
+.material-detail-top .icon-button{
+ appearance:none;width:34px;height:34px;padding:0;border:0;border-radius:0;
+ background:transparent;box-shadow:none;
+}
+.material-detail-top .icon-button:hover{transform:none;background:transparent;opacity:.55;color:#292923}
+.material-detail-top .ui-icon{width:21px;height:21px}
+.material-detail-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.72fr);gap:34px;align-items:center;min-height:490px}
+.material-detail-art{display:flex;align-items:center;justify-content:center;min-width:0;min-height:340px}
+.material-detail-media{display:flex;align-items:center;justify-content:center;max-width:100%;max-height:425px;filter:grayscale(1) drop-shadow(3px 8px 5px #25252118)}
+.material-detail-media img{width:100%;height:auto;max-height:425px;object-fit:contain}
+.material-detail-media .material-crop{max-width:100%}
+.material-detail-type{
+ font:400 11px/1.45 "Special Elite",monospace;
+ letter-spacing:.095em;color:#858178;
+}
+.material-detail h2{
+ margin:14px 0 21px;
+ font:350 clamp(28px,3.2vw,45px)/1.22 Pretendard,sans-serif;
+ letter-spacing:-.065em;color:#282824;
+}
+.material-detail p{
+ font:350 14px/1.85 Pretendard,sans-serif;letter-spacing:-.025em;color:#69665f;
+}
+.material-detail .material-detail-sequence{
+ display:block;margin-top:37px;
+ font:400 10px/1.4 "Special Elite",monospace;
+ letter-spacing:.11em;color:#9a968b;
+}
+@media(max-width:700px){
+ .material-window{bottom:70px}
+ .material-intro{left:26px;top:34%;width:72vw}
+ .material-intro h1{font-size:clamp(36px,9vw,57px)}
+ .material-intro p{font-size:12px}
+ .material-intro .material-instruction{margin-top:32px;font-size:9px}
+ .material-piece-number{font-size:9px}
+ .material-piece-title{font-size:16px}
+ .material-piece-meta{font-size:8px}
+ .material-main .archive-taskbar .photo-toolbar{gap:2px}
+ .material-main .archive-taskbar .photo-toolbar .icon-button{width:36px;height:43px}
+ .material-main .archive-taskbar .photo-pagination{gap:5px}
+ .material-progress{width:61px}
+ .material-main .archive-taskbar .photo-pagination .material-counter{min-width:43px;font-size:9px}
+ .material-detail{padding:17px 22px 31px}
+ .material-detail-body{grid-template-columns:1fr;gap:12px;min-height:0}
+ .material-detail-art{min-height:215px;max-height:38dvh;margin-top:13px}
+ .material-detail-media{max-height:34dvh}
+ .material-detail-media img{max-height:34dvh}
+ .material-detail h2{margin:9px 0 13px;font-size:29px}
+ .material-detail p{font-size:13px}
+ .material-detail .material-detail-sequence{margin-top:24px}
+}
+@media(max-height:600px) and (min-width:701px){
+ .material-intro{top:32%}
+ .material-intro .material-instruction{margin-top:19px}
+ .material-detail-body{min-height:320px}
+ .material-detail-art{min-height:240px}
+}
+@media(prefers-reduced-motion:reduce){
+ .material-art,.material-piece{transition:none!important}
+}
