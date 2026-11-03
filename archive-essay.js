@@ -9,7 +9,7 @@
  const footer=document.querySelector('.archive-taskbar');
  if(!main||!trigger||!essay||!closeButton||!board)return;
 
- let open=false;
+ let open=false,cleanupTimer=0;
  const scroll=essay.querySelector('.archive-essay-scroll');
 
  const paper=essay.querySelector('.archive-essay-paper');
@@ -38,7 +38,7 @@
     return;
    }
    const slot=order.indexOf(i),side=slot%2,rank=Math.floor(slot/2);
-   const width=card.getBoundingClientRect().width||parseFloat(getComputedStyle(card).width)||175;
+   const width=parseFloat(getComputedStyle(card).width)||card.offsetWidth||175;
    const height=width/.90;
    const scale=mobile
     ?Math.max(.27,Math.min(.43,(vw*.31)/width))
@@ -75,9 +75,17 @@
   if(next&&board.classList.contains('is-gallery'))return;
   if(open===next)return;
   open=next;
+  if(cleanupTimer)window.clearTimeout(cleanupTimer);
   if(next)positionReadingCards();
   main.classList.toggle('is-reading',next);
   board.inert=next;
+  if(!next){
+   // The exiting cards need their temporary class only for the return transition.
+   cleanupTimer=window.setTimeout(()=>{
+    if(!open)board.querySelectorAll('.polaroid.is-essay-visible').forEach(card=>card.classList.remove('is-essay-visible'));
+    cleanupTimer=0;
+   },1020);
+  }
   trigger.setAttribute('aria-expanded',String(next));
   trigger.setAttribute('aria-label',next?'글 접고 사진으로 돌아가기':'글 펼쳐 읽기');
   essay.setAttribute('aria-hidden',String(!next));
