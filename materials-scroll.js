@@ -73,7 +73,14 @@ function applyChanges(item){
   if(typeof draft[field]==='string')item[field]=draft[field];
  }
 }
-function labelText(item){return String(item.id).padStart(2,'0')+'  '+item.title}
+function fillLabel(node,item){
+ node.replaceChildren();
+ const number=document.createElement('span');number.className='material-label-no';
+ number.textContent=String(item.id).padStart(2,'0');
+ const title=document.createElement('span');title.className='material-label-name';
+ title.textContent=item.title;
+ node.append(number,title);
+}
 function makePiece(item,index){
  const button=document.createElement('button');
  button.type='button';
@@ -82,7 +89,7 @@ function makePiece(item,index){
  button.setAttribute('aria-label',item.title+' 자세히 보기');
  const art=document.createElement('span');art.className='material-art';
  const label=document.createElement('span');
- label.className='material-piece-title';label.textContent=labelText(item);
+ label.className='material-piece-title';fillLabel(label,item);
  button.append(art,label);
  host.append(button);
  const piece={item,index,button,art,label,center:0,loaded:false,sizing:null};
@@ -240,7 +247,7 @@ function openEditor(item){
 function renamePiece(item){
  const piece=pieces.find(p=>p.item===item);
  if(piece){
-  piece.label.textContent=labelText(item);
+  fillLabel(piece.label,item);
   piece.button.setAttribute('aria-label',item.title+' 자세히 보기');
  }
 }
