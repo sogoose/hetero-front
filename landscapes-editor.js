@@ -87,7 +87,8 @@
   const info=metadata[file]||{};
   const data=merged(file);
   const full=BASE+encodeURIComponent(file);
-  const thumb=typeof info.thumbnail==='string'&&/^thumbs\\/photo-[a-z0-9-]+\\.webp$/i.test(info.thumbnail)
+  const thumb=typeof info.thumbnail==='string'&&info.thumbnail.startsWith('thumbs/')
+   &&/^photo-[a-z0-9-]+[.]webp$/i.test(info.thumbnail.slice(7))
    ?BASE+info.thumbnail:full;
   previewLink.href=full;
   previewImage.hidden=false;previewFallback.hidden=true;
