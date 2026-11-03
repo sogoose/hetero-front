@@ -43,6 +43,16 @@
   return {headers:keys, rows:parsed.map(values=>Object.fromEntries(keys.map((key,i)=>[key,values[i]||''])))};
  }
  function csvCell(v){const s=String(v??'');return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
+ function standardizeFinish(key,value){
+  const term=String(value||'').trim();
+  const dictionaries={
+   wall_finish:{'석재 벽돌 혼합':'석재·벽돌 혼합 마감','미장':'미장 마감'},
+   roof_finish:{'시멘트기와':'시멘트 기와','함석기와':'함석 기와','함석':'함석 지붕'},
+   railing:{'시멘트난간':'시멘트 난간','시멘트난':'시멘트 난간','석재':'석재 난간'}
+  };
+  return dictionaries[key]?.[term]||term;
+ }
+ 
  function validFile(file){return typeof file==='string'&&/^photo-[a-z0-9-]+\.(?:webp|jpe?g|png|avif)$/i.test(file)}
  async function fetchData(){
   if(ready)return;
@@ -75,7 +85,12 @@
   const original=rowMap.get(file)||{};
   const update=drafts[file]||{};
   const m=metadata[file]||{};
-  return {...m,...original,...(update.meta||{}),...(update.registry||{})};
+  const data={...m,...original,...(update.meta||{}),...(update.registry||{})};
+  for(const k of ['wall_finish','roof_finish','railing'])data[k]=standardizeFinish(k,data[k]);
+  for(const k of ['structure','structure_status','approval_date','year_source','notes']){
+   if(!data[k]&&original[k])data[k]=original[k];
+  }
+  return data;
  }
  // Keep the current building photograph alongside the editable metadata.
  function updatePreview(file){
@@ -143,7 +158,7 @@
   const file=recordSelect.value;
   if(!rowMap.has(file)){status.textContent='먼저 기록을 선택해 주세요.';return}
   const patch={registry:{},meta:{}};
-  for(const k of REG_FIELDS){const c=field(k);if(c)patch.registry[k]=c.value.trim()}
+  for(const k of REG_FIELDS){const c=field(k);if(c)patch.registry[k]=standardizeFinish(k,c.value.trim())}
   for(const k of META_FIELDS){const c=field(k);if(c)patch.meta[k]=c.value.trim()}
   if(patch.registry.approval_date&&!/^\d{4}-\d{2}-\d{2}$/.test(patch.registry.approval_date)){
    status.textContent='사용승인일은 YYYY-MM-DD 형식으로 입력해 주세요.';field('approval_date').focus();return;
@@ -164,7 +179,16 @@
  function exportCSV(){
   if(!ready){status.textContent='원장 로딩이 끝난 뒤 내보내 주세요.';return}
   // Export all records, even those whose photographs are hidden from the public gallery.
-  const updated=allRows.map(row=>({...row,...(drafts[row.file]?.registry||{})}));
+  const protectedFields=new Set(['structure','structure_status','approval_date','year_source','notes','record_source']);
+  const updated=allRows.map(row=>{
+   const result={...row};
+   for(const [key,val] of Object.entries(drafts[row.file]?.registry||{})){
+    const term=standardizeFinish(key,val);
+    if(!term&&result[key]&&protectedFields.has(key))continue;
+    result[key]=term;
+   }
+   return result;
+  });
   const content=[headers.map(csvCell).join(','),...updated.map(row=>headers.map(k=>csvCell(row[k])).join(','))].join('\r\n')+'\r\n';
   download('registry.csv',content,'text/csv');
   status.textContent='CSV 다운로드 완료. GitHub의 assets/buildings/registry.csv에 교체 업로드해야 공개 반영됩니다.';
