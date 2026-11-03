@@ -1178,3 +1178,64 @@ body:has(#photo-detail[open]){overflow:hidden}
   transition:none!important;
  }
 }
+
+
+/* ───────────────────────────────────────────────────────────────────
+   Reading arrangement: the SAME Polaroids travel to the page margins.
+   Keep the essay's central text column free of photographs; on close
+   the original draggable cards glide back to their saved scatter points.
+   ─────────────────────────────────────────────────────────────────── */
+@media(min-width:701px){
+ .photo-main .archive-essay-paper{
+  width:min(820px,calc(100vw - 240px));
+ }
+}
+@media(min-width:701px) and (max-width:1050px){
+ .photo-main .archive-essay-paper{
+  width:min(650px,calc(100vw - 220px));
+ }
+ .photo-main .archive-essay-columns{column-count:1}
+}
+.photo-main.is-reading > .photo-board{
+ z-index:45!important;
+ opacity:1!important;
+ filter:none!important;
+ pointer-events:none!important;
+}
+.photo-main.is-reading .photo-board .polaroid{
+ transform:
+  translate3d(var(--essay-x,var(--x,0px)),var(--essay-y,var(--y,0px)),0)
+  rotate(var(--essay-r,var(--r,0deg)))
+  scale(var(--essay-scale,1))!important;
+ opacity:0;
+ filter:none;
+ pointer-events:none!important;
+ transition:
+  transform .96s cubic-bezier(.21,.78,.19,1),
+  opacity .44s ease,
+  box-shadow .3s ease!important;
+}
+.photo-main.is-reading .photo-board .polaroid.is-essay-visible{
+ opacity:var(--essay-opacity,.93);
+}
+.photo-main:not(.is-reading) .photo-board .polaroid.is-essay-visible{
+ opacity:1;
+ transition:
+  transform .96s cubic-bezier(.21,.78,.19,1),
+  opacity .44s ease,
+  box-shadow .3s ease!important;
+}
+.photo-main.is-reading .archive-essay{
+ background:#fcfbf8;
+}
+@media(max-width:700px){
+ .photo-main.is-reading .photo-board .polaroid.is-essay-visible{
+  opacity:var(--essay-opacity,.27);
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .photo-main.is-reading .photo-board .polaroid,
+ .photo-main:not(.is-reading) .photo-board .polaroid.is-essay-visible{
+  transition:none!important;
+ }
+}
