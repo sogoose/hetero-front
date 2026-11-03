@@ -49,7 +49,7 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 
 ## Structure verification progress — 2026-11-03
 
-- Structure recorded for **80 of 147 photo records**, covering **73 provisional unique buildings**; **67 photo records** remain without independently supported structure classifications.
+- Structure recorded for **81 of 147 photo records**, covering **74 provisional unique buildings**; **66 photo records** remain without independently supported structure classifications.
 - These are **secondary public building-register republications** (architecture HUB data via 주소주소, 집품, 빌딩샵AI). They are marked `structure_status=crosschecked` and must not be relabeled as direct government API verification.
 - The user's example Jootek parcel was matched to its archive photo via the historic filename and a public parcel record; that building's structure is crosschecked as 벽돌. The specific Jootek detail URL was not directly retrievable through the available external reader.
 - Some source approval years differ from the years recorded on original photo filenames. The project retains the original construction-year strings, marks the discrepancy in `notes`, and records independently reported `approval_date` where available. **Do not automatically equate approval dates with original construction dates.**
@@ -97,3 +97,10 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 - Several neighbors of unverified archive buildings also appeared in search results; their structural data were **not** copied. A matching street name without an exact building number and historical-era identity is not sufficient evidence.
 - B-078 could be matched to a named multi-family building with 1992 completion date, but its indexed page did not expose an unambiguous structural-system field; structure remains blank pending direct documentary verification.
 - New coverage: 80 / 147 photo rows with supported main structure, 73 provisional unique building groups, 67 photo rows unclassified.
+
+### Municipal document crosscheck — 2026-11-03 (seventh pass)
+
+- B-059 was matched privately by cadastral parcel to the published 2026 Eunpyeong-gu urban-renewal project implementation notice and its property inventory. Under the column `건축물 용도/구조`, the inventory lists `단독주택/연와조`, one building/two floors; normalized to `structure=벽돌`, with `structure_status=crosschecked`.
+- This municipal property inventory is **not** the original authenticated building-register title. It documents the present registered structure but does **not** establish the original photo filename's 1993 construction year. That year remains unverified and the distinction is recorded in public `notes`.
+- The notice PDF was text-indexed, but a rendered screenshot was not available from the external PDF reader; crosscheck status rather than directly verified is therefore retained. Do not promote this to an official building-register API verification.
+- B-076 (earlier sixth pass) was also updated with its exact 1986 brick-built multi-family property match. Totals now 81 of 147 photo records, 74 distinct building groups, 66 unconfirmed photographs.
