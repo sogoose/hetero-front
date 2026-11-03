@@ -18,6 +18,8 @@ const count=document.querySelector('#material-counter');
 const scrubber=document.querySelector('#material-scrubber');
 const chapter=document.querySelector('#chapter-menu');
 const detail=document.querySelector('#material-detail');
+const detailBody=document.querySelector('.material-detail-body');
+const detailCopy=document.querySelector('.material-detail-copy');
 const editDialog=document.querySelector('#material-editor');
 const editToggle=document.querySelector('#material-edit-toggle');
 const editForm=document.querySelector('#material-edit-form');
@@ -34,11 +36,13 @@ const detailType=document.querySelector('#material-detail-type');
 const detailDescription=document.querySelector('#material-detail-description');
 const detailSequence=document.querySelector('#material-detail-sequence');
 const detailSource=document.querySelector('#material-detail-source');
+// Keep the close affordance attached to the caption instead of a gallery header.
+detailCopy.append(document.querySelector('#material-detail-close'));
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const storageKey='hetero_materials_text_edits_v1';
 let items=[],pieces=[],sheets=[],maxOffset=0,offset=0,target=0,raf=0,drag=null;
 let dragged=false,aligned=true,editing=false,activeItem=null,currentSheet=-1;
-let changes={};
+let changes={},focusedPiece=null;
 
 /* Lightly scattered editorial collage at three staggered heights. */
 /* Three staggered bands rather than a sparse alternating grid.
@@ -346,15 +350,49 @@ function navigateSheet(index){
 }
 function showDetail(piece){
  const item=piece.item;
+ const source=piece.art.getBoundingClientRect();
+ if(!source.width||!source.height)return;
  detailTitle.textContent=item.title;
  detailType.textContent=item.category||'MATERIAL';
- detailSequence.textContent='MATERIAL '+item.id+' / '+items.length;
- detailDescription.textContent=item.description||'';
+ detailSequence.textContent=String(item.id).padStart(2,'0')+' / '+items.length;
+ const message=(item.description||'').trim();
+ detailDescription.textContent=message==='혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.'?'':message;
+ detailDescription.hidden=!detailDescription.textContent;
  detailSource.textContent=item.detailSource||'';
  imageWrap.replaceChildren();
  const img=createImage(item,item.title,()=>{});
  img.loading='eager';imageWrap.append(img);
+ // Keep the archive visible: zoom only the alpha-cutout, not a rectangular photograph.
+ const vw=window.innerWidth,vh=window.innerHeight;
+ const maxWidth=Math.min(vw-34,vw<700?350:525);
+ const maxHeight=Math.min(vh*.49,485);
+ const scale=Math.max(1,Math.min(1.8,maxWidth/source.width,maxHeight/source.height));
+ const artWidth=Math.round(source.width*scale);
+ const artHeight=Math.round(source.height*scale);
+ const tagWidth=Math.min(vw-34,vw<700?290:340);
+ const sceneWidth=Math.max(artWidth,tagWidth);
+ imageWrap.style.width=artWidth+'px';
+ imageWrap.style.height=artHeight+'px';
+ detailBody.style.width=sceneWidth+'px';
  detail.showModal();
+ const captionHeight=detailCopy.getBoundingClientRect().height;
+ const sceneHeight=artHeight+16+captionHeight;
+ const left=clamp(source.left+source.width*.5-sceneWidth*.5,14,Math.max(14,vw-sceneWidth-14));
+ const top=clamp(source.top+source.height*.5-artHeight*.5,14,Math.max(14,vh-sceneHeight-18));
+ detailBody.style.left=Math.round(left)+'px';
+ detailBody.style.top=Math.round(top)+'px';
+ const dest=imageWrap.getBoundingClientRect();
+ if(!reduced.matches&&dest.width){
+  const dx=source.left+source.width*.5-(dest.left+dest.width*.5);
+  const dy=source.top+source.height*.5-(dest.top+dest.height*.5);
+  imageWrap.animate([
+   {transform:'translate('+dx+'px,'+dy+'px) scale('+(source.width/dest.width)+')',opacity:.58},
+   {transform:'translate(0px,0px) scale(1)',opacity:1}
+  ],{duration:470,easing:'cubic-bezier(.18,.78,.2,1)'});
+ }
+ focusedPiece=piece;
+ piece.button.classList.add('is-inspected');
+ document.querySelector('#material-detail-close').focus({preventScroll:true});
 }
 function openEditor(item){
  activeItem=item;
@@ -434,6 +472,10 @@ document.querySelector('#chapter-open').addEventListener('click',()=>chapter.sho
 document.querySelector('#chapter-close').addEventListener('click',()=>chapter.close());
 chapter.addEventListener('click',e=>{if(e.target===chapter)chapter.close()});
 document.querySelector('#material-detail-close').addEventListener('click',()=>detail.close());
+detail.addEventListener('close',()=>{
+ if(focusedPiece)focusedPiece.button.classList.remove('is-inspected');
+ focusedPiece=null;
+});
 detail.addEventListener('click',e=>{if(e.target===detail)detail.close()});
 editToggle.addEventListener('click',()=>{
  editing=!editing;
