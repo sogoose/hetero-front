@@ -267,7 +267,7 @@ body:has(#photo-detail[open]){overflow:hidden}
 /* In-page editor keeps a public GitHub CSV as the source of truth. */
 .archive-editor{
  position:fixed;inset:0;margin:auto;padding:28px 31px 25px;
- width:min(730px,calc(100vw - 30px));max-width:none;max-height:calc(100dvh - 30px);
+ width:min(1060px,calc(100vw - 30px));max-width:none;max-height:calc(100dvh - 30px);
  border-radius:12px;overflow-y:auto;overscroll-behavior:contain;
  font-family:Pretendard,-apple-system,sans-serif;
 }
@@ -299,6 +299,33 @@ body:has(#photo-detail[open]){overflow:hidden}
 .editor-export-buttons button:hover{background:#f4f5f5}
 .editor-github-links{margin-top:17px}
 .editor-github-links a{font-size:11px;text-decoration:underline;text-underline-offset:3px;color:#45484a}
+/* Image stays in sight while moving through the archive's long registry form. */
+.editor-workspace{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:25px;align-items:start}
+.editor-workspace>.editor-form{min-width:0}
+.editor-preview{position:sticky;top:14px;min-width:0;align-self:start}
+.editor-preview-card{padding:13px;border:1px solid #d9dadd;border-radius:6px;background:rgba(242,243,243,.84)}
+.editor-preview-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;font:450 10px/1.4 Pretendard,sans-serif;letter-spacing:.065em;color:#686b6e}
+.editor-preview-image{display:flex;align-items:center;justify-content:center;width:100%;height:251px;overflow:hidden;border:1px solid rgba(65,69,73,.10);border-radius:3px;background:#e8e9e7;text-decoration:none;color:#68696b;cursor:zoom-in}
+.editor-preview-image:not([href]){cursor:default}
+.editor-preview-image img{width:100%;height:100%;display:block;object-fit:contain}
+.editor-preview-image img[hidden]{display:none}
+.editor-preview-fallback{padding:15px;text-align:center;font-size:11px;line-height:1.6}
+.editor-preview-caption{font:450 12px/1.55 Pretendard,sans-serif;word-break:keep-all;overflow-wrap:anywhere;margin:12px 0 5px;color:#25282a}
+.editor-preview-note{font:350 10px/1.6 Pretendard,sans-serif;color:#777a7d;margin:0}
+@media(max-width:850px){
+ .editor-workspace{grid-template-columns:1fr;gap:12px}
+ .editor-preview{order:-1;position:relative;top:auto}
+ .editor-preview-card{display:grid;grid-template-columns:170px minmax(0,1fr);column-gap:16px;align-items:start}
+ .editor-preview-head{grid-column:1/-1;margin-bottom:9px}
+ .editor-preview-image{grid-row:2 / span 2;height:160px}
+ .editor-preview-caption{margin:0 0 6px;align-self:end}
+ .editor-preview-note{align-self:start}
+}
+@media(max-width:550px){
+ .editor-preview-card{grid-template-columns:132px minmax(0,1fr);gap:0 12px;padding:10px}
+ .editor-preview-image{height:132px}
+ .editor-preview-caption{font-size:11px}
+}
 @media(max-width:550px){
  .photo-toolbar{gap:9px;padding:0!important}
  .photo-toolbar .view-switch{gap:9px}
