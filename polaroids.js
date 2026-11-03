@@ -399,6 +399,21 @@ board.addEventListener('pointerup',event=>finishDrag(event));
 board.addEventListener('pointercancel',event=>finishDrag(event,true));
 board.addEventListener('lostpointercapture',event=>finishDrag(event,true));
 board.addEventListener('wheel',wheelMix,{passive:false});
+/* The board is pointer-transparent except for its cards, so the quote on
+   the floor can be clicked. Continue wheel-mixing on uncovered background. */
+const photoMain=document.querySelector('.photo-main');
+const floorQuote=document.querySelector('#archive-essay-trigger');
+if(photoMain){
+ photoMain.addEventListener('wheel',event=>{
+  if(event.target===photoMain||(floorQuote&&floorQuote.contains(event.target)))wheelMix(event);
+ },{passive:false});
+ photoMain.addEventListener('pointermove',event=>{
+  if(event.target===photoMain)movePointer(event);
+ });
+ photoMain.addEventListener('click',event=>{
+  if(event.target===photoMain&&mode==='scatter'&&!dialog.open)scatterTargets();
+ });
+}
 board.addEventListener('dragstart',event=>event.preventDefault());
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopMotion();});
 let picked=null, flipped=false, closing=false, detailRecord=null;
