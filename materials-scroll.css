@@ -124,10 +124,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
             linear-gradient(#aaa69b,#aaa69b) center/100% 1px no-repeat;
  opacity:.47;pointer-events:none;
 }
-.material-main.is-aligned .material-piece{
- top:49%!important;transform:translateY(-50%) rotate(0)!important;
-}
-.material-main.is-aligned .material-piece::after{opacity:.16}
+/* The grid mode is positioned by materials-scroll.js for each sheet. */
+.material-main.is-aligned .material-piece{transform:rotate(0deg)}
 /* Reuse the spatial hierarchy of the landscape footer, with the bespoke material controls. */
 .material-main .archive-taskbar{z-index:50}
 .material-main .archive-taskbar .photo-pagination{
@@ -275,4 +273,169 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
    drop-shadow(-1.5px 1.5px 0 #fffdf8)
    drop-shadow(3px 7px 5px rgba(25,26,21,.20));
  }
+}
+
+
+/* 2026-11 / condensed sticker-sheet layout
+   The cutouts share a sheet; each has one tiny collectible-label, never a card. */
+.material-intro{
+ left:clamp(24px,3.6vw,58px);
+ top:30%;
+ width:clamp(215px,25vw,350px);
+}
+.material-intro .material-eyebrow{font-size:10px;letter-spacing:.10em}
+.material-intro h1{
+ margin:15px 0 10px;
+ font-size:clamp(31px,3.2vw,48px);
+ line-height:1.14;
+ white-space:normal;
+}
+.material-intro p{font-size:clamp(11px,1vw,13px);line-height:1.65;max-width:290px}
+.material-intro .material-instruction{margin-top:32px;font-size:9px;letter-spacing:.10em}
+.material-belt,.material-guide{opacity:.24}
+.material-piece{
+ display:block;overflow:visible;
+ transition:filter .25s,opacity .25s,transform .3s ease;
+}
+.material-piece .material-art{position:relative;z-index:1;filter:none!important}
+.material-piece .material-piece-title{
+ display:block!important;
+ position:absolute;z-index:3;
+ top:-12px;left:-6px;
+ max-width:min(92%,195px);
+ width:max-content;
+ padding:4px 7px 5px;
+ margin:0!important;
+ border:1px solid rgba(66,65,57,.18);
+ border-radius:0;
+ background:rgba(250,249,244,.96);
+ box-shadow:1px 2px 0 rgba(55,51,45,.055);
+ color:#494943!important;
+ font:400 11px/1.2 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.035em;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+ text-align:left;pointer-events:none;
+ transform:rotate(-1.5deg);
+}
+.material-piece:hover .material-piece-title,
+.material-piece:focus-visible .material-piece-title{
+ background:#e9f7c2;
+ border-color:rgba(65,75,45,.36);
+ color:#272925!important;
+}
+.material-piece .material-piece-number,.material-piece .material-piece-meta{display:none!important}
+.material-main .archive-taskbar .material-edit-toggle{
+ width:47px!important;min-width:47px!important;
+ padding:0 3px!important;
+ color:#74716b!important;
+ font:400 11px/1 "Special Elite",monospace!important;
+ letter-spacing:.07em;
+}
+.material-main .archive-taskbar .material-edit-toggle[aria-pressed="true"]{
+ color:#21221f!important;
+ text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;
+}
+.material-main.is-editing::after{
+ content:"편집할 이미지를 클릭하세요";
+ position:fixed;z-index:49;left:50%;bottom:77px;
+ transform:translateX(-50%);
+ font:400 11px/1.5 Pretendard,sans-serif;
+ letter-spacing:-.01em;color:#62645c;
+ background:rgba(250,249,245,.95);
+ border:1px solid #e0ded6;padding:5px 11px;
+ pointer-events:none;white-space:nowrap;
+}
+.material-main.is-editing .material-piece{cursor:text}
+
+/* On-page annotations editor; intentionally restrained like the landscape modal. */
+.material-editor{
+ box-sizing:border-box;
+ width:min(480px,calc(100vw - 28px));max-width:none;
+ max-height:calc(100dvh - 30px);
+ padding:27px clamp(22px,4vw,37px) 29px;
+ border:1px solid #d4d2c9;border-radius:0;
+ background:#faf9f5;color:#292923;
+ box-shadow:0 16px 70px rgba(25,25,23,.17);
+ font-family:Pretendard,-apple-system,sans-serif;
+ overflow-y:auto;
+}
+.material-editor::backdrop{background:rgba(229,228,222,.62);backdrop-filter:blur(4px)}
+.material-editor-top{display:flex;align-items:center;justify-content:space-between}
+.material-editor-top span{
+ color:#858178;
+ font:400 10px/1.2 "Special Elite",monospace;
+ letter-spacing:.09em;
+}
+.material-editor-x{
+ appearance:none;margin:0;padding:0;
+ border:0;background:transparent;box-shadow:none;
+ font:300 27px/1 Pretendard,sans-serif;
+ color:#34342e;cursor:pointer;
+}
+.material-editor h2{
+ margin:21px 0 27px;
+ font:350 34px/1.1 Pretendard,sans-serif;
+ letter-spacing:-.055em;
+}
+.material-editor form{display:flex;flex-direction:column;gap:17px}
+.material-editor-field{
+ display:flex;flex-direction:column;gap:7px;
+ font:400 11px/1.2 Pretendard,sans-serif;color:#77746b;
+}
+.material-editor-field input,
+.material-editor-field textarea{
+ appearance:none;display:block;box-sizing:border-box;
+ width:100%;max-width:100%;margin:0;
+ padding:10px 0;
+ border:0;border-bottom:1px solid #b9b7ad;border-radius:0;
+ background:transparent;box-shadow:none;
+ font:400 16px/1.45 Pretendard,sans-serif;
+ color:#262622;outline:none;
+ resize:vertical;
+}
+.material-editor-field input:focus,
+.material-editor-field textarea:focus{border-bottom-color:#373932}
+.material-editor-field textarea{min-height:83px;font-size:14px}
+.material-edit-status{
+ margin:0!important;
+ font:400 11px/1.6 Pretendard,sans-serif!important;
+ color:#89867e!important;
+}
+.material-editor-actions{
+ display:flex;align-items:center;justify-content:flex-end;gap:17px;
+ flex-wrap:wrap;margin-top:2px;
+}
+.material-editor-actions button{
+ appearance:none;margin:0;padding:9px 0;
+ background:transparent;border:0;border-radius:0;box-shadow:none;
+ font:400 12px/1.25 Pretendard,sans-serif;
+ color:#6a6862;cursor:pointer;
+}
+.material-editor-actions button:hover{color:#292923;background:transparent;transform:none}
+.material-editor-actions .material-editor-save{
+ background:#24251f;color:#f8f7f1;
+ padding:10px 19px;min-width:70px;
+}
+.material-editor-actions .material-editor-save:hover{
+ background:#45483b;color:#fff;
+}
+
+@media(max-width:700px){
+ .material-intro{left:23px;top:26%;width:58vw}
+ .material-intro h1{font-size:clamp(28px,7vw,42px)}
+ .material-intro p{font-size:11px}
+ .material-intro .material-instruction{margin-top:22px;font-size:8px}
+ .material-piece .material-piece-title{
+   top:-8px;left:-5px;
+   max-width:min(90%,145px);
+   padding:3px 5px 4px;
+   font-size:9px!important;
+ }
+ .material-main .archive-taskbar .material-edit-toggle{
+  width:38px!important;min-width:38px!important;font-size:10px!important;
+ }
+ .material-editor{padding:20px 22px 25px}
+ .material-editor h2{font-size:29px;margin:18px 0 20px}
+ .material-editor-actions{gap:11px}
+ .material-editor-actions button{font-size:11px}
 }
