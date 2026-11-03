@@ -570,6 +570,7 @@ async function shuffleWithGather(){
  board.classList.add('is-shuffling');
  board.setAttribute('aria-busy','true');
  stopMotion();
+ let newCardsRendered=false;
  try{
   const departing=bodies.slice();
   const gather=departing.map((body,index)=>{
@@ -591,6 +592,7 @@ async function shuffleWithGather(){
   await new Promise(resolve=>setTimeout(resolve,95));
   // Switch the contents only while the whole deck is stacked in one place.
   shuffleImmediately();
+  newCardsRendered=true;
   const arriving=bodies.slice();
   const deal=arriving.map((body,index)=>{
    body.target=null;
@@ -603,14 +605,14 @@ async function shuffleWithGather(){
     duration:760,
     delay:Math.min(index*13,195),
     easing:'cubic-bezier(.14,.76,.23,1)',
-    fill:'none'
+    fill:'backwards' // Keep delayed cards in the center pile until they are dealt.
    });
   });
   await Promise.all(deal.map(animation=>animation.finished));
  }catch(error){
   // Detached cards (e.g. a navigation or reload) may cancel WAAPI animations.
   // Leave the final scatter in a usable state regardless.
-  if(board.isConnected&&!bodies.length)shuffleImmediately();
+  if(board.isConnected&&!newCardsRendered)shuffleImmediately();
  }finally{
   board.classList.remove('is-shuffling');
   board.removeAttribute('aria-busy');
