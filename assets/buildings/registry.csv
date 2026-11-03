@@ -1,13 +1,13 @@
 file,building_id,construction_year,year_status,year_source,approval_date,structure,structure_status,wall_finish,wall_status,roof_finish,roof_status,railing,railing_status,notes,primary_use,floors_above,record_source
 photo-90c0017cdd68.webp,B-001,1971,unverified,,,,,,,,,,,,,,
 photo-80f8238b0e57.webp,B-002,1990,unverified,,,,,,,,,,,,,,
-photo-2c019721d597.webp,B-003,1991,unverified,,,,,,,,,,,,,,
+photo-2c019721d597.webp,B-003,1991,unverified,,1991-10-09,벽돌,crosschecked,,,,,,,다가구용단독주택(4가구),단독주택,2,집품 / 건축HUB 표제부 재게시 / 2026-11
 photo-01a4f0b10194.webp,B-004,1986,crosschecked,"건축HUB 기반 공개 건물정보 교차확인(집품·자리톡, 2026-11)",,,,,,,,,,외부 자료에서 1986년 6월 준공으로 표기. 건축물대장 원문 직접 대조 전.,,,
 photo-775b74831b23.webp,B-005,1986,unverified,,,벽돌,crosschecked,,,,,,,현존 건물의 구조·용도 확인. 재게시 자료의 1986년 준공 월만 확인되어 정확한 사용승인일은 미기입.,공동주택,3,집품 / 국토교통부 건축HUB 건축물대장 재게시 / 2026-11
 photo-6872cdf8605f.webp,B-006,1992,unverified,,1992-03-21,벽돌,crosschecked,,,,,,,,단독주택,2,집품 / 건축물대장 재게시 / 2026-11
 photo-ba6c9c55a9b4.webp,B-007,1980전후,estimated,,,,,,,,,,,현주소 조회 건축물이 2023년 준공으로 확인되어 사진의 1980년 전후 기록 건물과 동일한 건물인지 불확실함. 현존 건물의 구조를 사진 기록에 적용하지 말 것.,,,
 photo-17a6d53d27c5.webp,B-008,1991,unverified,,,,,,,,,,,,,,
-photo-3863a7031d97.webp,B-009,1991,crosschecked,"국토교통부 건축HUB 연계 재게시 자료(집품, 2026-08)",,,,,,,,,,다가구용단독주택(5가구)으로 표시. 구조와 세부 마감 미검증.,,,
+photo-3863a7031d97.webp,B-009,1991,crosschecked,"국토교통부 건축HUB 연계 재게시 자료(집품, 2026-08)",1991-09-13,벽돌,crosschecked,,,,,,,다가구용단독주택(5가구),단독주택,2,집품 / 건축HUB 표제부 재게시 / 2026-11
 photo-ff7fe45a9e68.webp,B-010,1991,unverified,,1991-12-21,벽돌,crosschecked,,,,,,,,제2종근린생활시설,2,빌딩샵AI·집품 / 건축물대장 재게시 / 2026-11
 photo-2a0fdf9f5f9c.webp,B-011,1990,unverified,,,,,,,,,,,,,,
 photo-14c16a0e1915.webp,B-012,1989,unverified,,1989-08-25,벽돌,crosschecked,,,,,,,,단독주택,2,집품 / 건축물대장 재게시 / 2026-11
@@ -79,7 +79,7 @@ photo-771d45dd68df.webp,B-075,1992,unverified,,,,,,,,,,,,,,
 photo-8d887342c926.webp,B-076,1986,unverified,,,,,,,,,,,,,,
 photo-928fd27ae568.webp,B-077,1987,unverified,,1987-10-15,벽돌,crosschecked,,,,,,,,공동주택,3,집품 / 국토교통부 건축HUB 건축물대장 재게시 / 2026-11
 photo-d695ee97b004.webp,B-078,1992,unverified,,,,,,,,,,,,,,
-photo-eda69ddafaec.webp,B-079,1986,unverified,,,,,,,,,,,,,,
+photo-eda69ddafaec.webp,B-079,1986,unverified,,,벽돌,crosschecked,,,,,,,다세대주택 6세대; 연도 1986.06 대조,공동주택,2,집품 / 건축HUB 표제부 재게시 / 2026-11
 photo-633f6cbd051e.webp,B-080,1982,unverified,,,,,,,,,,,,,,
 photo-9a6e97da527b.webp,B-081,1987,unverified,,,,,,,,,,,,,,
 photo-39de3ca55446.webp,B-082,1981,unverified,,1987-07-27,벽돌,crosschecked,,,,,,,사진 기록 건축연도 1981과 재게시 사용승인연도 1987이 다름. 원본 사진과 현존 건물이 동일 시기 건축물인지 재확인 필요.,단독주택,2,집품 / 국토교통부 건축HUB 건축물대장 재게시 / 2026-11
