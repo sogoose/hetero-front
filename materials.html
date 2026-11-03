@@ -8,14 +8,13 @@
 <meta name="description" content="산업화 시기 건축 요소를 누끼 스티커처럼 옆으로 펼쳐 보는 혼종의 정면 재료 아카이브.">
 <link rel="stylesheet" href="style.css?v=2">
 <link rel="stylesheet" href="polaroids.css?v=36">
-<link rel="stylesheet" href="materials-scroll.css?v=12">
-<script src="materials-scroll.js?v=13" defer></script>
+<link rel="stylesheet" href="materials-scroll.css?v=14">
+<script src="materials-scroll.js?v=15" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <symbol id="ic-home" viewBox="0 0 24 24"><path d="m4 11 8-7 8 7v9H4z"/><path d="M9 20v-7h6v7"/></symbol>
   <symbol id="ic-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="19" cy="7" r="1.5" fill="currentColor" stroke="none"/></symbol>
-  <symbol id="ic-align" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
   <symbol id="ic-left" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
   <symbol id="ic-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
   <symbol id="ic-close" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
@@ -24,13 +23,12 @@
 <main class="photo-main material-main">
   <section class="material-window" id="material-window" aria-label="좌우로 펼쳐지는 건축 재료와 부재의 아카이브">
     <div class="material-strip" id="material-strip">
-      <div class="material-guide" aria-hidden="true"></div>
-      <div class="material-belt" aria-hidden="true"></div>
+      
       <div class="material-intro">
         <span class="material-eyebrow">02 / MATERIAL STUDIES</span>
         <h1>혼종을 만든 혼종.</h1>
-        <p>한 시대의 정면을 이루던 조각들.<br>왼쪽에서 오른쪽으로 펼쳐 읽는 재료의 기록.</p>
-        <span class="material-instruction">SCROLL / COLLECT / INSPECT</span>
+        <p>한 시대의 정면을 이루던 조각들.<br>색과 형태를 따라 펼쳐지는 재료의 기록.</p>
+        <span class="material-instruction">SCROLL / INSPECT</span>
       </div>
       <div class="material-stickers" id="material-stickers"></div>
     </div>
@@ -43,7 +41,7 @@
     </div>
     <div class="photo-toolbar" role="toolbar" aria-label="스티커 이동">
       <button type="button" id="material-previous" class="icon-button" title="이전 묶음" aria-label="이전 묶음"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-left"></use></svg><span class="sr-only">이전 스티커</span></button>
-      <button type="button" id="material-arrange" class="icon-button" title="스티커 정렬하기" aria-label="스티커 정렬하기" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-align"></use></svg><span class="sr-only">스티커 정렬하기</span></button>
+      
       <button type="button" id="material-next" class="icon-button" title="다음 묶음" aria-label="다음 묶음"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-right"></use></svg><span class="sr-only">다음 묶음</span></button>
       <span class="toolbar-divider" aria-hidden="true"></span>
       <button type="button" id="material-edit-toggle" class="icon-button material-edit-toggle" title="재료 이름 편집" aria-pressed="false">EDIT</button>
@@ -70,14 +68,9 @@
   <p class="chapter-caption">ATELIER 作 · ARCHIVE 2026</p>
 </dialog>
 
-<dialog id="material-detail" class="material-detail" aria-labelledby="material-detail-title">
-  <div class="material-detail-top"><span>MATERIAL / DETAIL</span><button type="button" id="material-detail-close" class="icon-button" aria-label="상세 보기 닫기" title="닫기"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-close"></use></svg></button></div>
+<dialog id="material-detail" class="material-detail" aria-label="재료 이미지 확대">
   <div class="material-detail-body">
     <div id="material-detail-art" class="material-detail-art"></div>
-    <div class="material-detail-copy">
-      <h2 id="material-detail-title"></h2>
-      <p id="material-detail-description"></p>
-    </div>
   </div>
 </dialog>
 
