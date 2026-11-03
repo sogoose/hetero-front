@@ -959,3 +959,99 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  .material-annotation-name{-webkit-line-clamp:2}
  .material-annotation-description{-webkit-line-clamp:2}
 }
+
+/* MATERIALS / opening statement lifted directly from the Landscapes serif title.
+   No kicker, instruction, secondary heading, visible boundary or decoration. */
+.material-intro{
+ pointer-events:auto!important;
+ z-index:5!important;
+ width:max-content!important;
+ max-width:calc(100vw - 32px)!important;
+}
+.material-intro h1{
+ margin:0!important;padding:0!important;
+ font:inherit!important;white-space:normal!important;
+}
+.material-essay-trigger{
+ appearance:none;-webkit-appearance:none;
+ display:block;margin:0;padding:0;
+ border:0;border-radius:0;background:transparent!important;box-shadow:none!important;
+ color:#171715!important;text-align:left;cursor:pointer;
+ font-family:"Noto Serif KR",serif!important;
+ font-size:clamp(25px,2.2vw,34px)!important;
+ font-weight:800!important;line-height:1.4!important;
+ letter-spacing:-.063em!important;word-break:keep-all!important;
+ transition:opacity .22s ease!important;
+}
+.material-essay-trigger span{display:block;white-space:nowrap}
+.material-essay-trigger:hover{opacity:.6}
+.material-essay-trigger:focus-visible{outline:1px solid #44443e;outline-offset:7px}
+.material-main.is-reading .material-essay-trigger{opacity:.3}
+.material-essay{
+ position:fixed!important;inset:0!important;
+ width:100vw!important;height:100dvh!important;
+ max-width:none!important;max-height:none!important;
+ margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+ background:#f9f9f6!important;color:#262621!important;
+ box-shadow:none!important;overflow-y:auto!important;overscroll-behavior:contain;
+ font-family:Pretendard,-apple-system,sans-serif;
+}
+.material-essay[open]{display:block!important}
+.material-essay::backdrop{
+ background:rgba(248,248,244,.8)!important;
+ backdrop-filter:blur(4px);
+ -webkit-backdrop-filter:blur(4px);
+}
+.material-essay-content{
+ position:relative;box-sizing:border-box;
+ width:min(1050px,100%);min-height:100%;
+ margin:0 auto;padding:clamp(78px,11vh,135px) clamp(28px,7vw,105px) 110px;
+ animation:material-essay-reveal .65s cubic-bezier(.22,.78,.2,1) both;
+}
+.material-essay h2{
+ margin:0 0 clamp(38px,6.5vh,76px)!important;
+ color:#171715!important;
+ font:800 clamp(29px,3.3vw,46px)/1.42 "Noto Serif KR",serif!important;
+ letter-spacing:-.063em!important;word-break:keep-all;
+}
+.material-essay h2 span{display:block}
+.material-essay-columns{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ gap:clamp(28px,4vw,62px);align-items:start;
+}
+.material-essay-columns p{
+ margin:0!important;
+ font:350 clamp(13px,1.06vw,15px)/1.9 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.024em;color:#34352f!important;
+ word-break:keep-all;overflow-wrap:break-word;
+}
+.material-essay-columns strong{font-weight:650;color:#20211d}
+.material-essay-close{
+ position:fixed;top:clamp(19px,4vw,38px);right:clamp(19px,4vw,42px);z-index:2;
+ display:grid;place-items:center;width:36px;height:36px;padding:0;
+ border:0;border-radius:0;background:transparent!important;color:#41423b!important;
+ cursor:pointer;box-shadow:none!important;
+}
+.material-essay-close .ui-icon{width:20px;height:20px}
+.material-essay-close:hover{opacity:.5;transform:none!important}
+.material-essay-close:focus-visible{outline:1px solid #575850;outline-offset:3px}
+@keyframes material-essay-reveal{
+ from{opacity:0;transform:translateY(38px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:700px){
+ .material-intro{left:22px!important}
+ .material-essay-trigger{
+  font-size:clamp(15px,4.45vw,20px)!important;
+  letter-spacing:-.065em!important;line-height:1.5!important;
+ }
+ .material-essay-content{padding:80px 25px 105px}
+ .material-essay h2{font-size:clamp(24px,6vw,34px)!important;margin-bottom:35px!important}
+ .material-essay-columns{grid-template-columns:1fr;gap:23px}
+ .material-essay-columns p{font-size:13px!important;line-height:1.85!important}
+ .material-essay-close{top:20px;right:19px;width:30px;height:30px}
+}
+@media(prefers-reduced-motion:reduce){
+ .material-essay-content{animation:none!important}
+ .material-essay-trigger{transition:none!important}
+}
