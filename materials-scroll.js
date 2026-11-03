@@ -32,10 +32,7 @@ const next=document.querySelector('#material-next');
 const arrange=document.querySelector('#material-arrange');
 const imageWrap=document.querySelector('#material-detail-art');
 const detailTitle=document.querySelector('#material-detail-title');
-const detailType=document.querySelector('#material-detail-type');
 const detailDescription=document.querySelector('#material-detail-description');
-const detailSequence=document.querySelector('#material-detail-sequence');
-const detailSource=document.querySelector('#material-detail-source');
 // Keep the close affordance attached to the caption instead of a gallery header.
 detailCopy.append(document.querySelector('#material-detail-close'));
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -353,12 +350,9 @@ function showDetail(piece){
  const source=piece.art.getBoundingClientRect();
  if(!source.width||!source.height)return;
  detailTitle.textContent=item.title;
- detailType.textContent=item.category||'MATERIAL';
- detailSequence.textContent=String(item.id).padStart(2,'0')+' / '+items.length;
  const message=(item.description||'').trim();
  detailDescription.textContent=message==='혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.'?'':message;
  detailDescription.hidden=!detailDescription.textContent;
- detailSource.textContent=item.detailSource||'';
  imageWrap.replaceChildren();
  const img=createImage(item,item.title,()=>{});
  img.loading='eager';imageWrap.append(img);
@@ -369,8 +363,13 @@ function showDetail(piece){
  const scale=Math.max(1,Math.min(1.8,maxWidth/source.width,maxHeight/source.height));
  const artWidth=Math.round(source.width*scale);
  const artHeight=Math.round(source.height*scale);
- const tagWidth=Math.min(vw-34,vw<700?290:340);
+ const tagWidth=Math.min(vw-44,vw<700?260:308);
  const sceneWidth=Math.max(artWidth,tagWidth);
+ // Each collected paper slip is attached a little off-centre: measured, not random.
+ const tagShifts=[-16,9,-7,17,-12,12];
+ const tagTilts=['-1.5deg','.8deg','-.6deg','1.4deg','-1.1deg','.5deg'];
+ detailCopy.style.setProperty('--tag-shift',tagShifts[piece.index%tagShifts.length]+'px');
+ detailCopy.style.setProperty('--tag-tilt',tagTilts[piece.index%tagTilts.length]);
  imageWrap.style.width=artWidth+'px';
  imageWrap.style.height=artHeight+'px';
  detailBody.style.width=sceneWidth+'px';
