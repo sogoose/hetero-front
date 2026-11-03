@@ -7,19 +7,11 @@ const main=document.querySelector('.material-main');
 const viewport=document.querySelector('#material-window');
 const strip=document.querySelector('#material-strip');
 const host=document.querySelector('#material-stickers');
-// An unobtrusive Gunpla-style sprue framework lives behind the real cutouts.
-const svgNS='http://www.w3.org/2000/svg';
-const runnerSvg=document.createElementNS(svgNS,'svg');
-runnerSvg.classList.add('material-runner-network');
-runnerSvg.setAttribute('aria-hidden','true');
-runnerSvg.setAttribute('focusable','false');
-host.prepend(runnerSvg);
 const count=document.querySelector('#material-counter');
 const scrubber=document.querySelector('#material-scrubber');
 const chapter=document.querySelector('#chapter-menu');
 const detail=document.querySelector('#material-detail');
 const detailBody=document.querySelector('.material-detail-body');
-const detailCopy=document.querySelector('.material-detail-copy');
 const editDialog=document.querySelector('#material-editor');
 const editToggle=document.querySelector('#material-edit-toggle');
 const editForm=document.querySelector('#material-edit-form');
@@ -29,52 +21,12 @@ const editDescription=document.querySelector('#material-edit-description');
 const editStatus=document.querySelector('#material-edit-status');
 const previous=document.querySelector('#material-previous');
 const next=document.querySelector('#material-next');
-const arrange=document.querySelector('#material-arrange');
 const imageWrap=document.querySelector('#material-detail-art');
-const detailTitle=document.querySelector('#material-detail-title');
-const detailDescription=document.querySelector('#material-detail-description');
-// Keep the close affordance attached to the caption instead of a gallery header.
-detailCopy.append(document.querySelector('#material-detail-close'));
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const storageKey='hetero_materials_text_edits_v1';
 let items=[],pieces=[],sheets=[],maxOffset=0,offset=0,target=0,raf=0,drag=null;
-let dragged=false,aligned=true,editing=false,activeItem=null,currentSheet=-1;
+let dragged=false,editing=false,activeItem=null,currentSheet=-1,perBoard=12;
 let changes={},focusedPiece=null;
-
-/* Lightly scattered editorial collage at three staggered heights. */
-/* Three staggered bands rather than a sparse alternating grid.
-   Coordinates are normalized across each dense sticker sheet. */
-const scatterSlots=[
- [.05,.10,1.02,-4], [.46,.035,.96,3],
- [.87,.12,1.00,-2], [.25,.50,.96,-3],
- [.75,.48,1.03,4], [.06,.92,.93,3],
- [.42,.89,1.04,-2], [.90,.91,.96,3]
-];
-const gridSlots=[
- [.06,.08,.88,0], [.35,.08,.88,0],
- [.66,.08,.88,0], [.06,.40,.88,0],
- [.35,.40,.88,0], [.66,.40,.88,0],
- [.21,.74,.88,0], [.56,.74,.88,0]
-];
-const scatterMobile=[
- [.035,.14,1.04,-3], [.94,.17,.98,4],
- [.06,.84,.98,3], [.93,.83,1.04,-4]
-];
-const gridMobile=[
- [.05,.12,.91,0], [.53,.12,.91,0],
- [.05,.66,.91,0], [.53,.66,.91,0]
-];
-// Optimized for the actual 60 cutouts to reduce hard rectangular collisions.
-const slotOrders=[
- [1,4,6,0,5,2,7,3],
- [5,7,2,4,0,6,3,1],
- [6,0,7,2,4,5,1,3],
- [1,6,2,5,4,3,7,0],
- [6,2,0,4,5,7,1,3],
- [2,5,6,1,7,0,3,4],
- [0,5,3,4,1,6,7,2],
- [0,7,5,2,6,1,4,3]
-];
 
 const fallbackItems=[
  {id:'01',title:'주택의 정면',category:'주택',image:'assets/archive/specimens.webp',width:240,vertical:.22,rotation:0},
@@ -119,33 +71,6 @@ function makePiece(item,index){
  pieces.push(piece);
  return piece;
 }
-function sizing(item,mobile,scale){
- // Roughly 1.5x larger than the previous cutouts, while smoothing out
- // inconsistent source sizes so they read as one sticker collection.
- const vw=viewport.clientWidth,vh=viewport.clientHeight;
- const responsive=mobile?(vw<380?.93:1):(vh<690?.90:1);
- const previous=(Number(item.width)||260)*(mobile?.46:.57);
- const enlarged=previous*1.5;
- const common=mobile?194:270;
- const width=Math.round(clamp(
-  (enlarged*.40+common*.60)*scale*responsive,
-  mobile?145:194,mobile?231:315));
- // After alpha-trimming, use each object's actual visible aspect ratio.
- // Category estimates remain only as a fallback for unpublished assets.
- const fallbackRatio=item.category==='지붕'?.73
-  :item.category==='난간'?.76
-  :item.category==='벽체'?.77
-  :item.category==='대문'?.94:1.02;
- const nativeW=Number(item.imageWidth),nativeH=Number(item.imageHeight);
- const aspect=nativeW>0&&nativeH>0?nativeW/nativeH:1/fallbackRatio;
- let displayWidth=width,displayHeight=Math.round(width/aspect);
- const maxHeight=vh*(mobile?.44:.46);
- if(displayHeight>maxHeight){
-  displayWidth=Math.round(width*maxHeight/displayHeight);
-  displayHeight=Math.round(maxHeight);
- }
- return {width:displayWidth,height:displayHeight};
-}
 function createImage(item,alt,onFailure){
  const img=new Image();
  img.className='material-object-image';
@@ -177,140 +102,163 @@ function getSheetForOffset(scroll){
  }
  return best;
 }
-function svgElement(tag,attrs){
- const element=document.createElementNS(svgNS,tag);
- for(const [name,value] of Object.entries(attrs||{}))element.setAttribute(name,String(value));
- return element;
+
+/* Palette classification happens from the actual same-origin optimized images,
+   not guesses about file names. Tiny 36px alpha-aware samples are cached locally. */
+const paletteCacheKey='hetero_material_palette_v2';
+const typeRanks={'벽체':0,'지붕':1,'난간':2,'대문':3,'장식':4,'주택':5};
+const sampleCanvas=document.createElement('canvas');
+sampleCanvas.width=36;sampleCanvas.height=36;
+const sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true});
+
+function roughFamily(item){
+ const t=(item.title||'')+' '+(item.category||'');
+ if(/벽돌|테라코타|적색|붉은/.test(t))return 3;
+ if(/시멘트|콘크리트|화강석|석재/.test(t))return 1;
+ if(/녹색|청록|담쟁이|화분/.test(t))return 6;
+ if(/푸른|청회색/.test(t))return 8;
+ return 2;
 }
-/* A true assembly frame comes first. Its eight compartments determine
-   the image positions: the pale connections never decide the layout. */
-function renderSprue(){
- if(!pieces.length)return;
- const mobile=viewport.clientWidth<700;
- const vh=viewport.clientHeight;
- runnerSvg.setAttribute('viewBox','0 0 '+Math.ceil(strip.offsetWidth)+' '+Math.ceil(vh));
- runnerSvg.setAttribute('width',String(Math.ceil(strip.offsetWidth)));
- runnerSvg.setAttribute('height',String(Math.ceil(vh)));
- runnerSvg.replaceChildren();
- const cols=mobile?2:4,rows=2,perBoard=cols*rows;
- for(let g=0;g<sheets.length;g++){
-  const sheet=sheets[g],x0=sheet.start,y0=sheet.top;
-  const w=sheet.width,h=sheet.height,cw=w/cols,ch=h/rows;
-  const group=svgElement('g',{'class':'material-runner-group'});
-  // One perimeter and evenly spaced axes form a credible moulded sprue.
-  group.append(svgElement('rect',{
-   'class':'material-runner-frame',x:Math.round(x0),y:Math.round(y0),
-   width:Math.round(w),height:Math.round(h),rx:mobile?5:8
-  }));
-  for(let c=1;c<cols;c++){
-   const x=x0+c*cw;
-   group.append(svgElement('path',{
-    'class':'material-runner-divider',d:'M '+Math.round(x)+' '+Math.round(y0)+' V '+Math.round(y0+h)
-   }));
+function colorFamily(img,item){
+ if(!sampleContext)return {family:roughFamily(item),tone:0.5};
+ const w=sampleCanvas.width,h=sampleCanvas.height;
+ sampleContext.clearRect(0,0,w,h);
+ try{sampleContext.drawImage(img,0,0,w,h)}catch{return {family:roughFamily(item),tone:.5}}
+ let px;
+ try{px=sampleContext.getImageData(0,0,w,h).data}catch{return {family:roughFamily(item),tone:.5}}
+ const bins=new Array(10).fill(0);
+ let avg=0,total=0;
+ for(let i=0;i<px.length;i+=4){
+  const alpha=px[i+3]/255;
+  if(alpha<.22)continue;
+  const r=px[i]/255,g=px[i+1]/255,b=px[i+2]/255;
+  const hi=Math.max(r,g,b),lo=Math.min(r,g,b),delta=hi-lo;
+  const light=(hi+lo)/2;
+  if(light>.97)continue;
+  const sat=delta===0?0:delta/(1-Math.abs(2*light-1));
+  let group=0;
+  if(sat<.15 || delta<.09){
+   group=light>.68?0:light>.35?1:2;
+  }else{
+   let hue=0;
+   if(hi===r)hue=((g-b)/delta)%6;
+   else if(hi===g)hue=(b-r)/delta+2;
+   else hue=(r-g)/delta+4;
+   hue=(hue*60+360)%360;
+   group=hue<35||hue>=345?3:hue<70?4:hue<150?5:hue<192?6:hue<250?7:hue<290?8:9;
   }
-  const midY=y0+ch;
-  group.append(svgElement('path',{
-   'class':'material-runner-divider',
-   d:'M '+Math.round(x0)+' '+Math.round(midY)+' H '+Math.round(x0+w)
-  }));
-  for(let c=1;c<cols;c++){
-   group.append(svgElement('circle',{
-    'class':'material-runner-joint',cx:Math.round(x0+c*cw),cy:Math.round(midY),r:mobile?3:3.5
-   }));
-  }
-  const members=pieces.slice(g*perBoard,(g+1)*perBoard);
-  members.forEach((piece,index)=>{
-   if(!piece.sizing||!piece.position)return;
-   const col=index%cols,cellX=x0+col*cw;
-   const {x,y}=piece.position,{width,height}=piece.sizing;
-   const centerY=Math.round(y+height*.57);
-   // Connect every object from the nearest structural upright. The tiny
-   // joining bridge ends before the actual trimmed alpha image bounding box.
-   const attachLeft=col%2===0;
-   const railX=attachLeft?cellX:cellX+cw;
-   const edgeX=attachLeft?x-5:x+width+5;
-   const dx=Math.abs(edgeX-railX);
-   if(dx>9){
-    const path='M '+Math.round(railX)+' '+centerY+' H '+Math.round(edgeX);
-    group.append(svgElement('path',{'class':'material-runner-branch',d:path}));
-    group.append(svgElement('circle',{
-     'class':'material-runner-terminal',cx:Math.round(edgeX),cy:centerY,r:mobile?2:2.4
-    }));
-   }
-  });
-  runnerSvg.append(group);
+  const weight=alpha*(sat>=.15?1.5:1);
+  bins[group]+=weight;
+  avg+=light*weight;total+=weight;
  }
+ if(!total)return {family:roughFamily(item),tone:.5};
+ // Broad color first; near colors then converge by brightness and material.
+ const family=bins.indexOf(Math.max(...bins));
+ return {family,tone:avg/total};
 }
+function sampleImage(item){
+ return new Promise(resolve=>{
+  const img=new Image();
+  let done=false;
+  const timeout=setTimeout(()=>finish(null),4000);
+  function finish(value){
+   if(done)return;done=true;clearTimeout(timeout);
+   img.onload=null;img.onerror=null;resolve(value||{family:roughFamily(item),tone:.5});
+  }
+  img.onload=()=>finish(colorFamily(img,item));
+  img.onerror=()=>finish(null);
+  img.src=item.image+(item.assetRevision?'?v='+encodeURIComponent(item.assetRevision):'');
+ });
+}
+async function sortByPalette(entries){
+ let cached={};
+ try{cached=JSON.parse(localStorage.getItem(paletteCacheKey)||'{}')||{}}catch{}
+ let cursor=0;
+ const workers=Array.from({length:8},async()=>{
+  while(cursor<entries.length){
+   const item=entries[cursor++];
+   const key=item.image+'@'+(item.assetRevision||'');
+   let palette=cached[key];
+   if(!palette||!Number.isFinite(palette.family)){
+    palette=await sampleImage(item);
+    cached[key]=palette;
+   }
+   item._palette=palette;
+  }
+ });
+ await Promise.all(workers);
+ try{localStorage.setItem(paletteCacheKey,JSON.stringify(cached))}catch{}
+ return entries.sort((a,b)=>{
+  const ac=a._palette||{family:roughFamily(a),tone:.5};
+  const bc=b._palette||{family:roughFamily(b),tone:.5};
+  return ac.family-bc.family
+   || (typeRanks[a.category]??8)-(typeRanks[b.category]??8)
+   || ac.tone-bc.tone
+   || Number(a.id)-Number(b.id);
+ });
+}
+
 function layout(){
  if(!pieces.length)return;
  const vw=viewport.clientWidth,vh=viewport.clientHeight;
- const mobile=vw<700,cols=mobile?2:4,rows=2,perBoard=cols*rows;
- // Four large pieces per row on desktop; four total per board on mobile.
- const sheetWidth=mobile?clamp(vw*.98,346,448):clamp(vw*.85,1060,1310);
- const lead=mobile?Math.max(vw*.38,155):Math.max(vw*.33,430);
- const tail=mobile?vw*.38:vw*.38;
- const spacing=mobile?35:54;
- const boardTop=clamp(vh*.075,32,68);
- const boardBottom=mobile?45:50;
- const boardHeight=Math.max(350,vh-boardTop-boardBottom);
+ const mobile=vw<700;
+ const cols=vw<700?2:vw<1060?4:6;
+ const rows=vh<490?2:3;
+ perBoard=cols*rows;
+ const sheetWidth=mobile?clamp(vw*.98,360,500):clamp(vw*.94,830,1460);
+ const lead=mobile?Math.max(185,vw*.49):Math.max(370,vw*.35);
+ const tail=mobile?vw*.31:vw*.34;
+ const spacing=mobile?35:60;
+ const boardTop=clamp(vh*.062,24,64);
+ const boardHeight=Math.max(220,vh-boardTop-(mobile?40:52));
  const cellW=sheetWidth/cols,cellH=boardHeight/rows;
  const groupCount=Math.ceil(pieces.length/perBoard);
+ const shiftsX=[-.11,.04,.12,-.04,.06,-.09,.08,-.06,.1,-.07,.05,-.03];
+ const shiftsY=[.03,-.04,.025,-.055,.035,-.02,.045,-.06,.015,.03,-.02,.02];
+ const scales=[.94,1.04,.91,.99,1.06,.96,1.02,.91,1.08,.97,1.01,.95];
  sheets=[];
  for(let group=0;group<groupCount;group++){
   const x0=lead+group*(sheetWidth+spacing);
   sheets.push({start:x0,centre:x0+sheetWidth*.5,width:sheetWidth,top:boardTop,height:boardHeight});
  }
  pieces.forEach(piece=>{
-  const {item,index,button,art}=piece;
+  const {item,index,button,art,label}=piece;
   const group=Math.floor(index/perBoard),cell=index%perBoard;
   const col=cell%cols,row=Math.floor(cell/cols);
-  const board=sheets[group];
-  const x0=board.start+col*cellW,y0=board.top+row*cellH;
-  const usableW=cellW-(mobile?33:49);
-  const usableH=cellH-(mobile?64:78);
-  const ratioW=Number(item.imageWidth),ratioH=Number(item.imageHeight);
-  const aspect=ratioW>0&&ratioH>0?ratioW/ratioH:1.05;
-  // A consistent visual scale with true alpha aspect ratio. Narrow beams
-  // occupy their real bounds, so no large invisible box pushes them away.
-  let width=Math.round(usableW),height=Math.round(width/aspect);
-  if(height>usableH){height=Math.round(usableH);width=Math.round(height*aspect);}
-  const minimumWidth=mobile?78:95;
-  if(width<minimumWidth&&height<usableH*.7){
-   const factor=Math.min(minimumWidth/width,usableH/height);
-   width=Math.round(width*factor);height=Math.round(height*factor);
-  }
+  const board=sheets[group],x0=board.start+col*cellW,y0=board.top+row*cellH;
+  const usableW=cellW-(mobile?26:40),usableH=cellH-(mobile?26:36);
+  const iw=Number(item.imageWidth)||300,ih=Number(item.imageHeight)||300;
+  const aspect=iw/ih;
+  const scale=scales[index%scales.length];
+  let width=Math.min(usableW*scale,usableH*scale*aspect);
+  let height=width/aspect;
+  width=Math.max(25,Math.round(width));height=Math.max(25,Math.round(height));
   piece.sizing={width,height};
   if(piece.lastWidth!==width||piece.lastHeight!==height){
-   art.replaceChildren();piece.loaded=false;
-   piece.lastWidth=width;piece.lastHeight=height;
+   art.replaceChildren();piece.loaded=false;piece.lastWidth=width;piece.lastHeight=height;
   }
   art.style.width=width+'px';art.style.height=height+'px';
-  const labelZone=mobile?26:32;
-  // Center each cutout in its own compartment with clear gutter space.
-  const rawX=x0+(cellW-width)*.5+Number(item.nudgeX||0);
-  const rawY=y0+labelZone+(cellH-labelZone-height)*.5+Number(item.nudgeY||0);
-  const x=Math.round(clamp(rawX,x0+9,x0+cellW-width-9));
-  const y=Math.round(clamp(rawY,y0+labelZone,y0+cellH-height-10));
+  const x=Math.round(clamp(x0+(cellW-width)/2+shiftsX[index%shiftsX.length]*cellW,x0+7,x0+cellW-width-7));
+  const y=Math.round(clamp(y0+(cellH-height-16)/2+shiftsY[index%shiftsY.length]*cellH,y0+6,y0+cellH-height-18));
   piece.position={x,y};
-  button.style.left=x+'px';
-  button.style.top=y+'px';
-  button.style.width=width+'px';
-  button.style.setProperty('--rotation','0deg');
+  button.style.left=x+'px';button.style.top=y+'px';
+  button.style.width=width+'px';button.style.height=(height+17)+'px';
+  button.style.setProperty('--art-height',height+'px');
+  button.style.setProperty('--annotation-width',Math.min(cellW-18,Math.max(width,104))+'px');
   piece.center=x+width*.5;
  });
  strip.style.width=Math.ceil(lead+groupCount*(sheetWidth+spacing)+tail)+'px';
- renderSprue();
  maxOffset=Math.max(0,strip.offsetWidth-vw);
  offset=clamp(offset,0,maxOffset);
  target=clamp(target,0,maxOffset);
- schedule();
+ currentSheet=-1;schedule();
 }
 function redraw(){
  strip.style.transform='translate3d('+(-offset).toFixed(1)+'px,0,0)';
  const sheet=getSheetForOffset(offset);
  if(sheet!==currentSheet){
   currentSheet=sheet;
-  const n=viewport.clientWidth<700?4:8;
+  const n=perBoard;
   const start=sheet*n+1,end=Math.min(items.length,(sheet+1)*n);
   count.textContent=String(start).padStart(2,'0')+'–'+String(end).padStart(2,'0')+' / '+items.length;
  }
@@ -346,52 +294,29 @@ function navigateSheet(index){
  setPosition(sheet.centre-viewport.clientWidth*.5);
 }
 function showDetail(piece){
- const item=piece.item;
  const source=piece.art.getBoundingClientRect();
  if(!source.width||!source.height)return;
- detailTitle.textContent=item.title;
- const message=(item.description||'').trim();
- detailDescription.textContent=message==='혼종의 정면에서 수집한 건축 요소의 이미지 아카이브.'?'':message;
- detailDescription.hidden=!detailDescription.textContent;
- imageWrap.replaceChildren();
- const img=createImage(item,item.title,()=>{});
- img.loading='eager';imageWrap.append(img);
- // Keep the archive visible: zoom only the alpha-cutout, not a rectangular photograph.
  const vw=window.innerWidth,vh=window.innerHeight;
- const maxWidth=Math.min(vw-34,vw<700?350:525);
- const maxHeight=Math.min(vh*.49,485);
- const scale=Math.max(1,Math.min(1.8,maxWidth/source.width,maxHeight/source.height));
- const artWidth=Math.round(source.width*scale);
- const artHeight=Math.round(source.height*scale);
- const tagWidth=Math.min(vw-44,vw<700?260:308);
- const sceneWidth=Math.max(artWidth,tagWidth);
- // Each collected paper slip is attached a little off-centre: measured, not random.
- const tagShifts=[-16,9,-7,17,-12,12];
- const tagTilts=['-1.5deg','.8deg','-.6deg','1.4deg','-1.1deg','.5deg'];
- detailCopy.style.setProperty('--tag-shift',tagShifts[piece.index%tagShifts.length]+'px');
- detailCopy.style.setProperty('--tag-tilt',tagTilts[piece.index%tagTilts.length]);
- imageWrap.style.width=artWidth+'px';
- imageWrap.style.height=artHeight+'px';
- detailBody.style.width=sceneWidth+'px';
+ const limitW=Math.min(vw*.86,880),limitH=Math.min(vh*.78,750);
+ const scale=Math.max(1,Math.min(3.8,limitW/source.width,limitH/source.height));
+ const width=Math.round(source.width*scale),height=Math.round(source.height*scale);
+ imageWrap.replaceChildren();
+ const img=createImage(piece.item,piece.item.title,()=>{});
+ img.loading='eager';imageWrap.append(img);
+ imageWrap.style.width=width+'px';imageWrap.style.height=height+'px';
+ detailBody.style.width=width+'px';detailBody.style.height=height+'px';
  detail.showModal();
- const captionHeight=detailCopy.getBoundingClientRect().height;
- const sceneHeight=artHeight+16+captionHeight;
- const left=clamp(source.left+source.width*.5-sceneWidth*.5,14,Math.max(14,vw-sceneWidth-14));
- const top=clamp(source.top+source.height*.5-artHeight*.5,14,Math.max(14,vh-sceneHeight-18));
- detailBody.style.left=Math.round(left)+'px';
- detailBody.style.top=Math.round(top)+'px';
  const dest=imageWrap.getBoundingClientRect();
  if(!reduced.matches&&dest.width){
-  const dx=source.left+source.width*.5-(dest.left+dest.width*.5);
-  const dy=source.top+source.height*.5-(dest.top+dest.height*.5);
+  const dx=source.left+source.width/2-(dest.left+dest.width/2);
+  const dy=source.top+source.height/2-(dest.top+dest.height/2);
   imageWrap.animate([
-   {transform:'translate('+dx+'px,'+dy+'px) scale('+(source.width/dest.width)+')',opacity:.58},
+   {transform:'translate('+dx+'px,'+dy+'px) scale('+(source.width/dest.width)+')',opacity:.5},
    {transform:'translate(0px,0px) scale(1)',opacity:1}
-  ],{duration:470,easing:'cubic-bezier(.18,.78,.2,1)'});
+  ],{duration:420,easing:'cubic-bezier(.18,.8,.2,1)'});
  }
  focusedPiece=piece;
  piece.button.classList.add('is-inspected');
- document.querySelector('#material-detail-close').focus({preventScroll:true});
 }
 function openEditor(item){
  activeItem=item;
@@ -411,7 +336,7 @@ function renamePiece(item){
  }
 }
 function exportJSON(){
- const blob=new Blob([JSON.stringify(items,null,2)+'\n'],{type:'application/json;charset=utf-8'});
+ const blob=new Blob([JSON.stringify(items.map(item=>Object.fromEntries(Object.entries(item).filter(([key])=>!key.startsWith('_')))).sort((a,b)=>Number(a.id)-Number(b.id)),null,2)+'\n'],{type:'application/json;charset=utf-8'});
  const url=URL.createObjectURL(blob);
  const a=document.createElement('a');
  a.href=url;a.download='stickers-updated.json';document.body.append(a);a.click();a.remove();
@@ -460,22 +385,15 @@ window.addEventListener('keydown',e=>{
 });
 previous.addEventListener('click',()=>navigateSheet(currentSheet-1));
 next.addEventListener('click',()=>navigateSheet(currentSheet+1));
-arrange.addEventListener('click',()=>{
- aligned=!aligned;
- main.classList.toggle('is-aligned',aligned);
- arrange.setAttribute('aria-pressed',String(aligned));
- arrange.title=aligned?'런너 선 숨기기':'런너 선 보이기';
-});
 scrubber.addEventListener('input',()=>setPosition(maxOffset*Number(scrubber.value)/1000));
 document.querySelector('#chapter-open').addEventListener('click',()=>chapter.showModal());
 document.querySelector('#chapter-close').addEventListener('click',()=>chapter.close());
 chapter.addEventListener('click',e=>{if(e.target===chapter)chapter.close()});
-document.querySelector('#material-detail-close').addEventListener('click',()=>detail.close());
 detail.addEventListener('close',()=>{
  if(focusedPiece)focusedPiece.button.classList.remove('is-inspected');
  focusedPiece=null;
 });
-detail.addEventListener('click',e=>{if(e.target===detail)detail.close()});
+detail.addEventListener('click',()=>detail.close());
 editToggle.addEventListener('click',()=>{
  editing=!editing;
  main.classList.toggle('is-editing',editing);
@@ -531,12 +449,13 @@ async function start(){
  changes=readChanges();
  items=baseItems.map(v=>({...v}));
  items.forEach(applyChanges);
+ const hint=document.querySelector('.material-instruction');
+ if(hint)hint.textContent='ARRANGING BY COLOR / FORM';
+ await sortByPalette(items);
  items.forEach(makePiece);
- main.classList.add('is-aligned');
- arrange.setAttribute('aria-pressed','true');
- arrange.title='런너 선 숨기기';
  layout();
  redraw();
+ if(hint)hint.textContent='SCROLL / INSPECT';
 }
 start();
 })();
