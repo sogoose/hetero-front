@@ -56,7 +56,8 @@
   if(!parsed.headers.includes('file')||!parsed.rows.length||!meta||typeof meta!=='object')
    throw Error('원장 형식을 확인할 수 없습니다.');
   headers=parsed.headers;
-  rows=parsed.rows.filter(row=>validFile(row.file));
+  // Mirror the visible gallery; the later duplicate remains archived in the source CSV.
+  rows=parsed.rows.filter(row=>validFile(row.file)&&row.file!=='photo-1ed9d6a5f507.webp');
   rowMap=new Map(rows.map(row=>[row.file,row]));
   metadata=meta;
   recordSelect.replaceChildren();
