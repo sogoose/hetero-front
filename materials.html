@@ -8,8 +8,8 @@
 <meta name="description" content="산업화 시기 건축 요소를 누끼 스티커처럼 옆으로 펼쳐 보는 혼종의 정면 재료 아카이브.">
 <link rel="stylesheet" href="style.css?v=2">
 <link rel="stylesheet" href="polaroids.css?v=36">
-<link rel="stylesheet" href="materials-scroll.css?v=4">
-<script src="materials-scroll.js?v=4" defer></script>
+<link rel="stylesheet" href="materials-scroll.css?v=5">
+<script src="materials-scroll.js?v=5" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -30,7 +30,7 @@
         <span class="material-eyebrow">02 / MATERIAL STUDIES</span>
         <h1>혼종을 만든 혼종.</h1>
         <p>한 시대의 정면을 이루던 조각들.<br>왼쪽에서 오른쪽으로 펼쳐 읽는 재료의 기록.</p>
-        <span class="material-instruction">SCROLL TO UNROLL</span>
+        <span class="material-instruction">SCROLL / COLLECT / INSPECT</span>
       </div>
       <div class="material-stickers" id="material-stickers"></div>
     </div>
@@ -42,14 +42,16 @@
       <button type="button" id="chapter-open" class="icon-button" title="목차 열기" aria-label="목차 열기" aria-haspopup="dialog" aria-controls="chapter-menu"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-menu"></use></svg><span class="sr-only">목차 열기</span></button>
     </div>
     <div class="photo-toolbar" role="toolbar" aria-label="스티커 이동">
-      <button type="button" id="material-previous" class="icon-button" title="이전 스티커" aria-label="이전 스티커"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-left"></use></svg><span class="sr-only">이전 스티커</span></button>
+      <button type="button" id="material-previous" class="icon-button" title="이전 묶음" aria-label="이전 묶음"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-left"></use></svg><span class="sr-only">이전 스티커</span></button>
       <button type="button" id="material-arrange" class="icon-button" title="스티커 정렬하기" aria-label="스티커 정렬하기" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-align"></use></svg><span class="sr-only">스티커 정렬하기</span></button>
-      <button type="button" id="material-next" class="icon-button" title="다음 스티커" aria-label="다음 스티커"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-right"></use></svg><span class="sr-only">다음 스티커</span></button>
+      <button type="button" id="material-next" class="icon-button" title="다음 묶음" aria-label="다음 묶음"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-right"></use></svg><span class="sr-only">다음 묶음</span></button>
+      <span class="toolbar-divider" aria-hidden="true"></span>
+      <button type="button" id="material-edit-toggle" class="icon-button material-edit-toggle" title="재료 이름 편집" aria-pressed="false">EDIT</button>
     </div>
     <div class="photo-pagination material-pagination">
       <label class="sr-only" for="material-scrubber">가로 아카이브 위치</label>
       <input id="material-scrubber" class="material-progress" type="range" min="0" max="1000" value="0" aria-label="가로 아카이브 이동">
-      <output id="material-counter" class="material-counter" aria-live="polite">01 / 17</output>
+      <output id="material-counter" class="material-counter" aria-live="polite">01–08 / 60</output>
     </div>
   </footer>
 </main>
@@ -80,6 +82,31 @@
       <small id="material-detail-source" class="material-detail-source"></small>
     </div>
   </div>
+</dialog>
+
+<dialog id="material-editor" class="material-editor" aria-labelledby="material-editor-heading">
+ <div class="material-editor-top">
+  <span>TEXT / EDIT</span>
+  <button type="button" id="material-editor-close" class="material-editor-x" aria-label="편집 닫기">×</button>
+ </div>
+ <h2 id="material-editor-heading">이름 고치기</h2>
+ <form id="material-edit-form">
+  <label class="material-editor-field" for="material-edit-title">이름
+   <input id="material-edit-title" name="title" maxlength="90" required autocomplete="off">
+  </label>
+  <label class="material-editor-field" for="material-edit-category">분류
+   <input id="material-edit-category" name="category" maxlength="60" autocomplete="off">
+  </label>
+  <label class="material-editor-field" for="material-edit-description">설명
+   <textarea id="material-edit-description" name="description" rows="4" maxlength="1000"></textarea>
+  </label>
+  <p id="material-edit-status" class="material-edit-status">변경 내용은 이 브라우저에 저장됩니다.</p>
+  <div class="material-editor-actions">
+   <button type="button" id="material-editor-reset">원복</button>
+   <button type="button" id="material-editor-export">JSON 내보내기</button>
+   <button class="material-editor-save" type="submit">저장</button>
+  </div>
+ </form>
 </dialog>
 </body>
 </html>
