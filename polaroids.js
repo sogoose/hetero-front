@@ -464,7 +464,7 @@ function openDetail(record,source){
   // Searching without an exact building-register match is not a structure type.
   // Display the review status while leaving record.structure empty for statistics.
   const searchedNotFound=key==='structure'&&!String(record.structure||'').trim()&&record.structure_status==='not_found';
-  const value=searchedNotFound?'못찾음':String(record[key]||'').trim();
+  const value=searchedNotFound?'미확인':String(record[key]||'').trim();
   if(value){
    dd.textContent=value;
    if(searchedNotFound){
