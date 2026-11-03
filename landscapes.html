@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="polaroids.css?v=34">
+<link rel="stylesheet" href="polaroids.css?v=35">
 <!-- Critical positioning: stays correct even when the external stylesheet is stale on desktop. -->
 <style>
 .photo-main > .archive-floor-quote {
@@ -93,7 +93,7 @@
   .photo-main > #archive-essay-trigger{transition:none!important;}
 }
 </style>
-<script src="polaroids.js?v=28" defer></script>
+<script src="polaroids.js?v=29" defer></script>
 
 <script src="archive-essay.js?v=2" defer></script>
 </head>
@@ -175,13 +175,11 @@
 </dialog>
 <dialog id="archive-stats" class="archive-stats" aria-labelledby="stats-title">
   <div class="stats-top">
-    <span class="dialog-kicker">HETERO FRONT / ARCHIVE</span>
     <button type="button" id="stats-close" class="icon-button" title="통계 닫기" aria-label="통계 닫기"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-close"></use></svg></button>
   </div>
   <div class="stats-header">
     <div class="stats-headline">
       <h2 id="stats-title">기록의 분포</h2>
-      <p class="stats-intro">익숙한 건물들이 남긴 연대와 재료의 단면.</p>
     </div>
     <div class="stats-big"><strong id="stats-total">—</strong><span>PHOTOGRAPHS</span></div>
   </div>
@@ -194,7 +192,13 @@
   </nav>
   <div class="stats-section-head">
     <h3 id="stats-chart-title">건축 연대</h3>
-    <span id="stats-accounted">—</span>
+    <div class="stats-section-tools">
+      <div id="stats-granularity" class="stats-granularity" role="group" aria-label="연대 표시 단위">
+        <button type="button" data-granularity="decade" aria-pressed="true">10년 단위</button>
+        <button type="button" data-granularity="year" aria-pressed="false">연도별</button>
+      </div>
+      <span id="stats-accounted">—</span>
+    </div>
   </div>
   <div class="stats-chart" id="stats-plot" role="img" aria-label="아카이브의 분포를 보여주는 그래프"></div>
   <p class="stats-footnote" id="stats-footnote">사진별 기록을 기준으로 집계합니다.</p>
