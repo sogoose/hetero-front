@@ -126,7 +126,9 @@ async function listFiles(force){
 async function load(force=false){
  if(loading)return; loading=true;shuffle.disabled=true;status.textContent='사진을 펼치는 중입니다.';metadataWarning='';sourceWarning='';
  try{
-  const [names,meta]=await Promise.all([listFiles(force),fetch(FOLDER+'metadata.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('metadata');return r.json();}).then(v=>{if(!v||Array.isArray(v)||typeof v!=='object')throw new Error('metadata');return v;}).catch(()=>{metadataWarning='사진 정보 파일을 읽지 못해 파일명을 표시합니다.';return {};})]);
+  const [listedNames,meta]=await Promise.all([listFiles(force),fetch(FOLDER+'metadata.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('metadata');return r.json();}).then(v=>{if(!v||Array.isArray(v)||typeof v!=='object')throw new Error('metadata');return v;}).catch(()=>{metadataWarning='사진 정보 파일을 읽지 못해 파일명을 표시합니다.';return {};})]);
+  // Preserve the later duplicate as an archival file, but show the earlier (1994) record only.
+  const names=listedNames.filter(file=>file!=='photo-1ed9d6a5f507.webp');
   const registry=await fetch(FOLDER+'registry.csv',{cache:'no-store'}).then(r=>r.ok?r.text():'').then(parseRegistryCSV).catch(()=>({}));
   demo=names.length===0;
   records=demo?fallback:names.map(file=>{
