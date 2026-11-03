@@ -839,3 +839,65 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  left:auto!important;right:-14px!important;
  top:calc(-1 * var(--art-height) * .50)!important;
 }
+
+/* OBJECT ATLAS / 03 — a tightly composed field with a typeset legend below.
+   No grids, rule lines, frames, or label cards are drawn. */
+.material-annotations{
+ position:absolute;inset:0;pointer-events:none;z-index:1;
+}
+.material-annotation-board{
+ position:absolute;display:grid;gap:0;align-items:start;
+ padding:0!important;margin:0!important;border:0!important;background:transparent!important;
+ box-sizing:border-box;pointer-events:none;
+}
+.material-annotation-column{
+ display:flex;flex-direction:column;align-items:stretch;
+ gap:clamp(5px,1vh,11px);
+ min-width:0;padding:0 7px 0 3px;
+}
+.material-annotation-entry{
+ display:grid;grid-template-columns:16px minmax(0,1fr);align-items:start;column-gap:3px;
+ min-width:0;min-height:17px;margin:0;padding:0;
+ color:#484740;white-space:normal;
+}
+.material-annotation-number{
+ display:block;font:400 8px/1.25 "Special Elite",monospace;
+ font-variant-numeric:tabular-nums;color:#383732;letter-spacing:-.04em;
+}
+.material-annotation-copy{min-width:0;display:flex;flex-direction:column;gap:1px}
+.material-annotation-name{
+ display:block;font:400 8.5px/1.24 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.045em;color:#44433e;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.material-annotation-category{
+ display:block;font:350 7.5px/1.27 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.02em;color:#aaa79f;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+/* A specimen is identified by a tiny number only: no inline title. */
+.material-piece .material-piece-index{
+ position:absolute!important;left:calc(100% + 3px)!important;top:45%!important;
+ display:block!important;z-index:2;
+ width:auto!important;max-width:none!important;height:auto!important;
+ margin:0!important;padding:0!important;
+ border:0!important;background:transparent!important;box-shadow:none!important;
+ transform:none!important;white-space:nowrap;pointer-events:none;
+ font:400 8px/1.1 "Special Elite",monospace!important;
+ font-variant-numeric:tabular-nums;letter-spacing:0!important;color:#77756d!important;
+}
+.material-stickers .material-piece{z-index:2}
+.material-stickers .material-piece:hover,.material-stickers .material-piece:focus-visible{z-index:5}
+.material-main .archive-taskbar{border-top:0!important}
+@media(max-width:700px){
+ .material-annotation-column{padding:0 3px 0 1px;gap:5px}
+ .material-annotation-entry{grid-template-columns:13px minmax(0,1fr);column-gap:2px;min-height:15px}
+ .material-annotation-number{font-size:6.5px;line-height:1.18}
+ .material-annotation-name{font-size:7px;line-height:1.18}
+ .material-annotation-category{font-size:6.3px;line-height:1.18}
+ .material-piece .material-piece-index{font-size:7px!important;left:calc(100% + 2px)!important}
+}
+@media(max-height:440px){
+ .material-annotation-column{gap:3px}
+ .material-annotation-entry{min-height:13px}
+}
