@@ -34,11 +34,13 @@ let dragged=false,aligned=false,editing=false,activeItem=null,currentSheet=-1;
 let changes={};
 
 /* Lightly scattered editorial collage at three staggered heights. */
+/* Three staggered bands rather than a sparse alternating grid.
+   Coordinates are normalized across each dense sticker sheet. */
 const scatterSlots=[
- [.06,.13,1.09,-4], [.28,.41,.87,3],
- [.70,.06,1.03,-3], [.05,.78,.94,4],
- [.76,.86,.91,-4], [.41,.87,.82,2],
- [.72,.39,1.00,5], [.35,.08,.79,-2]
+ [.05,.10,1.02,-4], [.46,.035,.96,3],
+ [.87,.12,1.00,-2], [.25,.50,.96,-3],
+ [.75,.48,1.03,4], [.06,.92,.93,3],
+ [.42,.89,1.04,-2], [.90,.91,.96,3]
 ];
 const gridSlots=[
  [.06,.08,.88,0], [.35,.08,.88,0],
@@ -47,8 +49,8 @@ const gridSlots=[
  [.21,.74,.88,0], [.56,.74,.88,0]
 ];
 const scatterMobile=[
- [.04,.13,1.04,-3], [.52,.31,.89,4],
- [.14,.69,.95,3], [.61,.71,1.02,-4]
+ [.035,.14,1.04,-3], [.94,.17,.98,4],
+ [.06,.84,.98,3], [.93,.83,1.04,-4]
 ];
 const gridMobile=[
  [.05,.12,.91,0], [.53,.12,.91,0],
@@ -105,15 +107,21 @@ function makePiece(item,index){
  return piece;
 }
 function sizing(item,mobile,scale){
- const density=mobile?(viewport.clientWidth<380?.88:1):(viewport.clientWidth<1250?.89:1);
+ // Roughly 1.5x larger than the previous cutouts, while smoothing out
+ // inconsistent source sizes so they read as one sticker collection.
+ const vw=viewport.clientWidth,vh=viewport.clientHeight;
+ const responsive=mobile?(vw<380?.93:1):(vh<690?.90:1);
+ const previous=(Number(item.width)||260)*(mobile?.46:.57);
+ const enlarged=previous*1.5;
+ const common=mobile?194:270;
  const width=Math.round(clamp(
-  (Number(item.width)||260)*(mobile?.46:.57)*scale*density,
-  mobile?81:97,mobile?173:239));
- const ratio=item.category==='지붕'?.68
-  :item.category==='난간'?.60
-  :item.category==='벽체'?.72
-  :item.category==='대문'?.94:1.05;
- const height=Math.round(Math.min(width*ratio,viewport.clientHeight*.46));
+  (enlarged*.40+common*.60)*scale*responsive,
+  mobile?145:194,mobile?231:315));
+ const ratio=item.category==='지붕'?.73
+  :item.category==='난간'?.76
+  :item.category==='벽체'?.77
+  :item.category==='대문'?.94:1.02;
+ const height=Math.round(Math.min(width*ratio,vh*.45));
  return {width,height};
 }
 function createImage(item,alt,onFailure){
@@ -151,10 +159,10 @@ function layout(){
  const vw=viewport.clientWidth,vh=viewport.clientHeight;
  const mobile=vw<700;
  const perSheet=mobile?4:8;
- const sheetWidth=mobile?clamp(vw*1.06,350,460):clamp(vw*.66,710,935);
+ const sheetWidth=mobile?clamp(vw*1.03,350,460):clamp(vw*.57,760,910);
  const lead=mobile?Math.max(vw*.35,150):Math.max(vw*.35,440);
  const tail=mobile?vw*.42:vw*.50;
- const sheetSpacing=mobile?15:27;
+ const sheetSpacing=mobile?11:16;
  const groupCount=Math.ceil(pieces.length/perSheet);
  const styleSlots=mobile?(aligned?gridMobile:scatterMobile):(aligned?gridSlots:scatterSlots);
  sheets=[];
@@ -180,10 +188,12 @@ function layout(){
   art.style.width=width+'px';art.style.height=height+'px';
   const shiftX=aligned?0:sheetVariation*(mobile?3:8);
   const shiftY=aligned?0:((index*7+group*11)%5-2)*(mobile?5:10);
-  const left=sx*(sheetWidth-width*.84)+shiftX;
-  const x=sheets[group].start+clamp(left,10,sheetWidth-width*.82);
-  const avail=Math.max(40,vh-height-76);
-  const y=clamp(21+sy*avail+shiftY,22,vh-height-38);
+  // Scale the positions to the object footprints, allowing the light
+  // silhouette shadows to overlap without piling every object in one spot.
+  const left=sx*(sheetWidth-width)+shiftX;
+  const x=sheets[group].start+clamp(left,8,sheetWidth-width-6);
+  const avail=Math.max(40,vh-height-90);
+  const y=clamp(22+sy*avail+shiftY,24,vh-height-46);
   button.style.left=Math.round(x)+'px';
   button.style.top=Math.round(y)+'px';
   button.style.width=width+'px';
