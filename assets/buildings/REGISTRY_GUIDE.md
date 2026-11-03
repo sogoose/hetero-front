@@ -122,3 +122,8 @@ No precise street addresses should be stored in this public CSV. Use coarse loca
 - Three B-132 photo records share an original generic street label without a building number, so they cannot be connected to a specific building; the restriction is now recorded in their notes, with structure left blank.
 - This investigation's **current status** is 147 photos: 85 structure-confirmed (79 벽돌, 6 철근콘크리트) and 62 `not_found` (structure blank). The 85 supported photos represent 78 provisional unique building groups. Even after a `not_found` label, a future archival document can warrant reclassification.
 - Precise addresses, original historical filenames, cadastral identifiers, and any authentication keys are excluded from the publicly served CSV and documentation.
+
+### Duplicate display cleanup — 2026-11-03
+
+- The 1994 record `photo-d0643cdda99c.webp` (B-127) is the visible representative of a house also photographed under the 1996 record `photo-1ed9d6a5f507.webp` (B-115). The two photos show the same house with a slightly different crop; the later-year record is omitted from the public gallery and the browser editor.
+- Both original image files, their metadata, and both historical CSV rows remain intact for archival recovery. The public photo manifest contains 146 visible records, while the source registry retains 147 photographed records. The original year is still unverified, not established by the visual duplicate.
