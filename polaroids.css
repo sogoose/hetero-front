@@ -1239,3 +1239,11 @@ body:has(#photo-detail[open]){overflow:hidden}
   transition:none!important;
  }
 }
+
+
+/* The deck gathers and redeals as one gesture; cards cannot be grabbed mid-flight. */
+.photo-main .photo-board.is-shuffling .polaroid{
+ pointer-events:none!important;
+ cursor:default!important;
+ will-change:transform,opacity;
+}
