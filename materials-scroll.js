@@ -37,7 +37,7 @@ const detailSource=document.querySelector('#material-detail-source');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const storageKey='hetero_materials_text_edits_v1';
 let items=[],pieces=[],sheets=[],maxOffset=0,offset=0,target=0,raf=0,drag=null;
-let dragged=false,aligned=false,editing=false,activeItem=null,currentSheet=-1;
+let dragged=false,aligned=true,editing=false,activeItem=null,currentSheet=-1;
 let changes={};
 
 /* Lightly scattered editorial collage at three staggered heights. */
@@ -181,54 +181,60 @@ function svgElement(tag,attrs){
  for(const [name,value] of Object.entries(attrs||{}))element.setAttribute(name,String(value));
  return element;
 }
+/* A true assembly frame comes first. Its eight compartments determine
+   the image positions: the pale connections never decide the layout. */
 function renderSprue(){
  if(!pieces.length)return;
- const vw=viewport.clientWidth;
+ const mobile=viewport.clientWidth<700;
  const vh=viewport.clientHeight;
- const mobile=vw<700;
  runnerSvg.setAttribute('viewBox','0 0 '+Math.ceil(strip.offsetWidth)+' '+Math.ceil(vh));
  runnerSvg.setAttribute('width',String(Math.ceil(strip.offsetWidth)));
  runnerSvg.setAttribute('height',String(Math.ceil(vh)));
  runnerSvg.replaceChildren();
- const groupSize=mobile?4:8;
+ const cols=mobile?2:4,rows=2,perBoard=cols*rows;
  for(let g=0;g<sheets.length;g++){
-  const sheet=sheets[g];
-  const x=Math.round(sheet.start+sheet.width*.49);
-  const top=Math.round(Math.max(50,vh*.13));
-  const bottom=Math.round(Math.min(vh-82,vh*.85));
+  const sheet=sheets[g],x0=sheet.start,y0=sheet.top;
+  const w=sheet.width,h=sheet.height,cw=w/cols,ch=h/rows;
   const group=svgElement('g',{'class':'material-runner-group'});
-  // Continuous understated vertical runner, paired with small bent ends.
-  const mainPath=[
-   'M',x,top,'V',bottom,
-   'M',x,top,'h',mobile?-15:-22,
-   'M',x,bottom,'h',mobile?15:22
-  ].join(' ');
-  group.append(svgElement('path',{'class':'material-runner-spine',d:mainPath}));
-  const members=pieces.slice(g*groupSize,(g+1)*groupSize);
-  members.forEach((piece,i)=>{
-   if(!piece.sizing)return;
-   const pos=piece.position;
-   const w=piece.sizing.width,h=piece.sizing.height;
-   const cy=pos.y+h*.5,cx=pos.x+w*.5;
-   let jointX,jointY,path;
-   const gap=mobile?7:10;
-   if(cx<x-w*.18){
-    jointX=pos.x+w+gap;jointY=clamp(cy,top+8,bottom-8);
-    path='M '+x+' '+Math.round(jointY)+' H '+Math.round(jointX);
-   }else if(cx>x+w*.18){
-    jointX=pos.x-gap;jointY=clamp(cy,top+8,bottom-8);
-    path='M '+x+' '+Math.round(jointY)+' H '+Math.round(jointX);
-   }else{
-    // When a silhouette crosses the runner, attach just outside its edge.
-    jointX=cx;
-    jointY=cy<vh*.5?pos.y+h+gap:pos.y-gap;
-    const atY=clamp(jointY,top+8,bottom-8);
-    path='M '+x+' '+Math.round(atY)+' H '+Math.round(jointX);
-   }
-   group.append(svgElement('path',{'class':'material-runner-branch',d:path}));
-   group.append(svgElement('circle',{'class':'material-runner-joint',cx:x,cy:Math.round(clamp(jointY,top+8,bottom-8)),r:mobile?2:2.35}));
-   if(i===0 || i===members.length-1){
-    group.append(svgElement('circle',{'class':'material-runner-terminal',cx:Math.round(jointX),cy:Math.round(clamp(jointY,top+8,bottom-8)),r:mobile?2.6:3.2}));
+  // One perimeter and evenly spaced axes form a credible moulded sprue.
+  group.append(svgElement('rect',{
+   'class':'material-runner-frame',x:Math.round(x0),y:Math.round(y0),
+   width:Math.round(w),height:Math.round(h),rx:mobile?5:8
+  }));
+  for(let c=1;c<cols;c++){
+   const x=x0+c*cw;
+   group.append(svgElement('path',{
+    'class':'material-runner-divider',d:'M '+Math.round(x)+' '+Math.round(y0)+' V '+Math.round(y0+h)
+   }));
+  }
+  const midY=y0+ch;
+  group.append(svgElement('path',{
+   'class':'material-runner-divider',
+   d:'M '+Math.round(x0)+' '+Math.round(midY)+' H '+Math.round(x0+w)
+  }));
+  for(let c=1;c<cols;c++){
+   group.append(svgElement('circle',{
+    'class':'material-runner-joint',cx:Math.round(x0+c*cw),cy:Math.round(midY),r:mobile?3:3.5
+   }));
+  }
+  const members=pieces.slice(g*perBoard,(g+1)*perBoard);
+  members.forEach((piece,index)=>{
+   if(!piece.sizing||!piece.position)return;
+   const col=index%cols,cellX=x0+col*cw;
+   const {x,y}=piece.position,{width,height}=piece.sizing;
+   const centerY=Math.round(y+height*.57);
+   // Connect every object from the nearest structural upright. The tiny
+   // joining bridge ends before the actual trimmed alpha image bounding box.
+   const attachLeft=col%2===0;
+   const railX=attachLeft?cellX:cellX+cw;
+   const edgeX=attachLeft?x-5:x+width+5;
+   const dx=Math.abs(edgeX-railX);
+   if(dx>9){
+    const path='M '+Math.round(railX)+' '+centerY+' H '+Math.round(edgeX);
+    group.append(svgElement('path',{'class':'material-runner-branch',d:path}));
+    group.append(svgElement('circle',{
+     'class':'material-runner-terminal',cx:Math.round(edgeX),cy:centerY,r:mobile?2:2.4
+    }));
    }
   });
   runnerSvg.append(group);
@@ -237,56 +243,61 @@ function renderSprue(){
 function layout(){
  if(!pieces.length)return;
  const vw=viewport.clientWidth,vh=viewport.clientHeight;
- const mobile=vw<700;
- const perSheet=mobile?4:8;
- const sheetWidth=mobile?clamp(vw*1.03,350,460):clamp(vw*.57,760,910);
- const lead=mobile?Math.max(vw*.35,150):Math.max(vw*.35,440);
- const tail=mobile?vw*.42:vw*.50;
- const sheetSpacing=mobile?11:16;
- const groupCount=Math.ceil(pieces.length/perSheet);
- const styleSlots=mobile?(aligned?gridMobile:scatterMobile):(aligned?gridSlots:scatterSlots);
+ const mobile=vw<700,cols=mobile?2:4,rows=2,perBoard=cols*rows;
+ // Four large pieces per row on desktop; four total per board on mobile.
+ const sheetWidth=mobile?clamp(vw*.98,346,448):clamp(vw*.85,1060,1310);
+ const lead=mobile?Math.max(vw*.38,155):Math.max(vw*.33,430);
+ const tail=mobile?vw*.38:vw*.38;
+ const spacing=mobile?35:54;
+ const boardTop=clamp(vh*.075,32,68);
+ const boardBottom=mobile?45:50;
+ const boardHeight=Math.max(350,vh-boardTop-boardBottom);
+ const cellW=sheetWidth/cols,cellH=boardHeight/rows;
+ const groupCount=Math.ceil(pieces.length/perBoard);
  sheets=[];
  for(let group=0;group<groupCount;group++){
-  const x0=lead+group*(sheetWidth+sheetSpacing);
-  const center=x0+sheetWidth*.5;
-  sheets.push({start:x0,centre:center,width:sheetWidth});
+  const x0=lead+group*(sheetWidth+spacing);
+  sheets.push({start:x0,centre:x0+sheetWidth*.5,width:sheetWidth,top:boardTop,height:boardHeight});
  }
  pieces.forEach(piece=>{
   const {item,index,button,art}=piece;
-  const group=Math.floor(index/perSheet);
-  const cell=index%perSheet;
-  const slot=(!aligned&&!mobile)?slotOrders[group%slotOrders.length][cell]:cell;
-  const [sx,sy,scale,rotation]=styleSlots[slot];
-  const sheetVariation=aligned?0:(group%4-1.5);
-  const shape=sizing(item,mobile,scale);
-  const {width,height}=shape;
-  piece.sizing=shape;
+  const group=Math.floor(index/perBoard),cell=index%perBoard;
+  const col=cell%cols,row=Math.floor(cell/cols);
+  const board=sheets[group];
+  const x0=board.start+col*cellW,y0=board.top+row*cellH;
+  const usableW=cellW-(mobile?33:49);
+  const usableH=cellH-(mobile?64:78);
+  const ratioW=Number(item.imageWidth),ratioH=Number(item.imageHeight);
+  const aspect=ratioW>0&&ratioH>0?ratioW/ratioH:1.05;
+  // A consistent visual scale with true alpha aspect ratio. Narrow beams
+  // occupy their real bounds, so no large invisible box pushes them away.
+  let width=Math.round(usableW),height=Math.round(width/aspect);
+  if(height>usableH){height=Math.round(usableH);width=Math.round(height*aspect);}
+  const minimumWidth=mobile?78:95;
+  if(width<minimumWidth&&height<usableH*.7){
+   const factor=Math.min(minimumWidth/width,usableH/height);
+   width=Math.round(width*factor);height=Math.round(height*factor);
+  }
+  piece.sizing={width,height};
   if(piece.lastWidth!==width||piece.lastHeight!==height){
    art.replaceChildren();piece.loaded=false;
    piece.lastWidth=width;piece.lastHeight=height;
   }
   art.style.width=width+'px';art.style.height=height+'px';
-  const shiftX=aligned?0:sheetVariation*(mobile?3:8);
-  const shiftY=aligned?0:((index*7+group*11)%5-2)*(mobile?3:5);
-  // Scale the positions to the object footprints, allowing the light
-  // silhouette shadows to overlap without piling every object in one spot.
-  const left=sx*(sheetWidth-width)+shiftX;
-  const rawX=sheets[group].start+clamp(left+Number(item.nudgeX||0),8,sheetWidth-width-6);
-  const avail=Math.max(40,vh-height-90);
-  const rawY=clamp(22+sy*avail+shiftY+Number(item.nudgeY||0),24,vh-height-46);
-  // A soft invisible 12 px grid creates assembly-like organization without
-  // forcing identical cells on wildly different architectural silhouettes.
-  const snap=mobile?8:12;
-  const x=Math.round(rawX/snap)*snap;
-  const y=Math.round(rawY/snap)*snap;
+  const labelZone=mobile?26:32;
+  // Center each cutout in its own compartment with clear gutter space.
+  const rawX=x0+(cellW-width)*.5+Number(item.nudgeX||0);
+  const rawY=y0+labelZone+(cellH-labelZone-height)*.5+Number(item.nudgeY||0);
+  const x=Math.round(clamp(rawX,x0+9,x0+cellW-width-9));
+  const y=Math.round(clamp(rawY,y0+labelZone,y0+cellH-height-10));
   piece.position={x,y};
   button.style.left=x+'px';
   button.style.top=y+'px';
   button.style.width=width+'px';
-  button.style.setProperty('--rotation',aligned?'0deg':((rotation+(item.rotation||0)*.16)*.58)+'deg');
+  button.style.setProperty('--rotation','0deg');
   piece.center=x+width*.5;
  });
- strip.style.width=Math.ceil(lead+groupCount*(sheetWidth+sheetSpacing)+tail)+'px';
+ strip.style.width=Math.ceil(lead+groupCount*(sheetWidth+spacing)+tail)+'px';
  renderSprue();
  maxOffset=Math.max(0,strip.offsetWidth-vw);
  offset=clamp(offset,0,maxOffset);
@@ -416,8 +427,7 @@ arrange.addEventListener('click',()=>{
  aligned=!aligned;
  main.classList.toggle('is-aligned',aligned);
  arrange.setAttribute('aria-pressed',String(aligned));
- arrange.title=aligned?'스티커 흩어 보기':'스티커 가지런히 보기';
- layout();
+ arrange.title=aligned?'런너 선 숨기기':'런너 선 보이기';
 });
 scrubber.addEventListener('input',()=>setPosition(maxOffset*Number(scrubber.value)/1000));
 document.querySelector('#chapter-open').addEventListener('click',()=>chapter.showModal());
@@ -481,6 +491,9 @@ async function start(){
  items=baseItems.map(v=>({...v}));
  items.forEach(applyChanges);
  items.forEach(makePiece);
+ main.classList.add('is-aligned');
+ arrange.setAttribute('aria-pressed','true');
+ arrange.title='런너 선 숨기기';
  layout();
  redraw();
 }
