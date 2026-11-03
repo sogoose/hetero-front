@@ -504,16 +504,18 @@ document.addEventListener('hetero:record-draft-saved',event=>{
  applyLocalDraft(record,patch);
  records.sort(compareByName);
  galleryOrder=getGalleryOrder();
+ // Saving an archive record must not discard the gallery page or rearrange
+ // the cards currently being viewed. Update visible metadata in place instead.
  for(const body of bodies){
-  if(body.record.file!==file)continue;
-  const title=body.el.querySelector('.polaroid-title');
-  if(title){title.textContent=record.title;body.el.setAttribute('aria-label',record.title+' — 상세 보기');fitCaption(body.el)}
-  const img=body.el.querySelector('img');
-  if(img)img.alt=record.title;
+  if(body.record.file===file){
+   const title=body.el.querySelector('.polaroid-title');
+   if(title){title.textContent=record.title;body.el.setAttribute('aria-label',record.title+' — 상세 보기');fitCaption(body.el)}
+   const img=body.el.querySelector('img');
+   if(img)img.alt=record.title;
+  }
   const number=body.el.querySelector('.polaroid-label-number');
   if(number)number.textContent=String(records.indexOf(body.record)+1).padStart(2,'0');
  }
- if(mode==='gallery'){page=0;render();}
 });
 dialog.addEventListener('cancel',event=>{event.preventDefault();closeDetail();});
 scatter.addEventListener('click',()=>{if(mode==='scatter')scatterTargets();else{mode='scatter';gallerySortControl.hidden=true;board.classList.remove('is-gallery');layout();scatterTargets();scatter.setAttribute('aria-pressed','true');align.setAttribute('aria-pressed','false');pager.hidden=true;}});
