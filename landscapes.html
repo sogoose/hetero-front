@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="polaroids.css?v=32">
+<link rel="stylesheet" href="polaroids.css?v=33">
 <!-- Critical positioning: stays correct even when the external stylesheet is stale on desktop. -->
 <style>
 .photo-main > .archive-floor-quote {
@@ -94,7 +94,7 @@
 }
 </style>
 <script src="polaroids.js?v=21" defer></script>
-<script src="landscapes-editor.js?v=6" defer></script>
+<script src="landscapes-editor.js?v=7" defer></script>
 <script src="archive-essay.js?v=2" defer></script>
 </head>
 <body>
@@ -188,6 +188,7 @@
  <h2 id="editor-title">ARCHIVE / EDIT</h2>
  <p class="editor-intro">건축물 정보를 여기에서 수정할 수 있습니다. 초안은 현재 브라우저에 보관되며, 공개 사이트에 반영하려면 내보낸 파일을 GitHub에 커밋해야 합니다.</p>
  <div class="editor-choose"><label for="editor-record">기록 선택 / 147 photographs</label><select id="editor-record" aria-label="편집할 건물 선택"><option value="">건물 목록 불러오는 중…</option></select><button id="editor-pick" type="button">화면에서 카드 선택 <span aria-hidden="true">↗</span></button></div>
+ <div class="editor-workspace">
  <form id="archive-editor-form" class="editor-form">
  <p id="editor-location-note" class="sr-only">정확한 주소를 공개하지 않기 위해 위치는 읽기 전용입니다.</p>
  <div class="editor-grid">
@@ -214,6 +215,18 @@
  <div><strong>EXPORT / PUBLISH</strong><p>변경한 내용을 CSV와 JSON으로 내보내고 GitHub의 기존 파일과 교체하면 누구나 볼 수 있습니다.</p></div>
  <div class="editor-export-buttons"><button id="editor-export-csv" type="button">REGISTRY.CSV ↓</button><button id="editor-export-json" type="button">METADATA.JSON ↓</button></div>
  <div class="editor-github-links"><a href="https://github.com/sogoose/hetero-front/edit/main/assets/buildings/registry.csv" target="_blank" rel="noopener noreferrer">GitHub CSV ↗</a><a href="https://github.com/sogoose/hetero-front/edit/main/assets/buildings/metadata.json" target="_blank" rel="noopener noreferrer">GitHub Metadata ↗</a></div>
+ </div>
+ <aside class="editor-preview" aria-label="선택한 건물의 사진">
+  <div class="editor-preview-card">
+   <div class="editor-preview-head"><span>RECORD / IMAGE</span><span id="editor-preview-index">— / —</span></div>
+   <a id="editor-preview-link" class="editor-preview-image" target="_blank" rel="noopener noreferrer" aria-label="건물 사진 원본 새 창에서 보기">
+    <img id="editor-preview-image" alt="" decoding="async">
+    <span id="editor-preview-fallback" class="editor-preview-fallback" hidden>이미지를 불러올 수 없습니다.</span>
+   </a>
+   <p id="editor-preview-caption" class="editor-preview-caption">사진 선택 중…</p>
+   <p class="editor-preview-note">사진 클릭 시 원본 이미지가 열립니다.</p>
+  </div>
+ </aside>
  </div>
 </dialog>
 <dialog id="photo-detail" aria-labelledby="detail-title">
