@@ -13,6 +13,11 @@
  const form=document.getElementById('archive-editor-form');
  const pickBtn=document.getElementById('editor-pick');
  const status=document.getElementById('editor-save-status');
+ const previewImage=document.getElementById('editor-preview-image');
+ const previewLink=document.getElementById('editor-preview-link');
+ const previewCaption=document.getElementById('editor-preview-caption');
+ const previewIndex=document.getElementById('editor-preview-index');
+ const previewFallback=document.getElementById('editor-preview-fallback');
  const board=document.getElementById('photo-board');
  if(!modal||!openBtn||!board)return;
  const REG_FIELDS=['construction_year','year_status','approval_date','structure','structure_status',
@@ -70,6 +75,40 @@
   const m=metadata[file]||{};
   return {...m,...original,...(update.meta||{}),...(update.registry||{})};
  }
+ // Keep the current building photograph alongside the editable metadata.
+ function updatePreview(file){
+  if(!previewImage||!previewLink||!previewCaption||!previewIndex||!previewFallback)return;
+  if(!rowMap.has(file)){
+   previewImage.hidden=true;previewImage.removeAttribute('src');
+   previewLink.removeAttribute('href');previewFallback.hidden=false;
+   previewFallback.textContent='사진을 선택해 주세요.';
+   previewIndex.textContent='— / —';previewCaption.textContent='';return;
+  }
+  const info=metadata[file]||{};
+  const data=merged(file);
+  const full=BASE+encodeURIComponent(file);
+  const thumb=typeof info.thumbnail==='string'&&/^thumbs\\/photo-[a-z0-9-]+\\.webp$/i.test(info.thumbnail)
+   ?BASE+info.thumbnail:full;
+  previewLink.href=full;
+  previewImage.hidden=false;previewFallback.hidden=true;
+  previewImage.dataset.full=full;
+  previewImage.dataset.fallback=thumb===full?'1':'0';
+  previewImage.alt=(data.title||data.location||'기록된 건물')+' 사진';
+  previewImage.src=thumb;
+  previewCaption.textContent=data.title||data.location||'건물 기록';
+  previewIndex.textContent=String(rows.findIndex(row=>row.file===file)+1).padStart(3,'0')+' / '+rows.length;
+ }
+ if(previewImage){
+  previewImage.addEventListener('error',()=>{
+   const full=previewImage.dataset.full;
+   if(previewImage.dataset.fallback==='0'&&full){
+    previewImage.dataset.fallback='1';previewImage.src=full;return;
+   }
+   previewImage.hidden=true;
+   previewFallback.hidden=false;previewFallback.textContent='이미지를 불러올 수 없습니다.';
+   previewLink.removeAttribute('href');
+  });
+ }
  function selectRecord(file){
   if(!rowMap.has(file))return;
   recordSelect.value=file;
@@ -80,6 +119,7 @@
   }
   const locationField=field('location');
   if(locationField)locationField.value=data.location||'';
+  updatePreview(file);
   status.textContent=drafts[file]?'이 건물에는 브라우저에 저장된 수정 초안이 있습니다.':'수정 후 초안 저장을 눌러주세요.';
  }
  async function show(file){
