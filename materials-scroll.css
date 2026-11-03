@@ -240,16 +240,19 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 }
 .material-detail .material-detail-source:empty{display:none}
 
-/* Lighter die-cut silhouette: 2 filter layers instead of 10.
-   The soft white edge follows the actual alpha, not a rectangle. */
+/* True alpha-edge sticker finish, without exporting heavier picture files.
+   Four crisp white edge passes and one quiet floating shadow. */
 .material-art{filter:none!important;overflow:visible!important}
 .material-piece{overflow:visible!important}
 .material-piece::after{display:none!important}
 .material-piece .material-object-image,
 .material-detail .material-object-image{
  filter:
-   drop-shadow(0 0 1.4px rgba(255,255,255,.98))
-   drop-shadow(1px 3px 4px rgba(24,24,20,.15));
+   drop-shadow( 2.5px 0 0 #fff)
+   drop-shadow(-2.5px 0 0 #fff)
+   drop-shadow(0  2.5px 0 #fff)
+   drop-shadow(0 -2.5px 0 #fff)
+   drop-shadow(2px 5px 4px rgba(28,29,25,.19));
 }
 .material-detail .material-detail-media{filter:none!important;overflow:visible}
 .material-piece:hover,.material-piece:focus-visible{filter:none!important}
@@ -444,14 +447,15 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 }
 .material-piece .material-label-no{
  display:inline-grid;place-items:center;flex:none;
- width:19px;height:19px;min-width:19px;
+ width:27px;height:18px;min-width:27px;
  padding:0!important;
- border:0;border-radius:50%;
+ border:0;border-radius:50% / 56%;
  background:#252621!important;color:#fff!important;
  font:500 9px/1 Pretendard,-apple-system,sans-serif;
- letter-spacing:-.035em;
+ letter-spacing:-.02em;
  text-align:center;
  box-shadow:none!important;
+ transform:rotate(-5deg);
 }
 .material-piece .material-label-name{
  flex:0 1 auto;min-width:0;
@@ -475,13 +479,16 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
    gap:4px;top:-15px;left:0;max-width:min(98%,175px);
  }
  .material-piece .material-label-no{
-   width:17px;height:17px;min-width:17px;font-size:8px;
+   width:23px;height:16px;min-width:23px;font-size:8px;
  }
  .material-piece .material-label-name{font-size:9px}
  .material-piece .material-object-image,
  .material-detail .material-object-image{
    filter:
-     drop-shadow(0 0 1.2px rgba(255,255,255,.96))
-     drop-shadow(1px 2px 3px rgba(24,24,20,.13));
+     drop-shadow( 2px 0 0 #fff)
+     drop-shadow(-2px 0 0 #fff)
+     drop-shadow(0  2px 0 #fff)
+     drop-shadow(0 -2px 0 #fff)
+     drop-shadow(1px 3px 3px rgba(28,29,25,.16));
  }
 }
