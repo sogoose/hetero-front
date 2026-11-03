@@ -38,6 +38,16 @@ function parseRegistryCSV(input){
 const yearStatusLabel=value=>({verified:'공식 확인',crosschecked:'외부 교차확인',estimated:'추정',unverified:'미검증',recorded:'기록(미검증)',unknown:'미상'})[value]||value||'미검증';
 
 
+function standardizeFinish(key,value){
+ const term=String(value||'').trim();
+ const dictionaries={
+  wall_finish:{'석재 벽돌 혼합':'석재·벽돌 혼합 마감','미장':'미장 마감'},
+  roof_finish:{'시멘트기와':'시멘트 기와','함석기와':'함석 기와','함석':'함석 지붕'},
+  railing:{'시멘트난간':'시멘트 난간','시멘트난':'시멘트 난간','석재':'석재 난간'}
+ };
+ return dictionaries[key]?.[term]||term;
+}
+
 /* Display browser-local editing drafts; these are not published to the repository. */
 function applyLocalDraft(record,patch){
  if(!patch||typeof patch!=='object')return;
@@ -45,7 +55,12 @@ function applyLocalDraft(record,patch){
  const meta=patch.meta&&typeof patch.meta==='object'?patch.meta:{};
  if(Object.prototype.hasOwnProperty.call(reg,'construction_year'))record.year=String(reg.construction_year||'');
  for(const key of ['year_status','approval_date','year_source','structure','structure_status','wall_finish','wall_status','roof_finish','roof_status','railing','railing_status','notes']){
-  if(Object.prototype.hasOwnProperty.call(reg,key))record[key]=String(reg[key]||'');
+  if(Object.prototype.hasOwnProperty.call(reg,key)){
+   const raw=String(reg[key]||'').trim();
+   // Do not hide independently crosschecked public records behind blank stale local drafts.
+   if(!raw&&['structure','structure_status','approval_date','year_source','notes'].includes(key)&&record[key])continue;
+   record[key]=standardizeFinish(key,raw);
+  }
  }
  for(const key of ['description','material','handwritten_note']){
   if(Object.prototype.hasOwnProperty.call(meta,key))record[key]=String(meta[key]||'');
