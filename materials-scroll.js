@@ -8,6 +8,9 @@ const viewport=document.querySelector('#material-window');
 const strip=document.querySelector('#material-strip');
 const host=document.querySelector('#material-stickers');
 const annotationHost=document.querySelector('#material-annotations');
+const essayTrigger=document.querySelector('#material-essay-trigger');
+const essayDialog=document.querySelector('#material-essay');
+const essayClose=document.querySelector('#material-essay-close');
 const count=document.querySelector('#material-counter');
 const scrubber=document.querySelector('#material-scrubber');
 const chapter=document.querySelector('#chapter-menu');
@@ -402,7 +405,7 @@ function exportJSON(){
  editStatus.textContent='JSON 파일을 다운로드했습니다. GitHub 자료에 반영할 수 있습니다.';
 }
 function startDrag(e){
- if(e.button!==0||detail.open||chapter.open||editDialog.open)return;
+ if(e.button!==0||detail.open||chapter.open||editDialog.open||essayDialog.open)return;
  userInteracted=true;
  drag={x:e.clientX,start:target};
  dragged=false;main.classList.add('is-grabbing');
@@ -422,6 +425,22 @@ annotationHost.addEventListener('click',event=>{
  const piece=pieces[Number(entry.dataset.index)];
  if(piece)openEditor(piece.item);
 });
+// The heading is a reading trigger, not a horizontal-drag surface.
+essayTrigger.addEventListener('pointerdown',event=>event.stopPropagation());
+essayTrigger.addEventListener('click',event=>{
+ event.stopPropagation();
+ essayTrigger.setAttribute('aria-expanded','true');
+ main.classList.add('is-reading');
+ essayDialog.showModal();
+ essayClose.focus({preventScroll:true});
+});
+essayClose.addEventListener('click',()=>essayDialog.close());
+essayDialog.addEventListener('click',event=>{if(event.target===essayDialog)essayDialog.close()});
+essayDialog.addEventListener('close',()=>{
+ essayTrigger.setAttribute('aria-expanded','false');
+ main.classList.remove('is-reading');
+ essayTrigger.focus({preventScroll:true});
+});
 viewport.addEventListener('pointerdown',startDrag);
 window.addEventListener('pointermove',moveDrag);
 window.addEventListener('pointerup',endDrag);
@@ -436,7 +455,7 @@ viewport.addEventListener('click',e=>{
  else showDetail(piece);
 });
 window.addEventListener('wheel',e=>{
- if(detail.open||chapter.open||editDialog.open||e.ctrlKey)return;
+ if(detail.open||chapter.open||editDialog.open||essayDialog.open||e.ctrlKey)return;
  userInteracted=true;
  e.preventDefault();
  let delta=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
@@ -445,7 +464,7 @@ window.addEventListener('wheel',e=>{
  setPosition(target+delta*.9);
 },{passive:false});
 window.addEventListener('keydown',e=>{
- if(detail.open||chapter.open||editDialog.open)return;
+ if(detail.open||chapter.open||editDialog.open||essayDialog.open)return;
  if(e.key==='ArrowRight'){e.preventDefault();navigateSheet(currentSheet+1)}
  if(e.key==='ArrowLeft'){e.preventDefault();navigateSheet(currentSheet-1)}
  if(e.key==='Home'){e.preventDefault();setPosition(0)}
