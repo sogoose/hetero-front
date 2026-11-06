@@ -135,22 +135,13 @@ function setMap(index){
  const candidate=((index%list.length)+list.length)%list.length;
  state.map=mapAvailable(list[candidate],state.year)?candidate:0;
  const map=list[state.map],layers=mapSources(map,state.year);
- const selectedNames=layers.map(layer=>layer.label).join(' · ');
- const partial=state.year===1991&&map.id==='combined'?' · 주물 자료 없음':'';
- setText('#research-map-year',state.year+' / FACTORY DISTRIBUTION');
- setText('#research-map-current-title',state.year+'년 '+(map.title||map.label));
- setText('#research-map-description',(map.notes&&map.notes[String(state.year)])||map.description||'');
- const summary=$('#research-map-note-extra');
- if(summary){
-  summary.replaceChildren();
-  const line=el('div','research-map-fact');
-  line.append(
-   el('span','research-map-fact-label','표시 자료'),
-   el('span','research-map-fact-value',layers.map(layer=>layer.label).join(' · '))
-  );
-  summary.append(line);
+ // One short annotation, only when a source is genuinely absent.
+ const annotation=$('#research-map-annotation');
+ if(annotation){
+  annotation.textContent=state.year===1991&&map.id==='combined'
+   ?'※ 1991년 주물공장 분포는 자료가 없어 포함되지 않았습니다.'
+   :'';
  }
- setText('#research-map-caption','MAP ARCHIVE / 1991 — 2026');
  mapArt.replaceChildren();
  mapArt.append(layeredMap(state.data.mapBase,layers,false));
  mapArt.classList.toggle('is-zoomable',layers.length>0);
@@ -159,6 +150,8 @@ function setMap(index){
   const available=mapAvailable(list[i],state.year);
   btn.disabled=!available;
   btn.setAttribute('aria-pressed',String(active));
+  const mark=btn.querySelector('.research-map-choice-mark');
+  if(mark)mark.textContent=state.year===1991?'○':'＋';
   btn.title=available?state.year+'년 '+list[i].label+' 지도':'자료 미등록 · '+state.year+'년 '+list[i].label;
   btn.setAttribute('aria-label',available?state.year+'년 '+list[i].label:state.year+'년 '+list[i].label+' 지도 자료 없음');
  });
@@ -166,6 +159,8 @@ function setMap(index){
   const active=Number(btn.dataset.year)===state.year;
   btn.setAttribute('aria-pressed',String(active));
  });
+ const showAll=$('#research-map-all');
+ if(showAll)showAll.setAttribute('aria-pressed',String(map.id==='combined'));
 }
 function setYear(year){
  const allowed=state.data&&state.data.mapYears;
@@ -187,12 +182,20 @@ function renderMaps(data){
  });
  mapControls.replaceChildren();
  (data.maps||[]).forEach((map,index)=>{
-  const button=el('button','research-map-choice',map.label||map.id);
+  const button=el('button','research-map-choice');
   button.type='button';
+  button.dataset.material=map.id;
   button.style.setProperty('--map-chip',accents[map.tone]||accents.all);
+  if(map.id==='combined'){
+   button.textContent='전체';
+  }else{
+   button.append(el('span','research-map-choice-mark','○'),el('span','research-map-choice-label',map.label+'공장'));
+  }
   button.addEventListener('click',()=>setMap(index));
   mapControls.append(button);
  });
+ const showAll=$('#research-map-all');
+ if(showAll)showAll.addEventListener('click',()=>setMap(0));
  mapArt.addEventListener('click',()=>{
   const map=data.maps[state.map];
   const layers=mapSources(map,state.year);
