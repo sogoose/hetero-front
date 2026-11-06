@@ -744,3 +744,86 @@ body{background:#f8f8f4;color:#272724}
  .research-map-note-extra{display:none}
  .research-panel-map .research-map-caption{margin:3px 0 0!important;font-size:8px!important}
 }
+
+
+/* RESEARCH / refined exhibition book spread
+   Map reads as the primary evidence, not a sidebar graphic. */
+@media(min-width:1001px){
+ .research-panel-map .research-map-layout{
+  grid-template-columns:minmax(0,68%) minmax(0,32%)!important;
+ }
+}
+@media(min-width:701px) and (max-width:1000px){
+ .research-panel-map .research-map-layout{
+  grid-template-columns:minmax(0,61%) minmax(0,39%)!important;
+ }
+}
+@media(min-width:701px){
+ .research-panel-map .research-map-area{overflow:hidden!important}
+ .research-panel-map .research-map-stack{
+  transform:translateX(-3%) scale(1.12);
+  transform-origin:48% 50%;
+ }
+ .research-panel-map .research-map-intro{
+  padding-left:clamp(20px,2.3vw,40px)!important;
+  padding-right:clamp(25px,3.4vw,65px)!important;
+ }
+ .research-panel-map .research-map-heading{
+  font-size:clamp(30px,2.35vw,40px)!important;
+  line-height:1.36!important;
+ }
+ .research-panel-map .research-map-lead{display:none!important}
+ .research-map-selector{
+  margin-top:clamp(20px,4vh,45px)!important;
+ }
+ .research-map-selector-caption{display:none!important}
+ .research-panel-map .research-map-note{
+  margin-top:clamp(24px,7vh,75px)!important;
+  margin-bottom:auto!important;
+ }
+ .research-panel-map .research-map-note p#research-map-description{
+  font-size:clamp(12px,.96vw,15px)!important;
+  font-weight:400!important;
+  line-height:1.85!important;
+  max-width:370px;
+ }
+ .research-map-note-extra{margin-top:clamp(17px,2.2vh,26px)!important}
+ .research-panel-map .research-map-caption{
+  margin-top:clamp(22px,4vh,45px)!important;
+  font-size:9px!important;
+  letter-spacing:.035em;
+ }
+}
+.research-panel-map .research-map-base{
+ /* The map artboard has a faint straight edge on its upper-left sides. */
+ -webkit-mask-image:
+   linear-gradient(to right,transparent 0%,#000 4.5%,#000 96%,transparent 100%),
+   linear-gradient(to bottom,transparent 0%,#000 4.5%,#000 96%,transparent 100%)!important;
+ mask-image:
+   linear-gradient(to right,transparent 0%,#000 4.5%,#000 96%,transparent 100%),
+   linear-gradient(to bottom,transparent 0%,#000 4.5%,#000 96%,transparent 100%)!important;
+ -webkit-mask-composite:source-in!important;
+ mask-composite:intersect!important;
+}
+.research-map-fact{grid-template-columns:85px minmax(0,1fr)!important}
+.research-map-fact-label{font-size:10px!important;color:#9b9891!important}
+.research-map-fact-value{font-size:12px!important;color:#494942!important}
+.research-panel-map .research-map-choice::before{display:none!important}
+@media(max-width:700px){
+ .research-panel-map .research-map-stack{
+  transform:scale(1.055);
+  transform-origin:50% 49%;
+ }
+ .research-panel-map .research-map-note p#research-map-description{
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  max-width:none!important;
+  font-size:10px!important;
+ }
+ .research-panel-map .research-map-caption{display:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .research-panel-map .research-map-stack{transition:none!important}
+}
