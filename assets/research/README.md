@@ -9,21 +9,27 @@
 
 **대부분의 수정은 research-data.json 한 파일에서 끝납니다.** HTML과 JS는 수정하지 않아도 됩니다.
 
+## 업데이트: 실제 업로드한 지도 파일 (1991 / 2026)
+
+실제 업로드된 지도에는 공통 지도 `assets/research/map.png`와 각 재료별 투명 분포 레이어가 있습니다.
+이제 `mapBase` 및 `maps[].images` 경로에서 원본 파일을 직접 연결합니다.
+
+| 재료 | 1991 | 2026 |
+| --- | --- | --- |
+| 벽돌 | `brick_1991xxxhdpi.png` | `brick_2026xxxhdpi.png` |
+| 기와 | `roof_1991xxxhdpi.png` | `roof_2026xxxhdpi.png` |
+| 주물 | 없음 (`null`) | `casting_2026xxxhdpi.png` |
+
+첫 연구 도판은 연도(1991 / 2026)와 재료(종합 / 벽돌 / 기와 / 주물)를 따로 선택합니다.
+**1991년에는 주물 지도가 없으므로 주물 선택이 비활성화됩니다.** 종합 지도는 있는 레이어만 합성합니다.
+공통 베이스맵과 각 오버레이는 동일 좌표·캔버스 크기의 투명 PNG로 맞춰 업로드하세요.
+
+**나중에 자료를 교체할 때** `research-data.json`의 `mapBase` 또는 `maps` 배열의 `images["1991"]`, `images["2026"]` 필드만 수정하세요.
+새 주물 1991 파일을 추가하면 `null` 대신 해당 경로를 넣기만 하면 됩니다.
+
 ## 01 / DISTRIBUTION — 지도 4장
 
-JSON의 maps 배열에서 각각 image 필드의 null을 업로드한 이미지 경로로 바꾸세요.
-
-예: "image": "assets/research/maps/brick-1991.webp"
-
-네 개의 지도 ID와 기본 색:
-- combined / 종합 / 회색
-- tile / 기와 / 적색
-- brick / 벽돌 / 청색
-- cast / 주물 / 녹색
-
-image가 null이면 실제 공장 위치가 아닌 **자리표시용 도식**이 표시됩니다. 실제 연구 데이터를 나타내지 않습니다. 해당 지도 파일이 준비되면 자동으로 바뀝니다. 가능하면 원본 지도 네 장을 같은 비율로 PNG/WebP/SVG로 내보내세요.
-
-지도 제목은 title, 버튼 이름은 label, 범례 대신 쓰는 요약은 description, 하단 출처는 caption입니다.
+실제 지도가 이미 연결돼 있습니다. `combined`는 선택한 연도의 자료가 존재하는 레이어를 합쳐 보여줍니다. 각 `maps[].images`에서 연도별 경로를 교체하고, 추가 연도가 필요하면 `mapYears`에 등록하세요. `null`은 지도 미등록이라는 뜻입니다.
 
 ## 02 / PRODUCTION — 생산과 유통
 
