@@ -110,11 +110,11 @@ function mapSources(map,year){
  return mapAvailable(map,year)?[{id:map.id,label:map.label,image:map.images[String(year)]}]:[];
 }
 function layeredMap(base,layers,detailMode){
- const stack=el('div','research-map-stack'+(detailMode?' research-map-stack-detail':''));
+ const stack=el('div','research-map-stack'+(detailMode?' research-map-stack-detail':'')+(layers.length>1?' is-combined':''));
  const paths=[{image:base,type:'base'},...layers.map(layer=>({...layer,type:'overlay'}))];
  paths.forEach((path,i)=>{
   if(!path.image)return;
-  const img=el('img','research-map-layer '+(path.type==='base'?'research-map-base':'research-map-overlay'));
+  const img=el('img','research-map-layer '+(path.type==='base'?'research-map-base':('research-map-overlay research-map-overlay--'+(path.id||'unknown'))));
   img.src=path.image;
   img.alt=path.type==='base'?'대한민국 지도':(path.label||'공장')+' 위치 레이어';
   img.loading='eager';img.decoding='async';img.draggable=false;
@@ -140,7 +140,7 @@ function setMap(index){
  setText('#research-map-year',state.year+' / FACTORY DISTRIBUTION');
  setText('#research-map-current-title',state.year+'년 '+(map.title||map.label));
  setText('#research-map-description',map.description||'');
- setText('#research-map-caption',state.year+'년 · '+selectedNames+partial);
+ setText('#research-map-caption',partial?'1991년 주물공장 분포 자료는 아직 없습니다.':'');
  mapArt.replaceChildren();
  mapArt.append(layeredMap(state.data.mapBase,layers,false));
  mapArt.classList.toggle('is-zoomable',layers.length>0);
@@ -195,7 +195,8 @@ function renderMaps(data){
   });
  });
  state.year=data.mapYears&&data.mapYears.includes(1991)?1991:data.mapYears[0];
- setMap(0);
+ const brickIndex=data.maps.findIndex(item=>item.id==='brick');
+ setMap(brickIndex>=0?brickIndex:0);
 }
 function openDetail(item){
  if(!item)return;
