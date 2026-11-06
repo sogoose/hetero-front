@@ -728,7 +728,12 @@ body{background:#f8f8f4;color:#272724}
   font-size:11px!important;padding:4px 0!important;
  }
  .research-keymap{margin-top:5px;max-width:none}
- .research-keymap-head{display:none}
+ .research-keymap-head{
+  display:flex;justify-content:flex-end;align-items:center;
+  margin:0 0 3px;
+ }
+ .research-keymap-head>span{display:none}
+ .research-keymap-all{font-size:9px!important}
  .research-panel-map .research-map-controls{
   display:flex!important;gap:8px!important;
   justify-content:flex-end!important;
