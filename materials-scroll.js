@@ -225,15 +225,20 @@ function drawAnnotation(column,piece){
 }
 function renderAnnotations(){
  if(!atlasMetrics||!annotationHost)return;
- const {cols,rows,legendTop,sheetWidth,coverWidth}=atlasMetrics;
+ const {cols,rows,sheetWidth,coverWidth}=atlasMetrics;
  const fragment=document.createDocumentFragment();
  const numericIndex=[...pieces].sort((a,b)=>Number(a.item.id)-Number(b.item.id));
  for(let sheet=0;sheet<sheets.length;sheet++){
-  const cover=sheet===0,ncols=cover?(viewport.clientWidth<700?2:3):cols;
+  // Keep the cover index in two columns so it reads 01,02,03 downward,
+  // then 04,05,06 in the next column. Remaining plates use five-row columns.
+  const cover=sheet===0,ncols=cover?2:cols;
   const panel=document.createElement('section');panel.className='material-annotation-board';
   if(cover)panel.classList.add('material-cover-annotations');
   panel.style.left=(sheets[sheet].start+(cover?10:0))+'px';
-  panel.style.top=legendTop+'px';
+  // Align all reference columns to the bottom of the image viewport, not
+  // to a percentage-based line floating in the middle of the screen.
+  panel.style.top='auto';
+  panel.style.bottom=(viewport.clientWidth<700?16:24)+'px';
   panel.style.width=(cover?coverWidth-20:sheetWidth)+'px';
   panel.style.gridTemplateColumns='repeat('+ncols+',minmax(0,1fr))';
   const slots=cover?coverCount:perBoard;
