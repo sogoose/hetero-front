@@ -11,8 +11,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=36">
-<link rel="stylesheet" href="research-page.css?v=5">
-<script src="research-page.js?v=5" defer></script>
+<link rel="stylesheet" href="research-page.css?v=6">
+<script src="research-points.js?v=1" defer></script>
+<script src="research-page.js?v=6" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -33,20 +34,22 @@
           <header class="research-map-intro">
             <h1 class="research-serif research-map-heading" id="research-map-heading">혼종은<br>어디에서 왔을까?</h1>
             <div class="research-map-selector">
-              <div class="research-map-year-controls" id="research-map-year-controls" role="group" aria-label="공장 분포 연도 선택"></div>
-              <div class="research-keymap" aria-label="공장 분포 범례">
+              <div class="research-keymap" aria-label="재료별 공장 분포">
+                <div class="research-map-controls" id="research-map-controls" role="group" aria-label="벽돌, 주물, 기와 공장 선택"></div>
+                <div class="research-map-year-controls" id="research-map-year-controls" role="group" aria-label="연도 선택"></div>
                 <div class="research-keymap-head">
-                  <span>범례</span>
+                  <span class="research-keymap-symbols" aria-label="지도 기호"><span>○ 1991년 조사</span><span>＋ 2026년 확인</span></span>
                   <button type="button" class="research-keymap-all" id="research-map-all">전체 보기</button>
-                </div>
-                <div class="research-map-controls" id="research-map-controls" role="group" aria-label="재료별 공장 분포 선택"></div>
-                <div class="research-keymap-symbols" aria-label="지도 기호 설명">
-                  <span><span class="research-keymap-circle" aria-hidden="true">○</span> 1991년 조사</span>
-                  <span><span class="research-keymap-cross" aria-hidden="true">＋</span> 2026년 확인</span>
                 </div>
               </div>
             </div>
             <p class="research-map-annotation" id="research-map-annotation" aria-live="polite"></p>
+            <section class="research-factory-panel" id="research-factory-panel" hidden aria-live="polite"></section>
+            <div class="research-map-actions" aria-label="지도 자료 기능">
+              <button type="button" id="research-factory-edit-toggle" class="research-map-action">업체 위치 입력</button>
+              <button type="button" id="research-factory-export" class="research-map-action" hidden>JSON 내보내기</button>
+              <button type="button" id="research-map-zoom" class="research-map-action">지도 확대</button>
+            </div>
           </header>
         </div>
       </section>
@@ -98,6 +101,30 @@
       <p id="research-detail-description"></p>
     </div>
   </div>
+</dialog>
+
+
+<dialog id="research-factory-editor" class="research-factory-editor" aria-labelledby="research-factory-editor-title">
+  <form id="research-factory-form" class="research-factory-form">
+    <div class="research-factory-editor-head">
+      <h2 id="research-factory-editor-title">업체 위치 기록</h2>
+      <button type="button" id="research-factory-cancel" aria-label="닫기">×</button>
+    </div>
+    <p class="research-factory-hint">지도에서 선택한 기호의 위치와 업체 정보를 연결합니다.</p>
+    <label>업체명 <input id="research-factory-name" name="name" type="text" required maxlength="130" autocomplete="off" placeholder="업체명 입력"></label>
+    <div class="research-factory-form-pair">
+      <label>재료 <select id="research-factory-material" name="material"><option value="brick">벽돌</option><option value="cast">주물</option><option value="tile">기와</option></select></label>
+      <label>연도 <select id="research-factory-year" name="year"><option value="1991">1991</option><option value="2026">2026</option></select></label>
+    </div>
+    <label>지역 <input id="research-factory-region" name="region" type="text" maxlength="140" placeholder="예: 서울특별시"></label>
+    <label>참고·메모 <textarea id="research-factory-note" name="note" rows="2" maxlength="600" placeholder="생산품목, 이전 여부 등"></textarea></label>
+    <label>자료 출처 <input id="research-factory-source" name="source" type="text" maxlength="250" placeholder="조사표, 인터뷰 등"></label>
+    <p id="research-factory-coordinate" class="research-factory-coordinate"></p>
+    <div class="research-factory-form-actions">
+      <button type="button" id="research-factory-delete" class="research-factory-delete" hidden>삭제</button>
+      <button type="submit" class="research-factory-save">저장</button>
+    </div>
+  </form>
 </dialog>
 
 <dialog id="chapter-menu" class="chapter-menu" aria-labelledby="chapter-title">
