@@ -133,6 +133,12 @@ function setMap(index){
  const list=state.data&&state.data.maps;
  if(!Array.isArray(list)||!list.length)return;
  const candidate=((index%list.length)+list.length)%list.length;
+ // Material takes precedence: choosing a category not mapped in 1991 (cast)
+ // automatically shows its available year instead of disabling the category.
+ if(!mapAvailable(list[candidate],state.year)){
+  const other=state.data.mapYears.find(y=>mapAvailable(list[candidate],y));
+  if(other)state.year=other;
+ }
  state.map=mapAvailable(list[candidate],state.year)?candidate:0;
  const map=list[state.map],layers=mapSources(map,state.year);
  // One short annotation, only when a source is genuinely absent.
@@ -145,10 +151,11 @@ function setMap(index){
  mapArt.replaceChildren();
  mapArt.append(layeredMap(state.data.mapBase,layers,false));
  mapArt.classList.toggle('is-zoomable',layers.length>0);
+ window.ResearchPoints?.update();
  [...mapControls.querySelectorAll('button')].forEach((btn,i)=>{
   const active=i===state.map;
   const available=mapAvailable(list[i],state.year);
-  btn.disabled=!available;
+  btn.disabled=!available&&!state.data.mapYears.some(y=>mapAvailable(list[i],y));
   btn.setAttribute('aria-pressed',String(active));
   const mark=btn.querySelector('.research-map-choice-mark');
   if(mark)mark.textContent=state.year===1991?'○':'＋';
@@ -158,6 +165,8 @@ function setMap(index){
  [...yearControls.querySelectorAll('button')].forEach(btn=>{
   const active=Number(btn.dataset.year)===state.year;
   btn.setAttribute('aria-pressed',String(active));
+  // A year with no source for the selected material should not show a false map.
+  btn.disabled=!mapAvailable(map,Number(btn.dataset.year));
  });
  const showAll=$('#research-map-all');
  if(showAll)showAll.setAttribute('aria-pressed',String(map.id==='combined'));
@@ -181,7 +190,11 @@ function renderMaps(data){
   yearControls.append(button);
  });
  mapControls.replaceChildren();
- (data.maps||[]).forEach((map,index)=>{
+ [...(data.maps||[])].sort((a,b)=>{
+  const priority=['brick','cast','tile','combined'];
+  return priority.indexOf(a.id)-priority.indexOf(b.id);
+ }).forEach(map=>{
+  const index=data.maps.indexOf(map);
   const button=el('button','research-map-choice');
   button.type='button';
   button.dataset.material=map.id;
@@ -196,17 +209,20 @@ function renderMaps(data){
  });
  const showAll=$('#research-map-all');
  if(showAll)showAll.addEventListener('click',()=>setMap(0));
- mapArt.addEventListener('click',()=>{
-  const map=data.maps[state.map];
-  const layers=mapSources(map,state.year);
-  if(!layers.length||!mapArt.classList.contains('is-zoomable'))return;
-  openDetail({
-   kicker:state.year+' / FACTORY DISTRIBUTION',
-   title:state.year+'년 '+(map.title||map.label),
-   mapBase:data.mapBase,mapLayers:layers,
-   description:map.description+(state.year===1991&&map.id==='combined'?' 1991년 주물 지도는 업로드되지 않아 종합 분포에 포함하지 않았습니다.':'')
-  });
+ mapArt.addEventListener('click',event=>{
+  if(window.ResearchPoints?.mapClick(event))return;
  });
+ const openZoom=()=>{
+  const map=data.maps[state.map],layers=mapSources(map,state.year);
+  if(!layers.length)return;
+  openDetail({
+   kicker:state.year+' / 공장 분포',
+   title:state.year+'년 '+(map.title||map.label),
+   mapBase:data.mapBase,mapLayers:layers,description:map.description
+  });
+ };
+ $('#research-map-zoom')?.addEventListener('click',openZoom);
+
  state.year=data.mapYears&&data.mapYears.includes(1991)?1991:data.mapYears[0];
  const brickIndex=data.maps.findIndex(item=>item.id==='brick');
  setMap(brickIndex>=0?brickIndex:0);
@@ -371,6 +387,20 @@ async function start(){
   const data=await response.json();
   if(!Array.isArray(data.maps)||!data.production||!data.testimonies)throw new Error('Invalid research data');
   state.data=data;
+  if(window.ResearchPoints){
+   await window.ResearchPoints.init({
+    getSelection:()=>({year:state.year,material:data.maps[state.map]?.id||'brick'}),
+    selectMaterial:(material,year)=>{
+     state.year=Number(year);
+     const i=data.maps.findIndex(m=>m.id===material);
+     if(i>=0)setMap(i);
+    },
+    isAvailable:(material,year)=>{
+     const map=data.maps.find(m=>m.id===material);
+     return map?mapAvailable(map,Number(year)):false;
+    }
+   });
+  }
   renderMaps(data);
   renderProduction(data);
   renderVoices(data);
