@@ -140,7 +140,23 @@ function setMap(index){
  setText('#research-map-year',state.year+' / FACTORY DISTRIBUTION');
  setText('#research-map-current-title',state.year+'년 '+(map.title||map.label));
  setText('#research-map-description',map.description||'');
- setText('#research-map-caption',partial?'1991년 주물공장 분포 자료는 아직 없습니다.':'');
+ const summary=$('#research-map-note-extra');
+ if(summary){
+  summary.replaceChildren();
+  const facts=state.year===1991?[
+   ['분석 대상','벽돌 · 기와'],
+   ['미등록 자료','1991년 주물']
+  ]:[
+   ['분석 대상','벽돌 · 기와 · 주물'],
+   ['자료 연도','2026']
+  ];
+  facts.forEach(([term,value])=>{
+   const line=el('div','research-map-fact');
+   line.append(el('span','research-map-fact-label',term),el('span','research-map-fact-value',value));
+   summary.append(line);
+  });
+ }
+ setText('#research-map-caption',partial?'1991년 주물공장은 자료 미등록 · 실제 위치를 추정하지 않았습니다.':'지도 자료 : 연구 아카이브 / 1991–2026');
  mapArt.replaceChildren();
  mapArt.append(layeredMap(state.data.mapBase,layers,false));
  mapArt.classList.toggle('is-zoomable',layers.length>0);
