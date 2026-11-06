@@ -378,3 +378,64 @@ body{background:#f8f8f4;color:#272724}
  /* Never concatenate the two lines of the essay question on narrow screens. */
  .research-map-heading br{display:block!important}
 }
+
+
+/* GIS overlays / 2026-11-06. Source layers are transparent PNGs exported from
+   the same artboard; the original map.png is the shared base, not a placeholder. */
+.research-map-stack{
+ position:relative;display:block;
+ width:100%;height:100%;min-width:0;min-height:0;
+ isolation:isolate;
+}
+.research-map-stack .research-map-layer{
+ position:absolute!important;inset:0!important;
+ display:block!important;width:100%!important;height:100%!important;
+ margin:0!important;padding:0!important;
+ object-fit:contain!important;object-position:center center!important;
+ pointer-events:none!important;
+ image-rendering:auto;
+}
+.research-map-stack .research-map-base{
+ z-index:0!important;mix-blend-mode:normal!important;
+}
+.research-map-stack .research-map-overlay{
+ mix-blend-mode:normal!important;
+}
+.research-map-year-controls{
+ display:flex;align-items:center;justify-content:center;
+ gap:clamp(20px,2.2vw,38px);flex:none;
+ margin:0 auto 1px;
+}
+.research-map-year-choice{
+ appearance:none;display:inline-block;
+ background:transparent!important;box-shadow:none!important;
+ padding:6px 1px 5px;border:0;border-bottom:1px solid transparent;
+ border-radius:0;color:#aaa79e;
+ font:550 clamp(12px,1.1vw,15px)/1.3 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.025em;
+}
+.research-map-year-choice:hover{color:#4c4c48}
+.research-map-year-choice[aria-pressed=true]{
+ color:#222420;border-bottom-color:#383833;
+}
+.research-map-choice:disabled{
+ cursor:not-allowed!important;opacity:.35!important;
+ color:#b8b6ae!important;border-bottom-color:transparent!important;
+}
+.research-map-choice:disabled::before{opacity:.18!important}
+.research-map-load-error{
+ display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ padding:12px;max-width:80%;color:#8e8d84;
+ font:400 12px/1.6 Pretendard,sans-serif;
+ text-align:center;
+}
+.research-detail-image .research-map-stack-detail{
+ width:100%;height:100%;max-height:100%;
+}
+@media(max-width:700px){
+ .research-map-year-controls{gap:30px;margin-bottom:1px}
+ .research-map-year-choice{font-size:12px;padding:5px 0 4px}
+ .research-map-controls{gap:4px}
+ .research-map-choice{font-size:10px;padding:7px 6px 5px}
+ .research-map-caption{font-size:8px!important;margin-top:4px!important}
+}
