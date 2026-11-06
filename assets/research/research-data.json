@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "introduction": {
     "kicker": "03 / RESEARCH",
     "title": [
@@ -7,48 +7,48 @@
       "왔을까?"
     ],
     "lead": "재료가 생산되던 장소에서, 익숙한 집의 정면까지.",
-    "mapYear": "1991년 공장 위치"
+    "mapYear": "1991–2026년 공장 위치"
   },
   "maps": [
     {
       "id": "combined",
       "label": "종합",
       "tone": "all",
-      "title": "생산의 지리",
-      "image": null,
-      "alt": "1991년 기와·벽돌·주물 공장 분포 종합 지도",
-      "description": "기와, 벽돌, 주물 공장이 어디에 있었는지 한 장의 지도에서 비교합니다.",
-      "caption": "자료가 연결되기 전까지 지도는 실제 위치를 나타내지 않는 도식 자리표시자입니다."
-    },
-    {
-      "id": "tile",
-      "label": "기와",
-      "tone": "red",
-      "title": "기와공장",
-      "image": null,
-      "alt": "1991년 기와공장 분포 지도",
-      "description": "기와공장(시멘트기와 포함)의 분포를 살펴봅니다.",
-      "caption": "원본 분포도 이미지를 연결하면 이 자리에 표시됩니다."
+      "title": "공장 분포의 중첩",
+      "description": "해당 연도에 확인된 재료별 공장 분포를 함께 보여줍니다. 주물은 2026년 자료만 포함됩니다."
     },
     {
       "id": "brick",
       "label": "벽돌",
       "tone": "blue",
       "title": "벽돌공장",
-      "image": null,
-      "alt": "1991년 벽돌공장 분포 지도",
-      "description": "벽돌공장의 분포를 비교합니다.",
-      "caption": "원본 분포도 이미지를 연결하면 이 자리에 표시됩니다."
+      "description": "벽돌공장의 위치와 분포를 연도별로 살펴봅니다.",
+      "images": {
+        "1991": "assets/research/brick_1991xxxhdpi.png",
+        "2026": "assets/research/brick_2026xxxhdpi.png"
+      }
+    },
+    {
+      "id": "tile",
+      "label": "기와",
+      "tone": "red",
+      "title": "기와공장",
+      "description": "기와공장의 위치와 분포를 연도별로 살펴봅니다.",
+      "images": {
+        "1991": "assets/research/roof_1991xxxhdpi.png",
+        "2026": "assets/research/roof_2026xxxhdpi.png"
+      }
     },
     {
       "id": "cast",
       "label": "주물",
       "tone": "green",
       "title": "주물공장",
-      "image": null,
-      "alt": "1991년 주물공장 분포 지도",
-      "description": "주물공장의 분포를 비교합니다.",
-      "caption": "원본 분포도 이미지를 연결하면 이 자리에 표시됩니다."
+      "description": "현재 업로드된 주물공장 지도는 2026년 자료입니다. 1991년 지도는 없습니다.",
+      "images": {
+        "1991": null,
+        "2026": "assets/research/casting_2026xxxhdpi.png"
+      }
     }
   ],
   "production": {
@@ -146,5 +146,10 @@
         "href": "interviews.html"
       }
     ]
-  }
+  },
+  "mapBase": "assets/research/map.png",
+  "mapYears": [
+    1991,
+    2026
+  ]
 }
