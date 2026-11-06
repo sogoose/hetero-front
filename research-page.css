@@ -439,3 +439,85 @@ body{background:#f8f8f4;color:#272724}
  .research-map-choice{font-size:10px;padding:7px 6px 5px}
  .research-map-caption{font-size:8px!important;margin-top:4px!important}
 }
+
+
+/* 2026-11-06 / RESEARCH map visual clean-up.
+   The opaque white source PNG MUST multiply against the same paper background
+   as the site, or a white rectangular bitmap remains visible around the map. */
+.research-main,
+.research-panel,
+.research-map-layout,
+.research-map-area,
+.research-map-art,
+.research-detail,
+.research-detail-image {
+ background:#f8f8f4!important;
+}
+.research-map-stack{
+ isolation:auto!important; /* do not isolate Multiply from the paper backdrop */
+ background:transparent!important;
+}
+.research-map-stack .research-map-layer{
+ mix-blend-mode:multiply!important;
+}
+.research-map-stack .research-map-base{
+ z-index:0!important;
+ opacity:.77!important;
+ filter:grayscale(1) contrast(.87) brightness(1.04)!important;
+ mix-blend-mode:multiply!important;
+}
+.research-map-stack .research-map-overlay{
+ opacity:.89!important;
+ filter:saturate(.78) contrast(.98)!important;
+ mix-blend-mode:multiply!important;
+}
+.research-map-stack.is-combined .research-map-overlay{
+ opacity:.70!important;
+ filter:saturate(.69) contrast(.97)!important;
+}
+.research-map-area{
+ padding-bottom:24px!important;
+}
+.research-map-year-controls{
+ gap:clamp(18px,2vw,30px)!important;
+ margin:5px auto 0!important;
+}
+.research-map-year-choice{
+ font-weight:500!important;
+ color:#97948e!important;
+ font-size:clamp(12px,1.04vw,14px)!important;
+}
+.research-map-year-choice[aria-pressed=true]{
+ color:#292a26!important;border-bottom-color:#626158!important;
+}
+.research-map-controls{
+ gap:clamp(6px,1.05vw,17px)!important;
+ margin:0!important;
+}
+.research-map-choice{
+ padding:6px 5px 5px!important;
+ color:#a09d96!important;font-size:clamp(10px,.78vw,11px)!important;
+}
+.research-map-choice::before{
+ width:4px!important;height:4px!important;opacity:.48!important;
+}
+.research-map-choice[aria-pressed=true]{
+ color:#2a2b26!important;border-bottom-color:#66655e!important;
+}
+.research-map-choice[aria-pressed=true]::before{opacity:.82!important}
+.research-map-caption{
+ min-height:0!important;margin:4px auto 0!important;
+ font-size:8px!important;color:#96938c!important;
+}
+.research-map-caption:empty{display:none!important}
+.research-map-note p{color:#95928a!important}
+.research-map-lead{color:#aaa69f!important}
+@media(max-width:700px){
+ .research-map-area{padding-bottom:12px!important}
+ .research-map-year-controls{gap:24px!important;margin:3px auto 0!important}
+ .research-map-choice{font-size:10px!important;padding:6px 5px 4px!important}
+ .research-map-controls{gap:5px!important}
+ .research-map-stack .research-map-base{opacity:.74!important}
+ .research-map-stack .research-map-overlay{opacity:.88!important}
+ .research-map-stack.is-combined .research-map-overlay{opacity:.67!important}
+}
