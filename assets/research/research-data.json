@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "introduction": {
+    "kicker": "03 / RESEARCH",
+    "title": [
+      "혼종은 어디에서",
+      "왔을까?"
+    ],
+    "lead": "재료가 생산되던 장소에서, 익숙한 집의 정면까지.",
+    "mapYear": "1991년 공장 위치"
+  },
+  "maps": [
+    {
+      "id": "combined",
+      "label": "종합",
+      "tone": "all",
+      "title": "생산의 지리",
+      "image": null,
+      "alt": "1991년 기와·벽돌·주물 공장 분포 종합 지도",
+      "description": "기와, 벽돌, 주물 공장이 어디에 있었는지 한 장의 지도에서 비교합니다.",
+      "caption": "자료가 연결되기 전까지 지도는 실제 위치를 나타내지 않는 도식 자리표시자입니다."
+    },
+    {
+      "id": "tile",
+      "label": "기와",
+      "tone": "red",
+      "title": "기와공장",
+      "image": null,
+      "alt": "1991년 기와공장 분포 지도",
+      "description": "기와공장(시멘트기와 포함)의 분포를 살펴봅니다.",
+      "caption": "원본 분포도 이미지를 연결하면 이 자리에 표시됩니다."
+    },
+    {
+      "id": "brick",
+      "label": "벽돌",
+      "tone": "blue",
+      "title": "벽돌공장",
+      "image": null,
+      "alt": "1991년 벽돌공장 분포 지도",
+      "description": "벽돌공장의 분포를 비교합니다.",
+      "caption": "원본 분포도 이미지를 연결하면 이 자리에 표시됩니다."
+    },
+    {
+      "id": "cast",
+      "label": "주물",
+      "tone": "green",
+      "title": "주물공장",
+      "image": null,
+      "alt": "1991년 주물공장 분포 지도",
+      "description": "주물공장의 분포를 비교합니다.",
+      "caption": "원본 분포도 이미지를 연결하면 이 자리에 표시됩니다."
+    }
+  ],
+  "production": {
+    "kicker": "02 / PRODUCTION",
+    "title": "만들어진 재료는 어떻게 정면에 도착했을까?",
+    "lead": "원형과 생산, 유통과 시공. 각 단계를 따라가면 익숙한 주택의 낯선 얼굴이 드러납니다.",
+    "stages": [
+      {
+        "id": "source",
+        "number": "01",
+        "label": "원형",
+        "sub": "형태의 참조",
+        "image": "assets/archive/elevation.webp",
+        "alt": "주택의 건축 입면",
+        "description": "건축의 형태와 장식적 원형이 서로 다른 경로를 통해 참조되고 변형됩니다."
+      },
+      {
+        "id": "factory",
+        "number": "02",
+        "label": "공장",
+        "sub": "재료의 생산",
+        "image": "assets/archive/brick-factory.webp",
+        "alt": "건축 재료 생산 공장의 내부",
+        "description": "흙, 금속, 시멘트 등 재료와 지역적 생산 조건이 제품의 형태를 결정합니다."
+      },
+      {
+        "id": "merchant",
+        "number": "03",
+        "label": "건재상",
+        "sub": "부재의 유통",
+        "image": null,
+        "alt": "건재상 도상",
+        "description": "만들어진 부재는 건재상과 판매망을 통해 현장으로 이동합니다."
+      },
+      {
+        "id": "site",
+        "number": "04",
+        "label": "시공자",
+        "sub": "현장에서의 조합",
+        "image": null,
+        "alt": "시공 현장 도상",
+        "description": "서로 다른 부재와 기술이 현장에서 조합되며 예측하지 못한 새로운 정면을 만듭니다."
+      },
+      {
+        "id": "home",
+        "number": "05",
+        "label": "혼종 주택",
+        "sub": "도시의 표피",
+        "image": "assets/archive/elevation.webp",
+        "alt": "다세대주택의 입면",
+        "description": "개별 부재의 선택과 조합이 모여 한국 도시의 익숙한 주택 풍경을 형성했습니다."
+      }
+    ],
+    "footnote": "이 도식은 원본 전시 도판을 웹의 가로 흐름으로 정리한 구성입니다. 단계별 이미지는 추후 교체할 수 있습니다."
+  },
+  "testimonies": {
+    "kicker": "03 / TESTIMONY",
+    "title": "제작자에게 물었다.",
+    "lead": "벽돌, 기와, 주물. 재료 뒤에는 서로 다른 기술과 기억이 있습니다.",
+    "items": [
+      {
+        "id": "brick",
+        "number": "01",
+        "material": "벽돌",
+        "question": "처음 창업한 공장은 왜 다른 곳으로 옮겨졌을까?",
+        "quote": "원료 따라 왔다고 보면 더 맞을 것 같다.",
+        "speaker": "청화요업 · 벽돌",
+        "image": "assets/archive/brick-factory.webp",
+        "alt": "벽돌 공장의 생산 현장",
+        "detail": "흙의 공급과 운송 조건은 공장이 자리 잡는 위치와 생산의 방식에 영향을 주었습니다.",
+        "href": "interviews.html"
+      },
+      {
+        "id": "tile",
+        "number": "02",
+        "material": "기와",
+        "question": "왜 새로운 형태의 기와가 보편적으로 사용되었을까?",
+        "quote": "S형기와 같은 제품들은 대략 열 몇 장 정도 수준이었다.",
+        "speaker": "고령기와 · 기와",
+        "image": "assets/archive/tiles-photo.webp",
+        "alt": "쌓여 있는 기와 사진",
+        "detail": "한식기와와 S형기와의 시공 단위와 효율에 대한 제작자의 이야기를 살펴봅니다.",
+        "href": "interviews.html"
+      },
+      {
+        "id": "cast",
+        "number": "03",
+        "material": "주물",
+        "question": "장식의 형태는 제작 과정에서 어떻게 달라질까?",
+        "quote": "그래서 지문도 그 흙에는 새겨진다.",
+        "speaker": "정우금속 · 주물",
+        "image": "assets/archive/casting.webp",
+        "alt": "주물 제작과 장식 부재",
+        "detail": "형상을 담아내는 주물사의 성질과 주조 공정은 장식 표면의 결을 결정합니다.",
+        "href": "interviews.html"
+      }
+    ]
+  }
+}

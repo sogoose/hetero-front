@@ -124,10 +124,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
             linear-gradient(#aaa69b,#aaa69b) center/100% 1px no-repeat;
  opacity:.47;pointer-events:none;
 }
-.material-main.is-aligned .material-piece{
- top:49%!important;transform:translateY(-50%) rotate(0)!important;
-}
-.material-main.is-aligned .material-piece::after{opacity:.16}
+/* The grid mode is positioned by materials-scroll.js for each sheet. */
+.material-main.is-aligned .material-piece{transform:rotate(0deg)}
 /* Reuse the spatial hierarchy of the landscape footer, with the bespoke material controls. */
 .material-main .archive-taskbar{z-index:50}
 .material-main .archive-taskbar .photo-pagination{
@@ -241,3 +239,999 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  letter-spacing:-.01em;word-break:break-word;
 }
 .material-detail .material-detail-source:empty{display:none}
+
+/* True alpha-edge sticker finish, without exporting heavier picture files.
+   Four crisp white edge passes and one quiet floating shadow. */
+.material-art{filter:none!important;overflow:visible!important}
+.material-piece{overflow:visible!important}
+.material-piece::after{display:none!important}
+.material-piece .material-object-image,
+.material-detail .material-object-image{
+ filter:
+   drop-shadow( 2.5px 0 0 #fff)
+   drop-shadow(-2.5px 0 0 #fff)
+   drop-shadow(0  2.5px 0 #fff)
+   drop-shadow(0 -2.5px 0 #fff)
+   drop-shadow(2px 5px 4px rgba(28,29,25,.19));
+}
+.material-detail .material-detail-media{filter:none!important;overflow:visible}
+.material-piece:hover,.material-piece:focus-visible{filter:none!important}
+.material-piece .material-piece-number,
+.material-piece .material-piece-title,
+.material-piece .material-piece-meta{pointer-events:none}
+.material-piece .material-piece-number{display:none!important}
+.material-piece .material-piece-meta{display:none!important}
+
+/* 2026-11 / condensed sticker-sheet layout
+   The cutouts share a sheet; each has one tiny collectible-label, never a card. */
+.material-intro{
+ left:clamp(24px,3.6vw,58px);
+ top:30%;
+ width:clamp(215px,25vw,350px);
+}
+.material-intro .material-eyebrow{font-size:10px;letter-spacing:.10em}
+.material-intro h1{
+ margin:15px 0 10px;
+ font-size:clamp(31px,3.2vw,48px);
+ line-height:1.14;
+ white-space:normal;
+}
+.material-intro p{font-size:clamp(11px,1vw,13px);line-height:1.65;max-width:290px}
+.material-intro .material-instruction{margin-top:32px;font-size:9px;letter-spacing:.10em}
+.material-belt,.material-guide{opacity:.24}
+.material-piece{
+ display:block;overflow:visible;
+ transition:filter .25s,opacity .25s,transform .3s ease;
+}
+.material-piece .material-art{position:relative;z-index:1;filter:none!important}
+.material-piece .material-piece-title{
+ display:block!important;
+ position:absolute;z-index:3;
+ top:-12px;left:-6px;
+ max-width:min(92%,195px);
+ width:max-content;
+ padding:4px 7px 5px;
+ margin:0!important;
+ border:1px solid rgba(66,65,57,.18);
+ border-radius:0;
+ background:rgba(250,249,244,.96);
+ box-shadow:1px 2px 0 rgba(55,51,45,.055);
+ color:#494943!important;
+ font:400 11px/1.2 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.035em;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+ text-align:left;pointer-events:none;
+ transform:rotate(-1.5deg);
+}
+.material-piece:hover .material-piece-title,
+.material-piece:focus-visible .material-piece-title{
+ background:#e9f7c2;
+ border-color:rgba(65,75,45,.36);
+ color:#272925!important;
+}
+.material-piece .material-piece-number,.material-piece .material-piece-meta{display:none!important}
+.material-main .archive-taskbar .material-edit-toggle{
+ width:47px!important;min-width:47px!important;
+ padding:0 3px!important;
+ color:#74716b!important;
+ font:400 11px/1 "Special Elite",monospace!important;
+ letter-spacing:.07em;
+}
+.material-main .archive-taskbar .material-edit-toggle[aria-pressed="true"]{
+ color:#21221f!important;
+ text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;
+}
+.material-main.is-editing::after{
+ content:"편집할 이미지를 클릭하세요";
+ position:fixed;z-index:49;left:50%;bottom:77px;
+ transform:translateX(-50%);
+ font:400 11px/1.5 Pretendard,sans-serif;
+ letter-spacing:-.01em;color:#62645c;
+ background:rgba(250,249,245,.95);
+ border:1px solid #e0ded6;padding:5px 11px;
+ pointer-events:none;white-space:nowrap;
+}
+.material-main.is-editing .material-piece{cursor:text}
+
+/* On-page annotations editor; intentionally restrained like the landscape modal. */
+.material-editor{
+ box-sizing:border-box;
+ width:min(480px,calc(100vw - 28px));max-width:none;
+ max-height:calc(100dvh - 30px);
+ padding:27px clamp(22px,4vw,37px) 29px;
+ border:1px solid #d4d2c9;border-radius:0;
+ background:#faf9f5;color:#292923;
+ box-shadow:0 16px 70px rgba(25,25,23,.17);
+ font-family:Pretendard,-apple-system,sans-serif;
+ overflow-y:auto;
+}
+.material-editor::backdrop{background:rgba(229,228,222,.62);backdrop-filter:blur(4px)}
+.material-editor-top{display:flex;align-items:center;justify-content:space-between}
+.material-editor-top span{
+ color:#858178;
+ font:400 10px/1.2 "Special Elite",monospace;
+ letter-spacing:.09em;
+}
+.material-editor-x{
+ appearance:none;margin:0;padding:0;
+ border:0;background:transparent;box-shadow:none;
+ font:300 27px/1 Pretendard,sans-serif;
+ color:#34342e;cursor:pointer;
+}
+.material-editor h2{
+ margin:21px 0 27px;
+ font:350 34px/1.1 Pretendard,sans-serif;
+ letter-spacing:-.055em;
+}
+.material-editor form{display:flex;flex-direction:column;gap:17px}
+.material-editor-field{
+ display:flex;flex-direction:column;gap:7px;
+ font:400 11px/1.2 Pretendard,sans-serif;color:#77746b;
+}
+.material-editor-field input,
+.material-editor-field textarea{
+ appearance:none;display:block;box-sizing:border-box;
+ width:100%;max-width:100%;margin:0;
+ padding:10px 0;
+ border:0;border-bottom:1px solid #b9b7ad;border-radius:0;
+ background:transparent;box-shadow:none;
+ font:400 16px/1.45 Pretendard,sans-serif;
+ color:#262622;outline:none;
+ resize:vertical;
+}
+.material-editor-field input:focus,
+.material-editor-field textarea:focus{border-bottom-color:#373932}
+.material-editor-field textarea{min-height:83px;font-size:14px}
+.material-edit-status{
+ margin:0!important;
+ font:400 11px/1.6 Pretendard,sans-serif!important;
+ color:#89867e!important;
+}
+.material-editor-actions{
+ display:flex;align-items:center;justify-content:flex-end;gap:17px;
+ flex-wrap:wrap;margin-top:2px;
+}
+.material-editor-actions button{
+ appearance:none;margin:0;padding:9px 0;
+ background:transparent;border:0;border-radius:0;box-shadow:none;
+ font:400 12px/1.25 Pretendard,sans-serif;
+ color:#6a6862;cursor:pointer;
+}
+.material-editor-actions button:hover{color:#292923;background:transparent;transform:none}
+.material-editor-actions .material-editor-save{
+ background:#24251f;color:#f8f7f1;
+ padding:10px 19px;min-width:70px;
+}
+.material-editor-actions .material-editor-save:hover{
+ background:#45483b;color:#fff;
+}
+
+@media(max-width:700px){
+ .material-intro{left:23px;top:26%;width:58vw}
+ .material-intro h1{font-size:clamp(28px,7vw,42px)}
+ .material-intro p{font-size:11px}
+ .material-intro .material-instruction{margin-top:22px;font-size:8px}
+ .material-piece .material-piece-title{
+   top:-8px;left:-5px;
+   max-width:min(90%,145px);
+   padding:3px 5px 4px;
+   font-size:9px!important;
+ }
+ .material-main .archive-taskbar .material-edit-toggle{
+  width:38px!important;min-width:38px!important;font-size:10px!important;
+ }
+ .material-editor{padding:20px 22px 25px}
+ .material-editor h2{font-size:29px;margin:18px 0 20px}
+ .material-editor-actions{gap:11px}
+ .material-editor-actions button{font-size:11px}
+}
+
+
+/* Small black serial bullet, white numerals, transparent caption.
+   Deliberately not a Pokémon-style laminated sticker label. */
+.material-piece .material-piece-title{
+ display:inline-flex!important;
+ align-items:center;
+ gap:6px;
+ top:-18px;left:0;
+ max-width:min(97%,215px);
+ width:max-content;
+ padding:0!important;
+ margin:0!important;
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ line-height:1.2!important;
+ transform:none!important;
+}
+.material-piece .material-label-no{
+ display:inline-grid;place-items:center;flex:none;
+ width:27px;height:18px;min-width:27px;
+ padding:0!important;
+ border:0;border-radius:50% / 56%;
+ background:#252621!important;color:#fff!important;
+ font:500 9px/1 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.02em;
+ text-align:center;
+ box-shadow:none!important;
+ transform:rotate(-5deg);
+}
+.material-piece .material-label-name{
+ flex:0 1 auto;min-width:0;
+ color:#77766f!important;
+ font:400 10px/1.25 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.025em;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.material-piece:hover .material-piece-title,
+.material-piece:focus-visible .material-piece-title{
+ background:transparent!important;box-shadow:none!important;
+}
+.material-piece:hover .material-label-name,
+.material-piece:focus-visible .material-label-name{color:#30312d!important}
+.material-intro{opacity:.88}
+.material-guide{opacity:.10!important}
+.material-belt{opacity:.14!important}
+.material-piece .material-art{transition:transform .25s ease-out}
+@media(max-width:700px){
+ .material-piece .material-piece-title{
+   gap:4px;top:-15px;left:0;max-width:min(98%,175px);
+ }
+ .material-piece .material-label-no{
+   width:23px;height:16px;min-width:23px;font-size:8px;
+ }
+ .material-piece .material-label-name{font-size:9px}
+ .material-piece .material-object-image,
+ .material-detail .material-object-image{
+   filter:
+     drop-shadow( 2px 0 0 #fff)
+     drop-shadow(-2px 0 0 #fff)
+     drop-shadow(0  2px 0 #fff)
+     drop-shadow(0 -2px 0 #fff)
+     drop-shadow(1px 3px 3px rgba(28,29,25,.16));
+ }
+}
+
+
+/* GUNPLA RUNNER / true organized eight-piece board
+   Each assembly frame is laid out before its parts; lines stay in cell
+   gutters and never determine image positions. Subtle like a technical plate. */
+.material-stickers .material-runner-network{
+ position:absolute;top:0;left:0;z-index:0;
+ display:block;overflow:visible;
+ pointer-events:none;
+ opacity:1;
+}
+.material-runner-group{
+ fill:none;stroke-linecap:round;stroke-linejoin:round;
+}
+.material-runner-frame{
+ fill:none;stroke:#a8aaa2;stroke-opacity:.55;stroke-width:1.65;
+}
+.material-runner-divider{
+ fill:none;stroke:#b4b6ac;stroke-opacity:.50;stroke-width:1.30;
+}
+.material-runner-branch{
+ fill:none;stroke:#a6a89e;stroke-opacity:.57;stroke-width:1.20;
+}
+.material-runner-joint{
+ fill:#faf9f5;stroke:#a8aaa0;stroke-width:1.15;stroke-opacity:.75;
+}
+.material-runner-terminal{
+ fill:#a0a399;stroke:none;opacity:.80;
+}
+.material-stickers .material-piece{
+ z-index:1;
+}
+.material-stickers .material-piece:hover,
+.material-stickers .material-piece:focus-visible{
+ z-index:5;
+}
+/* Layout remains clean when the user switches off the sprue framework. */
+.material-main:not(.is-aligned) .material-runner-network{
+ opacity:0;
+}
+.material-runner-network{transition:opacity .24s ease-out}
+@media(max-width:700px){
+ .material-runner-frame{stroke-width:1.45;stroke-opacity:.53}
+ .material-runner-divider{stroke-width:1.1;stroke-opacity:.45}
+ .material-runner-branch{stroke-width:1.05}
+}
+@media(prefers-reduced-motion:reduce){
+ .material-runner-network{transition:none}
+}
+
+/* MATERIAL STICKER INSPECTOR — collected architectural fragments.
+   A single physical paper slip underneath a cutout, not an app information card. */
+.material-detail{
+ position:fixed!important;inset:0!important;margin:0!important;
+ box-sizing:border-box;width:100vw!important;height:100dvh!important;
+ max-width:none!important;max-height:none!important;
+ padding:0!important;border:0!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;overflow:hidden!important;
+}
+.material-detail[open]{display:block}
+.material-detail::backdrop{
+ background:rgba(249,248,243,.72)!important;
+ backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+}
+.material-detail .material-detail-top{display:none!important}
+.material-detail .material-detail-body{
+ position:absolute!important;display:flex!important;flex-direction:column!important;
+ align-items:center!important;justify-content:flex-start!important;
+ gap:17px!important;min-height:0!important;max-width:calc(100vw - 28px)!important;
+ padding:0!important;margin:0!important;grid-template-columns:none!important;
+}
+.material-detail .material-detail-art{
+ display:flex!important;flex:none!important;align-items:center;justify-content:center;
+ min-width:0!important;min-height:0!important;max-height:none!important;
+ margin:0!important;transform-origin:50% 50%;
+}
+.material-detail .material-detail-art .material-object-image{
+ width:100%!important;height:100%!important;max-width:none!important;
+ max-height:none!important;object-fit:contain;pointer-events:none;
+ filter:
+  drop-shadow(3px 0 0 #fff)
+  drop-shadow(-3px 0 0 #fff)
+  drop-shadow(0 3px 0 #fff)
+  drop-shadow(0 -3px 0 #fff)
+  drop-shadow(7px 13px 10px rgba(34,35,29,.20))!important;
+}
+/* Unevenly placed paper strip; almost invisible paper fibres and printing flecks. */
+.material-detail .material-detail-copy{
+ position:relative;isolation:isolate;box-sizing:border-box;flex:none;
+ width:min(308px,calc(100vw - 44px));max-height:35dvh;overflow:visible;
+ padding:19px 25px 17px 17px;
+ border:1px solid rgba(94,87,74,.24);border-radius:0;
+ background-color:#f4f0e7;
+ background-image:
+  radial-gradient(circle at 14% 23%,rgba(84,72,53,.05) 0 .65px,transparent 1.05px),
+  radial-gradient(circle at 79% 58%,rgba(101,91,69,.045) 0 .5px,transparent .95px),
+  repeating-linear-gradient(0deg,transparent 0 4px,rgba(92,84,67,.013) 5px 5.6px);
+ background-size:19px 23px,27px 31px,100% 7px;
+ box-shadow:
+  1px 1px 0 rgba(255,255,255,.65) inset,
+  2px 3px 0 rgba(75,67,54,.055),
+  5px 9px 13px rgba(42,37,27,.095);
+ color:#2b2b26;text-align:left;
+ transform:translateX(var(--tag-shift,-12px)) rotate(var(--tag-tilt,-1.2deg));
+ animation:material-tag-pop .36s .12s both;
+}
+/* Matte, almost translucent paper tape, overlapping the top edge of the slip. */
+.material-detail .material-detail-copy::before{
+ content:"";position:absolute;z-index:3;pointer-events:none;
+ left:17%;top:-10px;width:61px;height:19px;
+ border-left:1px solid rgba(133,117,92,.08);
+ border-right:1px solid rgba(133,117,92,.08);
+ background:
+  linear-gradient(97deg,rgba(255,255,255,.20),transparent 38%,rgba(255,255,255,.1) 81%),
+  rgba(211,199,171,.55);
+ box-shadow:0 1px 2px rgba(70,60,45,.07);
+ transform:rotate(-4deg);
+ clip-path:polygon(0 5%,7% 0,94% 2%,100% 9%,98% 90%,91% 100%,3% 95%,0 91%);
+}
+/* A quiet raised paper corner, not a decorative card badge. */
+.material-detail .material-detail-copy::after{
+ content:"";position:absolute;bottom:0;right:0;pointer-events:none;
+ width:17px;height:17px;
+ background:linear-gradient(135deg,transparent 0 48%,rgba(133,121,97,.11) 49%,#faf7ef 53%,#f7f3e9 100%);
+ box-shadow:-1px -1px 2px rgba(75,68,53,.035);
+ clip-path:polygon(100% 0,100% 100%,0 100%);
+}
+.material-detail .material-detail-copy h2{
+ margin:0!important;
+ font:400 clamp(16px,1.6vw,19px)/1.38 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.052em;color:#292721!important;word-break:keep-all;
+}
+.material-detail .material-detail-copy p{
+ margin:8px 0 0!important;
+ font:350 12px/1.68 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.018em;color:#625d53!important;word-break:keep-all;
+}
+.material-detail .material-detail-copy p[hidden]{display:none!important}
+.material-detail .material-detail-copy p:not([hidden]){
+ display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden;
+}
+.material-detail .material-detail-copy .icon-button{
+ position:absolute;z-index:4;right:4px;top:4px;
+ display:grid;place-items:center;
+ width:22px;height:22px;padding:0;margin:0;
+ border:0;background:transparent;box-shadow:none;opacity:.40;
+}
+.material-detail .material-detail-copy .icon-button:hover{
+ background:transparent;opacity:.75;transform:none;
+}
+.material-detail .material-detail-copy .ui-icon{width:15px;height:15px}
+.material-piece.is-inspected{opacity:.2!important}
+@keyframes material-tag-pop{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
+@media(max-width:700px){
+ .material-detail .material-detail-body{gap:17px!important}
+ .material-detail .material-detail-copy{
+  width:min(260px,calc(100vw - 44px));padding:17px 24px 15px 14px;
+ }
+ .material-detail .material-detail-copy h2{font-size:16px!important}
+ .material-detail .material-detail-copy p{font-size:11px!important;line-height:1.65!important}
+ .material-detail .material-detail-copy::before{width:52px;height:17px;top:-9px}
+}
+@media(prefers-reduced-motion:reduce){
+ .material-detail .material-detail-copy{animation:none}
+}
+
+/* 2026 / MATERIAL ATLAS — image-led, no boxes, rails, or paper stickers. */
+html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+.material-main{
+ position:fixed;inset:0;width:100%;height:100dvh;
+ color:#292923;background:#f9f9f6;overflow:hidden;isolation:isolate;
+ font-family:Pretendard,-apple-system,sans-serif;
+}
+.material-main::before{display:none!important}
+.material-window{
+ position:absolute;inset:0 0 70px;overflow:hidden;isolation:isolate;
+ cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
+}
+.material-main.is-grabbing .material-window{cursor:grabbing}
+.material-window::before,.material-window::after{display:none!important}
+.material-strip{
+ position:absolute;top:0;left:0;height:100%;min-width:100%;
+ background:transparent;will-change:transform;
+}
+.material-guide,.material-belt,.material-runner-network{display:none!important}
+.material-intro{
+ position:absolute;left:clamp(24px,3vw,54px);top:39%;
+ width:clamp(160px,22vw,300px);transform:translateY(-50%);
+ opacity:1;pointer-events:none;
+}
+.material-eyebrow{font:400 10px/1.4 "Special Elite",monospace;letter-spacing:.1em;color:#8d8b83}
+.material-intro h1{
+ margin:12px 0!important;font:350 clamp(30px,3.1vw,48px)/1.18 Pretendard,sans-serif!important;
+ letter-spacing:-.065em;white-space:normal;color:#292924;
+}
+.material-intro p{
+ margin:0;font:350 12px/1.7 Pretendard,sans-serif;
+ color:#77766f;letter-spacing:-.025em;
+}
+.material-intro .material-instruction{
+ display:block!important;margin-top:30px!important;
+ font:400 9px/1.4 "Special Elite",monospace;
+ letter-spacing:.08em;color:#aaa8a0;
+}
+.material-intro .material-instruction::after{display:none}
+.material-stickers{position:absolute;inset:0}
+.material-piece,.material-stickers .material-piece{
+ position:absolute;display:block!important;
+ border:0!important;border-radius:0!important;padding:0!important;margin:0!important;
+ outline-offset:5px;background:transparent!important;box-shadow:none!important;
+ color:#45443f;text-align:left;cursor:zoom-in;
+ transform:none!important;filter:none!important;overflow:visible!important;
+ transition:opacity .22s ease;
+}
+.material-piece .material-art{
+ display:block!important;position:relative;width:100%;height:var(--art-height);
+ transform:none!important;filter:none!important;overflow:visible;
+}
+.material-piece:hover .material-art,.material-piece:focus-visible .material-art{
+ transform:translateY(-3px) scale(1.015)!important;
+}
+.material-piece .material-object-image{
+ display:block;width:100%;height:100%;object-fit:contain;object-position:center;
+ filter:none!important;pointer-events:none;image-rendering:auto;
+}
+.material-piece .material-piece-title{
+ display:block!important;position:absolute!important;z-index:2;
+ top:calc(var(--art-height) + 4px)!important;left:50%!important;
+ transform:translateX(-50%)!important;
+ width:var(--annotation-width)!important;max-width:none!important;
+ padding:0!important;margin:0!important;background:transparent!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;
+ text-align:center!important;pointer-events:none!important;overflow:visible!important;
+ font-family:Pretendard,sans-serif;
+}
+.material-piece .material-label-no{
+ position:absolute!important;left:calc(50% + var(--annotation-width)/2 + 1px)!important;
+ top:calc(-1 * var(--art-height) * .52)!important;
+ display:inline-block!important;width:auto!important;height:auto!important;min-width:0!important;
+ padding:0!important;background:transparent!important;border:0!important;
+ border-radius:0!important;box-shadow:none!important;transform:none!important;
+ font:400 9px/1 "Special Elite",monospace!important;letter-spacing:0!important;
+ color:#75736d!important;white-space:nowrap;
+}
+.material-piece .material-label-name{
+ display:block!important;min-width:0!important;max-width:none!important;
+ font:350 9px/1.3 Pretendard,sans-serif!important;
+ letter-spacing:-.015em!important;color:#a7a59f!important;
+ text-overflow:ellipsis;overflow:hidden;white-space:nowrap;
+}
+.material-piece:hover .material-label-name,.material-piece:focus-visible .material-label-name{color:#595951!important}
+.material-piece.is-inspected{opacity:.18!important}
+.material-main .archive-taskbar{
+ position:fixed!important;z-index:100;min-height:65px;background:#f9f9f6!important;
+ border-top:1px solid rgba(48,45,36,.08)!important;
+}
+.material-main .archive-taskbar .photo-pagination{display:flex!important;align-items:center;gap:10px}
+.material-main .archive-taskbar .photo-toolbar{gap:9px}
+.material-main .archive-taskbar .photo-toolbar .icon-button{width:43px}
+.material-main .archive-taskbar .photo-toolbar .icon-button:disabled{opacity:.25}
+.material-main .archive-taskbar .photo-pagination .material-counter{
+ display:block!important;min-width:72px;text-align:right;
+ font:400 10px/1 "Special Elite",monospace;color:#65635d;white-space:nowrap;
+}
+.material-main .archive-taskbar .material-edit-toggle{
+ width:47px!important;min-width:47px!important;padding:0 3px!important;
+ font:400 10px/1 "Special Elite",monospace!important;color:#74716b!important;
+ letter-spacing:.07em;
+}
+.material-main .archive-taskbar .material-edit-toggle[aria-pressed=true]{
+ color:#222!important;text-decoration:underline;text-underline-offset:5px;
+}
+.material-progress{
+ display:block;appearance:none;-webkit-appearance:none;
+ width:clamp(75px,12vw,174px);height:20px;margin:0;padding:0;
+ background:transparent;cursor:pointer;
+}
+.material-progress::-webkit-slider-runnable-track{height:1px;background:#bcbab2}
+.material-progress::-moz-range-track{height:1px;background:#bcbab2}
+.material-progress::-webkit-slider-thumb{
+ appearance:none;-webkit-appearance:none;width:8px;height:8px;margin-top:-3.5px;
+ border:0;border-radius:0;background:#52524c;
+}
+.material-progress::-moz-range-thumb{width:8px;height:8px;border:0;border-radius:0;background:#52524c}
+/* Click / tap produces only an enlarged isolated object. */
+.material-detail{
+ position:fixed!important;inset:0!important;margin:0!important;
+ box-sizing:border-box;width:100vw!important;height:100dvh!important;
+ max-width:none!important;max-height:none!important;
+ border:0!important;border-radius:0!important;padding:0!important;
+ background:transparent!important;box-shadow:none!important;overflow:hidden!important;
+ cursor:zoom-out;
+}
+.material-detail[open]{display:block!important}
+.material-detail::backdrop{
+ background:rgba(248,248,244,.78)!important;
+ backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+}
+.material-detail .material-detail-body{
+ position:absolute!important;inset:50% auto auto 50%!important;
+ display:block!important;min-height:0!important;
+ padding:0!important;margin:0!important;max-width:none!important;
+ transform:translate(-50%,-50%)!important;grid-template-columns:none!important;
+}
+.material-detail .material-detail-art{
+ display:block!important;width:100%;height:100%;min-height:0!important;max-height:none!important;
+ margin:0!important;transform-origin:50% 50%;
+}
+.material-detail .material-detail-art .material-object-image{
+ display:block;width:100%!important;height:100%!important;max-width:none!important;
+ max-height:none!important;object-fit:contain;
+ filter:none!important;pointer-events:none;
+}
+.material-detail .material-detail-top,.material-detail .material-detail-copy{display:none!important}
+/* Text editor remains accessible when EDIT mode is selected. */
+.material-main.is-editing::after{
+ content:"편집할 이미지를 클릭하세요";position:fixed;z-index:101;
+ left:50%;bottom:75px;transform:translateX(-50%);
+ font:400 11px/1.5 Pretendard,sans-serif;
+ background:rgba(249,249,246,.96);color:#65645d;
+ padding:5px 11px;border:1px solid #dddcd4;pointer-events:none;white-space:nowrap;
+}
+.material-main.is-editing .material-piece{cursor:text}
+@media(max-width:700px){
+ .material-window{bottom:70px}
+ .material-intro{left:22px;top:34%;width:155px}
+ .material-intro h1{font-size:31px!important}
+ .material-intro p{font-size:10px}
+ .material-intro .material-instruction{margin-top:19px!important;font-size:8px}
+ .material-piece .material-label-no{font-size:8px!important}
+ .material-piece .material-label-name{font-size:8px!important}
+ .material-main .archive-taskbar .photo-toolbar{gap:3px}
+ .material-main .archive-taskbar .photo-toolbar .icon-button{width:38px;height:43px}
+ .material-main .archive-taskbar .photo-pagination{gap:5px}
+ .material-progress{width:58px}
+ .material-main .archive-taskbar .photo-pagination .material-counter{min-width:51px;font-size:9px}
+ .material-main .archive-taskbar .material-edit-toggle{width:38px!important;min-width:38px!important;font-size:9px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .material-piece,.material-piece .material-art{transition:none!important}
+}
+
+/* Keep tiny specimen indices beside the objects even in browsers without CSS division. */
+.material-piece .material-label-no{
+ left:auto!important;right:-14px!important;
+ top:calc(-1 * var(--art-height) * .50)!important;
+}
+
+/* OBJECT ATLAS / 03 — a tightly composed field with a typeset legend below.
+   No grids, rule lines, frames, or label cards are drawn. */
+.material-annotations{
+ position:absolute;inset:0;pointer-events:none;z-index:1;
+}
+.material-annotation-board{
+ position:absolute;display:grid;gap:0;align-items:start;
+ padding:0!important;margin:0!important;border:0!important;background:transparent!important;
+ box-sizing:border-box;pointer-events:none;
+}
+.material-annotation-column{
+ display:flex;flex-direction:column;align-items:stretch;
+ gap:clamp(5px,1vh,11px);
+ min-width:0;padding:0 7px 0 3px;
+}
+.material-annotation-entry{
+ display:grid;grid-template-columns:16px minmax(0,1fr);align-items:start;column-gap:3px;
+ min-width:0;min-height:17px;margin:0;padding:0;
+ color:#484740;white-space:normal;
+}
+.material-annotation-number{
+ display:block;font:400 8px/1.25 "Special Elite",monospace;
+ font-variant-numeric:tabular-nums;color:#383732;letter-spacing:-.04em;
+}
+.material-annotation-copy{min-width:0;display:flex;flex-direction:column;gap:1px}
+.material-annotation-name{
+ display:block;font:400 8.5px/1.24 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.045em;color:#44433e;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.material-annotation-category{
+ display:block;font:350 7.5px/1.27 Pretendard,-apple-system,sans-serif;
+ letter-spacing:-.02em;color:#aaa79f;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+/* A specimen is identified by a tiny number only: no inline title. */
+.material-piece .material-piece-index{
+ position:absolute!important;left:calc(100% + 3px)!important;top:45%!important;
+ display:block!important;z-index:2;
+ width:auto!important;max-width:none!important;height:auto!important;
+ margin:0!important;padding:0!important;
+ border:0!important;background:transparent!important;box-shadow:none!important;
+ transform:none!important;white-space:nowrap;pointer-events:none;
+ font:400 8px/1.1 "Special Elite",monospace!important;
+ font-variant-numeric:tabular-nums;letter-spacing:0!important;color:#77756d!important;
+}
+.material-stickers .material-piece{z-index:2}
+.material-stickers .material-piece:hover,.material-stickers .material-piece:focus-visible{z-index:5}
+.material-main .archive-taskbar{border-top:0!important}
+@media(max-width:700px){
+ .material-annotation-column{padding:0 3px 0 1px;gap:5px}
+ .material-annotation-entry{grid-template-columns:13px minmax(0,1fr);column-gap:2px;min-height:15px}
+ .material-annotation-number{font-size:6.5px;line-height:1.18}
+ .material-annotation-name{font-size:7px;line-height:1.18}
+ .material-annotation-category{font-size:6.3px;line-height:1.18}
+ .material-piece .material-piece-index{font-size:7px!important;left:calc(100% + 2px)!important}
+}
+@media(max-height:440px){
+ .material-annotation-column{gap:3px}
+ .material-annotation-entry{min-height:13px}
+}
+
+/* ARCHIVE ANNOTATIONS / longer, darker, editorial typesetting.
+   Keep the object layout and its color-sorting completely unchanged. */
+.material-annotation-column{
+ gap:clamp(6px,.85vh,10px);
+ padding-right:clamp(5px,.8vw,10px);
+}
+.material-annotation-entry{
+ grid-template-columns:16px minmax(0,1fr);
+ column-gap:4px;min-height:26px;
+}
+.material-annotation-number{
+ font-family:"Special Elite",monospace;
+ font-size:8px;font-weight:500;line-height:1.33;color:#4a4943;
+}
+.material-annotation-copy{gap:3px;overflow:visible}
+.material-annotation-name{
+ display:-webkit-box;
+ -webkit-box-orient:vertical;
+ -webkit-line-clamp:3;
+ font-family:Pretendard,-apple-system,sans-serif;
+ font-size:9px;font-weight:650;line-height:1.26;
+ letter-spacing:-.025em;color:#292a26;
+ white-space:normal;overflow:hidden;text-overflow:clip;
+ overflow-wrap:anywhere;word-break:keep-all;
+}
+.material-annotation-description{
+ display:-webkit-box;
+ -webkit-box-orient:vertical;
+ -webkit-line-clamp:3;
+ font-family:Pretendard,-apple-system,sans-serif;
+ font-size:8px;font-weight:400;line-height:1.36;
+ letter-spacing:-.012em;color:#77746d;
+ white-space:normal;overflow:hidden;text-overflow:clip;
+ overflow-wrap:anywhere;word-break:keep-all;
+}
+.material-main.is-editing .material-annotations,
+.material-main.is-editing .material-annotation-board,
+.material-main.is-editing .material-annotation-entry{
+ pointer-events:auto;
+}
+.material-main.is-editing .material-annotation-entry{cursor:text}
+.material-main.is-editing .material-annotation-entry:hover .material-annotation-name{
+ text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;
+}
+@media(max-width:700px){
+ .material-annotation-column{padding:0 5px 0 1px;gap:6px}
+ .material-annotation-entry{grid-template-columns:13px minmax(0,1fr);column-gap:3px;min-height:23px}
+ .material-annotation-number{font-size:7px;line-height:1.22}
+ .material-annotation-name{font-size:8.5px;line-height:1.25;font-weight:650;-webkit-line-clamp:3}
+ .material-annotation-description{font-size:7.5px;line-height:1.3;-webkit-line-clamp:3}
+ .material-annotation-copy{gap:2px}
+}
+@media(max-height:700px){
+ .material-annotation-column{gap:4px}
+ .material-annotation-name{-webkit-line-clamp:2}
+ .material-annotation-description{-webkit-line-clamp:2}
+}
+
+/* MATERIALS / opening statement lifted directly from the Landscapes serif title.
+   No kicker, instruction, secondary heading, visible boundary or decoration. */
+.material-intro{
+ pointer-events:auto!important;
+ z-index:5!important;
+ width:max-content!important;
+ max-width:calc(100vw - 32px)!important;
+}
+.material-intro h1{
+ margin:0!important;padding:0!important;
+ font:inherit!important;white-space:normal!important;
+}
+.material-essay-trigger{
+ appearance:none;-webkit-appearance:none;
+ display:block;margin:0;padding:0;
+ border:0;border-radius:0;background:transparent!important;box-shadow:none!important;
+ color:#171715!important;text-align:left;cursor:pointer;
+ font-family:"Noto Serif KR",serif!important;
+ font-size:clamp(25px,2.2vw,34px)!important;
+ font-weight:800!important;line-height:1.4!important;
+ letter-spacing:-.063em!important;word-break:keep-all!important;
+ transition:opacity .22s ease!important;
+}
+.material-essay-trigger span{display:block;white-space:nowrap}
+.material-essay-trigger:hover{opacity:.6}
+.material-essay-trigger:focus-visible{outline:1px solid #44443e;outline-offset:7px}
+.material-main.is-reading .material-essay-trigger{opacity:.3}
+.material-essay{
+ position:fixed!important;inset:0!important;
+ width:100vw!important;height:100dvh!important;
+ max-width:none!important;max-height:none!important;
+ margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+ background:#f9f9f6!important;color:#262621!important;
+ box-shadow:none!important;overflow-y:auto!important;overscroll-behavior:contain;
+ font-family:Pretendard,-apple-system,sans-serif;
+}
+.material-essay[open]{display:block!important}
+.material-essay::backdrop{
+ background:rgba(248,248,244,.8)!important;
+ backdrop-filter:blur(4px);
+ -webkit-backdrop-filter:blur(4px);
+}
+.material-essay-content{
+ position:relative;box-sizing:border-box;
+ width:min(1050px,100%);min-height:100%;
+ margin:0 auto;padding:clamp(78px,11vh,135px) clamp(28px,7vw,105px) 110px;
+ animation:material-essay-reveal .65s cubic-bezier(.22,.78,.2,1) both;
+}
+.material-essay h2{
+ margin:0 0 clamp(38px,6.5vh,76px)!important;
+ color:#171715!important;
+ font:800 clamp(29px,3.3vw,46px)/1.42 "Noto Serif KR",serif!important;
+ letter-spacing:-.063em!important;word-break:keep-all;
+}
+.material-essay h2 span{display:block}
+.material-essay-columns{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ gap:clamp(28px,4vw,62px);align-items:start;
+}
+.material-essay-columns p{
+ margin:0!important;
+ font:350 clamp(13px,1.06vw,15px)/1.9 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.024em;color:#34352f!important;
+ word-break:keep-all;overflow-wrap:break-word;
+}
+.material-essay-columns strong{font-weight:650;color:#20211d}
+.material-essay-close{
+ position:fixed;top:clamp(19px,4vw,38px);right:clamp(19px,4vw,42px);z-index:2;
+ display:grid;place-items:center;width:36px;height:36px;padding:0;
+ border:0;border-radius:0;background:transparent!important;color:#41423b!important;
+ cursor:pointer;box-shadow:none!important;
+}
+.material-essay-close .ui-icon{width:20px;height:20px}
+.material-essay-close:hover{opacity:.5;transform:none!important}
+.material-essay-close:focus-visible{outline:1px solid #575850;outline-offset:3px}
+@keyframes material-essay-reveal{
+ from{opacity:0;transform:translateY(38px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:700px){
+ .material-intro{left:22px!important}
+ .material-essay-trigger{
+  font-size:clamp(15px,4.45vw,20px)!important;
+  letter-spacing:-.065em!important;line-height:1.5!important;
+ }
+ .material-essay-content{padding:80px 25px 105px}
+ .material-essay h2{font-size:clamp(24px,6vw,34px)!important;margin-bottom:35px!important}
+ .material-essay-columns{grid-template-columns:1fr;gap:23px}
+ .material-essay-columns p{font-size:13px!important;line-height:1.85!important}
+ .material-essay-close{top:20px;right:19px;width:30px;height:30px}
+}
+@media(prefers-reduced-motion:reduce){
+ .material-essay-content{animation:none!important}
+ .material-essay-trigger{transition:none!important}
+}
+
+/* COMPACT EDITORIAL COVER — an interlocking serif title and six curated specimens. */
+.material-strip .material-intro{
+ position:absolute!important;left:0!important;top:0!important;transform:none!important;
+ z-index:4!important;max-width:none!important;min-width:0!important;
+ padding:0!important;margin:0!important;opacity:1!important;pointer-events:none!important;
+}
+.material-intro h1{position:absolute!important;inset:0!important;margin:0!important;padding:0!important}
+.material-intro .material-essay-trigger{
+ position:absolute!important;inset:0!important;display:block!important;
+ width:100%!important;height:100%!important;
+ padding:0!important;margin:0!important;
+ pointer-events:none!important;overflow:visible!important;
+ font:800 clamp(34px,3.35vw,50px)/1.3 "Noto Serif KR",serif!important;
+ letter-spacing:-.07em!important;background:transparent!important;
+}
+.material-intro .material-essay-trigger span{
+ display:block!important;position:absolute!important;width:max-content!important;
+ max-width:none!important;white-space:nowrap!important;
+ pointer-events:auto!important;color:#171715!important;line-height:1.3!important;
+ cursor:pointer;transition:transform .2s ease,opacity .2s ease!important;
+}
+.material-intro .material-essay-trigger span:nth-child(1){left:17%;top:32%}
+.material-intro .material-essay-trigger span:nth-child(2){left:34%;top:44%}
+.material-intro .material-essay-trigger span:nth-child(3){left:25%;top:57%}
+.material-intro .material-essay-trigger span:hover{transform:translateY(-2px)}
+.material-intro .material-essay-trigger:focus-visible{outline:none!important}
+.material-intro .material-essay-trigger:focus-visible span{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+.material-cover-annotations .material-annotation-column{padding:0 8px 0 2px}
+@media(max-width:700px){
+ .material-intro .material-essay-trigger{
+  font-size:clamp(23px,6.2vw,29px)!important;
+ }
+ .material-intro .material-essay-trigger span:nth-child(1){left:17%;top:32%}
+ .material-intro .material-essay-trigger span:nth-child(2){left:34%;top:43%}
+ .material-intro .material-essay-trigger span:nth-child(3){left:25%;top:54%}
+ .material-cover-annotations .material-annotation-column{padding:0 5px 0 1px}
+}
+@media(max-height:480px) and (min-width:701px){
+ .material-intro .material-essay-trigger{font-size:clamp(25px,2.6vw,35px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .material-intro .material-essay-trigger span{transition:none!important}
+}
+
+/* Opening-page reset: a conventional top-centre headline with specimens below.
+   Overrides the abandoned three-corner lettering and never alters the next sheets. */
+.material-strip .material-intro{
+ left:0!important;top:0!important;
+ transform:none!important;pointer-events:none!important;
+}
+.material-strip .material-intro h1{
+ position:absolute!important;inset:0!important;
+ margin:0!important;padding:0!important;
+}
+.material-strip .material-intro .material-essay-trigger{
+ position:absolute!important;
+ inset:clamp(34px,6.2vh,80px) 0 auto 0!important;
+ width:100%!important;height:auto!important;
+ display:block!important;pointer-events:auto!important;
+ margin:0!important;padding:0 8px!important;
+ text-align:center!important;
+ font:800 clamp(27px,3.1vw,43px)/1.32 "Noto Serif KR",serif!important;
+ letter-spacing:-.064em!important;
+}
+.material-strip .material-intro .material-essay-trigger span,
+.material-strip .material-intro .material-essay-trigger span:nth-child(1),
+.material-strip .material-intro .material-essay-trigger span:nth-child(2),
+.material-strip .material-intro .material-essay-trigger span:nth-child(3){
+ position:static!important;inset:auto!important;
+ display:block!important;width:auto!important;max-width:100%!important;
+ margin:0!important;padding:0!important;
+ transform:none!important;text-align:center!important;
+ white-space:nowrap!important;line-height:1.32!important;
+ font-size:1em!important;
+ pointer-events:auto!important;
+}
+.material-strip .material-intro .material-essay-trigger span:hover{
+ transform:none!important;
+}
+.material-intro .material-essay-trigger:focus-visible{
+ outline:1px solid #77756e!important;outline-offset:5px!important;
+}
+/* Numbered reference list is independent of visual color grouping. */
+.material-annotation-column{
+ gap:clamp(2px,.35vh,5px)!important;
+}
+.material-annotation-entry{
+ grid-template-columns:16px minmax(0,1fr);
+ min-height:0!important;
+ column-gap:4px!important;align-items:start;
+}
+.material-annotation-copy{gap:0!important}
+.material-annotation-number{
+ font:650 9px/1.2 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.025em!important;
+ color:#96938c!important;
+}
+.material-annotation-name{
+ font-weight:650!important;
+ line-height:1.19!important;
+}
+.material-annotation-description{
+ line-height:1.24!important;
+}
+@media(max-width:700px){
+ .material-strip .material-intro .material-essay-trigger{
+  top:clamp(35px,5.6vh,64px)!important;
+  font-size:clamp(19px,5.2vw,25px)!important;
+  letter-spacing:-.061em!important;
+ }
+ .material-annotation-column{gap:3px!important}
+ .material-annotation-entry{
+  grid-template-columns:13px minmax(0,1fr)!important;
+  min-height:0!important;
+  column-gap:3px!important;
+ }
+ .material-annotation-number{
+  font-size:7.5px!important;
+  font-weight:650!important;
+ }
+ .material-annotation-name{line-height:1.16!important}
+ .material-annotation-description{line-height:1.18!important}
+}
+@media(max-height:570px){
+ .material-strip .material-intro .material-essay-trigger{
+  top:18px!important;font-size:clamp(16px,2.2vw,27px)!important;
+ }
+ .material-annotation-column{gap:2px!important}
+}
+
+/* 2026-11-06 / final plate typography alignment: bottom-index, 120% text,
+   and the opening headline breathing farther from the left edge. */
+.material-strip .material-intro .material-essay-trigger{
+ transform:translateX(clamp(35px,4.25vw,75px))!important;
+}
+.material-annotation-board{
+ align-items:end!important;
+}
+.material-annotation-column{
+ gap:clamp(2px,.25vh,4px)!important;
+ justify-content:flex-end!important;
+}
+.material-annotation-entry{
+ min-height:0!important;
+ column-gap:4px!important;
+ grid-template-columns:19px minmax(0,1fr)!important;
+}
+.material-annotation-number{
+ font-family:Pretendard,-apple-system,sans-serif!important;
+ font-size:10.8px!important;
+ font-weight:650!important;
+ line-height:1.18!important;
+ color:#98958e!important;
+}
+.material-annotation-copy{gap:0!important;}
+.material-annotation-name{
+ font-family:Pretendard,-apple-system,sans-serif!important;
+ font-size:10.8px!important;
+ font-weight:650!important;
+ line-height:1.18!important;
+}
+.material-annotation-description{
+ font-family:Pretendard,-apple-system,sans-serif!important;
+ font-size:9.6px!important;
+ line-height:1.20!important;
+}
+@media(max-width:700px){
+ .material-strip .material-intro .material-essay-trigger{
+  transform:translateX(clamp(25px,7vw,45px))!important;
+ }
+ .material-annotation-column{gap:3px!important;}
+ .material-annotation-entry{
+  grid-template-columns:16px minmax(0,1fr)!important;
+  column-gap:3px!important;
+ }
+ .material-annotation-number{font-size:9px!important;line-height:1.17!important;}
+ .material-annotation-name{font-size:10.2px!important;line-height:1.17!important;}
+ .material-annotation-description{font-size:9px!important;line-height:1.19!important;}
+}

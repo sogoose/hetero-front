@@ -1,0 +1,1630 @@
+{
+  "count": 60,
+  "trimmedCount": 59,
+  "webpCount": 60,
+  "originalBeforeBytes": 153883849,
+  "originalAfterBytes": 142420209,
+  "displayBytes": 16541740,
+  "items": [
+    {
+      "id": "01",
+      "file": "assets/materials/Granite Korean Building Entrance Cutout.png",
+      "before": [
+        1086,
+        1448
+      ],
+      "after": [
+        1058,
+        1300
+      ],
+      "display": [
+        1058,
+        1300
+      ],
+      "trimmed": true,
+      "trimRect": [
+        14,
+        69,
+        1072,
+        1369
+      ],
+      "beforeBytes": 2699882,
+      "afterBytes": 2469462,
+      "displayBytes": 293758,
+      "image": "assets/materials/optimized/sticker-01.webp"
+    },
+    {
+      "id": "02",
+      "file": "assets/materials/다운로드.png",
+      "before": [
+        2147,
+        1655
+      ],
+      "after": [
+        2059,
+        1567
+      ],
+      "display": [
+        1600,
+        1218
+      ],
+      "trimmed": true,
+      "trimRect": [
+        44,
+        44,
+        2103,
+        1611
+      ],
+      "beforeBytes": 7249683,
+      "afterBytes": 7205478,
+      "displayBytes": 741382,
+      "image": "assets/materials/optimized/sticker-02.webp"
+    },
+    {
+      "id": "03",
+      "file": "assets/materials/낡은 기와지붕과 담쟁이 넝쿨 대문.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1042,
+        997
+      ],
+      "display": [
+        1042,
+        997
+      ],
+      "trimmed": true,
+      "trimRect": [
+        243,
+        0,
+        1285,
+        997
+      ],
+      "beforeBytes": 2118772,
+      "afterBytes": 2079705,
+      "displayBytes": 224632,
+      "image": "assets/materials/optimized/sticker-03.webp"
+    },
+    {
+      "id": "04",
+      "file": "assets/materials/낡은 사자 머리 문고리.png",
+      "before": [
+        1254,
+        1254
+      ],
+      "after": [
+        726,
+        1224
+      ],
+      "display": [
+        726,
+        1224
+      ],
+      "trimmed": true,
+      "trimRect": [
+        265,
+        21,
+        991,
+        1245
+      ],
+      "beforeBytes": 1587122,
+      "afterBytes": 1447585,
+      "displayBytes": 219406,
+      "image": "assets/materials/optimized/sticker-04.webp"
+    },
+    {
+      "id": "05",
+      "file": "assets/materials/난간_누끼.png",
+      "before": [
+        2172,
+        724
+      ],
+      "after": [
+        2051,
+        415
+      ],
+      "display": [
+        1600,
+        324
+      ],
+      "trimmed": true,
+      "trimRect": [
+        61,
+        168,
+        2112,
+        583
+      ],
+      "beforeBytes": 1278062,
+      "afterBytes": 1237854,
+      "displayBytes": 125086,
+      "image": "assets/materials/optimized/sticker-05.webp"
+    },
+    {
+      "id": "06",
+      "file": "assets/materials/벽체_투명배경.png",
+      "before": [
+        1346,
+        1169
+      ],
+      "after": [
+        1271,
+        1051
+      ],
+      "display": [
+        1271,
+        1051
+      ],
+      "trimmed": true,
+      "trimRect": [
+        28,
+        60,
+        1299,
+        1111
+      ],
+      "beforeBytes": 3162428,
+      "afterBytes": 2973788,
+      "displayBytes": 354666,
+      "image": "assets/materials/optimized/sticker-06.webp"
+    },
+    {
+      "id": "07",
+      "file": "assets/materials/Isolated House and Car Cutout.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1331,
+        1024
+      ],
+      "display": [
+        1331,
+        1024
+      ],
+      "trimmed": true,
+      "trimRect": [
+        98,
+        0,
+        1429,
+        1024
+      ],
+      "beforeBytes": 2195206,
+      "afterBytes": 1951260,
+      "displayBytes": 164038,
+      "image": "assets/materials/optimized/sticker-07.webp"
+    },
+    {
+      "id": "08",
+      "file": "assets/materials/시멘트기와2.png",
+      "before": [
+        2992,
+        2992
+      ],
+      "after": [
+        2661,
+        652
+      ],
+      "display": [
+        1600,
+        392
+      ],
+      "trimmed": true,
+      "trimRect": [
+        266,
+        1287,
+        2927,
+        1939
+      ],
+      "beforeBytes": 3299716,
+      "afterBytes": 3239354,
+      "displayBytes": 141088,
+      "image": "assets/materials/optimized/sticker-08.webp"
+    },
+    {
+      "id": "09",
+      "file": "assets/materials/연꽃무늬 화강석.png",
+      "before": [
+        4283,
+        4283
+      ],
+      "after": [
+        2046,
+        3496
+      ],
+      "display": [
+        936,
+        1600
+      ],
+      "trimmed": true,
+      "trimRect": [
+        672,
+        787,
+        2718,
+        4283
+      ],
+      "beforeBytes": 7090908,
+      "afterBytes": 6295221,
+      "displayBytes": 279212,
+      "image": "assets/materials/optimized/sticker-09.webp"
+    },
+    {
+      "id": "10",
+      "file": "assets/materials/대나무가 새겨진 낡은 금속 격자문.png",
+      "before": [
+        1371,
+        1147
+      ],
+      "after": [
+        1302,
+        912
+      ],
+      "display": [
+        1302,
+        912
+      ],
+      "trimmed": true,
+      "trimRect": [
+        38,
+        141,
+        1340,
+        1053
+      ],
+      "beforeBytes": 2851797,
+      "afterBytes": 2841685,
+      "displayBytes": 395092,
+      "image": "assets/materials/optimized/sticker-10.webp"
+    },
+    {
+      "id": "11",
+      "file": "assets/materials/brick_1.png",
+      "before": [
+        459,
+        402
+      ],
+      "after": [
+        402,
+        363
+      ],
+      "display": [
+        402,
+        363
+      ],
+      "trimmed": true,
+      "trimRect": [
+        32,
+        20,
+        434,
+        383
+      ],
+      "beforeBytes": 272212,
+      "afterBytes": 263477,
+      "displayBytes": 46244,
+      "image": "assets/materials/optimized/sticker-11.webp"
+    },
+    {
+      "id": "12",
+      "file": "assets/materials/난간.png",
+      "before": [
+        1959,
+        803
+      ],
+      "after": [
+        1904,
+        420
+      ],
+      "display": [
+        1600,
+        353
+      ],
+      "trimmed": true,
+      "trimRect": [
+        26,
+        161,
+        1930,
+        581
+      ],
+      "beforeBytes": 1225960,
+      "afterBytes": 1201662,
+      "displayBytes": 122414,
+      "image": "assets/materials/optimized/sticker-12.webp"
+    },
+    {
+      "id": "13",
+      "file": "assets/materials/대문1.png",
+      "before": [
+        1374,
+        1145
+      ],
+      "after": [
+        1331,
+        979
+      ],
+      "display": [
+        1331,
+        979
+      ],
+      "trimmed": true,
+      "trimRect": [
+        21,
+        124,
+        1352,
+        1103
+      ],
+      "beforeBytes": 3227133,
+      "afterBytes": 2964223,
+      "displayBytes": 364068,
+      "image": "assets/materials/optimized/sticker-13.webp"
+    },
+    {
+      "id": "14",
+      "file": "assets/materials/Weathered Concrete Balustrade Segment.png",
+      "before": [
+        1448,
+        1086
+      ],
+      "after": [
+        1379,
+        776
+      ],
+      "display": [
+        1379,
+        776
+      ],
+      "trimmed": true,
+      "trimRect": [
+        35,
+        156,
+        1414,
+        932
+      ],
+      "beforeBytes": 1556621,
+      "afterBytes": 1405441,
+      "displayBytes": 204414,
+      "image": "assets/materials/optimized/sticker-14.webp"
+    },
+    {
+      "id": "15",
+      "file": "assets/materials/brick_2.png",
+      "before": [
+        446,
+        402
+      ],
+      "after": [
+        419,
+        364
+      ],
+      "display": [
+        419,
+        364
+      ],
+      "trimmed": true,
+      "trimRect": [
+        9,
+        7,
+        428,
+        371
+      ],
+      "beforeBytes": 310956,
+      "afterBytes": 305803,
+      "displayBytes": 52246,
+      "image": "assets/materials/optimized/sticker-15.webp"
+    },
+    {
+      "id": "16",
+      "file": "assets/materials/Isolated Korean Bungalow Facade with Roadside Details.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1536,
+        989
+      ],
+      "display": [
+        1536,
+        989
+      ],
+      "trimmed": true,
+      "trimRect": [
+        0,
+        35,
+        1536,
+        1024
+      ],
+      "beforeBytes": 2763328,
+      "afterBytes": 2657551,
+      "displayBytes": 257876,
+      "image": "assets/materials/optimized/sticker-16.webp"
+    },
+    {
+      "id": "17",
+      "file": "assets/materials/전통 한옥풍 푸른 기와 대문과 화분.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1536,
+        1024
+      ],
+      "display": [
+        1536,
+        1024
+      ],
+      "trimmed": false,
+      "trimRect": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "beforeBytes": 2593594,
+      "afterBytes": 2593594,
+      "displayBytes": 283764,
+      "image": "assets/materials/optimized/sticker-17.webp"
+    },
+    {
+      "id": "18",
+      "file": "assets/materials/학무늬.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1335,
+        846
+      ],
+      "display": [
+        1335,
+        846
+      ],
+      "trimmed": true,
+      "trimRect": [
+        101,
+        90,
+        1436,
+        936
+      ],
+      "beforeBytes": 4156834,
+      "afterBytes": 3472707,
+      "displayBytes": 652070,
+      "image": "assets/materials/optimized/sticker-18.webp"
+    },
+    {
+      "id": "19",
+      "file": "assets/materials/전통 벽돌 대문 정면 파사드.png",
+      "before": [
+        1774,
+        887
+      ],
+      "after": [
+        1725,
+        779
+      ],
+      "display": [
+        1600,
+        723
+      ],
+      "trimmed": true,
+      "trimRect": [
+        24,
+        72,
+        1749,
+        851
+      ],
+      "beforeBytes": 2472003,
+      "afterBytes": 2312119,
+      "displayBytes": 261396,
+      "image": "assets/materials/optimized/sticker-19.webp"
+    },
+    {
+      "id": "20",
+      "file": "assets/materials/brick_3.png",
+      "before": [
+        417,
+        390
+      ],
+      "after": [
+        400,
+        365
+      ],
+      "display": [
+        400,
+        365
+      ],
+      "trimmed": true,
+      "trimRect": [
+        7,
+        15,
+        407,
+        380
+      ],
+      "beforeBytes": 299210,
+      "afterBytes": 290193,
+      "displayBytes": 51230,
+      "image": "assets/materials/optimized/sticker-20.webp"
+    },
+    {
+      "id": "21",
+      "file": "assets/materials/Weathered Lavender Ornamental Balustrade.png",
+      "before": [
+        2080,
+        756
+      ],
+      "after": [
+        2037,
+        501
+      ],
+      "display": [
+        1600,
+        394
+      ],
+      "trimmed": true,
+      "trimRect": [
+        21,
+        148,
+        2058,
+        649
+      ],
+      "beforeBytes": 1996619,
+      "afterBytes": 1780036,
+      "displayBytes": 181526,
+      "image": "assets/materials/optimized/sticker-21.webp"
+    },
+    {
+      "id": "22",
+      "file": "assets/materials/Isolated Korean Corner Mixed-Use Building.png",
+      "before": [
+        1305,
+        1205
+      ],
+      "after": [
+        1277,
+        1115
+      ],
+      "display": [
+        1277,
+        1115
+      ],
+      "trimmed": true,
+      "trimRect": [
+        14,
+        76,
+        1291,
+        1191
+      ],
+      "beforeBytes": 2812553,
+      "afterBytes": 2577978,
+      "displayBytes": 319208,
+      "image": "assets/materials/optimized/sticker-22.webp"
+    },
+    {
+      "id": "23",
+      "file": "assets/materials/Isolated Weathered Stone Frog Statue.png",
+      "before": [
+        1417,
+        1110
+      ],
+      "after": [
+        1137,
+        893
+      ],
+      "display": [
+        1137,
+        893
+      ],
+      "trimmed": true,
+      "trimRect": [
+        140,
+        190,
+        1277,
+        1083
+      ],
+      "beforeBytes": 2270852,
+      "afterBytes": 2014000,
+      "displayBytes": 344110,
+      "image": "assets/materials/optimized/sticker-23.webp"
+    },
+    {
+      "id": "24",
+      "file": "assets/materials/Isolated Weathered Korean Rooftop Structure.png",
+      "before": [
+        1828,
+        860
+      ],
+      "after": [
+        1788,
+        807
+      ],
+      "display": [
+        1600,
+        722
+      ],
+      "trimmed": true,
+      "trimRect": [
+        32,
+        23,
+        1820,
+        830
+      ],
+      "beforeBytes": 2572305,
+      "afterBytes": 2424783,
+      "displayBytes": 258820,
+      "image": "assets/materials/optimized/sticker-24.webp"
+    },
+    {
+      "id": "25",
+      "file": "assets/materials/Isolated Rooftop Garden Brick Building.png",
+      "before": [
+        1795,
+        876
+      ],
+      "after": [
+        1727,
+        828
+      ],
+      "display": [
+        1600,
+        767
+      ],
+      "trimmed": true,
+      "trimRect": [
+        37,
+        36,
+        1764,
+        864
+      ],
+      "beforeBytes": 2575083,
+      "afterBytes": 2402122,
+      "displayBytes": 265984,
+      "image": "assets/materials/optimized/sticker-25.webp"
+    },
+    {
+      "id": "26",
+      "file": "assets/materials/Korean Blue-Tiled Wall Fragment.png",
+      "before": [
+        1254,
+        1254
+      ],
+      "after": [
+        1254,
+        739
+      ],
+      "display": [
+        1254,
+        739
+      ],
+      "trimmed": true,
+      "trimRect": [
+        0,
+        340,
+        1254,
+        1079
+      ],
+      "beforeBytes": 2004590,
+      "afterBytes": 1803918,
+      "displayBytes": 220258,
+      "image": "assets/materials/optimized/sticker-26.webp"
+    },
+    {
+      "id": "27",
+      "file": "assets/materials/Stone Guardian and Lush Planter.png",
+      "before": [
+        1351,
+        1164
+      ],
+      "after": [
+        1127,
+        1161
+      ],
+      "display": [
+        1127,
+        1161
+      ],
+      "trimmed": true,
+      "trimRect": [
+        122,
+        3,
+        1249,
+        1164
+      ],
+      "beforeBytes": 2466571,
+      "afterBytes": 2222309,
+      "displayBytes": 350246,
+      "image": "assets/materials/optimized/sticker-27.webp"
+    },
+    {
+      "id": "28",
+      "file": "assets/materials/Isolated Weathered Brick Gate and Staircase.png",
+      "before": [
+        1348,
+        1167
+      ],
+      "after": [
+        1348,
+        890
+      ],
+      "display": [
+        1348,
+        890
+      ],
+      "trimmed": true,
+      "trimRect": [
+        0,
+        154,
+        1348,
+        1044
+      ],
+      "beforeBytes": 1632395,
+      "afterBytes": 1534158,
+      "displayBytes": 249146,
+      "image": "assets/materials/optimized/sticker-28.webp"
+    },
+    {
+      "id": "29",
+      "file": "assets/materials/Textured Brick Diamond Relief.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1421,
+        847
+      ],
+      "display": [
+        1421,
+        847
+      ],
+      "trimmed": true,
+      "trimRect": [
+        55,
+        75,
+        1476,
+        922
+      ],
+      "beforeBytes": 2081451,
+      "afterBytes": 1809966,
+      "displayBytes": 164502,
+      "image": "assets/materials/optimized/sticker-29.webp"
+    },
+    {
+      "id": "30",
+      "file": "assets/materials/Weathered Terracotta Ornamental Balustrade.png",
+      "before": [
+        2083,
+        755
+      ],
+      "after": [
+        2039,
+        556
+      ],
+      "display": [
+        1600,
+        436
+      ],
+      "trimmed": true,
+      "trimRect": [
+        21,
+        118,
+        2060,
+        674
+      ],
+      "beforeBytes": 2706136,
+      "afterBytes": 2478340,
+      "displayBytes": 302922,
+      "image": "assets/materials/optimized/sticker-30.webp"
+    },
+    {
+      "id": "31",
+      "file": "assets/materials/Korean Brick House with Scooter and Sedan.png",
+      "before": [
+        1448,
+        1086
+      ],
+      "after": [
+        1409,
+        999
+      ],
+      "display": [
+        1409,
+        999
+      ],
+      "trimmed": true,
+      "trimRect": [
+        20,
+        44,
+        1429,
+        1043
+      ],
+      "beforeBytes": 2183201,
+      "afterBytes": 2074815,
+      "displayBytes": 246514,
+      "image": "assets/materials/optimized/sticker-31.webp"
+    },
+    {
+      "id": "32",
+      "file": "assets/materials/Weathered Granite Staircase Cutout.png",
+      "before": [
+        1310,
+        1200
+      ],
+      "after": [
+        1278,
+        1187
+      ],
+      "display": [
+        1278,
+        1187
+      ],
+      "trimmed": true,
+      "trimRect": [
+        23,
+        8,
+        1301,
+        1195
+      ],
+      "beforeBytes": 1850975,
+      "afterBytes": 1710177,
+      "displayBytes": 299194,
+      "image": "assets/materials/optimized/sticker-32.webp"
+    },
+    {
+      "id": "33",
+      "file": "assets/materials/Ornate Red Korean Roofline Fragment.png",
+      "before": [
+        1758,
+        894
+      ],
+      "after": [
+        1758,
+        858
+      ],
+      "display": [
+        1600,
+        781
+      ],
+      "trimmed": true,
+      "trimRect": [
+        0,
+        18,
+        1758,
+        876
+      ],
+      "beforeBytes": 2640712,
+      "afterBytes": 2418228,
+      "displayBytes": 260026,
+      "image": "assets/materials/optimized/sticker-33.webp"
+    },
+    {
+      "id": "34",
+      "file": "assets/materials/Symmetrical Brick Archway Gate (1).png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1374,
+        959
+      ],
+      "display": [
+        1374,
+        959
+      ],
+      "trimmed": true,
+      "trimRect": [
+        6,
+        58,
+        1380,
+        1017
+      ],
+      "beforeBytes": 2913480,
+      "afterBytes": 2637730,
+      "displayBytes": 345638,
+      "image": "assets/materials/optimized/sticker-34.webp"
+    },
+    {
+      "id": "35",
+      "file": "assets/materials/white_ornamental_railing_transparent.png",
+      "before": [
+        2048,
+        798
+      ],
+      "after": [
+        2003,
+        602
+      ],
+      "display": [
+        1600,
+        481
+      ],
+      "trimmed": true,
+      "trimRect": [
+        22,
+        104,
+        2025,
+        706
+      ],
+      "beforeBytes": 1401274,
+      "afterBytes": 1343899,
+      "displayBytes": 87034,
+      "image": "assets/materials/optimized/sticker-35.webp"
+    },
+    {
+      "id": "36",
+      "file": "assets/materials/Weathered Concrete Wall with Wrapped Conduit.png",
+      "before": [
+        1343,
+        1171
+      ],
+      "after": [
+        1335,
+        1126
+      ],
+      "display": [
+        1335,
+        1126
+      ],
+      "trimmed": true,
+      "trimRect": [
+        3,
+        20,
+        1338,
+        1146
+      ],
+      "beforeBytes": 3307145,
+      "afterBytes": 3004941,
+      "displayBytes": 385996,
+      "image": "assets/materials/optimized/sticker-36.webp"
+    },
+    {
+      "id": "37",
+      "file": "assets/materials/Weathered Brick Arched Gate Isolate.png",
+      "before": [
+        1254,
+        1254
+      ],
+      "after": [
+        1254,
+        1033
+      ],
+      "display": [
+        1254,
+        1033
+      ],
+      "trimmed": true,
+      "trimRect": [
+        0,
+        150,
+        1254,
+        1183
+      ],
+      "beforeBytes": 2592924,
+      "afterBytes": 2468840,
+      "displayBytes": 427834,
+      "image": "assets/materials/optimized/sticker-37.webp"
+    },
+    {
+      "id": "38",
+      "file": "assets/materials/Weathered Red Brick Wall Cutout.png",
+      "before": [
+        1649,
+        954
+      ],
+      "after": [
+        1565,
+        805
+      ],
+      "display": [
+        1565,
+        805
+      ],
+      "trimmed": true,
+      "trimRect": [
+        46,
+        110,
+        1611,
+        915
+      ],
+      "beforeBytes": 2919570,
+      "afterBytes": 2656003,
+      "displayBytes": 355674,
+      "image": "assets/materials/optimized/sticker-38.webp"
+    },
+    {
+      "id": "39",
+      "file": "assets/materials/Korean Brick Mixed-Use Storefront Cutout.png",
+      "before": [
+        1317,
+        1194
+      ],
+      "after": [
+        1317,
+        1121
+      ],
+      "display": [
+        1317,
+        1121
+      ],
+      "trimmed": true,
+      "trimRect": [
+        0,
+        73,
+        1317,
+        1194
+      ],
+      "beforeBytes": 2541131,
+      "afterBytes": 2383483,
+      "displayBytes": 267666,
+      "image": "assets/materials/optimized/sticker-39.webp"
+    },
+    {
+      "id": "40",
+      "file": "assets/materials/Weathered Blue-Gray Roof Corner.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1489,
+        972
+      ],
+      "display": [
+        1489,
+        972
+      ],
+      "trimmed": true,
+      "trimRect": [
+        21,
+        27,
+        1510,
+        999
+      ],
+      "beforeBytes": 2648959,
+      "afterBytes": 2409876,
+      "displayBytes": 237304,
+      "image": "assets/materials/optimized/sticker-40.webp"
+    },
+    {
+      "id": "41",
+      "file": "assets/materials/Weathered Carved Wooden Door Panel.png",
+      "before": [
+        1315,
+        1197
+      ],
+      "after": [
+        1130,
+        1174
+      ],
+      "display": [
+        1130,
+        1174
+      ],
+      "trimmed": true,
+      "trimRect": [
+        89,
+        12,
+        1219,
+        1186
+      ],
+      "beforeBytes": 2908770,
+      "afterBytes": 2692206,
+      "displayBytes": 330828,
+      "image": "assets/materials/optimized/sticker-41.webp"
+    },
+    {
+      "id": "42",
+      "file": "assets/materials/Korean Villa Entrance Cutout.png",
+      "before": [
+        1268,
+        1241
+      ],
+      "after": [
+        1155,
+        1199
+      ],
+      "display": [
+        1155,
+        1199
+      ],
+      "trimmed": true,
+      "trimRect": [
+        57,
+        34,
+        1212,
+        1233
+      ],
+      "beforeBytes": 2357371,
+      "afterBytes": 2164438,
+      "displayBytes": 264920,
+      "image": "assets/materials/optimized/sticker-42.webp"
+    },
+    {
+      "id": "43",
+      "file": "assets/materials/Weathered Korean Roof Eave Cutout.png",
+      "before": [
+        2172,
+        724
+      ],
+      "after": [
+        2157,
+        650
+      ],
+      "display": [
+        1600,
+        482
+      ],
+      "trimmed": true,
+      "trimRect": [
+        8,
+        68,
+        2165,
+        718
+      ],
+      "beforeBytes": 1886271,
+      "afterBytes": 1757551,
+      "displayBytes": 132642,
+      "image": "assets/materials/optimized/sticker-43.webp"
+    },
+    {
+      "id": "44",
+      "file": "assets/materials/Ornate House Gate and Lush Facade.png",
+      "before": [
+        1448,
+        1086
+      ],
+      "after": [
+        1445,
+        1018
+      ],
+      "display": [
+        1445,
+        1018
+      ],
+      "trimmed": true,
+      "trimRect": [
+        3,
+        44,
+        1448,
+        1062
+      ],
+      "beforeBytes": 2530262,
+      "afterBytes": 2387521,
+      "displayBytes": 329478,
+      "image": "assets/materials/optimized/sticker-44.webp"
+    },
+    {
+      "id": "45",
+      "file": "assets/materials/Weathered Teal Tile Awning Window.png",
+      "before": [
+        1672,
+        941
+      ],
+      "after": [
+        1653,
+        845
+      ],
+      "display": [
+        1600,
+        818
+      ],
+      "trimmed": true,
+      "trimRect": [
+        17,
+        68,
+        1670,
+        913
+      ],
+      "beforeBytes": 2655713,
+      "afterBytes": 2383310,
+      "displayBytes": 220354,
+      "image": "assets/materials/optimized/sticker-45.webp"
+    },
+    {
+      "id": "46",
+      "file": "assets/materials/Weathered Korean Double Door with Reliefs and Pink Tie.png",
+      "before": [
+        1448,
+        1086
+      ],
+      "after": [
+        1172,
+        1086
+      ],
+      "display": [
+        1172,
+        1086
+      ],
+      "trimmed": true,
+      "trimRect": [
+        138,
+        0,
+        1310,
+        1086
+      ],
+      "beforeBytes": 3084048,
+      "afterBytes": 2805940,
+      "displayBytes": 352374,
+      "image": "assets/materials/optimized/sticker-46.webp"
+    },
+    {
+      "id": "47",
+      "file": "assets/materials/Weathered Brick Apartment with White Sedan.png",
+      "before": [
+        1448,
+        1086
+      ],
+      "after": [
+        1009,
+        1062
+      ],
+      "display": [
+        1009,
+        1062
+      ],
+      "trimmed": true,
+      "trimRect": [
+        233,
+        24,
+        1242,
+        1086
+      ],
+      "beforeBytes": 1850330,
+      "afterBytes": 1751679,
+      "displayBytes": 213058,
+      "image": "assets/materials/optimized/sticker-47.webp"
+    },
+    {
+      "id": "48",
+      "file": "assets/materials/Weathered Terracotta Relief Tile.png",
+      "before": [
+        2172,
+        724
+      ],
+      "after": [
+        2049,
+        561
+      ],
+      "display": [
+        1600,
+        438
+      ],
+      "trimmed": true,
+      "trimRect": [
+        63,
+        86,
+        2112,
+        647
+      ],
+      "beforeBytes": 3346424,
+      "afterBytes": 2994985,
+      "displayBytes": 364906,
+      "image": "assets/materials/optimized/sticker-48.webp"
+    },
+    {
+      "id": "49",
+      "file": "assets/materials/Weathered Mountain Relief Door Panel.png",
+      "before": [
+        1315,
+        1197
+      ],
+      "after": [
+        1235,
+        1172
+      ],
+      "display": [
+        1235,
+        1172
+      ],
+      "trimmed": true,
+      "trimRect": [
+        37,
+        14,
+        1272,
+        1186
+      ],
+      "beforeBytes": 3828158,
+      "afterBytes": 3442354,
+      "displayBytes": 456882,
+      "image": "assets/materials/optimized/sticker-49.webp"
+    },
+    {
+      "id": "50",
+      "file": "assets/materials/Weathered Ornate Double Iron Gate.png",
+      "before": [
+        1278,
+        1230
+      ],
+      "after": [
+        1262,
+        1225
+      ],
+      "display": [
+        1262,
+        1225
+      ],
+      "trimmed": true,
+      "trimRect": [
+        12,
+        0,
+        1274,
+        1225
+      ],
+      "beforeBytes": 3350762,
+      "afterBytes": 3044904,
+      "displayBytes": 661786,
+      "image": "assets/materials/optimized/sticker-50.webp"
+    },
+    {
+      "id": "51",
+      "file": "assets/materials/Weathered Brick Entrance Facade with Ornate Door.png",
+      "before": [
+        1448,
+        1086
+      ],
+      "after": [
+        1434,
+        1017
+      ],
+      "display": [
+        1434,
+        1017
+      ],
+      "trimmed": true,
+      "trimRect": [
+        14,
+        39,
+        1448,
+        1056
+      ],
+      "beforeBytes": 2808578,
+      "afterBytes": 2646344,
+      "displayBytes": 306914,
+      "image": "assets/materials/optimized/sticker-51.webp"
+    },
+    {
+      "id": "52",
+      "file": "assets/materials/Weathered Terracotta Roof Corner Isolate.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1518,
+        842
+      ],
+      "display": [
+        1518,
+        842
+      ],
+      "trimmed": true,
+      "trimRect": [
+        18,
+        126,
+        1536,
+        968
+      ],
+      "beforeBytes": 2538152,
+      "afterBytes": 2254431,
+      "displayBytes": 228614,
+      "image": "assets/materials/optimized/sticker-52.webp"
+    },
+    {
+      "id": "53",
+      "file": "assets/materials/Weathered Brick Gable Facade Cutout.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1437,
+        992
+      ],
+      "display": [
+        1437,
+        992
+      ],
+      "trimmed": true,
+      "trimRect": [
+        56,
+        17,
+        1493,
+        1009
+      ],
+      "beforeBytes": 2615497,
+      "afterBytes": 2425608,
+      "displayBytes": 234630,
+      "image": "assets/materials/optimized/sticker-53.webp"
+    },
+    {
+      "id": "54",
+      "file": "assets/materials/Weathered Terracotta Roof Cutaway.png",
+      "before": [
+        1931,
+        814
+      ],
+      "after": [
+        1931,
+        615
+      ],
+      "display": [
+        1600,
+        510
+      ],
+      "trimmed": true,
+      "trimRect": [
+        0,
+        171,
+        1931,
+        786
+      ],
+      "beforeBytes": 2625648,
+      "afterBytes": 2421194,
+      "displayBytes": 240852,
+      "image": "assets/materials/optimized/sticker-54.webp"
+    },
+    {
+      "id": "55",
+      "file": "assets/materials/Weathered Brick House Façade with Balconies and Gate.png",
+      "before": [
+        1448,
+        1086
+      ],
+      "after": [
+        1448,
+        1022
+      ],
+      "display": [
+        1448,
+        1022
+      ],
+      "trimmed": true,
+      "trimRect": [
+        0,
+        64,
+        1448,
+        1086
+      ],
+      "beforeBytes": 2592955,
+      "afterBytes": 2448284,
+      "displayBytes": 267144,
+      "image": "assets/materials/optimized/sticker-55.webp"
+    },
+    {
+      "id": "56",
+      "file": "assets/materials/Weathered Terracotta Roof Eave Tiles.png",
+      "before": [
+        2172,
+        724
+      ],
+      "after": [
+        2141,
+        449
+      ],
+      "display": [
+        1600,
+        336
+      ],
+      "trimmed": true,
+      "trimRect": [
+        22,
+        161,
+        2163,
+        610
+      ],
+      "beforeBytes": 2095846,
+      "afterBytes": 1893475,
+      "displayBytes": 196718,
+      "image": "assets/materials/optimized/sticker-56.webp"
+    },
+    {
+      "id": "57",
+      "file": "assets/materials/Weathered Korean Guardhouse Facade.png",
+      "before": [
+        1448,
+        1086
+      ],
+      "after": [
+        1393,
+        1064
+      ],
+      "display": [
+        1393,
+        1064
+      ],
+      "trimmed": true,
+      "trimRect": [
+        20,
+        11,
+        1413,
+        1075
+      ],
+      "beforeBytes": 2356578,
+      "afterBytes": 2149790,
+      "displayBytes": 211038,
+      "image": "assets/materials/optimized/sticker-57.webp"
+    },
+    {
+      "id": "58",
+      "file": "assets/materials/Weathered Traditional Tiled Canopy Corner.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1518,
+        959
+      ],
+      "display": [
+        1518,
+        959
+      ],
+      "trimmed": true,
+      "trimRect": [
+        14,
+        57,
+        1532,
+        1016
+      ],
+      "beforeBytes": 2637202,
+      "afterBytes": 2436303,
+      "displayBytes": 240858,
+      "image": "assets/materials/optimized/sticker-58.webp"
+    },
+    {
+      "id": "59",
+      "file": "assets/materials/Weathered Mid-Century Concrete House Cutout.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1503,
+        1012
+      ],
+      "display": [
+        1503,
+        1012
+      ],
+      "trimmed": true,
+      "trimRect": [
+        11,
+        2,
+        1514,
+        1014
+      ],
+      "beforeBytes": 2730005,
+      "afterBytes": 2612509,
+      "displayBytes": 256108,
+      "image": "assets/materials/optimized/sticker-59.webp"
+    },
+    {
+      "id": "60",
+      "file": "assets/materials/Weathered Rooftop Balcony Facade Cutout.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        1523,
+        895
+      ],
+      "display": [
+        1523,
+        895
+      ],
+      "trimmed": true,
+      "trimRect": [
+        7,
+        67,
+        1530,
+        962
+      ],
+      "beforeBytes": 2555926,
+      "afterBytes": 2343619,
+      "displayBytes": 227952,
+      "image": "assets/materials/optimized/sticker-60.webp"
+    }
+  ]
+}
