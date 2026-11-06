@@ -7,7 +7,7 @@
 'use strict';
 const $=s=>document.querySelector(s);
 const context={getSelection:null,selectMaterial:null,isAvailable:null};
-const state={points:[],editing:false,selected:null,draft:null,initialized:false,renderKey:0};
+const state={points:[],editing:false,selected:null,draft:null,initialized:false,deletedIds:[]};
 const storageKey='hetero-front-research-factory-points-v1';
 const materialLabels={brick:'벽돌',cast:'주물',tile:'기와'};
 const form=$('#research-factory-form'),dlg=$('#research-factory-editor'),panel=$('#research-factory-panel');
@@ -34,7 +34,7 @@ function cleanPoint(p){
  };
 }
 function persist(){
- try{localStorage.setItem(storageKey,JSON.stringify({version:1,coordinateSystem:'original-map-image-normalized',points:state.points}))}
+ try{localStorage.setItem(storageKey,JSON.stringify({version:1,coordinateSystem:'original-map-image-normalized',points:state.points,deletedIds:state.deletedIds}))}
  catch(e){console.warn('Could not save factory drafts locally:',e)}
 }
 function activeSelection(){return context.getSelection?context.getSelection():{year:1991,material:'brick'}}
@@ -129,8 +129,18 @@ function openEditor(point){
  field('name').focus({preventScroll:true});
 }
 function mapClick(event){
- if(!state.editing)return true; // Suppress the map's legacy image-detail click.
  if(event.target.closest('.research-factory-pin'))return true;
+ if(!state.editing){
+  // Raster crosses do not have company IDs until a researcher links them.
+  state.selected=null;
+  panel.replaceChildren();
+  panel.append(
+   el('h2','research-factory-name','업체 정보 미등록'),
+   el('p','research-factory-note','지도에 인쇄된 기호만으로는 업체명을 확인할 수 없습니다. ‘업체 위치 입력’에서 해당 지점과 조사자료를 연결할 수 있어요.')
+  );
+  panel.hidden=false;
+  return true;
+ }
  const img=findImage();
  if(!img)return true;
  const r=img.getBoundingClientRect();
@@ -177,9 +187,10 @@ async function init({getSelection,selectMaterial,isAvailable}){
   if(saved){
    const obj=JSON.parse(saved);
    if(Array.isArray(obj.points))draft=obj.points.map(cleanPoint).filter(Boolean);
+   if(Array.isArray(obj.deletedIds))state.deletedIds=obj.deletedIds.map(String);
   }
  }catch(err){console.warn('Unable to read local factory point drafts:',err)}
- const byId=new Map(published.map(p=>[p.id,p]));
+ const byId=new Map(published.filter(p=>!state.deletedIds.includes(p.id)).map(p=>[p.id,p]));
  draft.forEach(p=>byId.set(p.id,p));
  state.points=[...byId.values()];
  editButton.addEventListener('click',toggleEditing);
@@ -206,6 +217,7 @@ async function init({getSelection,selectMaterial,isAvailable}){
   const existing=state.points.findIndex(x=>x.id===p.id);
   if(existing>=0)state.points[existing]=p;
   else state.points.push(p);
+  state.deletedIds=state.deletedIds.filter(id=>id!==p.id);
   persist();dlg.close();
   if(context.selectMaterial)context.selectMaterial(p.material,p.year);
   selectPoint(p);
@@ -214,6 +226,7 @@ async function init({getSelection,selectMaterial,isAvailable}){
  field('delete').addEventListener('click',()=>{
   if(!state.draft?.id)return;
   state.points=state.points.filter(p=>p.id!==state.draft.id);
+  state.deletedIds.push(state.draft.id);
   state.selected=null;panel.hidden=true;persist();dlg.close();update();
  });
  window.addEventListener('resize',()=>requestAnimationFrame(positionPins));
