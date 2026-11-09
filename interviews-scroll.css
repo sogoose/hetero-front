@@ -440,3 +440,153 @@ body{background:#fff;color:#292924}
  letter-spacing:-.02em!important;
 }
 .interview-upload-size:empty{display:none!important}
+
+
+/* INTERVIEWS / uniform photographic archive + temporary direct editing.
+   Every photograph occupies exactly the same horizontal width. Keep its
+   intrinsic aspect ratio; do not crop away contextual architectural material. */
+.interview-group .interview-gallery{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:stretch!important;
+ width:min(100%,268px)!important;
+ max-width:268px!important;
+ gap:21px!important;
+ overflow:visible!important;
+ margin-top:clamp(25px,4vh,43px)!important;
+}
+.interview-group .interview-gallery-item,
+.interview-group .interview-gallery-item:first-child,
+.interview-group .interview-gallery-item:not(:first-child){
+ display:block!important;flex:none!important;
+ box-sizing:border-box!important;
+ width:100%!important;max-width:100%!important;
+ min-width:0!important;
+ grid-column:auto!important;
+}
+.interview-group .interview-gallery-open{
+ display:block!important;width:100%!important;
+ max-width:none!important;margin:0!important;
+}
+.interview-group .interview-gallery-photo,
+.interview-group .interview-gallery-item:not(:first-child) .interview-gallery-photo{
+ display:block!important;
+ width:100%!important;max-width:100%!important;
+ height:auto!important;max-height:none!important;min-height:0!important;
+ object-fit:contain!important;object-position:left top!important;
+ aspect-ratio:auto!important;
+}
+.interview-group .interview-gallery-caption{
+ width:100%;max-width:100%;
+ margin-top:7px!important;
+ font:500 11px/1.55 "Noto Serif KR",serif!important;
+ color:#656565!important;
+}
+.interview-group .interview-live-actions{
+ display:flex;align-items:center;gap:15px;
+ margin-top:8px;
+}
+.interview-group .interview-live-actions[hidden]{display:none!important}
+.interview-group .interview-live-action{
+ appearance:none;display:inline-block;
+ padding:2px 0!important;margin:0!important;
+ background:transparent!important;border:0!important;
+ border-bottom:1px solid #c4c4c4!important;
+ border-radius:0!important;
+ box-shadow:none!important;
+ font:470 10px/1.45 Pretendard,sans-serif!important;
+ color:#929292!important;cursor:pointer;
+}
+.interview-group .interview-live-action:hover{
+ color:#303030!important;border-bottom-color:#505050!important;
+}
+.interview-edit-text{
+ display:inline-block;align-self:flex-start;
+ width:auto!important;
+ appearance:none;background:transparent!important;
+ border:0!important;border-bottom:1px solid #b0b0b0!important;
+ border-radius:0!important;box-shadow:none!important;
+ padding:4px 0!important;margin:10px 0 0!important;
+ font:490 11px/1.5 Pretendard,sans-serif!important;
+ color:#777!important;cursor:pointer;
+}
+.interview-edit-text[hidden]{display:none!important}
+.interview-edit-text:hover,
+.interview-edit-text[aria-pressed=true]{color:#252525!important;border-bottom-color:#505050!important}
+.interview-group .interview-turn{
+ position:relative!important;
+}
+.interview-edit-turn{
+ display:none!important;position:absolute;right:0;top:1px;
+ background:#fff!important;color:#777!important;
+ border:0!important;border-bottom:1px solid #aaa!important;
+ border-radius:0!important;box-shadow:none!important;
+ padding:2px 0!important;margin:0!important;
+ font:480 10px/1.4 Pretendard,sans-serif!important;
+ cursor:pointer;
+}
+.interview-group.is-editing-text .interview-turn{
+ padding-right:43px!important;
+}
+.interview-group.is-editing-text.has-public-edit .interview-edit-turn{
+ display:block!important;
+}
+.interview-edit-turn:hover{color:#242424!important}
+.interview-turn.has-archive-edit .interview-turn-mark{
+ text-decoration:underline;text-underline-offset:3px;
+}
+.interview-editor-delete{
+ display:inline-block;margin:17px 0 0!important;
+ padding:4px 0!important;
+ color:#929292!important;background:none!important;
+ border:0!important;border-bottom:1px solid #bbb!important;
+ border-radius:0!important;box-shadow:none!important;
+ font:480 11px/1.4 Pretendard,sans-serif!important;
+ cursor:pointer;
+}
+.interview-editor-delete:hover{color:#a75f59!important;border-bottom-color:#a75f59!important}
+.interview-editor-delete[hidden]{display:none!important}
+.interview-edit-context{
+ margin:0 0 3px!important;
+ font:500 11px/1.4 Pretendard,sans-serif!important;
+ color:#868686!important;
+}
+.interview-turn-edit-dialog{
+ width:min(600px,calc(100vw - 28px))!important;
+}
+#interview-turn-edit-content{
+ display:block;
+ width:100%!important;box-sizing:border-box;
+ min-height:230px!important;
+ resize:vertical!important;
+ font:450 13px/1.8 Pretendard,-apple-system,sans-serif!important;
+ color:#303030!important;
+}
+#interview-photo-edit-caption{
+ min-height:100px!important;resize:vertical!important;
+}
+@media(max-width:700px){
+ .interview-group .interview-gallery{
+  display:flex!important;flex-direction:row!important;
+  overflow-x:auto!important;overflow-y:hidden!important;
+  width:100%!important;max-width:100%!important;
+  gap:14px!important;align-items:flex-start!important;
+  scrollbar-width:thin;
+ }
+ .interview-group .interview-gallery-item,
+ .interview-group .interview-gallery-item:first-child,
+ .interview-group .interview-gallery-item:not(:first-child){
+  width:clamp(165px,58vw,220px)!important;
+  flex:0 0 clamp(165px,58vw,220px)!important;
+  max-width:clamp(165px,58vw,220px)!important;
+ }
+ .interview-group .interview-gallery-photo,
+ .interview-group .interview-gallery-item:not(:first-child) .interview-gallery-photo{
+  width:100%!important;max-width:100%!important;
+  height:auto!important;max-height:none!important;
+ }
+ .interview-edit-text{font-size:10px!important}
+ .interview-group.is-editing-text .interview-turn{padding-right:32px!important}
+ .interview-edit-turn{font-size:9px!important}
+ .interview-group .interview-gallery-caption{font-size:10px!important}
+}
