@@ -24,13 +24,13 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 .polaroid-number{flex:none;font-size:7px;color:#aaa69c;font-variant-numeric:tabular-nums}
 .polaroid-title{display:block;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .photo-board.is-gallery .polaroid{cursor:pointer}
-.photo-toolbar{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:10000;display:flex;align-items:center;gap:25px;width:max-content;max-width:calc(100vw - 24px);padding:7px 22px;background:rgba(248,248,244,.93);backdrop-filter:blur(10px);border-radius:4px;font-size:10px}
+.photo-toolbar{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:10000;display:flex;align-items:center;gap:25px;width:max-content;max-width:calc(100vw - 24px);padding:7px 22px;background:rgba(255,255,255,.93);backdrop-filter:blur(10px);border-radius:4px;font-size:10px}
 .photo-toolbar button,.photo-pagination button{border:0;background:none;padding:10px 0;color:var(--ink);font:inherit;font-size:10px;font-weight:350;white-space:nowrap}
 .photo-back{color:var(--muted);white-space:nowrap}
 .view-switch{display:flex;gap:18px}
 .view-switch button{color:var(--muted);border-bottom:1px solid transparent}
 .view-switch button[aria-pressed=true]{color:var(--ink);border-bottom-color:var(--ink)}
-.photo-pagination{position:fixed;left:50%;bottom:68px;transform:translateX(-50%);z-index:10000;display:flex;align-items:center;gap:28px;padding:0 16px;background:#f8f8f4e8;border-radius:4px;font-size:10px;color:var(--muted)}
+.photo-pagination{position:fixed;left:50%;bottom:68px;transform:translateX(-50%);z-index:10000;display:flex;align-items:center;gap:28px;padding:0 16px;background:#ffffffe8;border-radius:4px;font-size:10px;color:var(--muted)}
 .photo-pagination[hidden]{display:none}
 .photo-pagination button:disabled{opacity:.3;cursor:default}
 @media(max-width:550px){.photo-board{inset:12px 10px 100px}.polaroid{padding:7px 7px 0;border-radius:5px}.photo-toolbar{gap:16px;padding:6px 14px}.view-switch{gap:13px}.photo-toolbar button,.photo-back{font-size:10px}.photo-pagination{bottom:67px}.polaroid-caption{gap:4px;font-size:8px}.polaroid-number{font-size:6px}}
@@ -166,12 +166,12 @@ body:has(#photo-detail[open]){overflow:hidden}
  --glass-white:rgba(251,252,253,.61);--glass-ink:#242629;--glass-edge:rgba(255,255,255,.9);
 }
 .polaroid,.focus-face{
- background-color:#faf9f5;
+ background-color:#ffffff;
  background-image:
   radial-gradient(circle at 15% 20%,rgba(95,93,86,.052) 0 .55px,transparent 1.1px),
   radial-gradient(circle at 70% 61%,rgba(115,109,94,.045) 0 .7px,transparent 1.2px),
   repeating-linear-gradient(91deg,rgba(63,61,55,.012) 0 1px,transparent 1px 5px),
-  linear-gradient(125deg,#fdfcf9 0%,#f8f7f2 52%,#f4f3ef 100%);
+  linear-gradient(125deg,#ffffff 0%,#f9f9f9 52%,#f4f4f4 100%);
  background-size:11px 12px,17px 16px,auto,auto;
  border-color:rgba(95,95,90,.12);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.96),0 1px 2px rgba(25,25,25,.1),0 7px 15px rgba(30,30,30,.085),0 19px 33px rgba(30,30,30,.075);
@@ -1253,7 +1253,7 @@ body:has(#photo-detail[open]){overflow:hidden}
   box-shadow .3s ease!important;
 }
 .photo-main.is-reading .archive-essay{
- background:#fcfbf8;
+ background:#ffffff;
 }
 @media(max-width:700px){
  .photo-main.is-reading .photo-board .polaroid.is-essay-visible{
@@ -1289,12 +1289,12 @@ body:has(#photo-detail[open]){overflow:hidden}
  overflow-y:auto;overscroll-behavior:contain;
  border:1px solid rgba(75,68,55,.19)!important;
  border-radius:0!important;
- background:#faf9f5!important;
+ background:#ffffff!important;
  box-shadow:0 22px 90px rgba(28,28,25,.18)!important;
  color:#242522!important;
  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
 }
-.archive-stats::backdrop{background:rgba(228,225,217,.51)!important;backdrop-filter:blur(5px)}
+.archive-stats::backdrop{background:rgba(238,238,238,.51)!important;backdrop-filter:blur(5px)}
 .archive-stats .stats-top{align-items:start}
 .archive-stats .dialog-kicker{
  font:400 11px/1.35 Pretendard,-apple-system,sans-serif;
@@ -1435,7 +1435,7 @@ body:has(#photo-detail[open]){overflow:hidden}
   padding:19px clamp(21px,4vw,44px) 17px;
   overflow:hidden;overscroll-behavior:contain;
   border:1px solid #d5d3cb!important;border-radius:0!important;
-  background:#faf9f5!important;color:#292923!important;
+  background:#ffffff!important;color:#292923!important;
   box-shadow:0 20px 80px #1c1c192e!important;
   backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
 }
