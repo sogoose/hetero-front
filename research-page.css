@@ -1026,3 +1026,344 @@ body{background:#ffffff;color:#272724}
  .research-factory-cluster-entry{padding:4px 2px}
  .research-factory-cluster-name{font-size:11px}
 }
+
+
+/* RESEARCH / EDITORIAL MAP SPREAD
+   Full study text above; unobtrusive map legend anchored at bottom right.
+   The first panel only. The source text lives in assets/research/research-data.json. */
+.research-panel-map .research-map-intro{
+ display:flex!important;
+ flex-direction:column!important;
+ justify-content:flex-start!important;
+ align-items:stretch!important;
+ overflow:hidden!important;
+ padding-top:clamp(30px,5.2vh,60px)!important;
+ padding-bottom:clamp(23px,3.8vh,43px)!important;
+}
+.research-panel-map .research-map-copy{
+ flex:0 1 auto;
+ display:flex;
+ flex-direction:column;
+ gap:clamp(13px,1.9vh,21px);
+ max-width:100%;
+ min-height:0;
+ overflow-y:auto;
+ overscroll-behavior:contain;
+ scrollbar-width:thin;
+ scrollbar-color:transparent transparent;
+}
+.research-panel-map .research-map-copy:hover{
+ scrollbar-color:#d9d7cf transparent;
+}
+.research-panel-map #research-map-heading{
+ display:block!important;
+ flex:none!important;
+ max-width:100%!important;
+ white-space:nowrap!important;
+ word-break:keep-all!important;
+ margin:0!important;
+ padding:0!important;
+ font-family:"Noto Serif KR",serif!important;
+ font-weight:800!important;
+ font-size:clamp(20px,1.58vw,28px)!important;
+ letter-spacing:-.068em!important;
+ line-height:1.4!important;
+}
+.research-panel-map .research-map-essay{
+ display:flex!important;
+ flex-direction:column!important;
+ gap:clamp(12px,1.9vh,20px)!important;
+ padding:0!important;
+ margin:0!important;
+ max-width:100%;
+}
+.research-panel-map .research-map-paragraph{
+ margin:0!important;
+ padding:0!important;
+ font:400 clamp(10.5px,.735vw,12.6px)/1.73 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.035em!important;
+ word-break:keep-all!important;
+ overflow-wrap:break-word;
+ color:#4c4d47!important;
+ text-align:left;
+}
+.research-panel-map .research-essay-more{
+ display:none!important;
+}
+/* One compact bottom-docked legend. Keep company information a separate
+   floating inspector so selecting a factory cannot push the legend upward. */
+.research-panel-map .research-map-footer{
+ display:flex;
+ flex:none!important;
+ flex-direction:column;
+ align-items:stretch;
+ width:100%;
+ margin-top:auto!important;
+ padding:clamp(15px,3vh,30px) 0 0!important;
+}
+.research-panel-map .research-map-footer .research-map-selector{
+ display:block!important;
+ width:100%!important;
+ margin:0!important;
+ padding:0!important;
+}
+.research-panel-map .research-map-footer .research-keymap{
+ margin:0!important;
+ max-width:none!important;
+ display:flex;
+ flex-direction:column;
+ gap:0!important;
+}
+.research-panel-map .research-map-footer .research-map-controls{
+ order:1;
+ margin:0!important;
+ justify-content:flex-start!important;
+ gap:clamp(10px,1.2vw,20px)!important;
+}
+.research-panel-map .research-map-footer .research-map-choice{
+ font:600 clamp(12px,.89vw,15px)/1.35 Pretendard,-apple-system,sans-serif!important;
+ padding:3px 0 5px!important;
+ gap:4px!important;
+ opacity:.65;
+}
+.research-panel-map .research-map-footer .research-map-choice[aria-pressed=true]{opacity:1!important}
+.research-panel-map .research-map-footer .research-map-choice-mark{
+ font-size:14px!important;width:12px!important;min-width:12px!important;
+}
+.research-panel-map .research-map-footer .research-map-year-controls{
+ order:2;
+ justify-content:flex-start!important;
+ gap:20px!important;
+ margin:clamp(13px,2.2vh,23px) 0 0!important;
+}
+.research-panel-map .research-map-footer .research-map-year-choice{
+ font-size:clamp(12px,.88vw,14px)!important;
+ padding:4px 0 5px!important;
+}
+.research-panel-map .research-map-footer .research-keymap-head{
+ order:3;
+ display:flex!important;
+ justify-content:space-between!important;
+ align-items:center!important;
+ gap:10px!important;
+ margin:clamp(10px,1.6vh,17px) 0 0!important;
+}
+.research-panel-map .research-map-footer .research-keymap-symbols{
+ order:2;
+ display:flex!important;
+ gap:clamp(8px,.9vw,16px)!important;
+ margin:0!important;
+ font-size:9px!important;
+ white-space:nowrap;
+ color:#a8a59d!important;
+}
+.research-panel-map .research-map-footer .research-keymap-all{
+ order:1;
+ font-size:10px!important;
+ white-space:nowrap;
+}
+.research-panel-map .research-map-footer .research-map-annotation{
+ margin:5px 0 0!important;
+ padding:0!important;
+ font-size:9px!important;
+ line-height:1.4!important;
+}
+.research-panel-map .research-map-footer .research-map-actions{
+ display:flex!important;
+ margin:clamp(8px,1.5vh,15px) 0 0!important;
+ padding:0!important;
+ gap:14px!important;
+}
+.research-panel-map .research-map-footer .research-map-action{
+ font-size:10px!important;
+ color:#9a988f!important;
+}
+.research-panel-map .research-map-footer .research-map-action[hidden]{display:none!important}
+.research-panel-map .research-factory-panel:not([hidden]){
+ position:absolute!important;
+ z-index:10;
+ left:clamp(18px,2vw,38px);
+ right:clamp(22px,3vw,55px);
+ bottom:clamp(165px,24vh,235px);
+ margin:0!important;
+ padding:12px 4px 10px!important;
+ max-width:none!important;
+ max-height:min(28vh,245px)!important;
+ background:rgba(255,255,255,.97)!important;
+ border-top:1px solid rgba(70,70,60,.18)!important;
+}
+/* Do not let map-inspector content get obscured at narrower desktop sizes. */
+@media(min-width:701px) and (max-width:1150px){
+ .research-panel-map .research-map-intro{
+  padding-left:15px!important;padding-right:18px!important;
+  padding-top:25px!important;padding-bottom:21px!important;
+ }
+ .research-panel-map #research-map-heading{
+  font-size:clamp(15.5px,1.85vw,21px)!important;
+ }
+ .research-panel-map .research-map-copy{
+  gap:10px!important;
+ }
+ .research-panel-map .research-map-paragraph{
+  font-size:10.5px!important;line-height:1.55!important;
+ }
+ .research-panel-map .research-map-essay{gap:10px!important}
+ .research-panel-map .research-map-footer{
+  padding-top:12px!important;
+ }
+ .research-panel-map .research-map-footer .research-map-choice{
+  font-size:11px!important;
+ }
+ .research-panel-map .research-map-footer .research-map-choice-mark{
+  font-size:12px!important;width:10px!important;min-width:10px!important;
+ }
+}
+@media(min-width:701px) and (max-height:710px){
+ .research-panel-map .research-map-intro{
+  padding-top:18px!important;padding-bottom:18px!important;
+ }
+ .research-panel-map .research-map-copy{
+  gap:10px!important;
+ }
+ .research-panel-map .research-map-essay{gap:10px!important}
+ .research-panel-map .research-map-paragraph{
+  font-size:clamp(10.1px,.69vw,11.5px)!important;
+  line-height:1.52!important;
+ }
+ .research-panel-map .research-map-footer{
+  padding-top:11px!important;
+ }
+ .research-panel-map .research-map-footer .research-map-year-controls{
+  margin-top:10px!important;
+ }
+ .research-panel-map .research-map-footer .research-keymap-head{
+  margin-top:8px!important;
+ }
+ .research-panel-map .research-map-footer .research-map-actions{
+  margin-top:6px!important;
+ }
+}
+/* Mobile still has a full-height map and bottom toolbar. A brief introduction
+   remains under the one-line title; the complete essay opens in a reader. */
+@media(max-width:700px){
+ .research-panel-map .research-map-layout{
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr) auto!important;
+ }
+ .research-panel-map .research-map-intro{
+  grid-column:1!important;grid-row:2!important;
+  position:relative!important;
+  width:100%!important;height:auto!important;
+  min-height:0!important;display:flex!important;
+  flex-direction:column!important;align-items:stretch!important;
+  gap:0!important;
+  overflow:visible!important;
+  padding:10px 17px 13px!important;
+ }
+ .research-panel-map .research-map-copy{
+  display:flex!important;flex-direction:column!important;
+  gap:6px!important;min-height:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+ }
+ .research-panel-map #research-map-heading{
+  font-size:clamp(17px,4.5vw,22px)!important;
+  line-height:1.28!important;
+  max-width:100%!important;
+  white-space:nowrap!important;
+ }
+ .research-panel-map .research-map-essay{
+  display:block!important;margin:0!important;
+  overflow:visible!important;
+ }
+ .research-panel-map .research-map-essay .research-map-paragraph:first-child{
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  line-clamp:2;
+  overflow:hidden!important;
+  font-size:10px!important;
+  line-height:1.48!important;
+ }
+ .research-panel-map .research-map-essay .research-map-paragraph:not(:first-child){
+  display:none!important;
+ }
+ .research-panel-map .research-essay-more{
+  display:inline-block!important;
+  align-self:flex-start!important;
+  border:0!important;border-bottom:1px solid #a5a39b!important;
+  border-radius:0!important;box-shadow:none!important;
+  padding:2px 0!important;margin:0!important;
+  background:transparent!important;color:#77756d!important;
+  font:450 10px/1.3 Pretendard,-apple-system,sans-serif!important;
+ }
+ .research-panel-map .research-map-footer{
+  margin:8px 0 0!important;padding:0!important;
+  display:flex!important;flex-direction:column!important;
+  width:100%!important;
+ }
+ .research-panel-map .research-map-footer .research-map-controls{
+  justify-content:flex-start!important;gap:12px!important;
+ }
+ .research-panel-map .research-map-footer .research-map-choice{
+  font-size:11px!important;
+ }
+ .research-panel-map .research-map-footer .research-map-year-controls{
+  justify-content:flex-start!important;
+  margin:6px 0 0!important;
+  gap:16px!important;
+ }
+ .research-panel-map .research-map-footer .research-keymap-head{
+  margin:5px 0 0!important;
+ }
+ .research-panel-map .research-map-footer .research-keymap-symbols{
+  display:none!important;
+ }
+ .research-panel-map .research-map-footer .research-map-actions{
+  grid-column:auto!important;grid-row:auto!important;
+  display:flex!important;padding:0!important;margin:4px 0 0!important;
+ }
+ .research-panel-map .research-map-footer .research-map-action{font-size:9px!important}
+ .research-panel-map .research-factory-panel:not([hidden]){
+  position:fixed!important;
+  z-index:70!important;
+  left:12px!important;right:12px!important;bottom:75px!important;
+  max-height:min(39vh,270px)!important;
+  padding:15px!important;
+  background:#fff!important;
+ }
+}
+/* Full-text reading on phones without introducing vertical page scroll. */
+.research-essay-dialog{
+ width:min(640px,calc(100vw - 28px))!important;
+ max-width:calc(100vw - 28px)!important;
+ max-height:min(86dvh,800px)!important;
+ padding:clamp(23px,4vw,47px)!important;
+ box-sizing:border-box!important;overflow-y:auto!important;
+ margin:auto!important;border:0!important;border-radius:0!important;
+ background:#fff!important;color:#2a2b27!important;
+ box-shadow:0 12px 65px rgba(30,29,24,.13)!important;
+}
+.research-essay-dialog::backdrop{
+ background:rgba(25,26,24,.30)!important;
+}
+.research-essay-dialog h2{
+ font-size:clamp(21px,4vw,31px)!important;
+ margin:0 40px 24px 0!important;
+ letter-spacing:-.06em!important;
+}
+.research-essay-dialog-content{
+ display:flex;flex-direction:column;gap:19px;
+}
+.research-essay-dialog-content p{
+ font:400 clamp(12px,2.9vw,14px)/1.83 Pretendard,-apple-system,sans-serif!important;
+ color:#484941!important;letter-spacing:-.02em!important;
+ word-break:keep-all!important;margin:0!important;
+}
+.research-essay-close{
+ position:absolute;top:17px;right:22px;
+ border:0!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;
+ font:300 30px/1 Pretendard,-apple-system,sans-serif;
+ color:#5e6057!important;cursor:pointer;
+}
