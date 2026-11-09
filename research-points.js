@@ -42,7 +42,13 @@ function visiblePoints(){
  const {year,material}=activeSelection();
  return state.points.filter(p=>p.year===year&&(material==='combined'||p.material===material));
 }
-function findImage(){
+function findImage(material){
+ // A DXF point is calibrated to its material's transparent overlay artboard.
+ // Never assume an independently exported base map has identical dimensions.
+ if(material){
+  const overlay=$('#research-map-art .research-map-overlay--'+material);
+  if(overlay)return overlay;
+ }
  return $('#research-map-art .research-map-stack .research-map-base');
 }
 
@@ -95,15 +101,19 @@ function showCluster(points){
  panel.hidden=false;
 }
 function positionPins(){
- const wrap=$('#research-map-art .research-factory-pins'),image=findImage();
- if(!wrap||!image)return;
- const bounds=image.getBoundingClientRect(),root=wrap.getBoundingClientRect();
- if(!bounds.width||!bounds.height||!root.width)return;
- const projected=visiblePoints().map(point=>({
-  point,
-  left:bounds.left-root.left+point.x*bounds.width,
-  top:bounds.top-root.top+point.y*bounds.height
- }));
+ const wrap=$('#research-map-art .research-factory-pins');
+ if(!wrap)return;
+ const root=wrap.getBoundingClientRect();
+ if(!root.width)return;
+ const projected=visiblePoints().map(point=>{
+  const img=findImage(point.material),bounds=img?.getBoundingClientRect();
+  if(!bounds||!bounds.width||!bounds.height)return null;
+  return {
+   point,
+   left:bounds.left-root.left+point.x*bounds.width,
+   top:bounds.top-root.top+point.y*bounds.height
+  };
+ }).filter(Boolean);
  const clusters=clusterByScreenDistance(projected,28);
  wrap.replaceChildren();
  clusters.forEach(group=>{
@@ -143,8 +153,9 @@ function update(){
   state.viewKey=viewKey;
  }
  const list=visiblePoints();
- const image=findImage();
- if(image&&!image.complete)image.addEventListener('load',positionPins,{once:true});
+ for(const image of stack.querySelectorAll('.research-map-layer')){
+  if(!image.complete)image.addEventListener('load',positionPins,{once:true});
+ }
  requestAnimationFrame(positionPins);
  if(state.selected&&!list.some(p=>p.id===state.selected)){
   state.selected=null;panel.hidden=true;
@@ -208,14 +219,14 @@ function mapClick(event){
   panel.hidden=false;
   return true;
  }
- const img=findImage();
+ const sel=activeSelection();
+ const material=sel.material==='combined'?'brick':sel.material;
+ const img=findImage(material);
  if(!img)return true;
  const r=img.getBoundingClientRect();
  if(!r.width||!r.height)return true;
  const x=(event.clientX-r.left)/r.width,y=(event.clientY-r.top)/r.height;
  if(x<.06||x>1||y<0||y>1)return true; // cropped artboard edge
- const sel=activeSelection();
- const material=sel.material==='combined'?'brick':sel.material;
  if(context.isAvailable&&!context.isAvailable(material,sel.year))return true;
  openEditor({id:null,name:'',material,year:sel.year,x,y,region:'',note:'',source:''});
  return true;
