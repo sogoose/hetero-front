@@ -153,7 +153,7 @@ function setMap(index){
  mapArt.dataset.year=String(state.year);
  mapArt.setAttribute('aria-label',state.year+'년 '+(map.label||map.id)+' 공장 분포 지도');
  mapArt.append(layeredMap(state.data.mapBase,layers,false));
- mapArt.classList.toggle('is-zoomable',layers.length>0);
+ mapArt.classList.remove('is-zoomable');
  window.ResearchPoints?.update();
  // Buttons are displayed in material order (brick / cast / tile), which is
  // deliberately different from the JSON data order. Resolve by stable ID.
@@ -191,8 +191,20 @@ function setYear(year){
 }
 function renderMaps(data){
  setText('#research-map-kicker',data.introduction&&data.introduction.kicker||'01 / DISTRIBUTION');
- setLines('#research-map-heading',data.introduction&&data.introduction.title||['혼종은 어디에서','왔을까?']);
- setText('#research-map-lead',data.introduction&&data.introduction.lead||'');
+ setText('#research-map-heading',(data.introduction&&data.introduction.title||['혼종은 어디에서 왔을까?']).join(' '));
+ const paragraphs=Array.isArray(data.introduction?.body)?data.introduction.body:[];
+ const essay=$('#research-map-essay'),dialogEssay=$('#research-essay-dialog-content');
+ if(essay&&dialogEssay){
+  essay.replaceChildren();dialogEssay.replaceChildren();
+  paragraphs.forEach(copy=>{
+   essay.append(el('p','research-map-paragraph',copy));
+   dialogEssay.append(el('p','research-map-paragraph',copy));
+  });
+ }
+ const essayDialog=$('#research-essay-dialog');
+ $('#research-essay-more')?.addEventListener('click',()=>essayDialog?.showModal());
+ $('#research-essay-close')?.addEventListener('click',()=>essayDialog?.close());
+ essayDialog?.addEventListener('click',event=>{if(event.target===essayDialog)essayDialog.close()});
  yearControls.replaceChildren();
  (data.mapYears||[]).forEach(year=>{
   const button=el('button','research-map-year-choice',String(year));
@@ -224,16 +236,6 @@ function renderMaps(data){
  mapArt.addEventListener('click',event=>{
   if(window.ResearchPoints?.mapClick(event))return;
  });
- const openZoom=()=>{
-  const map=data.maps[state.map],layers=mapSources(map,state.year);
-  if(!layers.length)return;
-  openDetail({
-   kicker:state.year+' / 공장 분포',
-   title:state.year+'년 '+(map.title||map.label),
-   mapBase:data.mapBase,mapLayers:layers,description:map.description
-  });
- };
- $('#research-map-zoom')?.addEventListener('click',openZoom);
 
  state.year=data.mapYears&&data.mapYears.includes(1991)?1991:data.mapYears[0];
  const brickIndex=data.maps.findIndex(item=>item.id==='brick');
