@@ -27,23 +27,50 @@ function renderInterview(record,index){
  section.dataset.interviewId=record.id;
  section.setAttribute('aria-label',record.material+' — '+record.company+' 인터뷰');
 
- const identity=element('div','interview-identity');
- const title=element('h2','interview-group-material',record.material);
- const company=element('p','interview-group-company',record.company);
- const meta=element('div','interview-group-micro');
- meta.append(element('span','',record.person),element('span','',record.date));
- const fig=element('figure','interview-image');
- if(record.illustration){
-  const image=element('img');
-  image.src=record.illustration;
-  image.alt=record.material+' 관련 아카이브 이미지';
-  image.loading='lazy';
-  image.decoding='async';
-  fig.append(image);
- }
- const place=element('p','interview-profile-label',record.place);
- const note=element('p','interview-profile-source','2026년 인터뷰 · 전시용 발췌·편집본');
- identity.append(title,company,meta,fig,place,note);
+ const identity=element('aside','interview-identity');
+ const head=element('div','interview-identity-head');
+
+ // User-supplied material icons replace the oversized material headings.
+ const icon=element('img','interview-material-icon');
+ icon.src=record.icon||'';
+ icon.alt=record.material+' 아이콘';
+ icon.loading='lazy';
+ icon.decoding='async';
+
+ const metadata=element('div','interview-metadata');
+ const company=element('p','interview-meta-line','['+record.company+']');
+ const date=element('p','interview-meta-line','일시: '+record.date);
+ const place=element('p','interview-meta-line','장소: '+record.place);
+ const person=element('p','interview-meta-line','인터뷰 대상자: '+record.person);
+ metadata.append(company,date,place,person);
+ head.append(icon,metadata);
+ identity.append(head);
+
+ // Add / reorder photos by changing only images[] in interviews-data.json.
+ const photos=Array.isArray(record.images)?record.images:
+  (record.illustration?[{src:record.illustration,alt:record.material+' 관련 아카이브 사진'}]:[]);
+ const gallery=element('div','interview-gallery');
+ gallery.setAttribute('aria-label',record.company+' 관련 사진');
+ photos.forEach((photo,index)=>{
+  const value=typeof photo==='string'?{src:photo}:photo;
+  if(!value||typeof value.src!=='string'||!value.src.trim())return;
+  const figure=element('figure','interview-gallery-item');
+  const btn=element('button','interview-gallery-open');
+  btn.type='button';
+  btn.setAttribute('aria-label',record.company+' 사진 '+(index+1)+' 확대');
+  const image=element('img','interview-gallery-photo');
+  image.src=value.src;
+  image.alt=value.alt||record.company+' 관련 사진 '+(index+1);
+  image.loading='lazy';image.decoding='async';
+  btn.append(image);
+  btn.addEventListener('click',()=>openImage(value,record.company));
+  figure.append(btn);
+  if(value.caption){
+   figure.append(element('figcaption','interview-gallery-caption',value.caption));
+  }
+  gallery.append(figure);
+ });
+ if(gallery.children.length)identity.append(gallery);
 
  const transcript=element('div','interview-flow');
  transcript.setAttribute('aria-label',record.company+' 인터뷰 질문과 답변');
@@ -57,6 +84,17 @@ function renderInterview(record,index){
  section.append(identity,transcript);
  host.append(section);
  sections.push(section);
+}
+function openImage(photo,company){
+ const dlg=document.getElementById('interview-image-detail');
+ const img=document.getElementById('interview-image-large');
+ const caption=document.getElementById('interview-image-caption');
+ if(!dlg||!img)return;
+ img.src=photo.src;
+ img.alt=photo.alt||company+' 사진';
+ caption.textContent=photo.caption||'';
+ caption.hidden=!photo.caption;
+ dlg.showModal();
 }
 function activeIndex(){
  if(!sections.length)return 0;
@@ -124,6 +162,9 @@ function bind(){
  document.getElementById('interview-chapter-open').addEventListener('click',()=>chapter.showModal());
  document.getElementById('chapter-close').addEventListener('click',()=>chapter.close());
  chapter.addEventListener('click',event=>{if(event.target===chapter)chapter.close()});
+ const imageDialog=document.getElementById('interview-image-detail');
+ document.getElementById('interview-image-close')?.addEventListener('click',()=>imageDialog.close());
+ imageDialog?.addEventListener('click',event=>{if(event.target===imageDialog)imageDialog.close()});
 }
 async function init(){
  bind();
