@@ -312,6 +312,7 @@ body{background:#fff;color:#292924}
  cursor:pointer;
 }
 .interview-add-photo:hover{color:#242424!important;border-bottom-color:#242424!important}
+.interview-add-photo[hidden]{display:none!important}
 .interview-add-photo:focus-visible,.interview-live-delete:focus-visible{
  outline:1px solid #999!important;outline-offset:4px;
 }
