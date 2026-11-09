@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="interviews-scroll.css?v=8">
-<script src="interviews-upload.js?v=3" defer></script>
+<link rel="stylesheet" href="interviews-scroll.css?v=9">
+<script src="interviews-upload.js?v=4" defer></script>
 <script src="interviews-scroll.js?v=4" defer></script>
 </head>
 <body>
@@ -66,6 +66,32 @@
     <button class="interview-upload-primary" type="submit">사진 업로드</button>
   </form>
   <p id="interview-upload-status" class="interview-upload-status" role="status" aria-live="polite"></p>
+</dialog>
+<dialog id="interview-photo-edit-dialog" class="interview-upload-dialog" aria-labelledby="interview-photo-edit-title">
+  <div class="interview-upload-head">
+    <h2 id="interview-photo-edit-title">사진 정보 수정</h2>
+    <button type="button" class="interview-upload-close" id="interview-photo-edit-close" aria-label="닫기">×</button>
+  </div>
+  <form id="interview-photo-edit-form" class="interview-upload-fields">
+    <label>사진 설명<input id="interview-photo-edit-alt" type="text" maxlength="180" required></label>
+    <label>사진 주석<textarea id="interview-photo-edit-caption" rows="3" maxlength="300"></textarea></label>
+    <button class="interview-upload-primary" type="submit">변경사항 저장</button>
+  </form>
+  <button id="interview-photo-delete" class="interview-editor-delete" type="button">이 사진 삭제</button>
+  <p class="interview-upload-status" id="interview-photo-edit-status" role="status" aria-live="polite"></p>
+</dialog>
+<dialog id="interview-turn-edit-dialog" class="interview-upload-dialog interview-turn-edit-dialog" aria-labelledby="interview-turn-edit-title">
+  <div class="interview-upload-head">
+    <h2 id="interview-turn-edit-title">인터뷰 문장 수정</h2>
+    <button type="button" class="interview-upload-close" id="interview-turn-edit-close" aria-label="닫기">×</button>
+  </div>
+  <form id="interview-turn-edit-form" class="interview-upload-fields">
+    <p class="interview-edit-context" id="interview-turn-edit-context"></p>
+    <label>본문<textarea id="interview-turn-edit-content" rows="9" maxlength="4500" required></textarea></label>
+    <button class="interview-upload-primary" type="submit">본문 저장</button>
+  </form>
+  <button id="interview-turn-restore" class="interview-editor-delete" type="button">PDF 원문으로 되돌리기</button>
+  <p class="interview-upload-status" id="interview-turn-edit-status" role="status" aria-live="polite"></p>
 </dialog>
 <dialog id="interview-image-detail" class="interview-image-detail" aria-label="인터뷰 사진 확대">
   <button type="button" id="interview-image-close" class="interview-image-close" aria-label="닫기">×</button>
