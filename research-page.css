@@ -966,3 +966,63 @@ body{background:#ffffff;color:#272724}
  .research-panel-map .research-map-annotation{display:none}
  .research-factory-editor{padding:24px!important}
 }
+
+
+/* Registered factory pins: unobtrusive clusters where the original DXF marks overlap. */
+.research-factory-pin.is-cluster{
+ width:29px!important;height:29px!important;
+ border:1px solid rgba(83,139,114,.65)!important;border-radius:50%!important;
+ background:rgba(255,255,255,.96)!important;
+ box-shadow:0 1px 4px rgba(26,36,28,.11)!important;
+ color:#47765f!important;
+ font:650 11px/1 Pretendard,-apple-system,sans-serif!important;
+ text-align:center!important;
+}
+.research-factory-pin.is-cluster::after{display:none!important}
+.research-factory-pin.is-cluster:hover,
+.research-factory-pin.is-cluster:focus-visible{
+ border-color:#3a6b50!important;
+ background:#f1f5f1!important;
+}
+.research-factory-panel{
+ max-height:min(40vh,390px);
+ overflow-y:auto;
+ overscroll-behavior:contain;
+ scrollbar-width:thin;
+ scrollbar-color:#c0c1b8 transparent;
+}
+.research-factory-cluster-list{
+ display:grid;grid-template-columns:minmax(0,1fr);
+ gap:1px;max-height:min(29vh,295px);
+ overflow-y:auto;overscroll-behavior:contain;
+ margin-top:10px;padding-right:4px;
+ scrollbar-width:thin;
+}
+.research-factory-cluster-entry{
+ display:grid;grid-template-columns:25px minmax(0,1fr);
+ gap:10px;align-items:baseline;
+ width:100%;margin:0;padding:5px 2px;
+ border:0!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;
+ color:#484941!important;text-align:left!important;
+ cursor:pointer;
+}
+.research-factory-cluster-entry:hover,
+.research-factory-cluster-entry:focus-visible{
+ background:rgba(84,139,114,.06)!important;color:#212a24!important;
+}
+.research-factory-cluster-index{
+ font:450 10px/1.45 Pretendard,-apple-system,sans-serif;
+ color:#9c9d91;
+}
+.research-factory-cluster-name{
+ font:550 12px/1.45 Pretendard,-apple-system,sans-serif;
+ overflow-wrap:anywhere;
+}
+@media(max-width:700px){
+ .research-factory-panel{max-height:min(23vh,215px)}
+ .research-factory-cluster-list{max-height:min(17vh,165px)}
+ .research-factory-pin.is-cluster{width:27px!important;height:27px!important}
+ .research-factory-cluster-entry{padding:4px 2px}
+ .research-factory-cluster-name{font-size:11px}
+}
