@@ -270,7 +270,7 @@ async function doUpload(event){
     storage_path:uploadPath,
     alt:alt||file.name.replace(/\.[^.]+$/,'').slice(0,180),
     caption,
-    sort_order:Date.now(),
+    sort_order:Math.floor(Date.now()/1000),
     created_by:user.id
    })
   });
