@@ -16,8 +16,10 @@ const form=$('#interview-upload-form');
 const filePicker=$('#interview-upload-file');
 const preview=$('#interview-upload-preview');
 const status=$('#interview-upload-status');
+const details=$('#interview-upload-size');
 let enabled=false, mounted=false, submitting=false, current=null;
 let previewUrl=null;
+let prepared=null, preparing=false, pickVersion=0;
 
 function create(tag,className,text){
  const element=document.createElement(tag);
@@ -83,7 +85,9 @@ async function open(id){
  if(!permitted){window.alert('현재 사진 업로드가 종료되어 있습니다.');return}
  current=id;
  form.reset();
+ prepared=null;preparing=false;pickVersion++;
  releasePreview();
+ details.textContent='';
  notify('');
  $('#interview-upload-title').textContent=LABELS[id]+' 사진 추가';
  dlg.showModal();
@@ -129,30 +133,71 @@ async function normalize(file){
   throw new Error('JPG, PNG, WebP 또는 AVIF 사진을 선택해주세요.');
  }
  if(file.size>18*1024*1024)throw new Error('원본 사진은 18MB 이하만 업로드할 수 있어요.');
- const link=URL.createObjectURL(file),img=new Image();
+ const link=URL.createObjectURL(file);
+ const img=new Image();
  try{
   img.src=link;
   await new Promise((resolve,reject)=>{
    img.onload=resolve;
    img.onerror=()=>reject(new Error('이미지를 읽을 수 없습니다.'));
   });
-  async function optimize(limit,quality){
-   const fraction=Math.min(1,limit/Math.max(img.naturalWidth,img.naturalHeight));
+  async function optimize(maxSide,quality){
+   const ratio=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight));
    const canvas=document.createElement('canvas');
-   canvas.width=Math.max(1,Math.round(img.naturalWidth*fraction));
-   canvas.height=Math.max(1,Math.round(img.naturalHeight*fraction));
+   canvas.width=Math.max(1,Math.round(img.naturalWidth*ratio));
+   canvas.height=Math.max(1,Math.round(img.naturalHeight*ratio));
    const context=canvas.getContext('2d');
    if(!context)throw new Error('이미지 변환을 지원하지 않는 브라우저입니다.');
    context.drawImage(img,0,0,canvas.width,canvas.height);
    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',quality));
    if(!blob||blob.type!=='image/webp')throw new Error('사진을 WebP로 변환하지 못했습니다.');
-   return blob;
+   return {blob,width:canvas.width,height:canvas.height};
   }
-  let blob=await optimize(1800,.82);
-  if(blob.size>3*1024*1024)blob=await optimize(1400,.68);
-  if(blob.size>3*1024*1024)throw new Error('압축 후 사진이 3MB를 초과합니다.');
-  return blob;
+  // Preserve visual detail where possible, but keep file comfortably
+  // below the bucket's 3 MB server limit even for large mobile photos.
+  let result=await optimize(1800,.82);
+  if(result.blob.size>2.6*1024*1024)result=await optimize(1450,.72);
+  if(result.blob.size>2.6*1024*1024)result=await optimize(1100,.62);
+  if(result.blob.size>2.6*1024*1024)throw new Error('압축 후에도 사진이 너무 큽니다.');
+  return result;
  }finally{URL.revokeObjectURL(link)}
+}
+function formatBytes(bytes){
+ if(bytes>=1024*1024)return (bytes/(1024*1024)).toFixed(1)+'MB';
+ return Math.max(1,Math.round(bytes/1024))+'KB';
+}
+async function prepareSelectedImage(){
+ const file=filePicker.files?.[0];
+ const version=++pickVersion;
+ prepared=null;preparing=Boolean(file);
+ releasePreview();details.textContent='';
+ const button=form.querySelector('[type=submit]');
+ button.disabled=true;
+ if(!file){notify('');preparing=false;return null}
+ notify('사진을 자동으로 크기 조정·압축하고 있어요…');
+ try{
+  const output=await normalize(file);
+  // Ignore old results if the user selected a different file meanwhile.
+  if(version!==pickVersion)return null;
+  prepared={file,...output};
+  previewUrl=URL.createObjectURL(output.blob);
+  preview.src=previewUrl;
+  preview.hidden=false;
+  const saved=Math.max(0,Math.round((1-output.blob.size/file.size)*100));
+  details.textContent='원본 '+formatBytes(file.size)+' → 업로드 '+formatBytes(output.blob.size)+
+   ' · '+output.width+' × '+output.height+'px'+
+   (output.blob.size<file.size?' · 약 '+saved+'% 감소':'');
+  notify('사진이 최적화됐어요. 업로드할 수 있습니다.');
+  return prepared;
+ }catch(error){
+  if(version===pickVersion){notify(error.message,true);details.textContent=''}
+  return null;
+ }finally{
+  if(version===pickVersion){
+   preparing=false;
+   button.disabled=!prepared;
+  }
+ }
 }
 async function upload(event){
  event.preventDefault();
@@ -164,7 +209,9 @@ async function upload(event){
   const permitted=await refreshEnabled();
   if(!permitted)throw new Error('현재 사진 업로드가 종료되었습니다.');
   const original=filePicker.files?.[0];
-  const blob=await normalize(original);
+  const optimized=prepared?.file===original?prepared:await prepareSelectedImage();
+  if(!optimized)throw new Error('사진을 최적화한 후 다시 시도해주세요.');
+  const blob=optimized.blob;
   const path='interviews/'+current+'/'+crypto.randomUUID()+'.webp';
   const alt=$('#interview-upload-alt').value.trim().slice(0,180);
   const caption=$('#interview-upload-caption').value.trim().slice(0,300);
@@ -209,16 +256,12 @@ function mount(){
  $('#interview-upload-close')?.addEventListener('click',()=>{if(!submitting)dlg.close()});
  dlg.addEventListener('cancel',event=>{if(submitting)event.preventDefault()});
  dlg.addEventListener('click',event=>{if(event.target===dlg&&!submitting)dlg.close()});
- dlg.addEventListener('close',releasePreview);
- form.addEventListener('submit',upload);
- filePicker.addEventListener('change',()=>{
-  releasePreview();
-  const file=filePicker.files?.[0];
-  if(!file)return;
-  previewUrl=URL.createObjectURL(file);
-  preview.src=previewUrl;
-  preview.hidden=false;
+ dlg.addEventListener('close',()=>{
+  pickVersion++;prepared=null;preparing=false;
+  releasePreview();details.textContent='';
  });
+ form.addEventListener('submit',upload);
+ filePicker.addEventListener('change',prepareSelectedImage);
 }
 window.InterviewPhotoUpload={mount,open,refresh};
 })();
