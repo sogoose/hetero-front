@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="style.css?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="interviews-scroll.css?v=3">
-<script src="interviews-scroll.js?v=2" defer></script>
+<link rel="stylesheet" href="interviews-scroll.css?v=4">
+<script src="interviews-scroll.js?v=3" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -48,6 +48,11 @@
     </div>
   </footer>
 </main>
+<dialog id="interview-image-detail" class="interview-image-detail" aria-label="인터뷰 사진 확대">
+  <button type="button" id="interview-image-close" class="interview-image-close" aria-label="닫기">×</button>
+  <img id="interview-image-large" class="interview-image-large" alt="">
+  <p id="interview-image-caption" class="interview-image-caption"></p>
+</dialog>
 <dialog id="chapter-menu" class="chapter-menu" aria-labelledby="chapter-title">
  <div class="chapter-top"><span class="dialog-kicker">HETERO FRONT / INDEX</span><button type="button" class="icon-button" id="chapter-close" aria-label="목차 닫기"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-close"></use></svg></button></div>
  <h2 id="chapter-title">혼종의 정면<span class="chapter-asterisk">✳</span></h2>
