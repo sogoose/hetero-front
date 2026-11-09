@@ -1,10 +1,10 @@
 /* RESEARCH / HETERO FRONT — 3 unrolling, viewport-height research plates.
    All editable copy and image paths live in assets/research/research-data.json. */
 html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
-body{background:#f8f8f4;color:#272724}
+body{background:#ffffff;color:#272724}
 .research-main{
  position:fixed!important;inset:0!important;width:100%!important;height:100dvh!important;
- overflow:hidden!important;padding:0!important;min-height:0!important;background:#f8f8f4;
+ overflow:hidden!important;padding:0!important;min-height:0!important;background:#ffffff;
  font-family:Pretendard,-apple-system,sans-serif;
 }
 .research-window{
@@ -19,7 +19,7 @@ body{background:#f8f8f4;color:#272724}
 }
 .research-panel{
  position:relative;flex:0 0 100vw;height:100%;min-width:100vw;overflow:hidden;
- background:#f8f8f4;
+ background:#ffffff;
 }
 .research-serif{
  font-family:"Noto Serif KR",serif!important;font-weight:800!important;
@@ -218,7 +218,7 @@ body{background:#f8f8f4;color:#272724}
  z-index:50!important;min-height:70px!important;height:70px!important;
  display:flex!important;align-items:center!important;justify-content:space-between!important;
  padding:0 clamp(14px,2.6vw,42px)!important;
- background:#f8f8f4!important;border-top:1px solid rgba(62,60,50,.08)!important;
+ background:#ffffff!important;border-top:1px solid rgba(62,60,50,.08)!important;
  gap:20px!important;
 }
 .research-taskbar .photo-navigation,.research-taskbar .research-toolbar,
@@ -248,11 +248,11 @@ body{background:#f8f8f4;color:#272724}
  position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;
  max-width:none!important;max-height:none!important;
  padding:0!important;margin:0!important;border:0!important;border-radius:0!important;
- background:#f8f8f4!important;overflow:auto!important;
+ background:#ffffff!important;overflow:auto!important;
  color:#282823!important;box-shadow:none!important;
 }
 .research-detail[open]{display:block!important}
-.research-detail::backdrop{background:rgba(248,248,244,.78)!important;backdrop-filter:blur(4px)}
+.research-detail::backdrop{background:rgba(255,255,255,.78)!important;backdrop-filter:blur(4px)}
 .research-detail-inner{
  max-width:1060px;min-height:100%;margin:0 auto;
  padding:clamp(65px,8vh,110px) clamp(22px,6vw,86px) 65px;
@@ -451,7 +451,7 @@ body{background:#f8f8f4;color:#272724}
 .research-map-art,
 .research-detail,
 .research-detail-image {
- background:#f8f8f4!important;
+ background:#ffffff!important;
 }
 .research-map-stack{
  isolation:auto!important; /* do not isolate Multiply from the paper backdrop */
@@ -534,7 +534,7 @@ body{background:#f8f8f4;color:#272724}
  grid-column:1;grid-row:1;
  width:100%!important;height:100%!important;min-height:0!important;
  margin:0!important;padding:0!important;box-sizing:border-box;
- background:#f8f8f4!important;
+ background:#ffffff!important;
  display:flex;align-items:center;justify-content:center;
 }
 .research-panel-map .research-map-art{
@@ -584,7 +584,7 @@ body{background:#f8f8f4;color:#272724}
  min-width:0;min-height:0;width:100%;height:100%;
  z-index:2;box-sizing:border-box;
  padding:clamp(51px,9vh,108px) clamp(23px,4.3vw,78px) clamp(40px,7vh,80px) clamp(19px,2.8vw,50px)!important;
- background:#f8f8f4!important;
+ background:#ffffff!important;
 }
 .research-panel-map .research-map-heading{
  font-size:clamp(30px,2.9vw,48px)!important;
@@ -842,7 +842,7 @@ body{background:#f8f8f4;color:#272724}
 }
 .research-factory-pin::after{
  content:"";width:7px;height:7px;
- border:1.5px solid #f8f8f4;border-radius:50%;
+ border:1.5px solid #ffffff;border-radius:50%;
  background:var(--point-color,#444)!important;
  box-shadow:0 0 0 1px var(--point-color,#444);
  transition:transform .2s ease;
@@ -895,7 +895,7 @@ body{background:#f8f8f4;color:#272724}
  padding:clamp(23px,3vw,43px)!important;
  margin:auto!important;overflow-y:auto!important;
  box-sizing:border-box;border:0!important;
- background:#f8f8f4!important;
+ background:#ffffff!important;
  color:#252621!important;
  border-radius:0!important;box-shadow:0 15px 90px rgba(26,28,24,.18)!important;
 }
@@ -926,7 +926,7 @@ body{background:#f8f8f4;color:#272724}
  box-sizing:border-box;width:100%;padding:10px 11px;min-height:39px;
  outline:none;border:1px solid #d8d6cf!important;border-radius:0!important;
  color:#252621!important;
- background:#fffefa!important;
+ background:#ffffff!important;
  box-shadow:none!important;font:400 13px/1.5 Pretendard,sans-serif!important;
 }
 .research-factory-form :is(input,select,textarea):focus{border-color:#6d6e67!important}
