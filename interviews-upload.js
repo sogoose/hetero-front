@@ -8,8 +8,8 @@
 const ENDPOINT='https://xjhwzhqiixbombbudlpl.supabase.co';
 const PUBLIC_KEY='sb_publishable_5agi4GlOLYN8wc3q4NxFAw_90Y2BKjn';
 const BUCKET='hetero-interview-photos';
-const VALID_IDS=new Set(['goryeong','jungwoo','chunghwa']);
-const LABELS={goryeong:'고령기와',jungwoo:'정우금속',chunghwa:'청화요업'};
+const VALID_IDS=new Set(['goryeong','jungwoo','chunghwa','gangbuk']);
+const LABELS={goryeong:'고령기와',jungwoo:'정우금속',chunghwa:'청화요업',gangbuk:'강북산업'};
 const $=selector=>document.querySelector(selector);
 const dlg=$('#interview-upload-dialog');
 const form=$('#interview-upload-form');
