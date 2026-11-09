@@ -1,75 +1,54 @@
-# INTERVIEWS / 인터뷰 페이지 수정 방법
+# INTERVIEWS / 편집 안내
 
-수록 자료: 전시용 인터뷰 발췌·편집본. 전체 녹취록은 아닙니다.
+[웹사이트 바로가기](https://sogoose.github.io/hetero-front/interviews.html)
 
-## 파일 위치
+## 웹사이트에서 사진 업로드하기
 
-| 작업 | 수정할 파일 |
-| --- | --- |
-| 인터뷰 본문 / 업체 정보 / 아이콘 / 사진 추가 | \`assets/interviews/interviews-data.json\` |
-| 본문 글자 크기·여백·레이아웃 | \`interviews-scroll.css\` |
-| 사진 확대·세로 이동 | \`interviews-scroll.js\` |
-| 페이지 구조 | \`interviews.html\` |
+이제 **GitHub에 사진을 직접 올리거나 JSON을 수정하지 않아도 됩니다.**
 
-본문은 기와(고령기와) → 주물(정우금속) → 벽돌(청화요업) 순서로 **세로 스크롤**합니다.
-질문은 적갈색, 답변은 작고 볼드인 Pretendard이며, 왼쪽의 업체 정보는 같은 크기·두께의 Noto Serif KR로 통일했습니다.
+1. INTERVIEWS에서 원하는 업체(기와·주물·벽돌) 왼쪽 아래의 **＋ 사진 추가**를 누릅니다.
+2. 기존에 허가된 편집자 이메일/비밀번호로 로그인합니다. 처음 로그인할 때만 필요하며, 같은 브라우저 탭에서는 로그인 상태가 유지됩니다.
+3. 사진을 선택하고 사진 설명 및 주석을 원할 경우 입력합니다.
+4. **사진 업로드**를 누르면 자동으로 WebP로 압축되어 Supabase Storage에 저장되며, 같은 페이지 왼쪽 사진 갤러리에 바로 나타납니다.
+5. 다른 방문자에게도 업로드한 사진이 보입니다. 편집자에게만 **삭제** 버튼이 나타납니다.
 
-## 사진 여러 장 추가하기
+일반 방문자는 로그인하지 않고 사진을 볼 수 있습니다. 사진 업로드는 허용된 편집자만 할 수 있습니다.
 
-1. GitHub 저장소의 \`assets/interviews/photos/\` 아래에 사진 파일을 업로드합니다. 폴더는 업로드하면서 새로 만들어도 됩니다. PNG, JPEG, WebP 사용 가능.
-2. [interviews-data.json](./interviews-data.json)을 GitHub에서 열고, 수정할 업체의 **\`images\` 배열**에 항목을 추가합니다.
-3. 저장하면 다음 배포에서 사진이 왼쪽 갤러리에 나타납니다. 사진을 누르면 확대해서 볼 수 있습니다. 본문이나 CSS를 건드릴 필요가 없습니다.
+### 사진 업로드 제한
 
-예를 들어 **고령기와**의 \`images\`를 다음과 같이 수정할 수 있습니다:
+- 파일 형식: JPG, PNG, WebP, AVIF (브라우저에서 열 수 있는 이미지)
+- 원본 이미지: 최대 18MB
+- 저장 파일: WebP 3MB 이하로 변환, 긴 변 최대 1800px (크기에 따라 더 줄일 수 있음)
+- 사진 크기는 사이트가 자동으로 줄입니다. 아이콘과 원래 전시 이미지의 파일은 변경하지 않습니다.
+- 대용량이거나 브라우저에서 읽을 수 없는 이미지는 저장되지 않습니다.
+- 편집자 비밀번호/관리자 키는 사이트 코드에 저장되지 않습니다. 인증은 Supabase Auth에 위임합니다.
 
-\`\`\`json
-"images": [
-  {
-    "src": "assets/archive/tiles-photo.webp",
-    "alt": "기와 제작 기록",
-    "caption": ""
-  },
-  {
-    "src": "assets/interviews/photos/goryeong-kiln.webp",
-    "alt": "고령기와의 가마",
-    "caption": "가마 내부 기록"
-  },
-  {
-    "src": "assets/interviews/photos/goryeong-tools.webp",
-    "alt": "기와 제작 도구",
-    "caption": "제작 도구"
-  }
-]
-\`\`\`
+**저장소:** \`hetero-interview-photos\` (Supabase Storage, 별도 공개 읽기 저장소)
 
-- **\`src\`**: 파일 경로 (웹사이트 루트 기준, 앞에 \`/\`를 붙이지 마세요).
-- **\`alt\`**: 이미지가 보이지 않을 때의 설명, 접근성용 텍스트.
-- **\`caption\`**: 사진 아래 표시할 주석. 생략하거나 빈 문자열이면 표시하지 않습니다.
-- 배열의 순서가 화면에 표시되는 순서입니다. 하나만 있어도 되고 여러 장이어도 됩니다.
-- 데스크톱은 왼쪽 세로 갤러리(첫 사진은 크게, 뒤 사진은 작은 그리드), 모바일은 작은 가로 썸네일로 배치됩니다.
-- **이미지는 사이트에서 자동 업로드되지 않습니다.** GitHub에 파일 업로드와 JSON 저장을 모두 해야 다른 방문자에게 보입니다.
+**사진 메타데이터:** \`public.hetero_interview_photos\` (Supabase PostgreSQL, 읽기 공개/쓰기 편집자만)
 
-## 아이콘 바꾸기
+**편집자 허용 목록:** \`public.hetero_interview_editors\` (현재 연결된 편집자 계정만 허용)
 
-사용자가 제공한 SVG 세 개를 그대로 저장했습니다:
+새 사진의 업로드 내역은 Supabase에 영구 보관되며, GitHub의 JSON 파일에 자동으로 저장되지는 않습니다. **일반 방문자에게는 GitHub의 기본 사진과 웹사이트에서 올린 사진이 함께 표시됩니다.**
 
-- \`assets/interviews/icons/roof.svg\` — 기와
-- \`assets/interviews/icons/cast.svg\` — 주물 난간
-- \`assets/interviews/icons/brick.svg\` — 벽돌
+## 기본 인터뷰 내용·사진·아이콘 바꾸기
 
-\`interviews-data.json\`의 \`icon\` 경로를 바꾸면 왼쪽 상단 아이콘을 교체할 수 있습니다.
+- 텍스트 내용 / 업체 정보 / 기본 사진: \`assets/interviews/interviews-data.json\`
+- 인터뷰 아이콘(원본 SVG): \`assets/interviews/icons/roof.svg\`, \`cast.svg\`, \`brick.svg\`
+- 세로형 인터뷰 레이아웃: \`interviews-scroll.css\`
+- 브라우저 내 사진 업로드 기능: \`interviews-upload.js\`
+- 인터뷰 본문 및 확대 보기: \`interviews-scroll.js\`
 
-## 인터뷰 원고 수정하기
+기존 \`images\` 배열은 **기본 자료 사진**으로 남겨둡니다. 웹사이트에서 추가한 사진과 별도로 관리됩니다. 기본 사진까지 변경하거나 삭제하려면 GitHub JSON을 수정하세요.
 
-업체 이름은 \`company\`, 일시는 \`date\`, 장소는 \`place\`, 인터뷰 대상자는 \`person\`입니다.
-
-\`turns\` 배열은 Q/A 순서를 유지합니다:
+질문과 답변의 원고는 \`turns\` 배열을 수정합니다:
 
 \`\`\`json
-{"role": "Q", "text": "질문 내용"}
-\`\`\`
-\`\`\`json
-{"role": "A", "text": "답변 내용"}
+{"role":"Q","text":"질문 내용"}
 \`\`\`
 
-텍스트와 이미지 모두 코드 수정 없이 이 JSON 파일만 편집할 수 있습니다.
+\`\`\`json
+{"role":"A","text":"답변 내용"}
+\`\`\`
+
+원고는 제공된 전시용 발췌·편집본을 기준으로 하며 전체 녹취록이 아닙니다.
