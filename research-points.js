@@ -209,14 +209,27 @@ function openEditor(point){
 function mapClick(event){
  if(event.target.closest('.research-factory-pin'))return true;
  if(!state.editing){
-  // Raster crosses do not have company IDs until a researcher links them.
-  state.selected=null;
-  panel.replaceChildren();
-  panel.append(
-   el('h2','research-factory-name','업체 정보 미등록'),
-   el('p','research-factory-note','지도에 인쇄된 기호만으로는 업체명을 확인할 수 없습니다. ‘업체 위치 입력’에서 해당 지점과 조사자료를 연결할 수 있어요.')
-  );
-  panel.hidden=false;
+  // Also make the original PNG symbols clickable, even without visible overlay
+  // pins. At a dense site, show the plausible nearby companies to choose from.
+  const nearby=visiblePoints().map(point=>{
+   const image=findImage(point.material),bounds=image?.getBoundingClientRect();
+   if(!bounds||!bounds.width||!bounds.height)return null;
+   const px=bounds.left+point.x*bounds.width;
+   const py=bounds.top+point.y*bounds.height;
+   return {point,distance:Math.hypot(event.clientX-px,event.clientY-py)};
+  }).filter(Boolean).filter(x=>x.distance<=(window.innerWidth<700?26:21));
+  nearby.sort((a,b)=>a.distance-b.distance);
+  if(nearby.length===1)selectPoint(nearby[0].point);
+  else if(nearby.length>1)showCluster(nearby.map(x=>x.point));
+  else{
+   state.selected=null;
+   panel.replaceChildren();
+   panel.append(
+    el('h2','research-factory-name','업체 정보 미등록'),
+    el('p','research-factory-note','이 위치에는 아직 연결된 업체 정보가 없습니다. ‘업체 위치 입력’에서 조사자료를 등록할 수 있습니다.')
+   );
+   panel.hidden=false;
+  }
   return true;
  }
  const sel=activeSelection();
