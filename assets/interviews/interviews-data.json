@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "source": "PART 3-1: 인터뷰 전문 발췌 — 전시용 축약 원고, 2026-11-01",
   "sourceNote": "제공된 PDF의 발췌·편집본을 수록했습니다. 전체 녹취록이 아닙니다. 질문과 답변의 원문 순서를 유지하고 중간 주제 소제목만 화면에서 생략했습니다.",
   "interviews": [
@@ -10,7 +10,6 @@
       "person": "김병주 대표",
       "date": "2026. 09. 03. 14:00",
       "place": "고령기와 고령공장",
-      "illustration": "assets/archive/tiles-photo.webp",
       "turns": [
         {
           "role": "A",
@@ -108,6 +107,14 @@
           "role": "A",
           "text": "기존에 도매와 시공을 같이 하던 기와업자들이 (수입 기와에 대한) 판권을 들고 온 거다. 라파즈 같은 경우에는 처음엔 한국에는 기와공장이 많지도 않고 기와 수요가 적지도 않으니 공장도 하나 만들어 볼까 하고 들어왔는데. 2007년도 서브프라임 모기지 당시에 기우뚱 했고 결국에는 철수까지 간 걸로 알고 있는데. 2000년 중반을 기점으로 그랬던 것 같다."
         }
+      ],
+      "icon": "assets/interviews/icons/roof.svg",
+      "images": [
+        {
+          "src": "assets/archive/tiles-photo.webp",
+          "alt": "기와 제작·재료 기록",
+          "caption": ""
+        }
       ]
     },
     {
@@ -117,7 +124,6 @@
       "person": "한정구 대표",
       "date": "2026. 08. 14. 14:00",
       "place": "정우금속 김포공장",
-      "illustration": "assets/archive/casting.webp",
       "turns": [
         {
           "role": "A",
@@ -227,6 +233,14 @@
           "role": "A",
           "text": "이렇게 조방에 붙여 놓은 걸 조방가다라고 부른다. 안 무너지고 깔끔하게 분리가 잘 되게 수평 잡아 놓은 거다. 이 문양은 양각으로 새겨지는 거고 여기 평평한 면은 안 나오는 거다. 뒷면에도 이 문양이 붙어 있다. 흙에 새기면 이것만 음각으로 다 잡힌다. 그렇게 씌우게 되면 조방 두께는 없어져 버리고 여기만 빈 공간이 감춰져 있다. 거기에 이곳으로 쇳물 집어넣으면 그로 흘러서 문양만 나오는 거다. 발로 흙을 다지면 이거 반쪽만 딱 새겨진다. 이것도 반대쪽도 뒤집어서 발로 다지면 반쪽만 딱 새겨진다. 그걸 합치면 양면이 나오는 거다."
         }
+      ],
+      "icon": "assets/interviews/icons/cast.svg",
+      "images": [
+        {
+          "src": "assets/archive/casting.webp",
+          "alt": "주물 제작·재료 기록",
+          "caption": ""
+        }
       ]
     },
     {
@@ -236,7 +250,6 @@
       "person": "민대홍 대표",
       "date": "2026. 07. 23. 14:00",
       "place": "청화요업 홍성공장",
-      "illustration": "assets/archive/brick-factory.webp",
       "turns": [
         {
           "role": "A",
@@ -322,7 +335,16 @@
           "role": "A",
           "text": "사람이 (단가마에서) 15,000장을 뽑는다 그러면 터널킬른으로 하게 되면 4만에서 6만 장을 만드는 거다."
         }
+      ],
+      "icon": "assets/interviews/icons/brick.svg",
+      "images": [
+        {
+          "src": "assets/archive/brick-factory.webp",
+          "alt": "벽돌 제작·재료 기록",
+          "caption": ""
+        }
       ]
     }
-  ]
+  ],
+  "imageGuide": "각 인터뷰의 images 배열에 {src, alt, caption} 항목을 추가하면 왼쪽 갤러리에 사진이 순서대로 나타납니다. caption은 선택 항목입니다."
 }
