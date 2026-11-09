@@ -45,16 +45,87 @@ function visiblePoints(){
 function findImage(){
  return $('#research-map-art .research-map-stack .research-map-base');
 }
+
+/* Nearby DXF points often occupy the same few screen pixels around Seoul.
+   Cluster by RENDERED distance so every linked company remains reachable. */
+function clusterByScreenDistance(projected,radius){
+ const parent=projected.map((_,i)=>i);
+ function root(i){while(parent[i]!==i){parent[i]=parent[parent[i]];i=parent[i]}return i}
+ function join(a,b){const ra=root(a),rb=root(b);if(ra!==rb)parent[rb]=ra}
+ for(let i=0;i<projected.length;i++){
+  for(let j=i+1;j<projected.length;j++){
+   const dx=projected[i].left-projected[j].left;
+   const dy=projected[i].top-projected[j].top;
+   if(dx*dx+dy*dy<=radius*radius)join(i,j);
+  }
+ }
+ const groups=new Map();
+ projected.forEach((item,i)=>{
+  const key=root(i);
+  if(!groups.has(key))groups.set(key,[]);
+  groups.get(key).push(item);
+ });
+ return [...groups.values()];
+}
+function pointNumber(point){
+ const matched=String(point.id).match(/(\d+)$/);
+ return matched?matched[1].padStart(2,'0'):'·';
+}
+function showCluster(points){
+ state.selected=null;
+ panel.replaceChildren();
+ const top=el('div','research-factory-summary');
+ const title=el('h2','research-factory-name',points.length+'곳의 업체');
+ const close=el('button','research-factory-close','×');
+ close.type='button';close.setAttribute('aria-label','목록 닫기');
+ close.addEventListener('click',()=>{panel.hidden=true});
+ top.append(title,close);
+ const hint=el('p','research-factory-subtitle','가까운 지점에 기록된 업체입니다. 이름을 누르면 상세 정보가 열립니다.');
+ const list=el('div','research-factory-cluster-list');
+ points.slice().sort((a,b)=>pointNumber(a).localeCompare(pointNumber(b),'ko')).forEach(point=>{
+  const button=el('button','research-factory-cluster-entry');
+  button.type='button';
+  button.append(el('span','research-factory-cluster-index',pointNumber(point)),
+    el('span','research-factory-cluster-name',point.name));
+  button.setAttribute('aria-label',point.name+' 업체 정보 보기');
+  button.addEventListener('click',()=>selectPoint(point));
+  list.append(button);
+ });
+ panel.append(top,hint,list);
+ panel.hidden=false;
+}
 function positionPins(){
  const wrap=$('#research-map-art .research-factory-pins'),image=findImage();
  if(!wrap||!image)return;
  const bounds=image.getBoundingClientRect(),root=wrap.getBoundingClientRect();
  if(!bounds.width||!bounds.height||!root.width)return;
- wrap.querySelectorAll('[data-point-id]').forEach(pin=>{
-  const p=state.points.find(x=>x.id===pin.dataset.pointId);
-  if(!p)return;
-  pin.style.left=(bounds.left-root.left+p.x*bounds.width)+'px';
-  pin.style.top=(bounds.top-root.top+p.y*bounds.height)+'px';
+ const projected=visiblePoints().map(point=>({
+  point,
+  left:bounds.left-root.left+point.x*bounds.width,
+  top:bounds.top-root.top+point.y*bounds.height
+ }));
+ const clusters=clusterByScreenDistance(projected,28);
+ wrap.replaceChildren();
+ clusters.forEach(group=>{
+  const points=group.map(x=>x.point);
+  const left=group.reduce((s,x)=>s+x.left,0)/group.length;
+  const top=group.reduce((s,x)=>s+x.top,0)/group.length;
+  const clustered=group.length>1;
+  const button=el('button','research-factory-pin'+(clustered?' is-cluster':''),
+    clustered?String(group.length):'');
+  button.type='button';
+  button.dataset.material=points[0].material;
+  button.style.left=left+'px';button.style.top=top+'px';
+  if(!clustered)button.dataset.pointId=points[0].id;
+  button.title=clustered?points.length+'곳의 업체 보기':points[0].name;
+  button.setAttribute('aria-label',button.title);
+  if(state.selected&&points.some(p=>p.id===state.selected))button.classList.add('is-active');
+  button.addEventListener('click',event=>{
+   event.preventDefault();event.stopPropagation();
+   if(clustered)showCluster(points);
+   else selectPoint(points[0]);
+  });
+  wrap.append(button);
  });
 }
 function update(){
@@ -65,23 +136,19 @@ function update(){
  const layer=el('div','research-factory-pins');
  layer.setAttribute('aria-label','등록된 공장 위치');
  stack.append(layer);
- const list=visiblePoints();
- for(const point of list){
-  const button=el('button','research-factory-pin',state.points.indexOf(point)<9?'·':'·');
-  button.type='button';button.dataset.pointId=point.id;
-  button.dataset.material=point.material;
-  button.setAttribute('aria-label',point.name+' / '+point.year+'년 '+materialLabels[point.material]+'공장');
-  button.title=point.name;
-  if(state.selected===point.id)button.classList.add('is-active');
-  button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();selectPoint(point)});
-  layer.append(button);
+ const selection=activeSelection(),viewKey=selection.year+'-'+selection.material;
+ if(state.viewKey!==viewKey){
+  state.selected=null;
+  panel.hidden=true;
+  state.viewKey=viewKey;
  }
+ const list=visiblePoints();
  const image=findImage();
  if(image&&!image.complete)image.addEventListener('load',positionPins,{once:true});
  requestAnimationFrame(positionPins);
  if(state.selected&&!list.some(p=>p.id===state.selected)){
   state.selected=null;panel.hidden=true;
- } else if(state.selected){
+ }else if(state.selected){
   const point=list.find(p=>p.id===state.selected);
   if(point)showPoint(point);
  }
