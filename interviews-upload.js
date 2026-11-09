@@ -20,6 +20,12 @@ const details=$('#interview-upload-size');
 let enabled=false, mounted=false, submitting=false, current=null;
 let previewUrl=null;
 let prepared=null, preparing=false, pickVersion=0;
+let editingPhoto=null;
+let editingTurn=null;
+let editBusy=false;
+const originalTurns=new Map();
+const editedTurns=new Map();
+const keyFor=(id,index)=>id+':'+index;
 
 function create(tag,className,text){
  const element=document.createElement(tag);
@@ -52,8 +58,15 @@ function releasePreview(){
  preview.hidden=true;
 }
 function updateControls(){
- document.querySelectorAll('.interview-add-photo').forEach(button=>{
+ document.querySelectorAll('.interview-add-photo,.interview-edit-text').forEach(button=>{
   button.hidden=!enabled;
+ });
+ document.querySelectorAll('.interview-live-actions').forEach(actions=>{
+  actions.hidden=!enabled;
+ });
+ document.querySelectorAll('.interview-group').forEach(group=>{
+  group.classList.toggle('has-public-edit',enabled);
+  if(!enabled)group.classList.remove('is-editing-text');
  });
 }
 async function refreshEnabled(){
@@ -119,6 +132,16 @@ function renderPhoto(record){
  },LABELS[record.interview_id]));
  figure.append(trigger);
  if(record.caption)figure.append(create('figcaption','interview-gallery-caption',record.caption));
+ const actions=create('div','interview-live-actions');
+ actions.hidden=!enabled;
+ const edit=create('button','interview-live-action','설명 수정');
+ edit.type='button';
+ edit.addEventListener('click',()=>openPhotoEdit(record));
+ const remove=create('button','interview-live-action interview-live-delete','삭제');
+ remove.type='button';
+ remove.addEventListener('click',()=>deletePhoto(record));
+ actions.append(edit,remove);
+ figure.append(actions);
  gallery.append(figure);
 }
 async function refresh(){
@@ -128,6 +151,226 @@ async function refresh(){
   if(Array.isArray(records))records.forEach(renderPhoto);
  }catch(error){console.warn('인터뷰 사진 목록을 불러오지 못했습니다:',error)}
 }
+
+/* Temporary on-page photo caption edits and deletion.
+   Edits are limited by Supabase RLS to the currently open public-edit period. */
+function photoDialog(){return $('#interview-photo-edit-dialog')}
+function photoMessage(message,error=false){
+ const target=$('#interview-photo-edit-status');
+ target.textContent=message;
+ target.classList.toggle('is-error',error);
+}
+async function canEditNow(){
+ if(!(await refreshEnabled()))throw new Error('현재 편집 기능이 종료되어 있습니다.');
+}
+async function openPhotoEdit(record){
+ try{
+  await canEditNow();
+  editingPhoto=record;
+  $('#interview-photo-edit-alt').value=record.alt||'인터뷰 사진';
+  $('#interview-photo-edit-caption').value=record.caption||'';
+  photoMessage('');
+  photoDialog().showModal();
+ }catch(error){window.alert(error.message)}
+}
+async function savePhotoText(event){
+ event.preventDefault();
+ if(editBusy||!editingPhoto)return;
+ editBusy=true;
+ const button=$('#interview-photo-edit-form [type=submit]');
+ button.disabled=true;photoMessage('저장하고 있어요…');
+ try{
+  await canEditNow();
+  const alt=$('#interview-photo-edit-alt').value.trim().slice(0,180);
+  const caption=$('#interview-photo-edit-caption').value.trim().slice(0,300);
+  if(!alt)throw new Error('사진 설명을 입력해주세요.');
+  await api('/rest/v1/hetero_interview_photos?id=eq.'+encodeURIComponent(editingPhoto.id),{
+   method:'PATCH',
+   headers:{'Content-Type':'application/json','Prefer':'return=minimal'},
+   body:JSON.stringify({alt,caption})
+  });
+  await refresh();
+  photoDialog().close();
+ }catch(error){photoMessage('수정 실패: '+error.message,true)}
+ finally{editBusy=false;button.disabled=false}
+}
+async function deletePhoto(record){
+ if(editBusy)return;
+ if(!window.confirm('이 사진을 삭제할까요?\n삭제하면 다시 되돌릴 수 없습니다.'))return;
+ editBusy=true;
+ try{
+  await canEditNow();
+  // Database record first: avoid a broken image on the public page if a
+  // storage deletion request fails. Only Supabase-origin photos are editable.
+  await api('/rest/v1/hetero_interview_photos?id=eq.'+encodeURIComponent(record.id),{
+   method:'DELETE',
+   headers:{'Prefer':'return=minimal'}
+  });
+  let cleanupFailed=false;
+  try{
+   await api('/storage/v1/object/'+BUCKET,{
+    method:'DELETE',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prefixes:[record.storage_path]})
+   });
+  }catch(error){cleanupFailed=true;console.warn('사진 파일 정리 실패:',error)}
+  await refresh();
+  if(photoDialog()?.open)photoDialog().close();
+  if(cleanupFailed)window.alert('사진은 페이지에서 삭제됐어요. 저장소 파일 정리는 실패해서 관리자가 확인해야 합니다.');
+ }catch(error){
+  window.alert('사진 삭제 실패: '+error.message);
+ }finally{editBusy=false}
+}
+
+/* Transcript editing is a separate overlay on top of the original GitHub
+   interview JSON. Nothing rewrites or destroys the published source. */
+function textNodeFor(paragraph){
+ return [...paragraph.childNodes].find(n=>n.nodeType===Node.TEXT_NODE)||null;
+}
+function paragraphFor(id,index){
+ const section=document.getElementById(id);
+ return section?.querySelectorAll('.interview-turn')[index]||null;
+}
+function updateTranscriptParagraph(id,index,text){
+ const paragraph=paragraphFor(id,index);
+ const node=paragraph?textNodeFor(paragraph):null;
+ if(node)node.textContent=text;
+ paragraph?.classList.toggle('has-archive-edit',editedTurns.has(keyFor(id,index)));
+}
+async function loadTranscriptEdits(){
+ const base=await fetch('assets/interviews/interviews-data.json',{cache:'no-cache'});
+ if(!base.ok)throw new Error('인터뷰 원문을 불러오지 못했습니다.');
+ const data=await base.json();
+ (data.interviews||[]).forEach(entry=>{
+  (entry.turns||[]).forEach((turn,index)=>{
+   originalTurns.set(keyFor(entry.id,index),String(turn.text||''));
+  });
+ });
+ const rows=await api('/rest/v1/hetero_interview_turn_edits?select=interview_id,turn_index,content');
+ if(!Array.isArray(rows))return;
+ editedTurns.clear();
+ rows.forEach(record=>{
+  const key=keyFor(record.interview_id,record.turn_index);
+  if(!originalTurns.has(key))return;
+  editedTurns.set(key,String(record.content));
+  updateTranscriptParagraph(record.interview_id,record.turn_index,String(record.content));
+ });
+}
+function makeTextEditButtons(){
+ document.querySelectorAll('.interview-group').forEach(group=>{
+  const id=group.dataset.interviewId;
+  if(!VALID_IDS.has(id))return;
+  const sidebar=group.querySelector('.interview-identity');
+  if(!sidebar||sidebar.querySelector('.interview-edit-text'))return;
+  const button=create('button','interview-edit-text','본문 수정');
+  button.type='button';button.hidden=!enabled;
+  button.setAttribute('aria-pressed','false');
+  button.addEventListener('click',async()=>{
+   try{
+    await canEditNow();
+    const on=group.classList.toggle('is-editing-text');
+    button.textContent=on?'수정 종료':'본문 수정';
+    button.setAttribute('aria-pressed',String(on));
+   }catch(error){window.alert(error.message)}
+  });
+  sidebar.append(button);
+  group.querySelectorAll('.interview-turn').forEach((paragraph,index)=>{
+   paragraph.dataset.turnIndex=String(index);
+   const change=create('button','interview-edit-turn','수정');
+   change.type='button';change.setAttribute('aria-label',(index+1)+'번째 문장 수정');
+   change.addEventListener('click',()=>openTurnEdit(id,index));
+   paragraph.append(change);
+  });
+ });
+}
+function turnMessage(message,error=false){
+ const target=$('#interview-turn-edit-status');
+ target.textContent=message;
+ target.classList.toggle('is-error',Boolean(error));
+}
+function turnDialog(){return $('#interview-turn-edit-dialog')}
+async function openTurnEdit(id,index){
+ try{
+  await canEditNow();
+  const key=keyFor(id,index);
+  const original=originalTurns.get(key);
+  if(original===undefined)throw new Error('인터뷰 원문을 확인할 수 없습니다.');
+  editingTurn={id,index};
+  $('#interview-turn-edit-content').value=editedTurns.get(key)??original;
+  const paragraph=paragraphFor(id,index);
+  $('#interview-turn-edit-context').textContent=LABELS[id]+' · '+(paragraph?.classList.contains('is-question')?'질문':'답변')+' '+(index+1);
+  $('#interview-turn-restore').hidden=!editedTurns.has(key);
+  turnMessage('');
+  turnDialog().showModal();
+ }catch(error){window.alert(error.message)}
+}
+async function saveTurnText(event){
+ event.preventDefault();
+ if(editBusy||!editingTurn)return;
+ editBusy=true;
+ const button=$('#interview-turn-edit-form [type=submit]');
+ button.disabled=true;turnMessage('저장하고 있어요…');
+ try{
+  await canEditNow();
+  const {id,index}=editingTurn;
+  const content=$('#interview-turn-edit-content').value.trim();
+  if(!content||content.length>4500)throw new Error('본문은 1~4500자로 입력해주세요.');
+  const key=keyFor(id,index);
+  const target='/rest/v1/hetero_interview_turn_edits';
+  if(editedTurns.has(key)){
+   await api(target+'?interview_id=eq.'+id+'&turn_index=eq.'+index,{
+    method:'PATCH',
+    headers:{'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({content,edited_at:new Date().toISOString()})
+   });
+  }else{
+   await api(target,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({interview_id:id,turn_index:index,content})
+   });
+  }
+  editedTurns.set(key,content);
+  updateTranscriptParagraph(id,index,content);
+  turnDialog().close();
+ }catch(error){turnMessage('저장 실패: '+error.message,true)}
+ finally{editBusy=false;button.disabled=false}
+}
+async function restoreTurn(){
+ if(editBusy||!editingTurn)return;
+ editBusy=true;
+ const button=$('#interview-turn-restore');
+ button.disabled=true;turnMessage('원문을 복원하고 있어요…');
+ try{
+  await canEditNow();
+  const {id,index}=editingTurn;
+  const key=keyFor(id,index),original=originalTurns.get(key);
+  if(original===undefined)throw new Error('원문을 찾을 수 없습니다.');
+  if(editedTurns.has(key)){
+   await api('/rest/v1/hetero_interview_turn_edits?interview_id=eq.'+id+'&turn_index=eq.'+index,{
+    method:'DELETE',
+    headers:{'Prefer':'return=minimal'}
+   });
+  }
+  editedTurns.delete(key);
+  updateTranscriptParagraph(id,index,original);
+  turnDialog().close();
+ }catch(error){turnMessage('복원 실패: '+error.message,true)}
+ finally{editBusy=false;button.disabled=false}
+}
+function bindContentEditors(){
+ $('#interview-photo-edit-form').addEventListener('submit',savePhotoText);
+ $('#interview-photo-edit-close').addEventListener('click',()=>{if(!editBusy)photoDialog().close()});
+ $('#interview-photo-delete').addEventListener('click',()=>{
+  if(editingPhoto){const photo=editingPhoto;photoDialog().close();deletePhoto(photo)}
+ });
+ photoDialog().addEventListener('cancel',event=>{if(editBusy)event.preventDefault()});
+ $('#interview-turn-edit-form').addEventListener('submit',saveTurnText);
+ $('#interview-turn-edit-close').addEventListener('click',()=>{if(!editBusy)turnDialog().close()});
+ $('#interview-turn-restore').addEventListener('click',restoreTurn);
+ turnDialog().addEventListener('cancel',event=>{if(editBusy)event.preventDefault()});
+}
+
 async function normalize(file){
  if(!file||!['image/jpeg','image/png','image/webp','image/avif'].includes(file.type)){
   throw new Error('JPG, PNG, WebP 또는 AVIF 사진을 선택해주세요.');
@@ -221,9 +464,8 @@ async function upload(event){
    headers:{'Content-Type':'image/webp','x-upsert':'false','cache-control':'3600'},
    body:blob
   });
-  // Deliberately no client-side login: created_by is NULL for anon entries.
-  // Storage & database RLS independently check whether temporary uploads
-  // are still open. Anonymous users are not permitted to DELETE photos.
+  // All public edits (including deletion of previously uploaded images)
+  // are gated by the same server-side temporary editor switch.
   try{
    await api('/rest/v1/hetero_interview_photos',{
     method:'POST',
@@ -251,8 +493,11 @@ function mount(){
  if(mounted)return;
  mounted=true;
  makeUploadButtons();
+ makeTextEditButtons();
+ bindContentEditors();
  refreshEnabled();
  refresh();
+ loadTranscriptEdits().catch(error=>console.warn('인터뷰 편집 기록을 불러오지 못했습니다:',error));
  $('#interview-upload-close')?.addEventListener('click',()=>{if(!submitting)dlg.close()});
  dlg.addEventListener('cancel',event=>{if(submitting)event.preventDefault()});
  dlg.addEventListener('click',event=>{if(event.target===dlg&&!submitting)dlg.close()});
