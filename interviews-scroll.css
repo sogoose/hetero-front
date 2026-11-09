@@ -429,3 +429,14 @@ body{background:#fff;color:#292924}
  .interview-add-photo{font-size:10px!important;margin-top:17px!important}
  .interview-upload-dialog{padding:23px!important}
 }
+
+/* Image optimization feedback in the uploader. */
+.interview-upload-preview[hidden]{display:none!important}
+.interview-upload-size{
+ margin:-7px 0 1px!important;
+ padding:0!important;
+ font:500 11px/1.5 Pretendard,-apple-system,sans-serif!important;
+ color:#737373!important;
+ letter-spacing:-.02em!important;
+}
+.interview-upload-size:empty{display:none!important}
