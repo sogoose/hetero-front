@@ -25,6 +25,8 @@ let editingTurn=null;
 let editBusy=false;
 const originalTurns=new Map();
 const editedTurns=new Map();
+const hiddenBasePhotos=new Set();
+const baseKey=(id,path)=>JSON.stringify([id,path]);
 const keyFor=(id,index)=>id+':'+index;
 
 function create(tag,className,text){
@@ -61,8 +63,11 @@ function updateControls(){
  document.querySelectorAll('.interview-add-photo,.interview-edit-text').forEach(button=>{
   button.hidden=!enabled;
  });
- document.querySelectorAll('.interview-live-actions').forEach(actions=>{
+ document.querySelectorAll('.interview-live-actions,.interview-base-actions').forEach(actions=>{
   actions.hidden=!enabled;
+ });
+ document.querySelectorAll('.interview-base-restore-list').forEach(list=>{
+  list.hidden=!enabled || list.childElementCount===0;
  });
  document.querySelectorAll('.interview-group').forEach(group=>{
   group.classList.toggle('has-public-edit',enabled);
@@ -150,6 +155,105 @@ async function refresh(){
   document.querySelectorAll('.interview-live-photo').forEach(node=>node.remove());
   if(Array.isArray(records))records.forEach(renderPhoto);
  }catch(error){console.warn('인터뷰 사진 목록을 불러오지 못했습니다:',error)}
+}
+
+
+/* Git-based photos are immutable from a public static page. Persist a
+   server-side hide overlay instead of exposing GitHub credentials or deleting
+   source files. An original can be restored while public editing is open. */
+function installBasePhotoControls(){
+ document.querySelectorAll('.interview-base-photo').forEach(figure=>{
+  const id=figure.dataset.baseInterview;
+  const src=figure.dataset.baseSrc;
+  if(!VALID_IDS.has(id)||!src?.startsWith('assets/')||figure.querySelector('.interview-base-actions'))return;
+  const actions=create('div','interview-base-actions interview-live-actions');
+  actions.hidden=!enabled;
+  const remove=create('button','interview-live-action interview-base-remove','삭제');
+  remove.type='button';
+  remove.setAttribute('aria-label','기본 사진을 사이트에서 삭제');
+  remove.addEventListener('click',()=>hideBasePhoto(id,src));
+  actions.append(remove);
+  figure.append(actions);
+ });
+ document.querySelectorAll('.interview-group').forEach(group=>{
+  const aside=group.querySelector('.interview-identity');
+  if(!aside||aside.querySelector('.interview-base-restore-list'))return;
+  const list=create('div','interview-base-restore-list');
+  list.hidden=true;
+  const uploadButton=aside.querySelector('.interview-add-photo');
+  if(uploadButton)aside.insertBefore(list,uploadButton);
+  else aside.append(list);
+ });
+}
+function updateBasePhotoVisibility(){
+ document.querySelectorAll('.interview-base-photo').forEach(figure=>{
+  const key=baseKey(figure.dataset.baseInterview,figure.dataset.baseSrc);
+  figure.hidden=hiddenBasePhotos.has(key);
+ });
+ document.querySelectorAll('.interview-group').forEach(group=>{
+  const aside=group.querySelector('.interview-identity');
+  const list=aside?.querySelector('.interview-base-restore-list');
+  if(!list)return;
+  list.replaceChildren();
+  group.querySelectorAll('.interview-base-photo').forEach(figure=>{
+   const id=figure.dataset.baseInterview,src=figure.dataset.baseSrc;
+   if(!hiddenBasePhotos.has(baseKey(id,src)))return;
+   const button=create('button','interview-base-restore','기본 사진 복원');
+   button.type='button';
+   button.setAttribute('aria-label',LABELS[id]+' 숨긴 기본 사진 복원');
+   button.title=src;
+   button.addEventListener('click',()=>restoreBasePhoto(id,src));
+   list.append(button);
+  });
+  list.hidden=!enabled||list.childElementCount===0;
+ });
+}
+async function refreshHiddenBase(){
+ try{
+  const rows=await api('/rest/v1/hetero_interview_hidden_base_photos?select=interview_id,image_path');
+  if(!Array.isArray(rows))return;
+  hiddenBasePhotos.clear();
+  rows.forEach(row=>{
+   if(VALID_IDS.has(row.interview_id)&&typeof row.image_path==='string'){
+    hiddenBasePhotos.add(baseKey(row.interview_id,row.image_path));
+   }
+  });
+  updateBasePhotoVisibility();
+ }catch(error){
+  console.warn('기본 사진 숨김 상태를 불러오지 못했습니다:',error);
+ }
+}
+async function hideBasePhoto(id,src){
+ if(!VALID_IDS.has(id)||!src?.startsWith('assets/')||editBusy)return;
+ if(!window.confirm('이 기본 사진을 사이트에서 삭제할까요?\nGitHub 원본은 남고, 나중에 복원할 수 있어요.'))return;
+ editBusy=true;
+ try{
+  await canEditNow();
+  await api('/rest/v1/hetero_interview_hidden_base_photos',{
+   method:'POST',
+   headers:{'Content-Type':'application/json','Prefer':'return=minimal'},
+   body:JSON.stringify({interview_id:id,image_path:src})
+  });
+  hiddenBasePhotos.add(baseKey(id,src));
+  updateBasePhotoVisibility();
+ }catch(error){
+  window.alert('기본 사진 삭제 실패: '+error.message);
+ }finally{editBusy=false}
+}
+async function restoreBasePhoto(id,src){
+ if(!VALID_IDS.has(id)||!src?.startsWith('assets/')||editBusy)return;
+ editBusy=true;
+ try{
+  await canEditNow();
+  await api('/rest/v1/hetero_interview_hidden_base_photos?interview_id=eq.'+
+   encodeURIComponent(id)+'&image_path=eq.'+encodeURIComponent(src),{
+   method:'DELETE',headers:{'Prefer':'return=minimal'}
+  });
+  hiddenBasePhotos.delete(baseKey(id,src));
+  updateBasePhotoVisibility();
+ }catch(error){
+  window.alert('기본 사진 복원 실패: '+error.message);
+ }finally{editBusy=false}
 }
 
 /* Temporary on-page photo caption edits and deletion.
@@ -495,10 +599,12 @@ function mount(){
  if(mounted)return;
  mounted=true;
  makeUploadButtons();
+ installBasePhotoControls();
  makeTextEditButtons();
  bindContentEditors();
  refreshEnabled();
  refresh();
+ refreshHiddenBase();
  loadTranscriptEdits().catch(error=>console.warn('인터뷰 편집 기록을 불러오지 못했습니다:',error));
  $('#interview-upload-close')?.addEventListener('click',()=>{if(!submitting)dlg.close()});
  dlg.addEventListener('cancel',event=>{if(submitting)event.preventDefault()});
