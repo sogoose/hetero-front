@@ -75,7 +75,7 @@ function update(){
  const index=activeIndex();
  position.textContent=String(index+1).padStart(2,'0')+' / '+String(sections.length).padStart(2,'0');
  previous.disabled=index===0&&viewport.scrollTop<=5;
- next.disabled=index===sections.length-1&&viewport.scrollTop>=limit-5;
+ next.disabled=index===sections.length-1;
  nav.forEach((btn,i)=>{
   const active=i===index;
   btn.classList.toggle('is-current',active);
