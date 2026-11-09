@@ -1,54 +1,55 @@
 # INTERVIEWS / 편집 안내
 
-[웹사이트 바로가기](https://sogoose.github.io/hetero-front/interviews.html)
+[인터뷰 페이지](https://sogoose.github.io/hetero-front/interviews.html)
 
-## 웹사이트에서 사진 업로드하기
+## 로그인 없이 사진 업로드
 
-이제 **GitHub에 사진을 직접 올리거나 JSON을 수정하지 않아도 됩니다.**
+각 인터뷰의 왼쪽 **＋ 사진 추가**를 누르면 바로 파일을 선택할 수 있습니다.
 
-1. INTERVIEWS에서 원하는 업체(기와·주물·벽돌) 왼쪽 아래의 **＋ 사진 추가**를 누릅니다.
-2. 기존에 허가된 편집자 이메일/비밀번호로 로그인합니다. 처음 로그인할 때만 필요하며, 같은 브라우저 탭에서는 로그인 상태가 유지됩니다.
-3. 사진을 선택하고 사진 설명 및 주석을 원할 경우 입력합니다.
-4. **사진 업로드**를 누르면 자동으로 WebP로 압축되어 Supabase Storage에 저장되며, 같은 페이지 왼쪽 사진 갤러리에 바로 나타납니다.
-5. 다른 방문자에게도 업로드한 사진이 보입니다. 편집자에게만 **삭제** 버튼이 나타납니다.
+1. 기와·주물·벽돌 중 사진을 넣을 인터뷰로 이동합니다.
+2. **＋ 사진 추가** 클릭 → 사진 파일 선택
+3. 필요하면 사진 설명 / 주석 입력
+4. **사진 업로드** 클릭. 자동 WebP 최적화 후 왼쪽 갤러리에 즉시 표시되며 다른 방문자도 볼 수 있습니다.
 
-일반 방문자는 로그인하지 않고 사진을 볼 수 있습니다. 사진 업로드는 허용된 편집자만 할 수 있습니다.
+GitHub에 파일을 올리거나 JSON을 수정하거나 편집자 계정으로 로그인할 필요가 없습니다.
 
-### 사진 업로드 제한
+**중요:** 로그인 없이 업로드를 열어둔 동안에는 해당 페이지에 방문한 누구나 사진을 추가할 수 있습니다. 따라서 이 설정은 전시 준비를 위한 **임시 공개 편집 모드**입니다. 안전을 위해 삭제는 공개하지 않았습니다. 업로드한 사진을 삭제해야 하면 관리자가 Supabase에서 삭제해야 합니다.
 
-- 파일 형식: JPG, PNG, WebP, AVIF (브라우저에서 열 수 있는 이미지)
-- 원본 이미지: 최대 18MB
-- 저장 파일: WebP 3MB 이하로 변환, 긴 변 최대 1800px (크기에 따라 더 줄일 수 있음)
-- 사진 크기는 사이트가 자동으로 줄입니다. 아이콘과 원래 전시 이미지의 파일은 변경하지 않습니다.
-- 대용량이거나 브라우저에서 읽을 수 없는 이미지는 저장되지 않습니다.
-- 편집자 비밀번호/관리자 키는 사이트 코드에 저장되지 않습니다. 인증은 Supabase Auth에 위임합니다.
+### 저장 제한
 
-**저장소:** \`hetero-interview-photos\` (Supabase Storage, 별도 공개 읽기 저장소)
+- JPG / PNG / WebP / AVIF 사진만 지원
+- 원본 최대 18MB, 자동 변환된 WebP 최대 3MB
+- 인터뷰별 사진 최대 **30개** (서버에서 제한)
+- 업로드한 사진은 별도 Supabase Storage 버킷에 저장됩니다.
+- 기존 PDF 인터뷰 원고, 아이콘, 기존 JSON 사진은 변경하지 않습니다.
 
-**사진 메타데이터:** \`public.hetero_interview_photos\` (Supabase PostgreSQL, 읽기 공개/쓰기 편집자만)
+## 사진 업로드 닫기 — EDIT 제거 시 필수
 
-**편집자 허용 목록:** \`public.hetero_interview_editors\` (현재 연결된 편집자 계정만 허용)
+사이트의 버튼을 삭제하는 것만으로는 외부 업로드가 차단되지 않습니다. 다음 **서버 설정을 반드시 꺼야** 합니다.
 
-새 사진의 업로드 내역은 Supabase에 영구 보관되며, GitHub의 JSON 파일에 자동으로 저장되지는 않습니다. **일반 방문자에게는 GitHub의 기본 사진과 웹사이트에서 올린 사진이 함께 표시됩니다.**
+Supabase → SQL Editor:
 
-## 기본 인터뷰 내용·사진·아이콘 바꾸기
+```sql
+update public.hetero_interview_upload_settings
+set uploads_enabled = false
+where id = 1;
+```
 
-- 텍스트 내용 / 업체 정보 / 기본 사진: \`assets/interviews/interviews-data.json\`
-- 인터뷰 아이콘(원본 SVG): \`assets/interviews/icons/roof.svg\`, \`cast.svg\`, \`brick.svg\`
-- 세로형 인터뷰 레이아웃: \`interviews-scroll.css\`
-- 브라우저 내 사진 업로드 기능: \`interviews-upload.js\`
-- 인터뷰 본문 및 확대 보기: \`interviews-scroll.js\`
+그러면 웹사이트에서 **＋ 사진 추가**가 보이지 않고, 직접 API를 이용한 비로그인 업로드도 Storage·데이터베이스 정책에서 차단됩니다. 이미 등록된 사진은 계속 열람할 수 있습니다.
 
-기존 \`images\` 배열은 **기본 자료 사진**으로 남겨둡니다. 웹사이트에서 추가한 사진과 별도로 관리됩니다. 기본 사진까지 변경하거나 삭제하려면 GitHub JSON을 수정하세요.
+다시 열어야 한다면 같은 필드를 `true`로 바꿉니다. 현재는 **true**입니다.
 
-질문과 답변의 원고는 \`turns\` 배열을 수정합니다:
+관련 설정·저장소:
 
-\`\`\`json
-{"role":"Q","text":"질문 내용"}
-\`\`\`
+- `public.hetero_interview_upload_settings` — 공개 업로드 활성화 및 최대 사진 수
+- `public.hetero_interview_photos` — 사진 주석과 소속 인터뷰
+- `hetero-interview-photos` — 실제 WebP 사진 저장소
 
-\`\`\`json
-{"role":"A","text":"답변 내용"}
-\`\`\`
+## 기본 인터뷰 원고 및 사진 편집
 
-원고는 제공된 전시용 발췌·편집본을 기준으로 하며 전체 녹취록이 아닙니다.
+- `assets/interviews/interviews-data.json` — 기본 텍스트·업체 정보·아이콘·기본 사진
+- `interviews-scroll.css` — 인터뷰 조판
+- `interviews-upload.js` — 로그인 없는 사진 업로드와 읽기
+- `interviews-scroll.js` — 인터뷰 표시·스크롤·확대
+
+기본 인터뷰는 **기와 → 주물 → 벽돌** 순서입니다. 원문 데이터에서 질문은 `{"role":"Q","text":"..."}`, 답변은 `{"role":"A","text":"..."}`로 기록합니다.
