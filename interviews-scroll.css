@@ -590,3 +590,37 @@ body{background:#fff;color:#292924}
  .interview-edit-turn{font-size:9px!important}
  .interview-group .interview-gallery-caption{font-size:10px!important}
 }
+
+
+/* Original GitHub interview photos: removable from the published site,
+   restorable without deleting the image from repository history. */
+.interview-group .interview-base-photo[hidden]{
+ display:none!important;
+}
+.interview-group .interview-base-actions{
+ display:flex!important;align-items:center;
+ gap:12px;margin-top:8px;
+}
+.interview-group .interview-base-actions[hidden]{
+ display:none!important;
+}
+.interview-base-restore-list{
+ display:flex;flex-direction:column;align-items:flex-start;
+ gap:8px;margin:15px 0 0;
+}
+.interview-base-restore-list[hidden]{
+ display:none!important;
+}
+.interview-base-restore{
+ appearance:none;display:inline-block;
+ margin:0!important;padding:3px 0!important;
+ background:transparent!important;
+ border:0!important;border-bottom:1px solid #b6b6b6!important;
+ border-radius:0!important;box-shadow:none!important;
+ color:#777!important;
+ font:500 11px/1.45 Pretendard,-apple-system,sans-serif!important;
+ cursor:pointer;
+}
+.interview-base-restore:hover{
+ color:#303030!important;border-bottom-color:#303030!important;
+}
