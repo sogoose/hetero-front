@@ -54,7 +54,9 @@ function renderInterview(record,index){
  photos.forEach((photo,index)=>{
   const value=typeof photo==='string'?{src:photo}:photo;
   if(!value||typeof value.src!=='string'||!value.src.trim())return;
-  const figure=element('figure','interview-gallery-item');
+  const figure=element('figure','interview-gallery-item interview-base-photo');
+  figure.dataset.baseSrc=value.src;
+  figure.dataset.baseInterview=record.id;
   const btn=element('button','interview-gallery-open');
   btn.type='button';
   btn.setAttribute('aria-label',record.company+' 사진 '+(index+1)+' 확대');
