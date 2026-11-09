@@ -96,6 +96,7 @@ function openImage(photo,company){
  caption.hidden=!photo.caption;
  dlg.showModal();
 }
+window.InterviewArchivePhoto={openImage};
 function activeIndex(){
  if(!sections.length)return 0;
  const marker=viewport.scrollTop+Math.min(viewport.clientHeight*.31,220);
@@ -175,6 +176,7 @@ async function init(){
   if(!Array.isArray(data.interviews)||data.interviews.length!==3)throw new Error('인터뷰 자료 구조 오류');
   host.replaceChildren();
   data.interviews.forEach(renderInterview);
+  window.InterviewPhotoUpload?.mount();
   const hash=decodeURIComponent(location.hash.slice(1));
   const index=sections.findIndex(section=>section.id===hash);
   if(index>=0)jump(index,false);
