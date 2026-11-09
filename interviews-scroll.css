@@ -624,3 +624,16 @@ body{background:#fff;color:#292924}
 .interview-base-restore:hover{
  color:#303030!important;border-bottom-color:#303030!important;
 }
+
+/* Four interview shortcuts; avoid crowding the fixed mobile dock. */
+@media(max-width:700px){
+ .interview-section-nav{gap:7px!important}
+ .interview-section-nav button{font-size:9.5px!important}
+ .interview-section-nav button[data-interview-id="gangbuk"]{letter-spacing:-.045em}
+ .interview-center-controls{gap:0!important}
+}
+@media(max-width:390px){
+ .interview-section-nav{gap:5px!important}
+ .interview-center-controls>.icon-button{width:22px!important}
+ .interview-section-nav button{font-size:9px!important}
+}
