@@ -149,18 +149,30 @@ function setMap(index){
    :'';
  }
  mapArt.replaceChildren();
+ mapArt.dataset.material=map.id;
+ mapArt.dataset.year=String(state.year);
+ mapArt.setAttribute('aria-label',state.year+'년 '+(map.label||map.id)+' 공장 분포 지도');
  mapArt.append(layeredMap(state.data.mapBase,layers,false));
  mapArt.classList.toggle('is-zoomable',layers.length>0);
  window.ResearchPoints?.update();
- [...mapControls.querySelectorAll('button')].forEach((btn,i)=>{
-  const active=i===state.map;
-  const available=mapAvailable(list[i],state.year);
-  btn.disabled=!available&&!state.data.mapYears.some(y=>mapAvailable(list[i],y));
+ // Buttons are displayed in material order (brick / cast / tile), which is
+ // deliberately different from the JSON data order. Resolve by stable ID.
+ [...mapControls.querySelectorAll('button')].forEach(btn=>{
+  const buttonMap=list.find(item=>item.id===btn.dataset.material);
+  if(!buttonMap)return;
+  const active=buttonMap.id===map.id;
+  const available=mapAvailable(buttonMap,state.year);
+  const availableAnyYear=state.data.mapYears.some(y=>mapAvailable(buttonMap,y));
+  btn.disabled=!availableAnyYear;
   btn.setAttribute('aria-pressed',String(active));
   const mark=btn.querySelector('.research-map-choice-mark');
   if(mark)mark.textContent=state.year===1991?'○':'＋';
-  btn.title=available?state.year+'년 '+list[i].label+' 지도':'자료 미등록 · '+state.year+'년 '+list[i].label;
-  btn.setAttribute('aria-label',available?state.year+'년 '+list[i].label:state.year+'년 '+list[i].label+' 지도 자료 없음');
+  const label=buttonMap.label||buttonMap.id;
+  const availableYear=state.data.mapYears.find(y=>mapAvailable(buttonMap,y));
+  btn.title=available?state.year+'년 '+label+' 지도'
+   :availableYear?label+' 지도는 '+availableYear+'년에만 있습니다.'
+   :'자료 미등록 · '+label;
+  btn.setAttribute('aria-label',btn.title);
  });
  [...yearControls.querySelectorAll('button')].forEach(btn=>{
   const active=Number(btn.dataset.year)===state.year;
