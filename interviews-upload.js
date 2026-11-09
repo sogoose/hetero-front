@@ -273,7 +273,9 @@ function makeTextEditButtons(){
     button.setAttribute('aria-pressed',String(on));
    }catch(error){window.alert(error.message)}
   });
-  sidebar.append(button);
+  const head=sidebar.querySelector('.interview-identity-head');
+  if(head)head.insertAdjacentElement('afterend',button);
+  else sidebar.prepend(button);
   group.querySelectorAll('.interview-turn').forEach((paragraph,index)=>{
    paragraph.dataset.turnIndex=String(index);
    const change=create('button','interview-edit-turn','수정');
