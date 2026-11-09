@@ -4,7 +4,7 @@
 html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
 .material-main{
  position:fixed;inset:0;width:100%;height:100dvh;min-height:0;
- background:#faf9f5;color:#292924;font-family:Pretendard,-apple-system,sans-serif;
+ background:#ffffff;color:#292924;font-family:Pretendard,-apple-system,sans-serif;
  overflow:hidden;isolation:isolate;
 }
 .material-main::before{
@@ -25,8 +25,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  content:"";position:absolute;top:0;bottom:0;width:clamp(28px,5vw,85px);
  pointer-events:none;z-index:4;
 }
-.material-window::before{left:0;background:linear-gradient(90deg,#faf9f5 0%,rgba(250,249,245,0) 100%)}
-.material-window::after{right:0;background:linear-gradient(270deg,#faf9f5 0%,rgba(250,249,245,0) 100%)}
+.material-window::before{left:0;background:linear-gradient(90deg,#ffffff 0%,rgba(255,255,255,0) 100%)}
+.material-window::after{right:0;background:linear-gradient(270deg,#ffffff 0%,rgba(255,255,255,0) 100%)}
 .material-strip{
  position:absolute;top:0;left:0;height:100%;min-width:100%;will-change:transform;
  background:transparent;transform:translate3d(0,0,0);
@@ -163,7 +163,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  padding:27px clamp(25px,4vw,46px) 35px;
  overflow-y:auto;overscroll-behavior:contain;
  border:1px solid #d8d5cc!important;border-radius:0!important;
- background:#faf9f5!important;color:#292923!important;
+ background:#ffffff!important;color:#292923!important;
  box-shadow:0 15px 80px #1c1c192b!important;
  font-family:Pretendard,-apple-system,sans-serif;
 }
@@ -294,7 +294,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  margin:0!important;
  border:1px solid rgba(66,65,57,.18);
  border-radius:0;
- background:rgba(250,249,244,.96);
+ background:rgba(255,255,255,.96);
  box-shadow:1px 2px 0 rgba(55,51,45,.055);
  color:#494943!important;
  font:400 11px/1.2 Pretendard,-apple-system,sans-serif!important;
@@ -327,7 +327,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  transform:translateX(-50%);
  font:400 11px/1.5 Pretendard,sans-serif;
  letter-spacing:-.01em;color:#62645c;
- background:rgba(250,249,245,.95);
+ background:rgba(255,255,255,.95);
  border:1px solid #e0ded6;padding:5px 11px;
  pointer-events:none;white-space:nowrap;
 }
@@ -340,7 +340,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  max-height:calc(100dvh - 30px);
  padding:27px clamp(22px,4vw,37px) 29px;
  border:1px solid #d4d2c9;border-radius:0;
- background:#faf9f5;color:#292923;
+ background:#ffffff;color:#292923;
  box-shadow:0 16px 70px rgba(25,25,23,.17);
  font-family:Pretendard,-apple-system,sans-serif;
  overflow-y:auto;
@@ -516,7 +516,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  fill:none;stroke:#a6a89e;stroke-opacity:.57;stroke-width:1.20;
 }
 .material-runner-joint{
- fill:#faf9f5;stroke:#a8aaa0;stroke-width:1.15;stroke-opacity:.75;
+ fill:#ffffff;stroke:#a8aaa0;stroke-width:1.15;stroke-opacity:.75;
 }
 .material-runner-terminal{
  fill:#a0a399;stroke:none;opacity:.80;
@@ -553,7 +553,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 }
 .material-detail[open]{display:block}
 .material-detail::backdrop{
- background:rgba(249,248,243,.72)!important;
+ background:rgba(255,255,255,.72)!important;
  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
 }
 .material-detail .material-detail-top{display:none!important}
@@ -584,7 +584,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
  width:min(308px,calc(100vw - 44px));max-height:35dvh;overflow:visible;
  padding:19px 25px 17px 17px;
  border:1px solid rgba(94,87,74,.24);border-radius:0;
- background-color:#f4f0e7;
+ background-color:#f5f5f5;
  background-image:
   radial-gradient(circle at 14% 23%,rgba(84,72,53,.05) 0 .65px,transparent 1.05px),
   radial-gradient(circle at 79% 58%,rgba(101,91,69,.045) 0 .5px,transparent .95px),
@@ -615,7 +615,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 .material-detail .material-detail-copy::after{
  content:"";position:absolute;bottom:0;right:0;pointer-events:none;
  width:17px;height:17px;
- background:linear-gradient(135deg,transparent 0 48%,rgba(133,121,97,.11) 49%,#faf7ef 53%,#f7f3e9 100%);
+ background:linear-gradient(135deg,transparent 0 48%,rgba(133,121,97,.11) 49%,#ffffff 53%,#f5f5f5 100%);
  box-shadow:-1px -1px 2px rgba(75,68,53,.035);
  clip-path:polygon(100% 0,100% 100%,0 100%);
 }
@@ -662,7 +662,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:no
 html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 .material-main{
  position:fixed;inset:0;width:100%;height:100dvh;
- color:#292923;background:#f9f9f6;overflow:hidden;isolation:isolate;
+ color:#292923;background:#ffffff;overflow:hidden;isolation:isolate;
  font-family:Pretendard,-apple-system,sans-serif;
 }
 .material-main::before{display:none!important}
@@ -745,7 +745,7 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 .material-piece:hover .material-label-name,.material-piece:focus-visible .material-label-name{color:#595951!important}
 .material-piece.is-inspected{opacity:.18!important}
 .material-main .archive-taskbar{
- position:fixed!important;z-index:100;min-height:65px;background:#f9f9f6!important;
+ position:fixed!important;z-index:100;min-height:65px;background:#ffffff!important;
  border-top:1px solid rgba(48,45,36,.08)!important;
 }
 .material-main .archive-taskbar .photo-pagination{display:flex!important;align-items:center;gap:10px}
@@ -787,7 +787,7 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
 }
 .material-detail[open]{display:block!important}
 .material-detail::backdrop{
- background:rgba(248,248,244,.78)!important;
+ background:rgba(255,255,255,.78)!important;
  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
 }
 .material-detail .material-detail-body{
@@ -811,7 +811,7 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  content:"편집할 이미지를 클릭하세요";position:fixed;z-index:101;
  left:50%;bottom:75px;transform:translateX(-50%);
  font:400 11px/1.5 Pretendard,sans-serif;
- background:rgba(249,249,246,.96);color:#65645d;
+ background:rgba(255,255,255,.96);color:#65645d;
  padding:5px 11px;border:1px solid #dddcd4;pointer-events:none;white-space:nowrap;
 }
 .material-main.is-editing .material-piece{cursor:text}
@@ -992,13 +992,13 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  width:100vw!important;height:100dvh!important;
  max-width:none!important;max-height:none!important;
  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
- background:#f9f9f6!important;color:#262621!important;
+ background:#ffffff!important;color:#262621!important;
  box-shadow:none!important;overflow-y:auto!important;overscroll-behavior:contain;
  font-family:Pretendard,-apple-system,sans-serif;
 }
 .material-essay[open]{display:block!important}
 .material-essay::backdrop{
- background:rgba(248,248,244,.8)!important;
+ background:rgba(255,255,255,.8)!important;
  backdrop-filter:blur(4px);
  -webkit-backdrop-filter:blur(4px);
 }
