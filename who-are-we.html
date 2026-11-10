@@ -8,100 +8,182 @@
 <meta name="description" content="아뜰리에 作은 신촌의 작은 작업실이다. 2019년부터 함께한 네 사람의 건축적 질문.">
 <link rel="stylesheet" href="style.css?v=4">
 <style>
-html,body{margin:0;min-height:100%;background:#fff;color:#171717}
-body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
-.studio-page{box-sizing:border-box;min-height:100svh;padding:clamp(25px,3.1vw,54px) clamp(22px,5.2vw,88px) clamp(85px,11vh,160px)}
-.studio-top{display:flex;align-items:center;justify-content:space-between}
-.studio-back{font:500 12px/1.5 Pretendard,sans-serif;letter-spacing:-.02em;text-decoration:none;color:#292929;border-bottom:1px solid #999;padding-bottom:5px}
-.studio-back:focus-visible{outline:2px solid #0033ff;outline-offset:4px}
-.studio-grid{
- display:grid;
- grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);
- grid-template-areas:"identity intro" "gallery people";
- column-gap:clamp(55px,7.2vw,115px);
- row-gap:clamp(68px,10vh,112px);
- align-items:start;max-width:1080px;margin:0 auto;
- padding-top:clamp(82px,12vh,136px)
+/* ATELIER 作 / Single-scene editorial spread. Homepage header + Research footer. */
+html,body{margin:0!important;padding:0!important;width:100%!important;height:100%!important;overflow:hidden!important;background:#fff;color:#181817}
+body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+button,a{color:inherit}
+a{text-decoration:none}
+.studio-page{position:relative;width:100vw;height:100vh;height:100dvh;overflow:hidden;isolation:isolate;background:#fff}
+/* Reuse the exact two logo assets and 45px visual sizing from index.html. */
+.studio-masthead{position:absolute;z-index:25;top:clamp(20px,3vh,40px);left:clamp(20px,3vw,55px);right:clamp(20px,3vw,55px);display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.studio-masthead a{display:block;pointer-events:auto}
+.studio-masthead img{display:block;width:auto;height:45px;max-width:none;object-fit:contain}
+.studio-masthead a:focus-visible,.studio-footer a:focus-visible,.studio-footer button:focus-visible{outline:2px solid #0033ff;outline-offset:3px}
+.studio-canvas{position:absolute;inset:clamp(82px,10vh,104px) 0 70px;min-height:0;overflow:hidden}
+.studio-world{position:relative;width:min(100%,1700px);height:100%;margin:0 auto;isolation:isolate}
+/* Loose photographic constellation: slots are drawn on the common viewport canvas.
+   Photos never crop, even when their native proportions differ. */
+.studio-gallery-grid{position:absolute;inset:0;z-index:1;pointer-events:none}
+.studio-gallery-item{position:absolute;margin:0;padding:0;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center;overflow:visible}
+.studio-gallery-item img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;max-width:none;max-height:none;user-select:none;filter:none}
+.studio-gallery-item:nth-child(1){left:1.8%;top:4%;width:13%;height:18%;transform:rotate(-1.3deg)}
+.studio-gallery-item:nth-child(2){left:14.7%;top:5%;width:12.5%;height:28%;transform:rotate(1.2deg)}
+.studio-gallery-item:nth-child(3){left:2%;top:35%;width:12.7%;height:18%;transform:rotate(-.6deg)}
+.studio-gallery-item:nth-child(4){left:15.3%;top:42%;width:10.8%;height:17%;transform:rotate(1.1deg)}
+.studio-gallery-item:nth-child(5){left:1.5%;top:62%;width:13%;height:19%;transform:rotate(1deg)}
+.studio-gallery-item:nth-child(6){left:15.3%;top:74%;width:11.5%;height:19%;transform:rotate(-1deg)}
+.studio-gallery-item:nth-child(7){left:29%;top:79%;width:12%;height:15%;transform:rotate(.9deg)}
+.studio-gallery-item:nth-child(8){left:30%;top:7%;width:11.2%;height:15%;transform:rotate(-1.3deg)}
+.studio-gallery-item:nth-child(9){left:83%;top:7%;width:13.5%;height:17%;transform:rotate(.8deg)}
+.studio-gallery-item:nth-child(10){left:83%;top:32%;width:15%;height:18%;transform:rotate(-.8deg)}
+.studio-gallery-item:nth-child(11){left:80%;top:55%;width:13%;height:15%;transform:rotate(1.4deg)}
+.studio-gallery-item:nth-child(12){left:80.6%;top:76%;width:18%;height:21%;transform:rotate(-.5deg)}
+.studio-identity{position:absolute;z-index:4;left:29%;top:34%;width:17.1%;pointer-events:none}
+.studio-logo{display:block;width:100%;height:auto}
+.studio-intro{position:absolute;z-index:4;left:47%;top:21%;width:30%;max-width:520px;font:410 clamp(12px,.83vw,14px)/1.91 Pretendard,-apple-system,sans-serif;letter-spacing:-.033em;word-break:keep-all;color:#292a27}
+.studio-intro p{margin:0 0 clamp(15px,2.6vh,26px)}
+.studio-intro p:last-child{margin:0}
+.studio-team{position:absolute;z-index:4;left:47%;top:67%;width:31.5%;min-width:0}
+.studio-people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:end;gap:clamp(7px,1vw,20px)}
+.studio-person{margin:0;min-width:0;display:flex;flex-direction:column;align-items:center}
+.studio-person img{display:block;width:100%;height:clamp(90px,13.5vh,139px);object-fit:contain;object-position:center bottom;pointer-events:none;user-select:none}
+.studio-person figcaption{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:9px;text-align:center;white-space:nowrap}
+.studio-person-name{font:550 clamp(10px,.76vw,12px)/1.45 Pretendard,sans-serif;letter-spacing:-.035em;color:#242424}
+.studio-person-role{font:400 9px/1.5 Pretendard,sans-serif;color:#99978f;letter-spacing:-.01em}
+/* Same visual grammar as research.html's 70px bottom dock. */
+.studio-footer{position:absolute;z-index:30;bottom:0;left:0;right:0;height:70px;min-height:70px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding:0 clamp(14px,2.6vw,42px);background:#fff;border-top:1px solid rgba(62,60,50,.08)}
+.studio-footer-left,.studio-footer-center,.studio-footer-links{display:flex;align-items:center;gap:13px}
+.studio-footer-links{justify-content:flex-end;gap:clamp(10px,2vw,34px)}
+.studio-icon-button{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;border:0;background:none;border-radius:0;box-shadow:none;padding:0;cursor:pointer;color:#77776f}
+.studio-icon-button:hover{color:#282823}
+.studio-ui-icon{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
+.studio-count{display:inline-block;min-width:57px;text-align:center;font:400 11px/1.2 monospace;letter-spacing:.03em;color:#8c8a81}
+.studio-footer-link{display:inline-block;white-space:nowrap;padding:5px 0;border-bottom:1px solid transparent;color:#a6a49c;font:500 10px/1.3 Pretendard,sans-serif;letter-spacing:.015em}
+.studio-footer-link:hover{color:#282823;border-bottom-color:#77776f}
+.studio-footer-link span{margin-left:5px}
+.studio-footer-link[aria-current=page]{color:#272820;border-bottom-color:#616157}
+.studio-menu-dialog{position:fixed;inset:auto auto 78px clamp(14px,2.6vw,42px);width:min(320px,calc(100vw - 32px));max-height:min(80vh,540px);overflow:auto;margin:0;padding:20px 24px 23px;border:1px solid #dadad6;border-radius:0;background:#fff;color:#282823;box-shadow:0 14px 50px rgba(10,10,10,.10)}
+.studio-menu-dialog::backdrop{background:rgba(255,255,255,.18)}
+.studio-menu-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.studio-menu-header small{font:500 10px/1.3 Pretendard,sans-serif;letter-spacing:.12em;color:#888}
+.studio-menu-close{border:0;background:none;font:300 24px/1 Pretendard,sans-serif;cursor:pointer}
+.studio-chapter-links{display:flex;flex-direction:column;gap:0}
+.studio-chapter-links a{display:flex;align-items:baseline;gap:13px;border-bottom:1px solid #ecece9;padding:11px 0;font:500 13px/1.5 Pretendard,sans-serif}
+.studio-chapter-links a span{font:400 10px/1 monospace;color:#a4a39e}
+.studio-chapter-links a[aria-current=page],.studio-chapter-links a:hover{color:#0033ff}
+@media(max-width:1100px) and (min-width:701px){
+ .studio-intro{left:46%;width:34%;top:19%;font-size:clamp(11px,1.15vw,13px)}
+ .studio-team{left:46%;width:34%;top:68%}
+ .studio-identity{left:27%;width:19%}
+ .studio-gallery-item:nth-child(9){left:83%;width:15%}
+ .studio-gallery-item:nth-child(12){left:80%;width:18%}
 }
-.studio-identity{grid-area:identity;min-width:0;padding-top:4px}
-.studio-logo{display:block;width:min(100%,335px);height:auto}
-.studio-intro{grid-area:intro;min-width:0;max-width:515px;font-size:clamp(13px,.95vw,15px);font-weight:410;line-height:1.91;letter-spacing:-.033em;word-break:keep-all;color:#292a27}
-.studio-intro p{margin:0 0 25px}
-.studio-intro p:last-child{margin-bottom:0}
-.studio-gallery{grid-area:gallery;min-width:0;max-width:510px}
-.studio-gallery-grid{
- display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
- grid-auto-rows:8px;grid-auto-flow:dense;
- column-gap:clamp(9px,1vw,13px);row-gap:clamp(9px,1vw,13px);
- align-items:start;
+@media(max-height:660px) and (min-width:701px){
+ .studio-intro{top:12%;font-size:clamp(10.5px,.85vw,12px);line-height:1.68}
+ .studio-identity{top:32%}
+ .studio-team{top:67%}
+ .studio-person img{height:clamp(68px,11vh,110px)}
+ .studio-person figcaption{margin-top:5px}
 }
-.studio-gallery-item{margin:0;min-width:0;grid-column:span 2;align-self:start;overflow:visible}
-.studio-gallery-item.is-featured{grid-column:span 4}
-.studio-gallery-item img{
- display:block;width:100%;height:auto;max-width:100%;
- aspect-ratio:auto;object-fit:contain;object-position:center;
- user-select:none;pointer-events:none
+/* On phones keep every image visible in a compact two-row miniature archive. */
+@media(max-width:700px){
+ .studio-masthead{top:15px;left:15px;right:15px}
+ .studio-masthead img{height:clamp(17px,5vw,29px)}
+ .studio-canvas{inset:62px 0 67px}
+ .studio-world{width:100%}
+ .studio-identity{left:7%;top:3%;width:min(55%,240px)}
+ .studio-intro{left:7%;top:17%;width:86%;max-width:none;font-size:clamp(10px,2.6vw,12px);line-height:1.69;letter-spacing:-.02em}
+ .studio-intro p{margin-bottom:9px}
+ .studio-team{left:7%;top:48%;width:86%}
+ .studio-people{gap:5px}
+ .studio-person img{height:clamp(70px,11vh,100px)}
+ .studio-person figcaption{margin-top:6px}
+ .studio-person-name{font-size:10px}
+ .studio-person-role{font-size:8.5px}
+ .studio-gallery-grid{position:absolute;top:67%;left:6%;width:88%;height:30%;inset:67% auto auto 6%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));align-items:center;gap:4px}
+ .studio-gallery-item:nth-child(n){position:static!important;left:auto!important;top:auto!important;width:100%!important;height:100%!important;transform:none!important;grid-column:auto;grid-row:auto}
+ .studio-gallery-item img{width:100%!important;height:100%!important;object-fit:contain!important}
+ .studio-footer{height:67px;min-height:67px;padding:0 10px;gap:3px}
+ .studio-footer-left,.studio-footer-center,.studio-footer-links{gap:2px}
+ .studio-icon-button{width:28px;height:33px;flex-basis:28px}
+ .studio-ui-icon{width:15px;height:15px}
+ .studio-count{min-width:35px;font-size:9px}
+ .studio-footer-links{gap:7px}
+ .studio-footer-link{font-size:9px}
+ .studio-footer-link span{display:none}
+ .studio-menu-dialog{bottom:75px}
 }
-.studio-team{grid-area:people;min-width:0;max-width:590px;width:100%}
-.studio-people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.8vw,25px);align-items:end}
-.studio-person{min-width:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
-.studio-person img{display:block;width:100%;height:clamp(130px,12vw,190px);object-fit:contain;object-position:center bottom;pointer-events:none}
-.studio-person figcaption{display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;margin-top:15px;white-space:nowrap}
-.studio-person-name{font:550 clamp(11px,.88vw,13px)/1.45 Pretendard,sans-serif;letter-spacing:-.03em;color:#242424}
-.studio-person-role{font:400 10px/1.5 Pretendard,sans-serif;letter-spacing:-.01em;color:#92918c}
-@media(max-width:1000px){
- .studio-grid{column-gap:clamp(30px,5vw,65px);grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)}
- .studio-person img{height:clamp(110px,13vw,155px)}
+@media(max-width:380px){
+ .studio-intro{top:16%;font-size:10px}
+ .studio-team{top:50%}
+ .studio-gallery-grid{top:69%;height:27%;inset:69% auto auto 6%}
+ .studio-footer-links{gap:4px}
+ .studio-footer-link{font-size:8.5px}
 }
-@media(max-width:760px){
- .studio-page{padding:24px 22px 65px}
- .studio-grid{
-  grid-template-columns:minmax(0,1fr);
-  grid-template-areas:"identity" "intro" "people" "gallery";
-  gap:clamp(34px,6vh,55px);padding-top:64px;max-width:590px
- }
- .studio-logo{width:min(85%,355px)}
- .studio-intro{font-size:14px;line-height:1.87;max-width:570px}
- .studio-gallery,.studio-team{max-width:100%}
- .studio-person img{height:clamp(115px,24vw,172px)}
-}
-@media(max-width:480px){
- .studio-logo{width:min(100%,310px)}
- .studio-grid{padding-top:50px;gap:39px}
- .studio-intro{font-size:13.5px}
- .studio-people{gap:8px}
- .studio-person img{height:clamp(87px,25vw,130px)}
- .studio-person figcaption{margin-top:12px}
- .studio-person-name{font-size:11px}
- .studio-person-role{font-size:9px}
- .studio-gallery-grid{column-gap:8px;row-gap:8px;grid-auto-rows:6px}
-}
+
 </style>
+<script src="studio-gallery.js?v=3" defer></script>
 </head>
 <body>
 <main class="studio-page">
-  <div class="studio-top"><a class="studio-back" href="index.html">← 처음으로</a></div>
-  <div class="studio-grid">
-    <header class="studio-identity">
-      <img class="studio-logo" src="assets/home/logo-horizontal-team.svg" alt="아뜰리에 作">
-    </header>
-    <section class="studio-intro" aria-label="아뜰리에 작 소개">
-      <p>아뜰리에作은 신촌의 작은 작업실이다. 2019년부터 함께한 4인이 공모전과 건축 토론을 지속하며 형성한 팀으로, 각자는 도시, 건축실무, 국제 건축교육 등 서로 다른 층위에서 건축을 경험해 왔다.</p>
-      <p>그 과정에서 각 팀원들은 한국 건축 안에서 이질적인 재료, 방식, 언어들이 아무런 질문 없이 병치되며 혼재와 모순이 당연시되는 현실을 반복적으로 마주했다. 본 프로젝트는 실무의 현장에서 체감된 그 질문을 건축 재료와 생산의 층위에서 다시 마주하려는 시도이다.</p>
-    </section>
-    <section class="studio-gallery" aria-label="아뜰리에 사진 갤러리">
-      <div class="studio-gallery-grid" id="studio-gallery-grid"></div>
-    </section>
-    <section class="studio-team" aria-label="아뜰리에 작의 네 사람">
-      <div class="studio-people">
-        <figure class="studio-person"><img src="assets/home/person-02.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">손정호</span><span class="studio-person-role">팀장</span></figcaption></figure>
-        <figure class="studio-person"><img src="assets/home/person-01.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">박소현</span><span class="studio-person-role">팀원</span></figcaption></figure>
-        <figure class="studio-person"><img src="assets/home/person-03.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">이석주</span><span class="studio-person-role">팀원</span></figcaption></figure>
-        <figure class="studio-person"><img src="assets/home/person-04.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">이철원</span><span class="studio-person-role">팀원</span></figcaption></figure>
+  <header class="studio-masthead" aria-label="전시 로고">
+    <a href="index.html" aria-label="혼종의 정면 메인으로">
+      <img src="assets/home/logo-title-compact.svg" alt="혼종의 정면" draggable="false">
+    </a>
+    <a href="https://arko.or.kr/artcenter/board/view/503?page=2&amp;cid=717126" target="_blank" rel="noopener noreferrer" aria-label="2026 아르코 건축예술랩 공식 안내">
+      <img src="assets/home/logo-program-compact.svg" alt="2026 아르코 건축예술랩" draggable="false">
+    </a>
+  </header>
+  <section class="studio-canvas" aria-label="아뜰리에 작 소개">
+    <div class="studio-world">
+      <div class="studio-gallery-grid" id="studio-gallery-grid" aria-label="아뜰리에 작 사진 12장"></div>
+      <div class="studio-identity">
+        <img class="studio-logo" src="assets/home/logo-horizontal-team.svg" alt="아뜰리에 作" draggable="false">
       </div>
-    </section>
-  </div>
+      <article class="studio-intro" aria-label="아뜰리에 작 소개 글">
+        <p>아뜰리에作은 신촌의 작은 작업실이다. 2019년부터 함께한 4인이 공모전과 건축 토론을 지속하며 형성한 팀으로, 각자는 도시, 건축실무, 국제 건축교육 등 서로 다른 층위에서 건축을 경험해 왔다.</p>
+        <p>그 과정에서 각 팀원들은 한국 건축 안에서 이질적인 재료, 방식, 언어들이 아무런 질문 없이 병치되며 혼재와 모순이 당연시되는 현실을 반복적으로 마주했다. 본 프로젝트는 실무의 현장에서 체감된 그 질문을 건축 재료와 생산의 층위에서 다시 마주하려는 시도이다.</p>
+      </article>
+      <section class="studio-team" aria-label="아뜰리에 작의 네 사람">
+        <div class="studio-people">
+          <figure class="studio-person"><img src="assets/home/person-02.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">손정호</span><span class="studio-person-role">팀장</span></figcaption></figure>
+          <figure class="studio-person"><img src="assets/home/person-01.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">박소현</span><span class="studio-person-role">팀원</span></figcaption></figure>
+          <figure class="studio-person"><img src="assets/home/person-03.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">이석주</span><span class="studio-person-role">팀원</span></figcaption></figure>
+          <figure class="studio-person"><img src="assets/home/person-04.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">이철원</span><span class="studio-person-role">팀원</span></figcaption></figure>
+        </div>
+      </section>
+    </div>
+  </section>
+  <footer class="studio-footer" aria-label="사이트 탐색">
+    <div class="studio-footer-left">
+      <a href="index.html" class="studio-icon-button" title="홈으로" aria-label="홈으로"><svg class="studio-ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 11 8-7 8 7v9H4zM9 20v-7h6v7"/></svg></a>
+      <button type="button" class="studio-icon-button" id="studio-chapter-open" title="목차 열기" aria-label="목차 열기" aria-haspopup="dialog" aria-controls="studio-menu-dialog"><svg class="studio-ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="19" cy="7" r="1.5" fill="currentColor" stroke="none"/></svg></button>
+    </div>
+    <div class="studio-footer-center" aria-label="페이지 이동">
+      <a href="index.html" class="studio-icon-button" aria-label="메인 페이지로" title="메인 페이지"><svg class="studio-ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></a>
+      <span class="studio-count">01 / 01</span>
+      <a href="research.html" class="studio-icon-button" aria-label="연구 페이지로" title="연구 페이지"><svg class="studio-ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>
+    </div>
+    <nav class="studio-footer-links" aria-label="다른 전시 아카이브">
+      <a href="landscapes.html" class="studio-footer-link">01 <span>풍경</span></a>
+      <a href="materials.html" class="studio-footer-link">02 <span>재료</span></a>
+      <a href="research.html" class="studio-footer-link">03 <span>연구</span></a>
+      <a href="interviews.html" class="studio-footer-link">04 <span>인터뷰</span></a>
+    </nav>
+  </footer>
+  <dialog id="studio-menu-dialog" class="studio-menu-dialog" aria-label="사이트 목차">
+    <div class="studio-menu-header"><small>HETERO FRONT / INDEX</small><button type="button" class="studio-menu-close" id="studio-chapter-close" aria-label="목차 닫기">×</button></div>
+    <nav class="studio-chapter-links" aria-label="전체 페이지">
+      <a href="index.html"><span>00</span> INTRO / 소개</a>
+      <a href="landscapes.html"><span>01</span> LANDSCAPES / 풍경</a>
+      <a href="materials.html"><span>02</span> MATERIALS / 재료</a>
+      <a href="research.html"><span>03</span> RESEARCH / 연구</a>
+      <a href="interviews.html"><span>04</span> INTERVIEWS / 인터뷰</a>
+      <a href="exhibition.html"><span>05</span> EXHIBITION / 전시</a>
+      <a href="who-are-we.html" aria-current="page"><span>+</span> ATELIER 作 / 우리 소개</a>
+    </nav>
+  </dialog>
 </main>
-<script src="studio-gallery.js?v=2" defer></script>
 </body>
 </html>
