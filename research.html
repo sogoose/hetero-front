@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=14">
+<link rel="stylesheet" href="research-page.css?v=15">
 <script src="research-points.js?v=8" defer></script>
-<script src="research-page.js?v=13" defer></script>
+<script src="research-page.js?v=14" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -56,14 +56,23 @@
           </header>
         </div>
       </section>
-      <section class="research-panel research-panel-production" aria-label="두 번째 도판, 생산과 유통">
-        <div class="research-section-head">
-          <span class="research-kicker" id="research-production-kicker">02 / PRODUCTION</span>
-          <h2 class="research-serif" id="research-production-title">생산에서 정면까지.</h2>
-          <p id="research-production-lead"></p>
+      <section class="research-panel research-panel-production" aria-label="두 번째 도판, 형태와 재료의 두 경로">
+        <div class="research-origin-layout">
+          <div class="research-origin-figure">
+            <div class="research-origin-graphic" id="research-origin-graphic" aria-label="혼종 주택에 이르는 형태와 재료의 경로. 도상의 아이콘을 선택할 수 있습니다.">
+              <img class="research-origin-image" id="research-origin-image" src="assets/research/hetero-origin-diagram.svg" alt="형태의 길과 재료의 길이 혼종 주택에서 만나는 도식" draggable="false">
+              <div class="research-origin-hotspots" id="research-origin-hotspots" role="group" aria-label="연구 도식의 단계 선택"></div>
+            </div>
+            <div class="research-origin-selected" id="research-origin-selected" aria-live="polite" aria-atomic="true">
+              <p class="research-origin-hint">도식의 아이콘을 선택하면 각 단계의 이야기가 나타납니다.</p>
+            </div>
+          </div>
+          <aside class="research-origin-copy" aria-labelledby="research-production-title">
+            <span class="research-origin-kicker" id="research-production-kicker">02 / PRODUCTION</span>
+            <h2 class="research-serif research-origin-heading" id="research-production-title">두 갈래의 길, 하나의 정면.</h2>
+            <div class="research-origin-essay" id="research-production-essay" aria-label="연구의 배경과 경로"></div>
+          </aside>
         </div>
-        <div class="research-process" id="research-process" aria-label="재료의 생산과 유통 경로"></div>
-        <p class="research-section-footnote" id="research-production-footnote"></p>
       </section>
       <section class="research-panel research-panel-testimony" aria-label="세 번째 도판, 제작자의 증언">
         <div class="research-section-head">
