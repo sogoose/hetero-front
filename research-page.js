@@ -20,7 +20,7 @@ const detailDescription=$('#research-detail-description');
 const chapter=$('#chapter-menu');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const state={page:0,map:0,year:1991,voice:0,data:null,regionTables:null,pointer:null,lastWheel:0};
-const stageNames=['PRODUCTION','DISTRIBUTION','TESTIMONY'];
+const stageNames=['PRODUCTION','DISTRIBUTION','VOICES','PARADOX'];
 const mapZoom={scale:1,x:0,y:0,drag:null,suppressClick:false,positionPending:false};
 const MAP_ZOOM_MAX=5;
 function clampMapPan(){
@@ -564,54 +564,62 @@ function renderProduction(data){
  window.ResearchOriginPhotos?.clear?.();
  refreshHighlight();
 }
-function selectVoice(index){
- const cards=[...document.querySelectorAll('.research-voice')];
- const tabs=[...document.querySelectorAll('.research-voice-tab')];
- if(!cards.length)return;
- state.voice=Math.max(0,Math.min(index,cards.length-1));
- cards.forEach((card,i)=>{
-  card.classList.toggle('is-selected',i===state.voice);
- });
- tabs.forEach((tab,i)=>{
-  tab.setAttribute('aria-pressed',String(i===state.voice));
- });
-}
 function renderVoices(data){
- const group=data.testimonies||{};
- setText('#research-voices-kicker',group.kicker||'03 / TESTIMONY');
- setText('#research-voices-title',group.title||'');
- setText('#research-voices-lead',group.lead||'');
- const host=$('#research-voices'),tabs=$('#research-voice-tabs');
- host.replaceChildren();tabs.replaceChildren();
- (group.items||[]).forEach((item,index)=>{
-  const article=el('article','research-voice');
-  const figure=el('button','research-voice-figure');
-  figure.type='button';figure.setAttribute('aria-label',item.material+' 자료 크게 보기');
-  if(item.image){
-   const box=imageOrFallback(item.image,item.alt,'research-voice-image',()=>figure.append(smallPlaceholder(item.id)));
-   figure.append(box);
-  }else figure.append(smallPlaceholder(item.id));
-  figure.addEventListener('click',()=>openDetail({kicker:item.material+' / TESTIMONY',title:item.question,image:item.image,alt:item.alt,description:item.detail,id:item.id}));
-  article.append(figure,el('span','research-voice-material',item.number+' / '+item.material));
-  article.append(el('h3','research-voice-question',item.question));
-  const quote=el('blockquote','research-voice-quote','“'+(item.quote||'')+'”');
-  article.append(quote,el('span','research-voice-speaker',item.speaker||''));
-  if(item.href){
-   const a=el('a','research-voice-link','인터뷰 아카이브 보기');
-   a.href=item.href;
-   article.append(a);
-  }
-  host.append(article);
-  const tab=el('button','research-voice-tab',item.material);
-  tab.type='button';
-  tab.addEventListener('click',()=>selectVoice(index));
-  tabs.append(tab);
+ const section=data.testimonies||{};
+ setText('#research-voices-title',section.title||'혼종을 만든 사람들의 말');
+ setText('#research-voices-lead',section.lead||'');
+ const board=$('#research-witness-board');
+ const readings=$('#research-witness-readings');
+ const archive=$('#research-witness-link');
+ if(!board||!readings)return;
+ board.replaceChildren();
+ (section.fragments||[]).forEach((entry,i)=>{
+  const figure=el('figure','research-witness-fragment research-witness-fragment--'+(entry.size||'medium'));
+  figure.dataset.note=entry.id||String(i);
+  const quote=el('blockquote','research-witness-quote',entry.quote||'');
+  const source=el('figcaption','research-witness-source',entry.credit||'');
+  figure.append(quote,source);
+  board.append(figure);
  });
- selectVoice(0);
+ readings.replaceChildren();
+ (section.readings||[]).forEach(item=>{
+  const row=el('div','research-witness-reading');
+  const number=el('span','research-witness-reading-number',item.number||'');
+  const inner=el('div','research-witness-reading-copy');
+  inner.append(el('h3','research-witness-reading-title',item.title||''));
+  inner.append(el('p','research-witness-reading-text',item.text||''));
+  row.append(number,inner);
+  readings.append(row);
+ });
+ if(archive){
+  archive.textContent=section.archiveText||'인터뷰 전문 읽기';
+  archive.href=section.archiveLink||'interviews.html';
+ }
+}
+function renderParadox(data){
+ const entry=data.paradox||{};
+ setText('#research-paradox-title',entry.title||'혼종의 역설');
+ setText('#research-paradox-lead',entry.lead||'');
+ setText('#research-paradox-conclusion',entry.conclusion||'');
+ const board=$('#research-paradox-board');
+ const ending=$('#research-paradox-board-end');
+ const essay=$('#research-paradox-essay');
+ if(!board||!essay)return;
+ board.querySelectorAll('.research-paradox-fragment').forEach(node=>node.remove());
+ (entry.fragments||[]).forEach((fragment,i)=>{
+  const paper=el('div','research-paradox-fragment');
+  paper.dataset.fragment=fragment.id||String(i);
+  paper.append(el('span','research-paradox-fragment-text',fragment.text||''));
+  paper.append(el('span','research-paradox-fragment-tag',fragment.tag||''));
+  if(ending)board.insertBefore(paper,ending);
+  else board.append(paper);
+ });
+ essay.replaceChildren();
+ (entry.body||[]).forEach(text=>essay.append(el('p','research-paradox-paragraph',text)));
 }
 function updatePage(){
  rail.style.transform='translate3d('+(-state.page*windowEl.clientWidth)+'px,0,0)';
- counter.textContent=String(state.page+1).padStart(2,'0')+' / 03';
+ counter.textContent=String(state.page+1).padStart(2,'0')+' / '+String(panels.length).padStart(2,'0');
  prev.disabled=state.page===0;
  next.disabled=state.page===panels.length-1;
  panels.forEach((panel,i)=>{
@@ -694,7 +702,7 @@ async function start(){
   const response=await fetch('assets/research/research-data.json',{cache:'no-cache'});
   if(!response.ok)throw new Error('Data not found ('+response.status+')');
   const data=await response.json();
-  if(!Array.isArray(data.maps)||!data.production||!data.testimonies)throw new Error('Invalid research data');
+  if(!Array.isArray(data.maps)||!data.production||!data.testimonies||!data.paradox)throw new Error('Invalid research data');
   state.data=data;
   // The opening diagram MUST become interactive before slow map resources,
   // vector downloads, third-party services or factory-point initialization.
@@ -711,6 +719,7 @@ async function start(){
   }
   try{
    renderVoices(data);
+   renderParadox(data);
   }catch(error){
    console.error('Testimony panel rendering failed:',error);
   }
