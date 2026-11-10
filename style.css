@@ -15,22 +15,3 @@
   color:#1d2017;
   text-shadow:none;
 }
-
-/* The floating exhibition identity follows the image-based archive pages.
-   Non-interactive, so gallery dragging, scrolling and navigation remain usable. */
-body:not(.home-body):has(.photo-main)::before{
- content:"";position:fixed;z-index:12;top:9px;left:17px;
- display:block;width:clamp(128px,14vw,204px);height:clamp(72px,7.7vw,115px);
- background:url('assets/home/identity-title.svg') center/contain no-repeat;
- pointer-events:none;opacity:.86;
- animation:archive-identity-float 8s ease-in-out infinite;
-}
-@keyframes archive-identity-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@media(max-width:700px){
- body:not(.home-body):has(.photo-main)::before{
-  top:7px;left:10px;width:112px;height:67px;opacity:.75;
- }
-}
-@media(prefers-reduced-motion:reduce){
- body:not(.home-body):has(.photo-main)::before{animation:none}
-}
