@@ -2041,3 +2041,7 @@ body{background:#ffffff;color:#272724}
  .research-panel-production .research-origin-photo-label,
  .research-panel-production .research-origin-photo-upload{font-size:10px!important}
 }
+
+/* Never let the original 50%-opacity construction strokes show through in black
+   when an icon is selected: recolor their full vector ink coverage. */
+.research-panel-production #research-origin-highlight-shape .st10{opacity:1!important}
