@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>WHO ARE WE — 혼종의 정면 · 아틀리에 作</title>
+<meta name="description" content="혼종의 정면을 기록한 아틀리에 作: 손정호, 박소현, 이석주, 이철원.">
+<link rel="stylesheet" href="style.css?v=3">
+<style>
+html{min-height:100%;background:#fff}
+body{min-height:100vh;min-height:100dvh;color:#171717;background:#fff;font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif}
+.about-page{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:clamp(22px,3vw,52px) clamp(22px,5.5vw,98px)}
+.about-head{display:flex;align-items:flex-start;justify-content:space-between;gap:30px}
+.about-return{font:500 12px/1.55 Pretendard,sans-serif;letter-spacing:-.035em;text-decoration:none;border-bottom:1px solid #868680;padding-bottom:5px}
+.about-project{color:#858580;text-align:right;font:430 11px/1.65 Pretendard,sans-serif;letter-spacing:-.02em}
+.about-content{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(44px,8vw,155px);align-items:end;flex:1;padding:clamp(75px,13vh,160px) 0 clamp(90px,12vh,135px)}
+.about-title{margin:0 0 clamp(28px,5vh,58px);font:850 clamp(68px,10.3vw,178px)/.91 Pretendard,sans-serif;letter-spacing:-.095em}
+.about-title span{display:block}
+.about-title .blue{color:#0000ff}
+.about-description{max-width:450px;font:430 clamp(14px,1.17vw,18px)/1.95 Pretendard,sans-serif;letter-spacing:-.035em}
+.about-description strong{font-weight:700}
+.about-list{border-top:1px solid #232323;max-width:525px;margin:0}
+.about-list div{display:grid;grid-template-columns:60px 1fr;align-items:baseline;gap:10px;border-bottom:1px solid #dededb;padding:clamp(16px,2.15vh,23px) 0}
+.about-list dt{color:#888985;font:450 11px/1.4 Pretendard,sans-serif}
+.about-list dd{margin:0;font:530 clamp(22px,2vw,31px)/1.25 Pretendard,sans-serif;letter-spacing:-.058em}
+.about-group-name{display:block;margin:0 0 30px;color:#575751;font:460 12px/1.6 Pretendard,sans-serif}
+.about-footer{display:flex;align-items:end;justify-content:space-between;gap:25px;border-top:1px solid #deded9;padding-top:15px}
+.about-footer p{color:#767671;font:420 11px/1.75 Pretendard,sans-serif}
+.about-footer a{font:470 12px/1.4 Pretendard,sans-serif;padding:5px 0;border-bottom:1px solid #888}
+@media(max-width:800px){
+ .about-content{grid-template-columns:1fr;gap:58px;align-items:start;padding:80px 0 90px}
+ .about-title{font-size:clamp(68px,16vw,130px)}
+ .about-list{max-width:none}
+ .about-head{gap:15px}
+ .about-project{font-size:10px}
+}
+@media(max-width:480px){
+ .about-page{padding:23px 21px}
+ .about-content{padding:70px 0 75px}
+ .about-title{font-size:clamp(64px,17vw,96px)}
+ .about-footer{align-items:start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+<main class="about-page">
+  <header class="about-head">
+    <a class="about-return" href="index.html">← 도시 입면으로 돌아가기</a>
+    <p class="about-project">혼종의 정면<br>대한민국 산업화 과도기 건축재료의 기록과 해석</p>
+  </header>
+  <div class="about-content">
+    <div>
+      <h1 class="about-title"><span>WHO</span><span>ARE</span><span class="blue">WE?</span></h1>
+      <p class="about-description"><strong>아틀리에 作</strong>은 한국 산업화 과정의 건축재료와 그로 만들어진 도시 풍경을 기록하는 전시 〈혼종의 정면〉에 함께한 네 사람입니다.</p>
+    </div>
+    <section aria-label="참여자">
+      <span class="about-group-name">ATELIER 作 · 2026</span>
+      <dl class="about-list">
+        <div><dt>01</dt><dd>손정호</dd></div>
+        <div><dt>02</dt><dd>박소현</dd></div>
+        <div><dt>03</dt><dd>이석주</dd></div>
+        <div><dt>04</dt><dd>이철원</dd></div>
+      </dl>
+    </section>
+  </div>
+  <footer class="about-footer">
+    <p>2026 아르코 건축예술랩<br>아르코미술관 공간열림 · 2026.11.13—11.29</p>
+    <a href="exhibition.html">전시 안내 읽기 ↗</a>
+  </footer>
+</main>
+</body>
+</html>
