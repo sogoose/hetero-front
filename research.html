@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="polaroids.css?v=38">
 <link rel="stylesheet" href="research-page.css?v=18">
 <script src="research-points.js?v=8" defer></script>
-<script src="research-origin-photos.js?v=3" defer></script>
+<script src="research-origin-open-upload.js?v=1" defer></script>
 <script src="research-page.js?v=19" defer></script>
 </head>
 <body>
@@ -143,19 +143,6 @@
   <div class="research-essay-dialog-content" id="research-essay-dialog-content"></div>
 </dialog>
 
-<dialog id="research-origin-login-dialog" class="research-origin-login-dialog" aria-labelledby="research-origin-login-title">
- <div class="research-origin-login-head">
-  <h2 id="research-origin-login-title">이미지 업로드 · 편집자 로그인</h2>
-  <button type="button" id="research-origin-login-close" aria-label="닫기">×</button>
- </div>
- <p>승인된 편집자 계정으로 로그인하면 각 단계에 이미지 한 장을 등록하거나 교체할 수 있습니다.</p>
- <form id="research-origin-login-form">
-  <label>이메일<input id="research-origin-login-email" type="email" autocomplete="email" required placeholder="이메일 주소"></label>
-  <label>비밀번호 <span>(있는 경우)</span><input id="research-origin-login-password" type="password" autocomplete="current-password" placeholder="비워두면 이메일 로그인 링크 전송"></label>
-  <button type="submit" id="research-origin-login-submit">로그인</button>
- </form>
- <p id="research-origin-login-status" role="status" aria-live="polite"></p>
-</dialog>
 <dialog id="research-detail" class="research-detail" aria-label="자료 자세히 보기">
   <button type="button" id="research-detail-close" class="research-detail-close" aria-label="닫기"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-close"></use></svg></button>
   <div class="research-detail-inner">
