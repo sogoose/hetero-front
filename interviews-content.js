@@ -93,8 +93,8 @@
    .interview-temporary-edit-toggle{border:1px solid #b9b5aa!important;border-radius:0!important;background:#fff!important;padding:7px 9px!important;color:#555!important;font:500 11px Pretendard,sans-serif!important;white-space:nowrap}
    .interview-temporary-edit-toggle.is-on{background:#373730!important;color:#fff!important;border-color:#373730!important}
    .interview-turn.is-temporarily-editable{cursor:text;outline:1px dashed transparent!important;outline-offset:4px}
-   .interview-turn.is-temporarily-editable:hover{outline-color:#a89e92!important}
-   .interview-turn.is-temporarily-editable:hover::after{content:'수정';font:400 9px Pretendard,sans-serif;color:#9a8175;grid-column:2}
+   .interview-turn.is-temporarily-editable:hover{outline-color:#0033ff!important}
+   .interview-turn.is-temporarily-editable:hover::after{content:'수정';font:400 9px Pretendard,sans-serif;color:#0033ff;grid-column:2}
    .interview-turn[hidden]{display:none!important}\n   .interview-inline-correction{grid-column:1/-1;margin:6px 0 22px 25px;padding:10px 0;border-top:1px solid #dedbd5;border-bottom:1px solid #dedbd5}
    .interview-inline-correction textarea{box-sizing:border-box;width:100%;min-height:110px;padding:12px;border:1px solid #cbc5b9;border-radius:0;background:#fff;color:#292924;font:500 13px/1.65 Pretendard,sans-serif;resize:vertical;outline-offset:2px}
    .interview-inline-correction-actions{display:flex;gap:10px;align-items:center;margin-top:8px}
