@@ -373,7 +373,8 @@
       }
     ],
     "conclusion": "",
-    "svg": "assets/research/hetero-paradox.svg",
-    "svgAlt": "페인트의 흔적과 시멘트 기와, 문양집, 주물 난간 등의 도면과 인터뷰 인용문을 모아 배치한 혼종의 역설 콜라주"
+    "svg": "assets/research/hetero-paradox-reassembled.svg",
+    "svgAlt": "원본 전시 SVG의 19개 도형·사진·인용문을 잘리지 않게 가로형으로 재배열한 콜라주",
+    "svgOriginal": "assets/research/hetero-paradox.svg"
   }
 }
