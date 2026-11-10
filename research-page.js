@@ -209,14 +209,21 @@ function mapSources(map,year){
 }
 function layeredMap(base,layers,detailMode){
  const stack=el('div','research-map-stack'+(detailMode?' research-map-stack-detail':'')+(layers.length>1?' is-combined':''));
- const paths=[{image:base,type:'base'},...layers.map(layer=>({...layer,type:'overlay'}))];
+ const paths=[
+  {image:base,type:'base'},
+  ...(state.data?.mapVector?[{image:state.data.mapVector,type:'vector'}]:[]),
+  ...layers.map(layer=>({...layer,type:'overlay'}))
+ ];
  paths.forEach((path,i)=>{
   if(!path.image)return;
-  const img=el('img','research-map-layer '+(path.type==='base'?'research-map-base':('research-map-overlay research-map-overlay--'+(path.id||'unknown'))));
+  const typeClass=path.type==='base'?'research-map-base':
+   path.type==='vector'?'research-map-vector':'research-map-overlay research-map-overlay--'+(path.id||'unknown');
+  const img=el('img','research-map-layer '+typeClass);
   img.src=path.image;
-  img.alt=path.type==='base'?'대한민국 지도':(path.label||'공장')+' 위치 레이어';
+  img.alt=path.type==='base'?'대한민국 지도':path.type==='vector'?'':(path.label||'공장')+' 위치 레이어';
   img.loading='eager';img.decoding='async';img.draggable=false;
-  if(path.type==='overlay')img.style.zIndex=String(i+1);
+  if(path.type==='vector')img.style.zIndex='1';
+  if(path.type==='overlay')img.style.zIndex=String(i+2);
   img.addEventListener('error',()=>{
    img.remove();
    if(!stack.querySelector('img')){
