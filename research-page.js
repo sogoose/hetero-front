@@ -484,7 +484,7 @@ function renderProduction(data){
   if(lastDrawn!==activeId){
    let vector=cachedShapes.get(activeId);
    if(!vector){
-    const source=iconSource.getElementById('origin-'+activeId);
+    const source=iconSource.querySelector('[id="origin-'+activeId+'"]');
     if(!source){highlight.classList.remove('is-active');return}
     vector=document.importNode(source,true);
     vector.removeAttribute('id');
