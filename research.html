@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=15">
+<link rel="stylesheet" href="research-page.css?v=16">
 <script src="research-points.js?v=8" defer></script>
-<script src="research-page.js?v=14" defer></script>
+<script src="research-page.js?v=15" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -61,6 +61,14 @@
           <div class="research-origin-figure">
             <div class="research-origin-graphic" id="research-origin-graphic" aria-label="혼종 주택에 이르는 형태와 재료의 경로. 도상의 아이콘을 선택할 수 있습니다.">
               <img class="research-origin-image" id="research-origin-image" src="assets/research/hetero-origin-diagram.svg" alt="형태의 길과 재료의 길이 혼종 주택에서 만나는 도식" draggable="false">
+              <svg class="research-origin-highlight" id="research-origin-highlight" viewBox="0 0 3369.1 1727.37" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+                <defs>
+                  <filter id="research-origin-neon-filter" color-interpolation-filters="sRGB">
+                    <feColorMatrix type="matrix" values="0 0 0 0 .72   0 0 0 0 1   0 0 0 0 .02   -.2126 -.7152 -.0722 1 0" />
+                  </filter>
+                </defs>
+                <image id="research-origin-highlight-image" href="assets/research/hetero-origin-diagram.svg" x="0" y="0" width="3369.1" height="1727.37" filter="url(#research-origin-neon-filter)" />
+              </svg>
               <div class="research-origin-hotspots" id="research-origin-hotspots" role="group" aria-label="연구 도식의 단계 선택"></div>
             </div>
             <div class="research-origin-selected" id="research-origin-selected" aria-live="polite" aria-atomic="true">
