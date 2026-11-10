@@ -9,6 +9,7 @@ const $ = selector => document.querySelector(selector);
 const windowEl=$('#research-window');
 const rail=$('#research-rail');
 const panels=[...document.querySelectorAll('.research-panel')];
+const MAP_PAGE_INDEX=panels.findIndex(panel=>panel.classList.contains('research-panel-map'));
 const prev=$('#research-prev'),next=$('#research-next'),counter=$('#research-counter');
 const pageButtons=[...document.querySelectorAll('.research-page-link')];
 const mapArt=$('#research-map-art'),mapControls=$('#research-map-controls');
@@ -19,7 +20,7 @@ const detailDescription=$('#research-detail-description');
 const chapter=$('#chapter-menu');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const state={page:0,map:0,year:1991,voice:0,data:null,regionTables:null,pointer:null,lastWheel:0};
-const stageNames=['DISTRIBUTION','PRODUCTION','TESTIMONY'];
+const stageNames=['PRODUCTION','DISTRIBUTION','TESTIMONY'];
 const mapZoom={scale:1,x:0,y:0,drag:null,suppressClick:false,positionPending:false};
 const MAP_ZOOM_MAX=5;
 function clampMapPan(){
@@ -85,7 +86,7 @@ function initializeMapZoom(){
  const reset=$('#research-map-reset');
  reset?.addEventListener('click',resetMapZoom);
  mapArt.addEventListener('wheel',event=>{
-  if(state.page!==0||overlayIsOpen())return;
+  if(state.page!==MAP_PAGE_INDEX||overlayIsOpen())return;
   event.preventDefault();
   event.stopPropagation(); // never turn pages while zooming the map
   const multiplier=event.deltaMode===1?16:event.deltaMode===2?mapArt.clientHeight:1;
@@ -126,7 +127,7 @@ function initializeMapZoom(){
   event.preventDefault();event.stopImmediatePropagation();
  },true);
  mapArt.addEventListener('dblclick',event=>{
-  if(state.page!==0||overlayIsOpen())return;
+  if(state.page!==MAP_PAGE_INDEX||overlayIsOpen())return;
   event.preventDefault();event.stopImmediatePropagation();resetMapZoom();
  },true);
 }
@@ -378,8 +379,8 @@ function setYear(year){
  setMap(state.map);
 }
 function renderMaps(data){
- setText('#research-map-kicker',data.introduction&&data.introduction.kicker||'01 / DISTRIBUTION');
- setText('#research-map-heading',(data.introduction&&data.introduction.title||['혼종은 어디에서 왔을까?']).join(' '));
+ setText('#research-map-kicker',data.introduction&&data.introduction.kicker||'02 / DISTRIBUTION');
+ setText('#research-map-heading',(data.introduction&&data.introduction.title||['혼종 재료의 출처']).join(' '));
  const paragraphs=Array.isArray(data.introduction?.body)?data.introduction.body:[];
  const essay=$('#research-map-essay'),dialogEssay=$('#research-essay-dialog-content');
  if(essay&&dialogEssay){
@@ -451,7 +452,7 @@ function openDetail(item){
 }
 function renderProduction(data){
  const proc=data.production||{};
- setText('#research-production-kicker',proc.kicker||'02 / PRODUCTION');
+ setText('#research-production-kicker',proc.kicker||'01 / PRODUCTION');
  setText('#research-production-title',proc.title||'');
  const essay=$('#research-production-essay');
  const hotspots=$('#research-origin-hotspots');
