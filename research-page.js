@@ -452,7 +452,6 @@ function openDetail(item){
 }
 function renderProduction(data){
  const proc=data.production||{};
- setText('#research-production-kicker',proc.kicker||'01 / PRODUCTION');
  setText('#research-production-title',proc.title||'혼종은 어디에서 왔을까?');
  const essay=$('#research-production-essay');
  const hotspots=$('#research-origin-hotspots');
@@ -513,9 +512,7 @@ function renderProduction(data){
    iconSource=parsed;
    refreshHighlight();
   }).catch(error=>console.warn('아이콘 강조 경로 로딩 실패:',error));
- const showPrompt=()=>{
-  selected.replaceChildren(el('p','research-origin-hint','도식의 아이콘을 선택하면 각 단계의 이야기가 나타납니다.'));
- };
+ const showPrompt=()=>selected.replaceChildren();
  stages.forEach(stage=>{
   const region=stage.hotspot||{};
   const button=el('button','research-origin-hotspot');
@@ -556,10 +553,8 @@ function renderProduction(data){
     window.ResearchOriginPhotos?.clear?.();
     return;
    }
-   const meta=el('span','research-origin-selection-meta',stage.number+' / '+(stage.path||'경로'));
-   const heading=el('h3','research-origin-selection-title',stage.label);
    const body=el('p','research-origin-selection-body',stage.description||'');
-   selected.replaceChildren(meta,heading,body);
+   selected.replaceChildren(body);
    window.ResearchOriginPhotos?.select?.(stage);
   });
   buttons.push(button);
