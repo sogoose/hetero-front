@@ -175,7 +175,7 @@ async function init(){
   const response=await fetch('assets/interviews/interviews-data.json',{cache:'no-cache'});
   if(!response.ok)throw new Error('인터뷰 데이터 HTTP '+response.status);
   const data=await response.json();
-  if(!Array.isArray(data.interviews)||data.interviews.length!==4)throw new Error('인터뷰 자료 구조 오류');
+  if(!Array.isArray(data.interviews)||data.interviews.length!==5)throw new Error('인터뷰 자료 구조 오류');
   host.replaceChildren();
   data.interviews.forEach(renderInterview);
   window.InterviewPhotoUpload?.mount();
