@@ -130,12 +130,12 @@ dialog.hf-index::backdrop{
 .hf-index .hf-index-row[aria-current="page"] .hf-index-row-ko{color:#0033ff!important}
 .hf-index .hf-index-foot{
  display:flex;justify-content:space-between;align-items:baseline;gap:10px;
- padding-top:19px;margin:2px 0 0;
+ padding:19px 0 0!important;margin:2px 0 0!important;
  font:400 9px/1.3 Pretendard,-apple-system,sans-serif!important;
  color:#a0a29b!important;
  letter-spacing:.09em!important;
 }
-.hf-index .hf-index-foot span:last-child{white-space:nowrap}
+.hf-index .hf-index-foot span:last-child{width:auto!important;white-space:nowrap}
 .hf-index :is(a,button):focus-visible{outline:2px solid #0033ff!important;outline-offset:2px!important}
 @media(max-width:530px){
  dialog.hf-index{
@@ -151,7 +151,7 @@ dialog.hf-index::backdrop{
  .hf-index .hf-index-row-en{font-size:12px!important;letter-spacing:.095em!important}
  .hf-index .hf-index-row-ko{font-size:10px!important}
  .hf-index .hf-index-row[aria-current="page"]::before{top:13px;bottom:13px}
- .hf-index .hf-index-foot{padding-top:14px}
+ .hf-index .hf-index-foot{padding:14px 0 0!important}
 }
 @media(prefers-reduced-motion:reduce){
  .hf-index .hf-index-close,.hf-index .hf-index-row{transition:none!important}
