@@ -1,0 +1,174 @@
+/* HETERO FRONT / The house as index. Single-viewport homepage. */
+html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!important;background:#fff}
+.home-body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;color:#181817}
+.home-shell{position:relative;isolation:isolate;width:100%;height:100vh;height:100dvh;overflow:hidden;background:#fff}
+.home-shell *{box-sizing:border-box}
+.home-shell .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.home-identity{
+ position:absolute;z-index:5;top:clamp(14px,2.1vh,26px);left:clamp(16px,3vw,50px);
+ display:block;width:clamp(210px,27vw,385px);
+ animation:home-arrive 1.1s ease-out both,home-float 7s 1.1s ease-in-out infinite;
+ transform-origin:center;
+}
+.home-identity img{display:block;width:100%;height:auto;pointer-events:none}
+.home-identity:focus-visible{outline:1px solid #1b1c1b;outline-offset:7px}
+.home-drawing-stage{
+ position:absolute;inset:clamp(105px,13vh,155px) 2.5vw clamp(105px,12vh,142px);
+ display:grid;place-items:center;min-height:0;z-index:2;
+}
+.home-house{
+ position:relative;width:min(100%,calc((100dvh - 240px)*1.3334),1130px);
+ max-height:100%;aspect-ratio:1133.86 / 850.39;
+ transition:transform .6s cubic-bezier(.22,.7,.19,1);
+}
+.home-house-line,.home-house-highlight{
+ position:absolute;inset:0;width:100%;height:100%;display:block;
+ pointer-events:none;user-select:none;object-fit:contain;
+}
+.home-house-line{z-index:1}
+.home-house-highlight{
+ z-index:2;opacity:0;transition:opacity .16s ease;
+ filter:saturate(.83);
+}
+.home-house[data-active] .home-house-highlight{opacity:.78}
+.home-house[data-active="roof"] .home-house-highlight{clip-path:polygon(13% 24.8%,61% 24.8%,61% 35%,13% 35%)}
+.home-house[data-active="railing"] .home-house-highlight{clip-path:polygon(12.9% 43.5%,53.5% 43.5%,53.5% 56.5%,12.9% 56.5%)}
+.home-house[data-active="brick"] .home-house-highlight{clip-path:polygon(48% 54%,76% 54%,76% 78%,48% 78%)}
+.home-house[data-active="gate"] .home-house-highlight{clip-path:polygon(69% 43%,96% 43%,96% 62%,69% 62%)}
+.home-hotspots{position:absolute;inset:0;z-index:3}
+.home-hotspot{position:absolute;display:block;cursor:pointer;outline-offset:3px;background:transparent}
+.home-hotspot-roof{left:13.7%;top:25%;width:46.2%;height:9.6%}
+.home-hotspot-railing{left:13.3%;top:43.9%;width:40%;height:12%}
+.home-hotspot-brick{left:48.9%;top:54.4%;width:25.5%;height:23%}
+.home-hotspot-gate{left:70.8%;top:43.4%;width:22%;height:17.5%}
+.home-hotspot:focus-visible{outline:1px dashed #20211d}
+.home-hotspot-label{
+ position:absolute;display:flex;align-items:center;gap:14px;
+ z-index:4;min-width:158px;white-space:nowrap;
+ left:50%;top:-15px;transform:translate(-50%,-75%) translateY(5px);
+ opacity:0;pointer-events:none;
+ padding:12px 15px;background:#fff;border:1px solid #20201d;
+ box-shadow:3px 4px 0 rgba(16,17,14,.11);
+ transition:opacity .15s ease,transform .2s ease;
+}
+.home-hotspot-label::after{content:"";position:absolute;bottom:-5px;left:calc(50% - 5px);width:8px;height:8px;background:#fff;border-right:1px solid #20201d;border-bottom:1px solid #20201d;transform:rotate(45deg)}
+.home-hotspot-roof .home-hotspot-label{top:-2px;left:62%}
+.home-hotspot-railing .home-hotspot-label{top:0;left:27%}
+.home-hotspot-brick .home-hotspot-label{left:60%;top:18%;transform:translate(-50%,-100%) translateY(4px)}
+.home-hotspot-gate .home-hotspot-label{top:12%;left:60%}
+.home-hotspot:hover .home-hotspot-label,.home-hotspot:focus-visible .home-hotspot-label{
+ opacity:1;transform:translate(-50%,-100%) translateY(0);
+}
+.home-hotspot-index{font:400 9px/1.3 Pretendard,sans-serif;color:#88857d;letter-spacing:.06em}
+.home-hotspot-label strong{font:600 16px/1.4 Pretendard,sans-serif;letter-spacing:-.04em}
+.home-hotspot-arrow{font-size:17px;line-height:1}
+.home-bottom{
+ position:absolute;left:clamp(19px,4vw,68px);bottom:clamp(22px,4.3vh,42px);
+ z-index:6;display:flex;flex-direction:column;align-items:flex-start;gap:10px
+}
+.home-essay-trigger{
+ appearance:none;border:0;background:transparent;box-shadow:none;
+ border-radius:0;padding:0;display:flex;align-items:baseline;gap:20px;cursor:pointer;text-align:left;
+}
+.home-essay-title{
+ font:700 clamp(17px,1.55vw,25px)/1.48 Pretendard,sans-serif;
+ letter-spacing:-.055em;color:#1d1e1d
+}
+.home-essay-open{
+ font:450 10px/1.4 Pretendard,sans-serif;color:#5e5e59;
+ border-bottom:1px solid #86867f;padding-bottom:4px;
+ white-space:nowrap
+}
+.home-essay-trigger:hover .home-essay-open{color:#171715;border-bottom-color:#171715}
+.home-hint{font:400 10px/1.6 Pretendard,sans-serif;letter-spacing:-.018em;color:#9d9d96}
+.home-sponsor{
+ position:absolute;right:clamp(20px,3.6vw,58px);bottom:clamp(20px,3.1vh,37px);
+ z-index:4;width:clamp(185px,21vw,285px);
+}
+.home-sponsor img{display:block;width:100%;height:auto}
+.home-exhibition-link{
+ position:absolute;right:clamp(20px,3.6vw,58px);bottom:clamp(63px,8.1vh,90px);
+ z-index:4;font:400 10px/1.5 Pretendard,sans-serif;
+ border-bottom:1px solid #999991;padding-bottom:3px;color:#64645c;
+}
+.home-exhibition-link:hover{color:#111;border-bottom-color:#111}
+/* Editorial reading panel inspired by the landscapes essay. */
+.home-essay{
+ position:fixed!important;inset:0!important;
+ width:100vw!important;height:100vh!important;height:100dvh!important;
+ max-width:none!important;max-height:none!important;
+ border:0!important;margin:0!important;padding:0!important;border-radius:0!important;
+ background:#fff!important;color:#20211e;
+ overflow:hidden!important;overscroll-behavior:contain;
+}
+.home-essay[open]{display:block}
+.home-essay::backdrop{background:#fff}
+.home-essay-close{
+ position:fixed;top:26px;right:clamp(22px,4vw,60px);z-index:3;
+ border:0;background:none;padding:0;
+ font:200 32px/1 Pretendard,sans-serif;color:#4c4c46;
+}
+.home-essay-scroll{
+ overflow-y:auto;height:100%;overscroll-behavior:contain;
+ padding:clamp(85px,13vh,140px) 24px 100px;
+ scrollbar-width:thin;scrollbar-color:#ccc transparent;
+}
+.home-essay-paper{max-width:915px;margin:auto}
+.home-essay-paper h2{
+ font:750 clamp(25px,3vw,40px)/1.4 Pretendard,sans-serif;
+ letter-spacing:-.058em;margin:0 0 52px!important
+}
+.home-essay-columns{column-count:2;column-gap:clamp(32px,4.3vw,78px)}
+.home-essay-columns p{
+ break-inside:avoid-column;margin:0 0 25px!important;
+ font:410 clamp(13px,1vw,15px)/1.91 Pretendard,sans-serif;
+ letter-spacing:-.033em;word-break:keep-all;color:#292a27;
+}
+.home-essay-columns strong{font-weight:720;color:#111}
+.home-essay-next{
+ display:inline-block;margin-top:26px;padding:6px 0;border-bottom:1px solid #9b9b94;
+ font:450 12px/1.5 Pretendard,sans-serif
+}
+@keyframes home-float{0%,100%{translate:0 0}50%{translate:0 -7px}}
+@keyframes home-arrive{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@media(max-width:900px){
+ .home-house{width:min(100%,calc((100dvh - 190px)*1.3334))}
+ .home-identity{width:clamp(190px,35vw,305px)}
+ .home-essay-trigger{flex-direction:column;gap:4px}
+ .home-bottom{bottom:25px}
+ .home-hint{display:none}
+ .home-sponsor{width:170px;bottom:20px}
+ .home-exhibition-link{bottom:65px}
+}
+@media(max-width:600px){
+ .home-identity{top:14px;left:17px;width:205px}
+ .home-drawing-stage{inset:15vh 0 20vh;overflow:visible}
+ .home-house{width:115vw;max-width:none;flex:none}
+ .home-house-line,.home-house-highlight{width:100%}
+ .home-hotspot-label{padding:7px 10px;gap:8px;min-width:110px}
+ .home-hotspot-label strong{font-size:13px}
+ .home-hotspot-index{font-size:7px}
+ .home-hotspot-arrow{font-size:13px}
+ .home-hotspot-brick .home-hotspot-label{left:62%;top:0}
+ .home-bottom{left:18px;right:18px;bottom:73px}
+ .home-essay-title{font-size:17px}
+ .home-essay-open{font-size:10px}
+ .home-sponsor{width:164px;bottom:15px;right:16px}
+ .home-exhibition-link{right:16px;bottom:58px}
+ .home-essay-scroll{padding:88px 23px 70px}
+ .home-essay-paper h2{margin-bottom:26px!important}
+ .home-essay-columns{column-count:1}
+ .home-essay-columns p{font-size:13px;line-height:1.83}
+ .home-essay-close{top:18px;right:20px}
+}
+@media(max-height:650px) and (min-width:601px){
+ .home-identity{width:clamp(175px,20vw,270px);top:8px}
+ .home-drawing-stage{inset:58px 3vw 90px}
+ .home-house{width:min(100%,calc((100dvh - 140px)*1.3334))}
+ .home-bottom{bottom:16px}
+ .home-sponsor{bottom:15px}
+}
+@media(prefers-reduced-motion:reduce){
+ .home-identity{animation:none}
+ .home-house,.home-hotspot-label,.home-house-highlight{transition:none!important}
+}
