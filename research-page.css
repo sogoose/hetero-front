@@ -2010,3 +2010,206 @@ body{background:#ffffff;color:#272724}
 /* Never let the original 50%-opacity construction strokes show through in black
    when an icon is selected: recolor their full vector ink coverage. */
 .research-panel-production #research-origin-highlight-shape .st10{opacity:1!important}
+
+
+/* 03 — The interview archive contains the full questions and answers.
+   This plate curates only the evidence: ink-black cuttings from makers' words. */
+.research-panel-testimony,
+.research-panel-paradox{display:block!important;overflow:hidden!important;background:#fff}
+.research-witness-layout{
+ width:100%;height:100%;min-width:0;min-height:0;
+ display:grid;grid-template-columns:minmax(0,69%) minmax(0,31%);
+}
+.research-witness-board{
+ position:relative;min-width:0;min-height:0;isolation:isolate;
+ margin:0;padding:0;
+}
+.research-witness-fragment{
+ position:absolute;box-sizing:border-box;
+ margin:0!important;padding:clamp(14px,1.45vw,23px) clamp(15px,1.55vw,28px)!important;
+ background:#141412;color:#f8f8f3;
+ box-shadow:2px 2px 0 rgba(0,0,0,.055);
+ clip-path:polygon(.5% .7%,99.8% 0,99.6% 99.2%,.4% 100%);
+ overflow:hidden;
+ transition:transform .25s ease,box-shadow .25s ease;
+}
+.research-witness-fragment:hover{transform:rotate(0deg) translateY(-3px)!important;box-shadow:5px 7px 0 rgba(0,0,0,.055)}
+.research-witness-fragment:nth-child(1){top:10%;left:8%;width:33%;transform:rotate(-2.4deg)}
+.research-witness-fragment:nth-child(2){top:7%;left:52%;width:37%;transform:rotate(1.8deg)}
+.research-witness-fragment:nth-child(3){top:31%;left:32%;width:39%;transform:rotate(-1deg)}
+.research-witness-fragment:nth-child(4){top:35%;left:7%;width:20%;transform:rotate(2deg)}
+.research-witness-fragment:nth-child(5){top:56%;left:9%;width:34%;transform:rotate(-1.3deg)}
+.research-witness-fragment:nth-child(6){top:53%;left:53%;width:40%;transform:rotate(1.25deg)}
+.research-witness-fragment:nth-child(7){top:79%;left:27%;width:47%;transform:rotate(-1.8deg)}
+.research-witness-quote{
+ margin:0!important;padding:0!important;border:0!important;
+ font:500 clamp(12px,1.03vw,17px)/1.62 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.042em!important;word-break:keep-all;
+ color:#f5f5ef!important;
+}
+.research-witness-source{
+ margin-top:clamp(9px,1.15vh,15px);
+ text-align:right;color:#aba9a4;
+ font:400 clamp(9px,.67vw,11px)/1.4 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.01em;
+}
+.research-witness-copy,
+.research-paradox-copy{
+ box-sizing:border-box;min-width:0;min-height:0;
+ display:flex;flex-direction:column;
+ padding:clamp(36px,8vh,98px) clamp(25px,3.5vw,72px) clamp(35px,6vh,72px) clamp(14px,1.45vw,28px)!important;
+ overflow-y:auto;overscroll-behavior:contain;
+ scrollbar-width:thin;scrollbar-color:#ddd transparent;
+}
+.research-witness-heading,
+.research-paradox-heading{
+ font-size:clamp(22px,1.75vw,34px)!important;
+ line-height:1.45!important;letter-spacing:-.07em!important;
+ margin:0 0 clamp(12px,2vh,24px)!important;
+}
+.research-witness-intro,
+.research-paradox-intro{
+ margin:0!important;padding:0!important;
+ font:400 clamp(11px,.77vw,13px)/1.85 Pretendard,-apple-system,sans-serif!important;
+ color:#72736d!important;letter-spacing:-.03em!important;word-break:keep-all;
+}
+.research-witness-readings{
+ display:flex;flex-direction:column;gap:clamp(23px,3.5vh,42px);
+ padding-top:clamp(34px,6vh,75px);
+}
+.research-witness-reading{display:grid;grid-template-columns:26px 1fr;gap:13px;align-items:start}
+.research-witness-reading-number{
+ padding-top:3px;font:400 9px/1.4 "Special Elite",monospace!important;
+ color:#a5a49e!important;
+}
+.research-witness-reading-title{
+ margin:0 0 9px!important;
+ font:650 clamp(12px,.91vw,15px)/1.5 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.035em!important;color:#2a2a26!important;
+}
+.research-witness-reading-text{
+ margin:0!important;
+ font:400 clamp(11px,.75vw,13px)/1.85 Pretendard,-apple-system,sans-serif!important;
+ color:#65665e!important;word-break:keep-all;letter-spacing:-.027em!important;
+}
+.research-witness-link{
+ align-self:flex-start;margin-top:auto!important;padding:clamp(28px,5vh,55px) 0 5px;
+ color:#242522!important;text-decoration:none!important;
+ border-bottom:1px solid #34362e!important;
+ font:500 clamp(11px,.82vw,13px)/1.5 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.025em;
+}
+.research-witness-link:hover{opacity:.58}
+
+/* 04 — Paradox: a second, less literal collage. The left is assembled
+   from printed-paper fragments; the right reads as the exhibit essay. */
+.research-paradox-layout{
+ display:grid;grid-template-columns:minmax(0,62%) minmax(0,38%);
+ width:100%;height:100%;min-width:0;min-height:0;
+}
+.research-paradox-board{position:relative;overflow:hidden;min-width:0;min-height:0}
+.research-paradox-fragment{
+ position:absolute;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;
+ background:#121211;color:#f5f4ee;
+ margin:0!important;padding:clamp(13px,1.5vw,25px)!important;
+ box-shadow:2px 3px 0 rgba(0,0,0,.055);
+ clip-path:polygon(.2% .4%,99.6% 0,100% 98.9%,.4% 100%);
+}
+.research-paradox-fragment:nth-child(1){top:11%;left:10%;width:31%;transform:rotate(-3deg)}
+.research-paradox-fragment:nth-child(2){top:8%;left:56%;width:27%;transform:rotate(2deg)}
+.research-paradox-fragment:nth-child(3){top:30%;left:36%;width:28%;transform:rotate(-1.5deg)}
+.research-paradox-fragment:nth-child(4){top:39%;left:6%;width:32%;transform:rotate(1.9deg)}
+.research-paradox-fragment:nth-child(5){top:49%;left:57%;width:29%;transform:rotate(-2.4deg)}
+.research-paradox-fragment:nth-child(6){top:65%;left:11%;width:34%;transform:rotate(-1.2deg)}
+.research-paradox-fragment:nth-child(7){top:76%;left:55%;width:30%;transform:rotate(2.3deg)}
+.research-paradox-fragment:nth-child(8){top:84%;left:23%;width:27%;transform:rotate(1.3deg)}
+.research-paradox-fragment-text{
+ font:550 clamp(12px,1.1vw,19px)/1.5 Pretendard,-apple-system,sans-serif!important;
+ color:#fff!important;letter-spacing:-.047em!important;word-break:keep-all;
+}
+.research-paradox-fragment-tag{
+ margin-top:10px;align-self:flex-end;text-align:right;
+ color:#a5a5a0!important;
+ font:400 clamp(9px,.7vw,11px)/1.4 Pretendard,-apple-system,sans-serif!important;
+}
+.research-paradox-board-end{display:none}
+.research-paradox-copy{
+ padding-left:clamp(24px,2.4vw,46px)!important;
+ padding-right:clamp(28px,4vw,80px)!important;
+}
+.research-paradox-heading{font-size:clamp(25px,2.2vw,39px)!important}
+.research-paradox-essay{display:flex;flex-direction:column;gap:clamp(12px,2.1vh,23px);margin-top:clamp(24px,4vh,45px)}
+.research-paradox-paragraph{
+ margin:0!important;padding:0!important;
+ font:400 clamp(11px,.8vw,13px)/1.87 Pretendard,-apple-system,sans-serif!important;
+ color:#464741!important;
+ letter-spacing:-.03em!important;word-break:keep-all;overflow-wrap:break-word;
+}
+.research-paradox-conclusion{
+ margin:auto 0 0!important;
+ padding:clamp(17px,3vh,32px) 0 0!important;
+ font:600 clamp(11.5px,.9vw,15px)/1.75 Pretendard,-apple-system,sans-serif!important;
+ color:#222320!important;letter-spacing:-.035em!important;word-break:keep-all;
+}
+@media(min-width:701px) and (max-width:1100px){
+ .research-witness-fragment{padding:13px!important}
+ .research-witness-quote,.research-paradox-fragment-text{font-size:11px!important;line-height:1.5!important}
+ .research-witness-source,.research-paradox-fragment-tag{font-size:8px!important}
+ .research-witness-copy,.research-paradox-copy{padding-top:35px!important;padding-right:20px!important}
+ .research-witness-readings{gap:14px;padding-top:25px}
+ .research-witness-reading-text,.research-paradox-paragraph{font-size:11px!important;line-height:1.55!important}
+}
+@media(max-height:650px) and (min-width:701px){
+ .research-witness-fragment{padding:10px 14px!important}
+ .research-witness-quote{font-size:11px!important;line-height:1.45!important}
+ .research-witness-source{font-size:8px!important;margin-top:5px}
+ .research-witness-copy,.research-paradox-copy{padding-top:22px!important;padding-bottom:20px!important}
+ .research-witness-readings{padding-top:15px;gap:12px}
+ .research-paradox-essay{margin-top:15px;gap:10px}
+ .research-paradox-paragraph{line-height:1.5!important}
+ .research-paradox-fragment{padding:10px!important}
+}
+@media(max-width:700px){
+ .research-witness-layout,.research-paradox-layout{
+  display:flex!important;flex-direction:column!important;height:100%!important;
+ }
+ .research-witness-board,.research-paradox-board{
+  flex:0 0 42%;width:100%;height:42%;overflow-y:auto;
+  box-sizing:border-box;
+  padding:20px 18px 15px!important;
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+  align-content:start;scrollbar-width:thin;
+ }
+ .research-witness-fragment,.research-paradox-fragment{
+  position:relative!important;top:auto!important;left:auto!important;
+  width:100%!important;margin:0!important;
+  transform:rotate(0deg)!important;padding:11px!important;
+  min-height:80px;
+ }
+ .research-witness-quote,.research-paradox-fragment-text{
+  font-size:11.3px!important;line-height:1.48!important;
+ }
+ .research-witness-source,.research-paradox-fragment-tag{
+  font-size:8px!important;margin-top:5px;
+ }
+ .research-witness-copy,.research-paradox-copy{
+  flex:1 1 auto;max-height:none;min-height:0;
+  padding:13px 24px 24px!important;overflow-y:auto!important;
+ }
+ .research-witness-heading,.research-paradox-heading{
+  font-size:21px!important;margin-bottom:7px!important;
+ }
+ .research-witness-intro,.research-paradox-intro{font-size:10.5px!important;line-height:1.65!important}
+ .research-witness-readings{padding-top:17px;gap:14px}
+ .research-witness-reading{grid-template-columns:20px 1fr;gap:7px}
+ .research-witness-reading-title{font-size:11.5px!important;margin-bottom:3px!important}
+ .research-witness-reading-text,.research-paradox-paragraph{
+  font-size:10.5px!important;line-height:1.6!important;
+ }
+ .research-witness-link{padding:17px 0 3px;font-size:10.5px!important}
+ .research-paradox-essay{margin-top:13px;gap:11px}
+ .research-paradox-conclusion{padding-top:17px!important;font-size:11px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .research-witness-fragment{transition:none!important}
+}
