@@ -12,7 +12,6 @@
  const image=$('#research-origin-photo-image');
  const placeholder=$('#research-origin-photo-placeholder');
  const footer=$('#research-origin-photo-footer');
- const label=$('#research-origin-photo-label');
  const action=$('#research-origin-photo-upload');
  const picker=$('#research-origin-photo-file');
  const status=$('#research-origin-photo-status');
@@ -28,8 +27,8 @@
   const seq=++loadingId;
   const url=photoURL(id);
   const probe=new Image();
-  placeholder.textContent='이미지 확인 중…';
-  placeholder.hidden=false;
+  placeholder.textContent='';
+  placeholder.hidden=true;
   image.hidden=true;
   probe.onload=()=>{
    if(seq!==loadingId||id!==current)return;
@@ -41,8 +40,8 @@
   probe.onerror=()=>{
    if(seq!==loadingId||id!==current)return;
    image.removeAttribute('src');image.hidden=true;
-   placeholder.textContent='등록된 이미지가 없습니다.';
-   placeholder.hidden=false;
+   placeholder.textContent='';
+   placeholder.hidden=true;
    action.textContent='이미지 등록';
   };
   probe.src=url;
@@ -52,15 +51,14 @@
   ++loadingId;
   image.removeAttribute('src');
   image.hidden=true;
-  placeholder.textContent='아이콘을 선택하면 해당 단계의 이미지가 나타납니다.';
-  placeholder.hidden=false;
+  placeholder.textContent='';
+  placeholder.hidden=true;
   footer.hidden=true;
   message('');
  }
  function select(stage){
   if(!IDS.has(stage?.id))return;
   current=stage.id;
-  label.textContent=stage.label||'';
   footer.hidden=false;
   message('');
   showPhoto(current);
