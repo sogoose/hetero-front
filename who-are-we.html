@@ -13,7 +13,7 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
 .studio-page{box-sizing:border-box;min-height:100svh;padding:clamp(22px,3vw,52px) clamp(24px,5vw,86px) clamp(60px,7vh,110px)}
 .studio-top{display:flex;align-items:center;justify-content:space-between}
 .studio-back{font:500 12px/1.5 Pretendard,sans-serif;letter-spacing:-.02em;text-decoration:none;color:#292929;border-bottom:1px solid #999;padding-bottom:5px}
-.studio-back:focus-visible,.studio-gallery-add:focus-visible{outline:2px solid #0033ff;outline-offset:4px}
+.studio-back:focus-visible{outline:2px solid #0033ff;outline-offset:4px}
 .studio-grid{
  display:grid;
  grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);
@@ -28,21 +28,20 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
 .studio-intro{grid-area:intro;min-width:0;max-width:590px;font-size:clamp(14px,1.05vw,16px);font-weight:430;line-height:1.95;letter-spacing:-.028em;word-break:keep-all}
 .studio-intro p{margin:0 0 23px}
 .studio-intro p:last-child{margin-bottom:0}
-.studio-section-label{margin:0 0 19px;font:500 10px/1.4 Pretendard,sans-serif;letter-spacing:.12em;color:#777773}
 .studio-gallery{grid-area:gallery;min-width:0;max-width:510px}
-.studio-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.1vw,17px);align-items:start}
-.studio-gallery-item{margin:0;min-width:0}
-.studio-gallery-item img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center;user-select:none}
-.studio-gallery-add{
- display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
- box-sizing:border-box;aspect-ratio:1/1;min-height:90px;
- border:1px solid #d8d8d5;color:#333;text-decoration:none;background:#fff;
- transition:background .2s ease,border-color .2s ease
+.studio-gallery-grid{
+ display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
+ grid-auto-rows:8px;grid-auto-flow:dense;
+ column-gap:clamp(9px,1vw,13px);row-gap:clamp(9px,1vw,13px);
+ align-items:start;
 }
-.studio-gallery-add-symbol{font:300 clamp(24px,3vw,40px)/1 Pretendard,sans-serif}
-.studio-gallery-add-label{font:450 11px/1.35 Pretendard,sans-serif;letter-spacing:-.025em}
-.studio-gallery-add:hover{border-color:#0033ff;color:#0033ff;background:#f8faff}
-.studio-gallery-status{font:400 10px/1.7 Pretendard,sans-serif;color:#90908a;margin:12px 0 0;min-height:1em}
+.studio-gallery-item{margin:0;min-width:0;grid-column:span 2;align-self:start;overflow:visible}
+.studio-gallery-item.is-featured{grid-column:span 4}
+.studio-gallery-item img{
+ display:block;width:100%;height:auto;max-width:100%;
+ aspect-ratio:auto;object-fit:contain;object-position:center;
+ user-select:none;pointer-events:none
+}
 .studio-team{grid-area:people;min-width:0;max-width:590px;width:100%}
 .studio-people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.8vw,25px);align-items:end}
 .studio-person{min-width:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
@@ -75,8 +74,7 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
  .studio-person figcaption{margin-top:12px}
  .studio-person-name{font-size:11px}
  .studio-person-role{font-size:9px}
- .studio-gallery-grid{gap:9px}
- .studio-gallery-add-label{font-size:10px}
+ .studio-gallery-grid{column-gap:8px;row-gap:8px;grid-auto-rows:6px}
 }
 </style>
 </head>
@@ -92,16 +90,9 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
       <p>그 과정에서 우리는 한국 건축 안에서 이질적인 재료, 방식, 언어들이 아무런 질문 없이 병치되며 혼재와 모순이 당연시되는 현실을 반복적으로 마주했다. 본 프로젝트는 실무의 현장에서 체감된 그 질문을 건축 재료와 생산의 층위에서 다시 마주하려는 시도이다.</p>
     </section>
     <section class="studio-gallery" aria-label="아뜰리에 사진 갤러리">
-      <h2 class="studio-section-label">GALLERY / ATELIER 作</h2>
-      <div class="studio-gallery-grid" id="studio-gallery-grid">
-        <a class="studio-gallery-add" id="studio-gallery-add" href="https://github.com/sogoose/hetero-front/upload/main/assets/team/gallery" target="_blank" rel="noopener noreferrer" title="GitHub에서 갤러리 이미지 추가">
-          <span class="studio-gallery-add-symbol" aria-hidden="true">+</span><span class="studio-gallery-add-label">이미지 추가</span>
-        </a>
-      </div>
-      <p class="studio-gallery-status" id="studio-gallery-status" aria-live="polite">사진 목록을 불러오는 중…</p>
+      <div class="studio-gallery-grid" id="studio-gallery-grid"></div>
     </section>
     <section class="studio-team" aria-label="아뜰리에 작의 네 사람">
-      <h2 class="studio-section-label">PEOPLE / ATELIER 作</h2>
       <div class="studio-people">
         <figure class="studio-person"><img src="assets/home/person-02.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">손정호</span><span class="studio-person-role">팀장</span></figcaption></figure>
         <figure class="studio-person"><img src="assets/home/person-01.svg" alt="" draggable="false"><figcaption><span class="studio-person-name">박소현</span><span class="studio-person-role">팀원</span></figcaption></figure>
@@ -111,6 +102,6 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
     </section>
   </div>
 </main>
-<script src="studio-gallery.js?v=1" defer></script>
+<script src="studio-gallery.js?v=2" defer></script>
 </body>
 </html>
