@@ -10,7 +10,7 @@
   ['research.html','03','RESEARCH','연구'],
   ['interviews.html','04','INTERVIEWS','인터뷰'],
   ['exhibition.html','05','EXHIBITION','전시'],
-  ['who-are-we.html','+','ATELIER 作','우리 소개']
+  ['who-are-we.html','+','ATELIER 作','팀 소개']
  ];
  function node(tag,className,text){
   const el=document.createElement(tag);
@@ -29,10 +29,10 @@
   close.setAttribute('title','목차 닫기');
   close.setAttribute('aria-label','목차 닫기');
   const header=node('header','hf-index-head');
-  const title=node('span','hf-index-identity','HETERO FRONT');
-  title.id='chapter-title'; // preserve aria-labelledby on archive dialogs
-  const meta=node('span','hf-index-meta','INDEX / 07');
-  header.append(title,meta,close);
+  // The registry needs no tiny English kickers; let the actual links be the focus.
+  dialog.removeAttribute('aria-labelledby');
+  dialog.setAttribute('aria-label','전체 목차');
+  header.append(close);
   const nav=node('nav','hf-index-nav');
   nav.setAttribute('aria-label','전시 아카이브 전체 목차');
   const path=decodeURIComponent(location.pathname.split('/').pop()||'index.html').toLowerCase();
@@ -46,7 +46,12 @@
    nav.append(a);
   });
   const footer=node('footer','hf-index-foot');
-  footer.append(node('span','', 'ATELIER 作'),node('span','','ARCHIVE · 2026'));
+  const teamLogo=node('img','hf-index-team-logo');
+  teamLogo.src='assets/home/logo-horizontal-team.svg';
+  teamLogo.alt='아뜰리에 作';
+  teamLogo.loading='eager';
+  teamLogo.decoding='async';
+  footer.append(teamLogo);
   dialog.replaceChildren(header,nav,footer);
   dialog.classList.add('hf-index');
   dialog.dataset.hfIndexReady='true';
