@@ -457,18 +457,43 @@ function renderProduction(data){
  const hotspots=$('#research-origin-hotspots');
  const selected=$('#research-origin-selected');
  const diagram=$('#research-origin-image');
- if(!essay||!hotspots||!selected||!diagram)return;
+ const highlight=$('#research-origin-highlight');
+ const highlightImage=$('#research-origin-highlight-image');
+ if(!essay||!hotspots||!selected||!diagram||!highlight||!highlightImage)return;
  diagram.src=proc.diagram||'assets/research/hetero-origin-diagram.svg';
+ highlightImage.setAttribute('href',diagram.src);
  diagram.alt=proc.diagramAlt||'형태와 재료의 두 길이 혼종 주택에 모이는 도식';
  essay.replaceChildren();
  (proc.body||[]).forEach(text=>essay.append(el('p','research-origin-paragraph',text)));
  hotspots.replaceChildren();
  const buttons=[];
+ const stages=Array.isArray(proc.stages)?proc.stages:[];
+ let selectedId=null,hoveredId=null,focusedId=null;
+ const refreshHighlight=()=>{
+  // The image itself is used as an alpha mask: only ink becomes fluorescent.
+  // The transparent click regions never draw a rectangular boundary.
+  const activeId=hoveredId||focusedId||selectedId;
+  const stage=stages.find(item=>item.id===activeId);
+  if(!stage){
+   highlight.classList.remove('is-active');
+   return;
+  }
+  const {x,y,w,h}=stage.hotspot||{};
+  if(![x,y,w,h].every(value=>Number.isFinite(Number(value)))){
+   highlight.classList.remove('is-active');
+   return;
+  }
+  const left=Math.max(0,Math.min(100,Number(x)));
+  const top=Math.max(0,Math.min(100,Number(y)));
+  const right=Math.max(0,Math.min(100,100-Number(x)-Number(w)));
+  const bottom=Math.max(0,Math.min(100,100-Number(y)-Number(h)));
+  highlight.style.clipPath='inset('+top+'% '+right+'% '+bottom+'% '+left+'%)';
+  highlight.classList.add('is-active');
+ };
  const showPrompt=()=>{
   selected.replaceChildren(el('p','research-origin-hint','도식의 아이콘을 선택하면 각 단계의 이야기가 나타납니다.'));
  };
- let selectedId=null;
- (proc.stages||[]).forEach(stage=>{
+ stages.forEach(stage=>{
   const region=stage.hotspot||{};
   const button=el('button','research-origin-hotspot');
   button.type='button';
@@ -477,9 +502,23 @@ function renderProduction(data){
   button.setAttribute('aria-label',stage.label+' 설명 보기');
   button.setAttribute('aria-controls','research-origin-selected');
   button.setAttribute('aria-pressed','false');
-  ['x','y','w','h'].forEach((key)=>{
+  ['x','y','w','h'].forEach(key=>{
    const value=Number(region[key]);
    if(Number.isFinite(value))button.style.setProperty('--origin-'+key,value+'%');
+  });
+  button.addEventListener('pointerenter',()=>{
+   hoveredId=stage.id;refreshHighlight();
+  });
+  button.addEventListener('pointerleave',()=>{
+   if(hoveredId===stage.id)hoveredId=null;
+   refreshHighlight();
+  });
+  button.addEventListener('focus',()=>{
+   focusedId=stage.id;refreshHighlight();
+  });
+  button.addEventListener('blur',()=>{
+   if(focusedId===stage.id)focusedId=null;
+   refreshHighlight();
   });
   button.addEventListener('click',()=>{
    const toggleOff=selectedId===stage.id;
@@ -488,6 +527,7 @@ function renderProduction(data){
     other.classList.toggle('is-selected',other.dataset.originId===selectedId);
     other.setAttribute('aria-pressed',String(other.dataset.originId===selectedId));
    });
+   refreshHighlight();
    if(toggleOff){showPrompt();return}
    const meta=el('span','research-origin-selection-meta',stage.number+' / '+(stage.path||'경로'));
    const heading=el('h3','research-origin-selection-title',stage.label);
@@ -498,6 +538,7 @@ function renderProduction(data){
   hotspots.append(button);
  });
  showPrompt();
+ refreshHighlight();
 }
 function selectVoice(index){
  const cards=[...document.querySelectorAll('.research-voice')];
