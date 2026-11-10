@@ -55,6 +55,16 @@
   };
   probe.src=url;
  }
+ function clear(){
+  current=null;
+  ++loadingId;
+  image.removeAttribute('src');
+  image.hidden=true;
+  placeholder.textContent='아이콘을 선택하면 해당 단계의 이미지가 나타납니다.';
+  placeholder.hidden=false;
+  footer.hidden=true;
+  message('');
+ }
  function select(stage){
   if(!IDS.has(stage?.id))return;
   current=stage.id;
@@ -171,5 +181,5 @@
  form?.addEventListener('submit',submitLogin);
  $('#research-origin-login-close')?.addEventListener('click',()=>dialog.close());
  dialog?.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
- window.ResearchOriginPhotos={select};
+ window.ResearchOriginPhotos={select,clear};
 })();
