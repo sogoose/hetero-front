@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="interviews-scroll.css?v=11">
-<script src="interviews-upload.js?v=8" defer></script>
-<script src="interviews-scroll.js?v=7" defer></script>
+<link rel="stylesheet" href="interviews-scroll.css?v=12">
+<script src="interviews-content.js?v=1" defer></script>
+<script src="interviews-scroll.js?v=8" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -52,49 +52,6 @@
   </footer>
 </main>
 
-<dialog id="interview-upload-dialog" class="interview-upload-dialog" aria-labelledby="interview-upload-dialog-title">
-  <div class="interview-upload-head">
-    <h2 id="interview-upload-dialog-title">사진 추가</h2>
-    <button id="interview-upload-close" class="interview-upload-close" type="button" aria-label="닫기">×</button>
-  </div>
-  <p class="interview-upload-lead" id="interview-upload-title"></p>
-  <form id="interview-upload-form" class="interview-upload-fields">
-    <label>사진 선택<input id="interview-upload-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" required></label>
-    <img id="interview-upload-preview" class="interview-upload-preview" alt="압축된 사진 미리보기" hidden>
-    <p id="interview-upload-size" class="interview-upload-size" aria-live="polite"></p>
-    <label>사진 설명 <span>(선택)</span><input id="interview-upload-alt" type="text" maxlength="180" placeholder="사진에 무엇이 보이나요?"></label>
-    <label>사진 주석 <span>(선택)</span><textarea id="interview-upload-caption" rows="2" maxlength="300" placeholder="촬영 장소, 날짜 또는 설명"></textarea></label>
-    <p class="interview-upload-hint">선택한 사진은 자동으로 크기 조정·압축돼요. 업로드하면 다른 방문자에게도 공개됩니다.</p>
-    <button class="interview-upload-primary" type="submit">사진 업로드</button>
-  </form>
-  <p id="interview-upload-status" class="interview-upload-status" role="status" aria-live="polite"></p>
-</dialog>
-<dialog id="interview-photo-edit-dialog" class="interview-upload-dialog" aria-labelledby="interview-photo-edit-title">
-  <div class="interview-upload-head">
-    <h2 id="interview-photo-edit-title">사진 정보 수정</h2>
-    <button type="button" class="interview-upload-close" id="interview-photo-edit-close" aria-label="닫기">×</button>
-  </div>
-  <form id="interview-photo-edit-form" class="interview-upload-fields">
-    <label>사진 설명<input id="interview-photo-edit-alt" type="text" maxlength="180" required></label>
-    <label>사진 주석<textarea id="interview-photo-edit-caption" rows="3" maxlength="300"></textarea></label>
-    <button class="interview-upload-primary" type="submit">변경사항 저장</button>
-  </form>
-  <button id="interview-photo-delete" class="interview-editor-delete" type="button">이 사진 삭제</button>
-  <p class="interview-upload-status" id="interview-photo-edit-status" role="status" aria-live="polite"></p>
-</dialog>
-<dialog id="interview-turn-edit-dialog" class="interview-upload-dialog interview-turn-edit-dialog" aria-labelledby="interview-turn-edit-title">
-  <div class="interview-upload-head">
-    <h2 id="interview-turn-edit-title">인터뷰 문장 수정</h2>
-    <button type="button" class="interview-upload-close" id="interview-turn-edit-close" aria-label="닫기">×</button>
-  </div>
-  <form id="interview-turn-edit-form" class="interview-upload-fields">
-    <p class="interview-edit-context" id="interview-turn-edit-context"></p>
-    <label>본문<textarea id="interview-turn-edit-content" rows="9" maxlength="4500" required></textarea></label>
-    <button class="interview-upload-primary" type="submit">본문 저장</button>
-  </form>
-  <button id="interview-turn-restore" class="interview-editor-delete" type="button">PDF 원문으로 되돌리기</button>
-  <p class="interview-upload-status" id="interview-turn-edit-status" role="status" aria-live="polite"></p>
-</dialog>
 <dialog id="interview-image-detail" class="interview-image-detail" aria-label="인터뷰 사진 확대">
   <button type="button" id="interview-image-close" class="interview-image-close" aria-label="닫기">×</button>
   <img id="interview-image-large" class="interview-image-large" alt="">
