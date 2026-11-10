@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=10">
-<script src="research-points.js?v=5" defer></script>
-<script src="research-page.js?v=9" defer></script>
+<link rel="stylesheet" href="research-page.css?v=11">
+<script src="research-points.js?v=6" defer></script>
+<script src="research-page.js?v=10" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -30,6 +30,7 @@
         <div class="research-map-layout">
           <div class="research-map-area">
             <div class="research-map-art" id="research-map-art" aria-live="polite" aria-label="마우스 휠로 지도 확대·축소, 확대 시 드래그하여 이동"></div>
+            <aside class="research-region-figure" id="research-region-figure" aria-label="지역별 공장 분포 집계표"></aside>
             <button type="button" id="research-map-reset" class="research-map-reset" hidden aria-label="지도를 원래 크기로">100% · 원래 크기</button>
           </div>
           <header class="research-map-intro">
@@ -51,10 +52,7 @@
                 </div>
               </div>
               <p class="research-map-annotation" id="research-map-annotation" aria-live="polite"></p>
-              <div class="research-map-actions" aria-label="업체 위치 자료 편집">
-                <button type="button" id="research-factory-edit-toggle" class="research-map-action">업체 위치 입력</button>
-                <button type="button" id="research-factory-export" class="research-map-action" hidden>JSON 내보내기</button>
-              </div>
+              <button type="button" class="research-region-mobile-button" id="research-region-mobile-button">지역별 분포표 보기</button>
             </div>
           </header>
         </div>
@@ -96,6 +94,14 @@
     </nav>
   </footer>
 </main>
+
+<dialog id="research-region-dialog" class="research-region-dialog" aria-label="지역별 공장 분포 집계표">
+  <div class="research-region-dialog-head">
+    <span>지역별 공장 분포</span>
+    <button type="button" id="research-region-close" aria-label="분포표 닫기">×</button>
+  </div>
+  <div id="research-region-dialog-content"></div>
+</dialog>
 
 <dialog class="research-essay-dialog" id="research-essay-dialog" aria-labelledby="research-essay-title">
   <button type="button" class="research-essay-close" id="research-essay-close" aria-label="글 닫기">×</button>
