@@ -1,0 +1,127 @@
+/* Shared fixed exhibition-style header for the four immersive archive pages.
+   Header coordinates and the 45px SVG identities match exhibition.html.
+   The content viewport—not the whole page—is shortened, preserving its existing
+   independent dragging, horizontal paging and vertical scrolling. */
+.photo-main:has(> .hf-site-masthead){
+ --hf-content-top:clamp(104px,13vh,132px);
+ --hf-masthead-top:clamp(20px,3vh,40px);
+ --hf-masthead-side:clamp(20px,3vw,55px);
+}
+.photo-main > .hf-site-masthead{
+ position:fixed!important;
+ top:var(--hf-masthead-top)!important;
+ left:var(--hf-masthead-side)!important;
+ right:var(--hf-masthead-side)!important;
+ z-index:10500!important;
+ min-height:45px!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:space-between!important;
+ gap:15px!important;
+ pointer-events:none!important;
+ isolation:isolate;
+ margin:0!important;padding:0!important;
+ transform:none!important;
+}
+/* A solid white region keeps moving pictures from showing through the masthead. */
+.photo-main > .hf-site-masthead::before{
+ content:"";
+ position:fixed;
+ inset:0 0 auto 0;
+ height:var(--hf-content-top);
+ width:100vw;
+ background:#fff;
+ z-index:-1;
+ pointer-events:none;
+}
+.photo-main > .hf-site-masthead a{
+ display:block!important;
+ width:auto!important;
+ flex:0 1 auto!important;
+ min-width:0!important;
+ margin:0!important;padding:0!important;
+ color:#151521!important;
+ background:transparent!important;
+ text-decoration:none!important;
+ pointer-events:auto!important;
+}
+.photo-main > .hf-site-masthead img{
+ display:block!important;
+ width:auto!important;
+ height:45px!important;
+ max-width:none!important;
+ max-height:none!important;
+ object-fit:contain!important;
+ box-shadow:none!important;
+ border:0!important;
+ filter:none!important;
+}
+.photo-main > .hf-site-masthead a:focus-visible{
+ outline:2px solid #0033ff!important;
+ outline-offset:4px!important;
+}
+/* Landscape: retain board-local coordinate math and drag physics. */
+.photo-main:not(.material-main):not(.research-main):not(.interview-main):has(> .hf-site-masthead) > .photo-board{
+ top:var(--hf-content-top)!important;
+}
+/* Materials / Research: maintain their full-width tracks while making the
+   actual horizontal-scroll viewport start below the masthead. */
+.material-main:has(> .hf-site-masthead) > .material-window{
+ top:var(--hf-content-top)!important;
+}
+.research-main:has(> .hf-site-masthead) > .research-window{
+ top:var(--hf-content-top)!important;
+}
+/* Interviews: adjust only the scroll container, not its scrollTop. */
+.interview-main:has(> .hf-site-masthead) > .interview-viewport{
+ top:var(--hf-content-top)!important;
+ scroll-padding-top:20px!important;
+}
+.interview-main:has(> .hf-site-masthead) .interview-rail{
+ padding-top:clamp(20px,3.5vh,40px)!important;
+}
+/* When the landscape essay opens, retain usable heading and close controls
+   beneath the fixed header instead of placing them behind the logo layer. */
+.photo-main:has(> .hf-site-masthead) .archive-essay-close{
+ top:calc(var(--hf-content-top) + 4px)!important;
+}
+.photo-main:has(> .hf-site-masthead) .archive-essay-paper{
+ padding-top:clamp(228px,26vh,275px)!important;
+}
+.photo-main.is-reading:has(> .hf-site-masthead) > #archive-essay-trigger{
+ bottom:calc(100dvh - var(--hf-content-top) - 85px)!important;
+}
+@media(max-width:800px){
+ .photo-main:has(> .hf-site-masthead){
+  --hf-content-top:clamp(94px,12vh,122px);
+  --hf-masthead-top:16px;
+  --hf-masthead-side:18px;
+ }
+}
+@media(max-width:700px){
+ .photo-main:has(> .hf-site-masthead){
+  --hf-content-top:clamp(83px,11vh,110px);
+ }
+ .photo-main:has(> .hf-site-masthead) .archive-essay-paper{
+  padding-top:clamp(205px,27vh,248px)!important;
+ }
+ .photo-main.is-reading:has(> .hf-site-masthead) > #archive-essay-trigger{
+  bottom:calc(100dvh - var(--hf-content-top) - 66px)!important;
+ }
+}
+@media(max-width:530px){
+ .photo-main:has(> .hf-site-masthead){
+  --hf-masthead-top:13px;
+  --hf-masthead-side:12px;
+ }
+ .photo-main > .hf-site-masthead{gap:7px!important;}
+ .photo-main > .hf-site-masthead img{
+  height:min(45px,calc((100vw - 34px)/11.15))!important;
+ }
+}
+@media(max-height:650px) and (min-width:701px){
+ .photo-main:has(> .hf-site-masthead){--hf-content-top:100px}
+ .photo-main:has(> .hf-site-masthead) .archive-essay-paper{
+  padding-top:210px!important;
+ }
+}
