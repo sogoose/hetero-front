@@ -518,3 +518,64 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
   transform:translateX(65%)!important;
  }
 }
+
+/* 2026-11-10 / Skyline, opaque elevations and shared drawing-coordinate ground */
+.home-house{isolation:isolate!important;overflow:visible!important}
+.home-house>.home-tree-background{
+ position:absolute!important;inset:0!important;z-index:0!important;
+ pointer-events:none!important;overflow:visible!important;
+}
+.home-house .home-tree{
+ position:absolute!important;inset:0!important;
+ width:100%!important;height:100%!important;
+ max-width:none!important;max-height:none!important;
+ object-fit:contain!important;
+ opacity:.29!important;
+ filter:grayscale(1)!important;
+ pointer-events:none!important;
+ transform-origin:center bottom!important;
+}
+/* Keep tree trunks attached to the same ground line while crowns rise behind roofs. */
+.home-house .home-tree-left{transform:translateX(-89%) scaleY(1.43)!important}
+.home-house .home-tree-center{transform:translateX(0%) scaleY(1.43)!important}
+.home-house .home-tree-right{transform:translateX(89%) scaleY(1.43)!important}
+.home-house>.home-street-ground{
+ position:absolute!important;inset:0!important;z-index:1!important;
+ width:100%!important;height:100%!important;
+ overflow:visible!important;pointer-events:none!important;
+}
+.home-house>.home-street-ground line{
+ stroke:#868580;stroke-width:.8;stroke-opacity:.78;vector-effect:non-scaling-stroke;
+}
+.home-house>.home-ground-line{display:none!important}
+/* White solid silhouette: tree outlines must not show through any house. */
+.home-house>.home-street-sibling-mask,
+.home-house>.home-main-white-mask{
+ position:absolute!important;inset:0!important;
+ width:100%!important;height:100%!important;
+ max-width:none!important;max-height:none!important;
+ object-fit:contain!important;display:block!important;
+ opacity:1!important;filter:none!important;pointer-events:none!important;
+}
+.home-house>.home-street-sibling-mask{z-index:2!important}
+.home-house>.home-street-sibling{z-index:3!important}
+.home-house>.home-main-white-mask{z-index:4!important}
+.home-house>.home-house-line{z-index:5!important}
+.home-house>.home-lighting{z-index:6!important}
+.home-house>.home-exact-contours{z-index:7!important}
+.home-house>.home-hotspots{z-index:8!important}
+.home-house>.home-large-menu{z-index:9!important}
+/* Each mask must use exactly the same transform as its neighbor drawing. */
+.home-house>.home-street-sibling-mask-left{transform:translateX(-90%)!important}
+.home-house>.home-street-sibling-mask-right{transform:translateX(68%)!important}
+@media(max-width:900px){
+ .home-house>.home-street-sibling-mask-left{transform:translateX(-90%)!important}
+ .home-house>.home-street-sibling-mask-right{transform:translateX(68%)!important}
+}
+@media(max-width:600px){
+ .home-house .home-tree-left{transform:translateX(-87%) scaleY(1.34)!important}
+ .home-house .home-tree-center{transform:translateX(0) scaleY(1.34)!important}
+ .home-house .home-tree-right{transform:translateX(87%) scaleY(1.34)!important}
+ .home-house>.home-street-sibling-mask-left{transform:translateX(-88%)!important}
+ .home-house>.home-street-sibling-mask-right{transform:translateX(65%)!important}
+}
