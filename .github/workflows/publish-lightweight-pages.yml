@@ -10,6 +10,8 @@ permissions:
   pages: write
   id-token: write
 
+# Queue a new publish behind any active one, rather than race two deployments.
+# This serializes only our custom publisher. GitHub Pages Source MUST be GitHub Actions.
 concurrency:
   group: "hetero-front-pages"
   cancel-in-progress: false

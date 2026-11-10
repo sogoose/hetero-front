@@ -1,10 +1,8 @@
 name: Cache exhibition reference figures
 
+# This helper changes source assets; never start a second publish from a push.
+# Run only manually. Publishing is dispatched once, only after a real commit.
 on:
-  push:
-    paths:
-      - '.github/workflows/cache-intro-figures.yml'
-      - 'scripts/cache_intro_figures.py'
   workflow_dispatch:
 
 permissions:
@@ -22,18 +20,21 @@ jobs:
       - name: Cache the four attributed picture references
         run: python3 scripts/cache_intro_figures.py
       - name: Commit reference assets without touching original archive
+        id: commit
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add assets/intro/
           if git diff --cached --quiet; then
             echo "Reference images already cached."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             git commit -m "Add optimized exhibition reference plates"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Request fresh lightweight Pages deployment
-        continue-on-error: true
+      - name: Request one lightweight Pages deployment after actual changes
+        if: steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh api --method POST "repos/${{ github.repository }}/actions/workflows/publish-lightweight-pages.yml/dispatches" -f ref=main
