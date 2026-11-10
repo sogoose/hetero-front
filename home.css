@@ -394,3 +394,11 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
  .home-house>.home-street-sibling-left{transform:translateX(-76%)!important}
  .home-house>.home-street-sibling-right{transform:translateX(74%)!important}
 }
+
+/* A half-frame street, rather than full neighboring facades. */
+.home-house>.home-street-sibling-left{transform:translateX(-90%)!important}
+.home-house>.home-street-sibling-right{transform:translateX(90%)!important}
+@media(max-width:600px){
+ .home-house>.home-street-sibling-left{transform:translateX(-88%)!important}
+ .home-house>.home-street-sibling-right{transform:translateX(88%)!important}
+}
