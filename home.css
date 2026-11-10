@@ -1065,11 +1065,11 @@ body.home-body::-webkit-scrollbar{display:none!important}
 
 /* Consistent Noto Serif KR headings: match MATERIALS editorial title. */
 .home-body > #home-essay .home-essay-paper h2{
- font:800 clamp(29px,3.3vw,46px)/1.42 "Noto Serif KR",serif!important;
+ font:800 clamp(19px,2.2vw,31px)/1.42 "Noto Serif KR",serif!important;
  letter-spacing:-.063em!important;color:#171715!important;
 }
 @media(max-width:600px){
  .home-body > #home-essay .home-essay-paper h2{
-  font-size:clamp(23px,5.5vw,32px)!important;
+  font-size:clamp(15px,3.7vw,21px)!important;
  }
 }
