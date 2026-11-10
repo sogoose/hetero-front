@@ -1662,3 +1662,46 @@ body{background:#ffffff;color:#272724}
   padding:1px 2px!important;
  }
 }
+
+
+/* VECTORIZED NATIONWIDE MAP + UNSCALED FACTORY TYPE
+   Original raster relief stays beneath the user's Illustrator vector
+   coastline and district contours. Site labels/counters are deliberately
+   siblings of the zoomed image stack, never descendants of the transform. */
+.research-panel-map .research-map-art{
+ position:relative!important;
+ overflow:hidden!important;
+}
+.research-panel-map .research-map-stack{
+ will-change:auto!important;
+}
+.research-panel-map .research-map-stack .research-map-vector{
+ z-index:1!important;
+ opacity:.64!important;
+ filter:none!important;
+ mix-blend-mode:multiply!important;
+ pointer-events:none!important;
+}
+.research-panel-map .research-map-stack .research-map-overlay{
+ z-index:2;
+}
+.research-panel-map .research-map-art>.research-factory-pins{
+ position:absolute!important;
+ inset:0!important;
+ z-index:24!important;
+ width:100%!important;
+ height:100%!important;
+ overflow:hidden!important;
+ pointer-events:none!important;
+ background:transparent!important;
+ transform:none!important;
+ will-change:auto!important;
+ contain:layout style;
+}
+.research-panel-map .research-map-art>.research-factory-pins .research-factory-label,
+.research-panel-map .research-map-art>.research-factory-pins .research-factory-pin{
+ backface-visibility:visible!important;
+ filter:none!important;
+ will-change:auto!important;
+ -webkit-font-smoothing:antialiased;
+}
