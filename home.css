@@ -579,3 +579,88 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
  .home-house>.home-street-sibling-mask-left{transform:translateX(-88%)!important}
  .home-house>.home-street-sibling-mask-right{transform:translateX(65%)!important}
 }
+
+/* 2026-11-10 / Street-life correction: proportional trees, a modest building gap,
+   cobalt-blue interactive details, and exactly scaled foreground figures. */
+
+/* Clip only BELOW the architectural ground datum (783 / 850.39 = 92.075%).
+   The generous horizontal clip bounds allow trees outside the central SVG canvas. */
+.home-house>.home-tree-background{
+ overflow:visible!important;
+ clip-path:polygon(-250% -150%,350% -150%,350% 92.075%,-250% 92.075%)!important;
+}
+.home-house .home-tree{
+ width:100%!important;height:100%!important;
+ object-fit:contain!important;object-position:center bottom!important;
+ transform-origin:50% 100%!important;
+ opacity:.25!important;
+}
+/* Uniform scaling: no scaleX or scaleY distortion; lower trunks beneath the road. */
+.home-house .home-tree-left{
+ transform:translateX(-89%) translateY(5%) scale(1.32)!important;
+}
+.home-house .home-tree-center{
+ transform:translateX(0) translateY(5%) scale(1.32)!important;
+}
+.home-house .home-tree-right{
+ transform:translateX(89%) translateY(5%) scale(1.32)!important;
+}
+/* Move the right building AND its opaque silhouette the same small distance. */
+.home-house>.home-street-sibling-right,
+.home-house>.home-street-sibling-mask-right{
+ transform:translateX(72%)!important;
+}
+/* The blue is the requested pure RGB blue; the hover remains translucent. */
+.home-light-zone{
+ background-image:url('assets/home/house-neon-exact.svg?v=2')!important;
+ filter:none!important;
+}
+@keyframes home-fluorescence{
+ 0%,9%,34%,100%{opacity:0}
+ 17%,22%{opacity:.12}
+ 27%{opacity:.055}
+}
+.home-house[data-active="roof"] .home-light-roof,
+.home-house[data-active="railing"] .home-light-railing,
+.home-house[data-active="brick"] .home-light-brick,
+.home-house[data-active="gate"] .home-light-gate{
+ opacity:.18!important;
+}
+/* Human figure SVGs: their authored 76.77 × 144.61 units scale against
+   the 1133.86 × 850.39-unit house, so one SVG unit is one drawing unit. */
+.home-house>.home-people{
+ position:absolute!important;inset:0!important;
+ width:100%!important;height:100%!important;
+ z-index:10!important;overflow:visible!important;
+ pointer-events:none!important;
+}
+.home-house>.home-people .home-person{
+ position:absolute!important;display:block!important;
+ width:6.771%!important;height:17.005%!important;
+ max-width:none!important;max-height:none!important;
+ bottom:7.925%!important;
+ object-fit:contain!important;object-position:center bottom!important;
+ opacity:1!important;filter:none!important;
+ pointer-events:none!important;user-select:none!important;
+}
+.home-house>.home-people .home-person-01{left:18%!important}
+.home-house>.home-people .home-person-02{left:38%!important}
+.home-house>.home-people .home-person-03{left:76%!important}
+.home-house>.home-people .home-person-04{left:88%!important}
+.home-house>.home-hotspots{z-index:11!important}
+.home-house>.home-large-menu{z-index:12!important}
+
+@media(max-width:900px){
+ .home-house>.home-street-sibling-right,
+ .home-house>.home-street-sibling-mask-right{transform:translateX(72%)!important}
+}
+@media(max-width:600px){
+ .home-house .home-tree-left{transform:translateX(-88%) translateY(5%) scale(1.26)!important}
+ .home-house .home-tree-center{transform:translateX(0) translateY(5%) scale(1.26)!important}
+ .home-house .home-tree-right{transform:translateX(88%) translateY(5%) scale(1.26)!important}
+ .home-house>.home-street-sibling-right,
+ .home-house>.home-street-sibling-mask-right{transform:translateX(69%)!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .home-light-zone{animation:none!important;opacity:0!important}
+}
