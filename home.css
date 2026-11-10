@@ -876,3 +876,113 @@ body.home-body::-webkit-scrollbar{display:none!important}
  html:has(body.home-body){scroll-behavior:auto!important}
  .home-essay-trigger .home-essay-open{transition:none!important}
 }
+
+/* 2026-11-10 / Graphic-director markup: move site title above the left roof,
+   place the exhibition folder in the upper-right sky, and open the figures. */
+.home-house>.home-identity{
+ top:-8%!important;
+ left:-36%!important;
+ width:34%!important;
+}
+.home-exhibition-folder{
+ position:absolute!important;
+ top:clamp(17px,2.4vh,33px)!important;
+ right:clamp(22px,3.8vw,65px)!important;
+ bottom:auto!important;left:auto!important;
+ z-index:16!important;
+}
+/* Remove the redundant back-to-intro navigation, and end the text on the right. */
+.home-essay-actions{
+ width:100%!important;display:flex!important;
+ justify-content:flex-end!important;align-items:flex-end!important;
+ margin-top:clamp(75px,12vh,140px)!important;
+}
+.home-essay-actions>.home-essay-next{
+ font:550 clamp(16px,1.4vw,22px)/1.4 Pretendard,sans-serif!important;
+ letter-spacing:-.04em!important;white-space:nowrap!important;
+ padding:0 0 8px!important;border-bottom:1px solid #1b1b1b!important;
+}
+.home-essay-actions>.home-essay-next:hover{
+ color:#0000ff!important;border-bottom-color:#0000ff!important;
+}
+
+/* Print-like, relaxed reference plates underneath the exhibition statement. */
+.home-figure-section{
+ margin:clamp(100px,16vh,175px) auto 0!important;
+ padding:0!important;max-width:1040px!important;
+}
+.home-figures-heading{
+ display:flex;justify-content:space-between;align-items:baseline;
+ gap:15px;border-top:1px solid #292925;padding-top:11px;
+ margin:0 0 clamp(60px,9vh,105px);
+ font:550 11px/1.5 Pretendard,sans-serif;
+ letter-spacing:.115em;color:#4c4c48;
+}
+.home-figure-grid{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ column-gap:clamp(44px,7.5vw,110px);
+ row-gap:clamp(100px,14vh,190px);align-items:start;
+}
+.home-reference{min-width:0!important;margin:0!important;padding:0!important;}
+.home-reference-02{margin-top:clamp(75px,9vh,125px)!important}
+.home-reference-04{margin-top:clamp(50px,7vh,100px)!important}
+.home-figure-art{
+ display:flex;align-items:flex-end;justify-content:center;
+ width:100%;overflow:hidden;background:#fff;
+}
+.home-figure-art img{
+ display:block!important;width:100%!important;height:auto!important;
+ max-width:100%!important;max-height:650px!important;
+ object-fit:contain!important;filter:none!important;
+}
+.home-figure-art-01{max-width:390px;margin:0 auto}
+.home-figure-art-01 img{max-height:560px!important;width:auto!important;max-width:100%!important}
+.home-figure-art-02{max-width:370px;margin:0 auto}
+.home-figure-art-02 img{max-height:620px!important;width:auto!important}
+.home-figure-art-03{max-width:500px}
+.home-figure-art-04{max-width:480px}
+.home-reference figcaption{
+ border-top:1px solid #c8c8c4;margin-top:19px;padding-top:10px;
+ font:420 12px/1.8 Pretendard,sans-serif;
+}
+.home-reference .home-figure-no{
+ display:block;margin-bottom:12px;
+ font:600 10px/1.4 Pretendard,sans-serif;
+ letter-spacing:.07em;color:#666661;
+}
+.home-reference figcaption h3{
+ margin:0 0 12px!important;
+ font:650 clamp(16px,1.33vw,20px)/1.35 Pretendard,sans-serif!important;
+ letter-spacing:-.055em;color:#1d1d1b!important;
+}
+.home-reference figcaption h3 span{
+ display:block;margin:5px 0 0;
+ font:450 12px/1.5 Pretendard,sans-serif!important;
+ letter-spacing:-.02em;color:#666661;
+}
+.home-reference figcaption p{
+ margin:0!important;
+ font:420 clamp(12px,1vw,14px)/1.85 Pretendard,sans-serif!important;
+ letter-spacing:-.026em;color:#41413d!important;
+}
+@media(max-width:1250px){
+ .home-house>.home-identity{top:-8%!important;left:-23%!important;width:29%!important}
+}
+@media(max-width:900px){
+ .home-house>.home-identity{top:-9%!important;left:-12%!important;width:29%!important}
+ .home-exhibition-folder{top:17px!important;right:24px!important}
+}
+@media(max-width:700px){
+ .home-figure-grid{grid-template-columns:minmax(0,1fr);row-gap:85px}
+ .home-reference-02,.home-reference-04{margin-top:0!important}
+ .home-figure-section{margin-top:110px!important}
+ .home-figures-heading{margin-bottom:60px}
+ .home-figure-art-01,.home-figure-art-02{max-width:360px}
+ .home-reference figcaption h3{font-size:18px!important}
+ .home-essay-actions{margin-top:75px!important}
+}
+@media(max-width:600px){
+ .home-house>.home-identity{top:-3%!important;left:3%!important;width:40%!important}
+ .home-exhibition-folder{top:17px!important;right:16px!important}
+ .home-exhibition-folder>svg{width:45px!important;height:40px!important}
+}
