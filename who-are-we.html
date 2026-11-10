@@ -10,23 +10,23 @@
 <style>
 html,body{margin:0;min-height:100%;background:#fff;color:#171717}
 body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
-.studio-page{box-sizing:border-box;min-height:100svh;padding:clamp(22px,3vw,52px) clamp(24px,5vw,86px) clamp(60px,7vh,110px)}
+.studio-page{box-sizing:border-box;min-height:100svh;padding:clamp(25px,3.1vw,54px) clamp(22px,5.2vw,88px) clamp(85px,11vh,160px)}
 .studio-top{display:flex;align-items:center;justify-content:space-between}
 .studio-back{font:500 12px/1.5 Pretendard,sans-serif;letter-spacing:-.02em;text-decoration:none;color:#292929;border-bottom:1px solid #999;padding-bottom:5px}
 .studio-back:focus-visible{outline:2px solid #0033ff;outline-offset:4px}
 .studio-grid{
  display:grid;
- grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);
+ grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);
  grid-template-areas:"identity intro" "gallery people";
- column-gap:clamp(65px,8.5vw,145px);
- row-gap:clamp(47px,7vh,78px);
- align-items:start;max-width:1230px;margin:0 auto;
- padding-top:clamp(62px,10vh,110px)
+ column-gap:clamp(55px,7.2vw,115px);
+ row-gap:clamp(68px,10vh,112px);
+ align-items:start;max-width:1080px;margin:0 auto;
+ padding-top:clamp(82px,12vh,136px)
 }
-.studio-identity{grid-area:identity;min-width:0;padding-top:7px}
-.studio-logo{display:block;width:min(100%,380px);height:auto}
-.studio-intro{grid-area:intro;min-width:0;max-width:590px;font-size:clamp(14px,1.05vw,16px);font-weight:430;line-height:1.95;letter-spacing:-.028em;word-break:keep-all}
-.studio-intro p{margin:0 0 23px}
+.studio-identity{grid-area:identity;min-width:0;padding-top:4px}
+.studio-logo{display:block;width:min(100%,335px);height:auto}
+.studio-intro{grid-area:intro;min-width:0;max-width:515px;font-size:clamp(13px,.95vw,15px);font-weight:410;line-height:1.91;letter-spacing:-.033em;word-break:keep-all;color:#292a27}
+.studio-intro p{margin:0 0 25px}
 .studio-intro p:last-child{margin-bottom:0}
 .studio-gallery{grid-area:gallery;min-width:0;max-width:510px}
 .studio-gallery-grid{
@@ -47,7 +47,7 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
 .studio-person{min-width:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
 .studio-person img{display:block;width:100%;height:clamp(130px,12vw,190px);object-fit:contain;object-position:center bottom;pointer-events:none}
 .studio-person figcaption{display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;margin-top:15px;white-space:nowrap}
-.studio-person-name{font:600 clamp(11px,.9vw,14px)/1.45 Pretendard,sans-serif;letter-spacing:-.03em;color:#242424}
+.studio-person-name{font:550 clamp(11px,.88vw,13px)/1.45 Pretendard,sans-serif;letter-spacing:-.03em;color:#242424}
 .studio-person-role{font:400 10px/1.5 Pretendard,sans-serif;letter-spacing:-.01em;color:#92918c}
 @media(max-width:1000px){
  .studio-grid{column-gap:clamp(30px,5vw,65px);grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)}
@@ -61,14 +61,14 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
   gap:clamp(34px,6vh,55px);padding-top:64px;max-width:590px
  }
  .studio-logo{width:min(85%,355px)}
- .studio-intro{font-size:15px;line-height:1.85}
+ .studio-intro{font-size:14px;line-height:1.87;max-width:570px}
  .studio-gallery,.studio-team{max-width:100%}
  .studio-person img{height:clamp(115px,24vw,172px)}
 }
 @media(max-width:480px){
  .studio-logo{width:min(100%,310px)}
  .studio-grid{padding-top:50px;gap:39px}
- .studio-intro{font-size:14px}
+ .studio-intro{font-size:13.5px}
  .studio-people{gap:8px}
  .studio-person img{height:clamp(87px,25vw,130px)}
  .studio-person figcaption{margin-top:12px}
@@ -87,7 +87,7 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
     </header>
     <section class="studio-intro" aria-label="아뜰리에 작 소개">
       <p>아뜰리에作은 신촌의 작은 작업실이다. 2019년부터 함께한 4인이 공모전과 건축 토론을 지속하며 형성한 팀으로, 각자는 도시, 건축실무, 국제 건축교육 등 서로 다른 층위에서 건축을 경험해 왔다.</p>
-      <p>그 과정에서 우리는 한국 건축 안에서 이질적인 재료, 방식, 언어들이 아무런 질문 없이 병치되며 혼재와 모순이 당연시되는 현실을 반복적으로 마주했다. 본 프로젝트는 실무의 현장에서 체감된 그 질문을 건축 재료와 생산의 층위에서 다시 마주하려는 시도이다.</p>
+      <p>그 과정에서 각 팀원들은 한국 건축 안에서 이질적인 재료, 방식, 언어들이 아무런 질문 없이 병치되며 혼재와 모순이 당연시되는 현실을 반복적으로 마주했다. 본 프로젝트는 실무의 현장에서 체감된 그 질문을 건축 재료와 생산의 층위에서 다시 마주하려는 시도이다.</p>
     </section>
     <section class="studio-gallery" aria-label="아뜰리에 사진 갤러리">
       <div class="studio-gallery-grid" id="studio-gallery-grid"></div>
