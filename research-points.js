@@ -105,16 +105,17 @@ function positionPins(){
  if(!wrap)return;
  const root=wrap.getBoundingClientRect();
  if(!root.width)return;
+ const scale=Number(wrap.parentElement?.dataset.zoomScale||1)||1;
  const projected=visiblePoints().map(point=>{
   const img=findImage(point.material),bounds=img?.getBoundingClientRect();
   if(!bounds||!bounds.width||!bounds.height)return null;
   return {
    point,
-   left:bounds.left-root.left+point.x*bounds.width,
-   top:bounds.top-root.top+point.y*bounds.height
+   left:(bounds.left-root.left+point.x*bounds.width)/scale,
+   top:(bounds.top-root.top+point.y*bounds.height)/scale
   };
  }).filter(Boolean);
- const clusters=clusterByScreenDistance(projected,28);
+ const clusters=clusterByScreenDistance(projected,28/scale);
  wrap.replaceChildren();
  clusters.forEach(group=>{
   const points=group.map(x=>x.point);
@@ -126,6 +127,7 @@ function positionPins(){
   button.type='button';
   button.dataset.material=points[0].material;
   button.style.left=left+'px';button.style.top=top+'px';
+  button.style.transform='translate(-50%,-50%) scale('+(1/scale)+')';
   if(!clustered)button.dataset.pointId=points[0].id;
   button.title=clustered?points.length+'곳의 업체 보기':points[0].name;
   button.setAttribute('aria-label',button.title);
@@ -322,5 +324,5 @@ async function init({getSelection,selectMaterial,isAvailable}){
  });
  window.addEventListener('resize',()=>requestAnimationFrame(positionPins));
 }
-window.ResearchPoints={init,update,mapClick,hasPoints:()=>state.points.length>0};
+window.ResearchPoints={init,update,mapClick,reposition:positionPins,hasPoints:()=>state.points.length>0};
 })();
