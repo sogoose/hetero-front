@@ -121,7 +121,10 @@ function positionPins(){
  if(!wrap||!map)return;
  const root=wrap.getBoundingClientRect(),view=map.getBoundingClientRect();
  if(!root.width||!view.width)return;
- const scale=Number(wrap.parentElement?.dataset.zoomScale||1)||1;
+ // Counters and annotations live OUTSIDE the transformed bitmap/vector
+ // stack. Their native font rasterization is no longer scaled by zoom.
+ const stack=map.querySelector('.research-map-stack');
+ const scale=Number(stack?.dataset.zoomScale||1)||1;
  const selection=activeSelection();
  const projected=visiblePoints().map(point=>{
   const img=findImage(point.material),bounds=img?.getBoundingClientRect();
@@ -130,8 +133,8 @@ function positionPins(){
   const screenY=bounds.top+point.y*bounds.height;
   return {
    point,screenX,screenY,
-   left:(screenX-root.left)/scale,
-   top:(screenY-root.top)/scale
+   left:Math.round(screenX-root.left),
+   top:Math.round(screenY-root.top)
   };
  }).filter(Boolean);
  // Radius is measured in SCREEN pixels, not original map pixels. It gets
@@ -149,17 +152,15 @@ function positionPins(){
   const screenX=group.reduce((a,item)=>a+item.screenX,0)/group.length;
   const screenY=group.reduce((a,item)=>a+item.screenY,0)/group.length;
   if(!withinView(screenX,screenY))continue;
-  const left=group.reduce((a,item)=>a+item.left,0)/group.length;
-  const top=group.reduce((a,item)=>a+item.top,0)/group.length;
+  const left=Math.round(group.reduce((a,item)=>a+item.left,0)/group.length);
+  const top=Math.round(group.reduce((a,item)=>a+item.top,0)/group.length);
   const button=el('button','research-factory-pin is-cluster',String(points.length));
   button.type='button';
   button.dataset.material=points[0].material;
   button.style.left=left+'px';
   button.style.top=top+'px';
-  // Scale and then translate: the counter stays exactly on its projected
-  // location and keeps the same visual diameter at different zoom levels.
-  button.style.transformOrigin='0 0';
-  button.style.transform='scale('+(1/scale)+') translate(-50%,-50%)';
+  // An untransformed screen-space layer keeps all counter text sharp.
+  button.style.transform='translate(-50%,-50%)';
   button.title=points.length+'곳의 '+materialLabels[points[0].material]+' 업체 보기';
   button.setAttribute('aria-label',button.title);
   if(state.selected&&points.some(p=>p.id===state.selected))button.classList.add('is-active');
@@ -203,9 +204,8 @@ function positionPins(){
   label.type='button';
   label.dataset.material=item.point.material;
   label.style.left=item.left+'px';
-  label.style.top=(item.top-8/scale)+'px';
-  label.style.transformOrigin='0 0';
-  label.style.transform='scale('+(1/scale)+') translate(-50%,-100%)';
+  label.style.top=(item.top-8)+'px';
+  label.style.transform='translate(-50%,-100%)';
   label.title=item.point.name+' · '+(item.point.region||materialLabels[item.point.material]);
   label.setAttribute('aria-label',item.point.name+' 업체 정보 보기');
   label.addEventListener('click',event=>{
@@ -219,13 +219,14 @@ function positionPins(){
  wrap.replaceChildren(fragment);
 }
 function update(){
- const stack=$('#research-map-art .research-map-stack');
- if(!stack)return;
- const old=stack.querySelector('.research-factory-pins');
+ const map=$('#research-map-art');
+ const stack=map?.querySelector('.research-map-stack');
+ if(!map||!stack)return;
+ const old=map.querySelector(':scope > .research-factory-pins');
  if(old)old.remove();
  const layer=el('div','research-factory-pins');
  layer.setAttribute('aria-label','등록된 공장 위치');
- stack.append(layer);
+ map.append(layer);
  const selection=activeSelection(),viewKey=selection.year+'-'+selection.material;
  if(state.viewKey!==viewKey){
   state.selected=null;
