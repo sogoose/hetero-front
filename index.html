@@ -6,19 +6,20 @@
 <meta name="theme-color" content="#ffffff">
 <title>혼종의 정면 — 대한민국 산업화 과도기 건축재료의 기록과 해석</title>
 <meta name="description" content="혼종의 정면. 건물의 지붕, 난간, 벽돌, 대문을 따라 풍경과 재료, 연구와 인터뷰를 읽는 전시 아카이브.">
-<link rel="stylesheet" href="style.css?v=3">
-<link rel="stylesheet" href="home.css?v=11">
-<script src="home.js?v=3" defer></script>
+<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="home.css?v=12">
+<script src="home.js?v=4" defer></script>
 
 </head>
 <body class="home-body">
 <main class="home-shell" id="home">
   <h1 class="sr-only">혼종의 정면 : 대한민국 산업화 과도기 건축재료의 기록과 해석</h1>
-  <a class="home-identity" href="index.html" aria-label="혼종의 정면, 홈페이지">
-    <img src="assets/home/identity-title.svg" alt="혼종의 정면 — 아틀리에 作 · 2026 아르코 건축예술랩" draggable="false">
-  </a>
   <div class="home-drawing-stage">
     <div class="home-house" id="home-house">
+      <a class="home-identity" href="index.html" aria-label="혼종의 정면, 홈페이지">
+        <img src="assets/home/identity-title.svg" alt="혼종의 정면 — 아틀리에 作 · 2026 아르코 건축예술랩" draggable="false">
+      </a>
+
       <div class="home-tree-background" aria-hidden="true">
         <img class="home-tree home-tree-left" src="assets/home/trees-original.svg" alt="" draggable="false">
         <img class="home-tree home-tree-center" src="assets/home/trees-original.svg" alt="" draggable="false">
@@ -61,13 +62,15 @@
     </div>
   </div>
   <div class="home-bottom">
-    <button type="button" id="home-essay-trigger" class="home-essay-trigger" aria-haspopup="dialog" aria-controls="home-essay">
-      <span class="home-essay-title">전시 개요 및 목적 읽기</span><span class="home-essay-open" aria-hidden="true">↗</span>
-    </button>
-    <p class="home-hint">건물의 지붕, 난간, 벽돌과 대문을 살펴보세요.</p>
+    <a id="home-essay-trigger" href="#home-essay" class="home-essay-trigger">
+      <span class="home-essay-title">전시 개요 및 목적 읽기</span><span class="home-essay-open" aria-hidden="true">↓</span>
+    </a>
   </div>
-  <div class="home-sponsor">
-    <img src="assets/home/identity-sponsors.svg" alt="2026 아르코 건축예술랩 · 아르코미술관">
+  <p class="home-hint home-center-hint">건물의 지붕, 난간, 벽돌과 대문을 살펴보세요.</p>
+  <div class="home-sponsor" aria-label="주최 및 운영">
+    <img src="assets/home/identity-sponsors.svg" alt="" aria-hidden="true" draggable="false">
+    <a class="home-sponsor-link home-sponsor-lab" href="https://arko.or.kr/artcenter/board/view/503?page=2&amp;cid=717126" target="_blank" rel="noopener noreferrer" aria-label="2026 아르코 건축예술랩 공식 안내"></a>
+    <a class="home-sponsor-link home-sponsor-artcenter" href="https://www.instagram.com/arko_art_center/" target="_blank" rel="noopener noreferrer" aria-label="아르코미술관 공식 인스타그램"></a>
   </div>
   <a class="home-exhibition-folder" href="exhibition.html" aria-label="전시 안내 보기" title="전시 안내 보기">
     <svg width="54" height="48" style="width:54px;height:48px;max-width:54px;max-height:48px;display:block;flex:none" viewBox="0 0 72 63" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
@@ -76,8 +79,7 @@
     </svg><span>전시 안내</span>
   </a>
 </main>
-<dialog class="home-essay" id="home-essay" aria-labelledby="home-essay-title">
-  <button type="button" class="home-essay-close" id="home-essay-close" aria-label="글 닫고 도면으로 돌아가기">×</button>
+<section class="home-essay" id="home-essay" aria-labelledby="home-essay-title">
   <div class="home-essay-scroll">
     <article class="home-essay-paper">
       <h2 id="home-essay-title">우리가 알고 있다고 생각했던 것들</h2>
@@ -88,9 +90,12 @@
         <p><strong>이에 우리는 지금 소멸 중인 빌라의 재료와 그 생산자를 조명하며 다세대·다가구주택의 모습을 기록한다.</strong> 한국 대도시 내 주거지역의 보편적 풍경을 돌이켜 생각하며, 그것을 이루는 기본적인 <strong>개별 요소에 주목하여 각각의 재료들이 어떻게 생겨나고 구성되었는지 밝히고자 한다.</strong></p>
         <p>가장 중요한 것은 왜 이러한 것들이 나타나고 번성했으며 다른 것들은 밀려났는가 하는 질문이다.</p>
       </div>
-      <a class="home-essay-next" href="landscapes.html">풍경 아카이브에서 이어 읽기 ↗</a>
+      <div class="home-essay-actions">
+        <a class="home-essay-next" href="landscapes.html">풍경 아카이브에서 이어 읽기 ↗</a>
+        <a class="home-essay-back" href="#home">↑ 도시 입면으로 돌아가기</a>
+      </div>
     </article>
   </div>
-</dialog>
+</section>
 </body>
 </html>
