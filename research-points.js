@@ -55,24 +55,35 @@ function findImage(material){
 
 /* Nearby DXF points often occupy the same few screen pixels around Seoul.
    Cluster by RENDERED distance so every linked company remains reachable. */
+/* Keep geographically distinct groups separate (no transitive chains across
+   a whole province). Never combine different materials: the counter can then
+   inherit the corresponding blue, green, or terracotta map legend color. */
 function clusterByScreenDistance(projected,radius){
- const parent=projected.map((_,i)=>i);
- function root(i){while(parent[i]!==i){parent[i]=parent[parent[i]];i=parent[i]}return i}
- function join(a,b){const ra=root(a),rb=root(b);if(ra!==rb)parent[rb]=ra}
- for(let i=0;i<projected.length;i++){
-  for(let j=i+1;j<projected.length;j++){
-   const dx=projected[i].left-projected[j].left;
-   const dy=projected[i].top-projected[j].top;
-   if(dx*dx+dy*dy<=radius*radius)join(i,j);
-  }
- }
- const groups=new Map();
- projected.forEach((item,i)=>{
-  const key=root(i);
-  if(!groups.has(key))groups.set(key,[]);
-  groups.get(key).push(item);
+ const sorted=projected.slice().sort((a,b)=>{
+  const byMaterial=a.point.material.localeCompare(b.point.material);
+  return byMaterial||a.screenX-b.screenX||a.screenY-b.screenY;
  });
- return [...groups.values()];
+ const groups=[];
+ sorted.forEach(item=>{
+  let closest=null,best=Infinity;
+  for(const group of groups){
+   if(group.material!==item.point.material)continue;
+   const d=Math.hypot(group.cx-item.screenX,group.cy-item.screenY);
+   if(d>radius||d>=best)continue;
+   // Bounding each cluster prevents large chains of adjacent symbols.
+   if(!group.items.every(p=>Math.hypot(p.screenX-item.screenX,p.screenY-item.screenY)<=radius*1.46))continue;
+   closest=group;best=d;
+  }
+  if(!closest){
+   groups.push({material:item.point.material,cx:item.screenX,cy:item.screenY,items:[item]});
+  }else{
+   const n=closest.items.length;
+   closest.cx=(closest.cx*n+item.screenX)/(n+1);
+   closest.cy=(closest.cy*n+item.screenY)/(n+1);
+   closest.items.push(item);
+  }
+ });
+ return groups.map(g=>g.items);
 }
 function pointNumber(point){
  const matched=String(point.id).match(/(\d+)$/);
@@ -101,46 +112,111 @@ function showCluster(points){
  panel.append(top,hint,list);
  panel.hidden=false;
 }
+/* Overview: show only significant numbered clusters, plus a handful of
+   genuinely isolated maker names. Zooming progressively separates dense
+   groups; single-site map markers remain the original printed PNG symbols. */
 function positionPins(){
  const wrap=$('#research-map-art .research-factory-pins');
- if(!wrap)return;
- const root=wrap.getBoundingClientRect();
- if(!root.width)return;
+ const map=$('#research-map-art');
+ if(!wrap||!map)return;
+ const root=wrap.getBoundingClientRect(),view=map.getBoundingClientRect();
+ if(!root.width||!view.width)return;
  const scale=Number(wrap.parentElement?.dataset.zoomScale||1)||1;
+ const selection=activeSelection();
  const projected=visiblePoints().map(point=>{
   const img=findImage(point.material),bounds=img?.getBoundingClientRect();
   if(!bounds||!bounds.width||!bounds.height)return null;
+  const screenX=bounds.left+point.x*bounds.width;
+  const screenY=bounds.top+point.y*bounds.height;
   return {
-   point,
-   left:(bounds.left-root.left+point.x*bounds.width)/scale,
-   top:(bounds.top-root.top+point.y*bounds.height)/scale
+   point,screenX,screenY,
+   left:(screenX-root.left)/scale,
+   top:(screenY-root.top)/scale
   };
  }).filter(Boolean);
- // The original map PNG already contains each site marker. At overview
- // zoom, show none of the synthetic pin circles; the raster remains clickable.
- // Only dense unresolved groups become number bubbles at deeper zoom.
- const clusters=clusterByScreenDistance(projected,(scale>=3?14:19)/scale);
- wrap.replaceChildren();
- if(scale<1.85)return;
- clusters.forEach(group=>{
-  const points=group.map(x=>x.point);
-  if(points.length<(scale>=2.8?2:3))return;
-  const left=group.reduce((s,x)=>s+x.left,0)/group.length;
-  const top=group.reduce((s,x)=>s+x.top,0)/group.length;
+ // Radius is measured in SCREEN pixels, not original map pixels. It gets
+ // smaller as the reader zooms, which reveals progressively finer detail.
+ const radius=Math.max(20,40-5*(scale-1));
+ const groups=clusterByScreenDistance(projected,radius);
+ const fragment=document.createDocumentFragment();
+ const visibleClusterCenters=[];
+ const withinView=(x,y,margin=12)=>x>=view.left+margin&&x<=view.right-margin&&y>=view.top+margin&&y<=view.bottom-margin;
+ for(const group of groups){
+  const points=group.map(item=>item.point);
+  // Pairs are legible as two printed map marks at overview; number them
+  // only after a modest zoom. Larger concentrations are labeled immediately.
+  if(points.length<(scale<1.55?3:2))continue;
+  const screenX=group.reduce((a,item)=>a+item.screenX,0)/group.length;
+  const screenY=group.reduce((a,item)=>a+item.screenY,0)/group.length;
+  if(!withinView(screenX,screenY))continue;
+  const left=group.reduce((a,item)=>a+item.left,0)/group.length;
+  const top=group.reduce((a,item)=>a+item.top,0)/group.length;
   const button=el('button','research-factory-pin is-cluster',String(points.length));
   button.type='button';
-  button.dataset.material=points.every(p=>p.material===points[0].material)?points[0].material:'combined';
-  button.style.left=left+'px';button.style.top=top+'px';
-  button.style.transform='translate(-50%,-50%) scale('+(1/scale)+')';
-  button.title=points.length+'곳의 업체 보기';
+  button.dataset.material=points[0].material;
+  button.style.left=left+'px';
+  button.style.top=top+'px';
+  // Scale and then translate: the counter stays exactly on its projected
+  // location and keeps the same visual diameter at different zoom levels.
+  button.style.transformOrigin='0 0';
+  button.style.transform='scale('+(1/scale)+') translate(-50%,-50%)';
+  button.title=points.length+'곳의 '+materialLabels[points[0].material]+' 업체 보기';
   button.setAttribute('aria-label',button.title);
   if(state.selected&&points.some(p=>p.id===state.selected))button.classList.add('is-active');
   button.addEventListener('click',event=>{
    event.preventDefault();event.stopPropagation();
    showCluster(points);
   });
-  wrap.append(button);
- });
+  fragment.append(button);
+  visibleClusterCenters.push({x:screenX,y:screenY});
+ }
+ // Labels act as tiny architectural annotations, not additional map icons.
+ // Show only far-apart isolated companies and leave the rest as printed dots.
+ const candidates=groups.filter(g=>g.length===1).map(g=>{
+  const item=g[0];
+  const nearest=projected.reduce((d,other)=>{
+   if(other===item)return d;
+   return Math.min(d,Math.hypot(other.screenX-item.screenX,other.screenY-item.screenY));
+  },Infinity);
+  return {...item,nearest};
+ }).sort((a,b)=>b.nearest-a.nearest||a.point.name.localeCompare(b.point.name,'ko'));
+ const maxLabels=window.innerWidth<701
+  ?(scale<1.55?3:scale<3?6:10)
+  :(selection.material==='combined'?(scale<1.55?3:scale<3?7:12)
+   :(scale<1.55?7:scale<3?13:23));
+ const clearance=scale<1.55?52:scale<3?38:28;
+ const occupied=[];
+ let labelCount=0;
+ for(const item of candidates){
+  if(labelCount>=maxLabels)break;
+  if(item.nearest<clearance)continue;
+  if(!withinView(item.screenX,item.screenY,23))continue;
+  if(visibleClusterCenters.some(center=>Math.hypot(center.x-item.screenX,center.y-item.screenY)<35))continue;
+  const name=item.point.name;
+  // Approximate Pretendard's Korean glyph advances to avoid label collisions.
+  const width=Math.min(132,Math.max(28,[...name].reduce((w,ch)=>w+(/[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7A3]/.test(ch)?9:5.5),0)+12));
+  const rect={l:item.screenX-width/2,r:item.screenX+width/2,
+   t:item.screenY-30,b:item.screenY-7};
+  if(rect.l<view.left+9||rect.r>view.right-9||rect.t<view.top+8)continue;
+  if(occupied.some(box=>!(rect.r+10<box.l||rect.l-10>box.r||rect.b+9<box.t||rect.t-9>box.b)))continue;
+  const label=el('button','research-factory-label',name);
+  label.type='button';
+  label.dataset.material=item.point.material;
+  label.style.left=item.left+'px';
+  label.style.top=(item.top-8/scale)+'px';
+  label.style.transformOrigin='0 0';
+  label.style.transform='scale('+(1/scale)+') translate(-50%,-100%)';
+  label.title=item.point.name+' · '+(item.point.region||materialLabels[item.point.material]);
+  label.setAttribute('aria-label',item.point.name+' 업체 정보 보기');
+  label.addEventListener('click',event=>{
+   event.preventDefault();event.stopPropagation();
+   selectPoint(item.point);
+  });
+  fragment.append(label);
+  occupied.push(rect);
+  labelCount++;
+ }
+ wrap.replaceChildren(fragment);
 }
 function update(){
  const stack=$('#research-map-art .research-map-stack');
