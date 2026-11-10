@@ -13,7 +13,7 @@
       }
 
       .st0, .st11, .st13, .st17 {
-        stroke: #ff1464;
+        stroke: #0000ff;
       }
 
       .st1, .st2, .st8, .st12 {
@@ -21,15 +21,15 @@
       }
 
       .st1, .st6, .st9, .st10, .st14, .st16 {
-        stroke: #ff1464;
+        stroke: #0000ff;
       }
 
       .st2, .st4, .st5, .st18 {
-        stroke: #ff1464;
+        stroke: #0000ff;
       }
 
       .st3, .st8, .st15 {
-        stroke: #ff1464;
+        stroke: #0000ff;
       }
 
       .st4, .st16 {
@@ -37,7 +37,7 @@
       }
 
       .st7, .st12 {
-        stroke: #ff1464;
+        stroke: #0000ff;
       }
 
       .st7, .st13, .st14, .st18 {
