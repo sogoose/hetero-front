@@ -565,57 +565,26 @@ function renderProduction(data){
  refreshHighlight();
 }
 function renderVoices(data){
- const section=data.testimonies||{};
- setText('#research-voices-title',section.title||'혼종을 만든 사람들의 말');
- setText('#research-voices-lead',section.lead||'');
- const board=$('#research-witness-board');
- const readings=$('#research-witness-readings');
- const archive=$('#research-witness-link');
- if(!board||!readings)return;
- board.replaceChildren();
- (section.fragments||[]).forEach((entry,i)=>{
-  const figure=el('figure','research-witness-fragment research-witness-fragment--'+(entry.size||'medium'));
-  figure.dataset.note=entry.id||String(i);
-  const quote=el('blockquote','research-witness-quote',entry.quote||'');
-  const source=el('figcaption','research-witness-source',entry.credit||'');
-  figure.append(quote,source);
-  board.append(figure);
- });
- readings.replaceChildren();
- (section.readings||[]).forEach(item=>{
-  const row=el('div','research-witness-reading');
-  const number=el('span','research-witness-reading-number',item.number||'');
-  const inner=el('div','research-witness-reading-copy');
-  inner.append(el('h3','research-witness-reading-title',item.title||''));
-  inner.append(el('p','research-witness-reading-text',item.text||''));
-  row.append(number,inner);
-  readings.append(row);
- });
- if(archive){
-  archive.textContent=section.archiveText||'인터뷰 전문 읽기';
-  archive.href=section.archiveLink||'interviews.html';
- }
+ const group=data.testimonies||{};
+ setText('#research-voices-title',group.title||'제작자들의 말');
+ setText('#research-voices-lead',group.lead||'');
+ window.ResearchVoiceGrid?.init?.(group);
 }
 function renderParadox(data){
  const entry=data.paradox||{};
  setText('#research-paradox-title',entry.title||'혼종의 역설');
  setText('#research-paradox-lead',entry.lead||'');
  setText('#research-paradox-conclusion',entry.conclusion||'');
- const board=$('#research-paradox-board');
- const ending=$('#research-paradox-board-end');
  const essay=$('#research-paradox-essay');
- if(!board||!essay)return;
- board.querySelectorAll('.research-paradox-fragment').forEach(node=>node.remove());
- (entry.fragments||[]).forEach((fragment,i)=>{
-  const paper=el('div','research-paradox-fragment');
-  paper.dataset.fragment=fragment.id||String(i);
-  paper.append(el('span','research-paradox-fragment-text',fragment.text||''));
-  paper.append(el('span','research-paradox-fragment-tag',fragment.tag||''));
-  if(ending)board.insertBefore(paper,ending);
-  else board.append(paper);
- });
- essay.replaceChildren();
- (entry.body||[]).forEach(text=>essay.append(el('p','research-paradox-paragraph',text)));
+ if(essay){
+  essay.replaceChildren();
+  (entry.body||[]).forEach(text=>essay.append(el('p','research-paradox-paragraph',text)));
+ }
+ const svg=$('#research-paradox-svg');
+ const link=$('#research-paradox-svg-link');
+ const path=entry.svg||'assets/research/hetero-paradox.svg';
+ if(svg){svg.src=path;svg.alt=entry.svgAlt||'혼종의 역설을 보여주는 전시 도식'}
+ if(link)link.href=path;
 }
 function updatePage(){
  rail.style.transform='translate3d('+(-state.page*windowEl.clientWidth)+'px,0,0)';
@@ -634,11 +603,11 @@ function updatePage(){
  });
 }
 function goTo(index){
- if(!Number.isFinite(index)||detail.open||chapter.open)return;
+ if(!Number.isFinite(index)||overlayIsOpen())return;
  state.page=Math.max(0,Math.min(index,panels.length-1));
  updatePage();
 }
-function overlayIsOpen(){return detail.open||chapter.open}
+function overlayIsOpen(){return detail.open||chapter.open||window.ResearchVoiceGrid?.isOpen?.()===true}
 function initializeNavigation(){
  initializeMapZoom();
  prev.addEventListener('click',()=>goTo(state.page-1));
@@ -660,7 +629,7 @@ function initializeNavigation(){
   if(overlayIsOpen()||Math.abs(event.deltaX)+Math.abs(event.deltaY)<10)return;
   // Allow the production explanation and icon detail to scroll independently.
   // Turning the wheel over copy must never unexpectedly change research plates.
-  if(event.target.closest('.research-origin-essay,.research-origin-selected,.research-witness-board,.research-witness-copy,.research-paradox-board,.research-paradox-copy'))return;
+  if(event.target.closest('.research-origin-essay,.research-origin-selected,.research-witness-grid-area,.research-witness-copy,.research-paradox-copy'))return;
   event.preventDefault();
   const now=Date.now();
   if(now-state.lastWheel<760)return;
