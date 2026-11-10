@@ -1073,3 +1073,44 @@ body.home-body::-webkit-scrollbar{display:none!important}
   font-size:clamp(15px,3.7vw,21px)!important;
  }
 }
+
+/* 2026-11-10 / Intact trees between elevations.
+   The original 1133x850 tree sheet contains 9 separate silhouettes. Showing
+   it three times made canopies appear cut off by the white house masks.
+   Render two independently extracted full silhouettes INSIDE the actual gaps.
+   Coordinates remain on the original house elevation's 1133.86-unit canvas. */
+.home-house>.home-tree-background{
+ overflow:visible!important;clip-path:none!important;
+}
+.home-house .home-tree-background>.home-tree{
+ position:absolute!important;
+ inset:auto!important;
+ display:block!important;
+ height:auto!important;max-height:none!important;
+ max-width:none!important;
+ object-fit:contain!important;
+ transform:none!important;
+ transform-origin:center bottom!important;
+ opacity:.29!important;filter:grayscale(1)!important;
+ bottom:7.925%!important; /* 783 / 850.39 ground datum */
+}
+.home-house .home-tree-background>.home-tree-left{
+ left:-3.7%!important;width:13.55%!important;
+}
+.home-house .home-tree-background>.home-tree-right{
+ left:90.95%!important;width:12.05%!important;
+}
+/* Keep the right building and its opaque silhouette paired.
+   A proper 140-unit gap fits the entire crown without overlap. */
+.home-house>.home-street-sibling-right,
+.home-house>.home-street-sibling-mask-right{
+ transform:translateX(84%)!important;
+}
+@media(max-width:900px){
+ .home-house>.home-street-sibling-right,
+ .home-house>.home-street-sibling-mask-right{transform:translateX(84%)!important}
+}
+@media(max-width:600px){
+ .home-house>.home-street-sibling-right,
+ .home-house>.home-street-sibling-mask-right{transform:translateX(84%)!important}
+}
