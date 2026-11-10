@@ -1030,7 +1030,7 @@ body.home-body::-webkit-scrollbar{display:none!important}
 .home-masthead .home-exhibition-folder span{font:500 9px/1.2 Pretendard,sans-serif!important;margin-top:3px!important}
 .home-masthead .home-exhibition-folder:hover{transform:translateY(-2px)!important}
 .home-figure-section{max-width:915px!important;margin:clamp(27px,4vh,48px) auto 0!important;padding:0!important}
-.home-figures-heading{border-top:1px solid #c9c9c5!important;padding-top:9px!important;margin:0 0 17px!important;
+.home-figures-heading{border-top:0!important;padding-top:0!important;margin:0 0 17px!important;
  font:500 10px/1.4 Pretendard,sans-serif!important;letter-spacing:.08em!important}
 .home-figure-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:clamp(10px,1.5vw,24px)!important;align-items:start!important}
 .home-figure-section .home-reference{display:block!important;margin:0!important;padding:0!important;min-width:0!important;position:relative!important}
@@ -1061,4 +1061,15 @@ body.home-body::-webkit-scrollbar{display:none!important}
  .home-figure-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important}
  .home-reference-thumb{height:77px!important}
  .home-figure-section .home-reference-note{font-size:11px!important}
+}
+
+/* Consistent Noto Serif KR headings: match MATERIALS editorial title. */
+.home-body > #home-essay .home-essay-paper h2{
+ font:800 clamp(29px,3.3vw,46px)/1.42 "Noto Serif KR",serif!important;
+ letter-spacing:-.063em!important;color:#171715!important;
+}
+@media(max-width:600px){
+ .home-body > #home-essay .home-essay-paper h2{
+  font-size:clamp(23px,5.5vw,32px)!important;
+ }
 }
