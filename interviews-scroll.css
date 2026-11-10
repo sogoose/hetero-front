@@ -131,13 +131,13 @@ body{background:#fff;color:#292924}
  white-space:nowrap;
 }
 .interview-turn.is-question{
- color:#986e62!important;
+ color:#0033ff!important;
  font-weight:420!important;
  margin-top:20px!important;
  margin-bottom:7px!important;
 }
 .interview-turn.is-question:first-child{margin-top:0!important}
-.interview-turn.is-question .interview-turn-mark{color:#986e62!important;font-weight:600!important}
+.interview-turn.is-question .interview-turn-mark{color:#0033ff!important;font-weight:600!important}
 .interview-turn.is-answer{
  color:#303030!important;
  font-weight:600!important;
