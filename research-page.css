@@ -2610,7 +2610,7 @@ body{background:#ffffff;color:#272724}
  background:#8a8882!important;
 }
 .research-panel-testimony .research-witness-grid-area::before{
- content:"";position:fixed;inset:0;pointer-events:none;
+ content:"";position:absolute;inset:0;pointer-events:none;
  background:linear-gradient(rgba(25,25,23,.48),rgba(25,25,23,.48)),
  url('assets/archive/brick-factory.webp') center/cover no-repeat;
  opacity:.96;z-index:-1;
