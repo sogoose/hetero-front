@@ -29,6 +29,12 @@ jobs:
       - name: Stage optimized website without original material PNG archives
         run: python3 scripts/build_pages.py
 
+      - name: Install social preview image renderer
+        run: python3 -m pip install 'Pillow>=10,<13' 'CairoSVG>=2.7,<3'
+
+      - name: Render the landing-page social preview
+        run: python3 scripts/generate_share_image.py
+
       - name: Upload optimized Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
