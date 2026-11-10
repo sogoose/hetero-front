@@ -585,6 +585,9 @@ function initializeNavigation(){
  windowEl.addEventListener('pointercancel',()=>{state.pointer=null});
  windowEl.addEventListener('wheel',event=>{
   if(overlayIsOpen()||Math.abs(event.deltaX)+Math.abs(event.deltaY)<10)return;
+  // Allow the production explanation and icon detail to scroll independently.
+  // Turning the wheel over copy must never unexpectedly change research plates.
+  if(event.target.closest('.research-origin-essay,.research-origin-selected'))return;
   event.preventDefault();
   const now=Date.now();
   if(now-state.lastWheel<760)return;
