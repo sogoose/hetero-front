@@ -69,7 +69,7 @@
     <clipPath id="clippath">
       <polygon class="st6" points="572.42 1969.78 675.08 1969.78 675.08 1879.97 572.42 1877.67 572.42 1969.78"/>
     </clipPath>
-  <clipPath id="paradox-cut-door" clipPathUnits="userSpaceOnUse"><polygon points="292.0478,230.7847 491.7129,214.4019 500.9282,463.2153 299.2153,479.5981"/></clipPath><clipPath id="paradox-cut-bottommid" clipPathUnits="userSpaceOnUse"><polygon points="286.3585,568.7736 522.8113,510.8868 531.6415,660.0189 292.2453,661.9811"/></clipPath><g id="paradox-original-art">
+  <clipPath id="paradox-cut-door" clipPathUnits="userSpaceOnUse"><polygon points="292.0478,230.7847 491.7129,214.4019 500.9282,463.2153 299.2153,479.5981"/></clipPath><clipPath id="paradox-cut-bottommid" clipPathUnits="userSpaceOnUse"><polygon points="284.9000,564.5000 526.7000,506.2000 533.9000,663.1000 290.0000,664.0000"/></clipPath><g id="paradox-original-art">
   <polygon points="1195.22 551.66 1659.55 578.15 1644.31 1109.72 1226.3 1089.64 1195.22 551.66"/>
   <polygon points="1714.53 804.94 1970.76 809.01 1964.66 1147.6 1692.16 1156.75 1714.53 804.94"/>
   <polygon points="688.36 1363.58 1311.19 1257.1 1311.19 1648.48 705.16 1633.03 688.36 1363.58"/>
@@ -1134,6 +1134,8 @@
 <svg x="856.0235" y="144.0000" width="192.9530" height="250.0000" viewBox="1689.4538 792.4469 293.9292 380.8858" overflow="hidden" data-fragment="brick"><use href="#paradox-original-art"/></svg>
 <svg x="23.1379" y="477.0000" width="206.7241" height="218.0000" viewBox="212.1402 1099.2006 421.7245 444.7928" overflow="hidden" data-fragment="leftbottom"><use href="#paradox-original-art"/></svg>
 <g clip-path="url(#paradox-cut-bottommid)"><svg x="285.3774" y="505.0000" width="247.2453" height="156.0000" viewBox="684.9828 1244.9086 644.0883 406.4486" overflow="hidden" data-fragment="bottommid"><use href="#paradox-original-art"/></svg></g>
+<!-- Restore the fine top rim of the cast-iron entrance-door quote, clipped by the original crop. -->
+<path d="M 295.7 573.8 L 518.6 519.1" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="square" pointer-events="none"/>
 <svg x="570.0000" y="518.0654" width="230.0000" height="332.8692" viewBox="1375.0774 1201.4518 605.7497 876.8042" overflow="hidden" data-fragment="machine"><use href="#paradox-original-art"/></svg>
 <svg x="23.0000" y="716.9526" width="222.0000" height="174.0947" viewBox="222.3638 1643.6883 485.6221 380.8858" overflow="hidden" data-fragment="clay"><use href="#paradox-original-art"/></svg>
 <svg x="286.0000" y="684.5361" width="242.0000" height="155.9278" viewBox="820.4458 1738.2707 495.8457 319.5351" overflow="hidden" data-fragment="kiln"><use href="#paradox-original-art"/></svg>
