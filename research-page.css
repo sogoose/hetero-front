@@ -1564,3 +1564,101 @@ body{background:#ffffff;color:#272724}
  .research-region-table{font-size:11px!important}
  .research-region-table :is(th,td){padding:5px 3px!important}
 }
+
+
+/* Research map: numbered clusters at every zoom, colored by MATERIAL.
+   Original printed map symbols are the markers; labels are quiet small-type
+   annotations for a few genuinely isolated makers, not extra pin circles. */
+.research-panel-map .research-factory-pins{
+ pointer-events:none!important;
+}
+.research-panel-map .research-factory-pin.is-cluster,
+.research-panel-map .research-factory-label{
+ --factory-ink:#6e716b;
+ --factory-tint:#f7f7f4;
+}
+.research-panel-map .research-factory-pin.is-cluster[data-material="brick"],
+.research-panel-map .research-factory-label[data-material="brick"]{
+ --factory-ink:#527dad;
+ --factory-tint:#eef4f9;
+}
+.research-panel-map .research-factory-pin.is-cluster[data-material="cast"],
+.research-panel-map .research-factory-label[data-material="cast"]{
+ --factory-ink:#54896e;
+ --factory-tint:#eef5f0;
+}
+.research-panel-map .research-factory-pin.is-cluster[data-material="tile"],
+.research-panel-map .research-factory-label[data-material="tile"]{
+ --factory-ink:#b96d68;
+ --factory-tint:#fcf0ee;
+}
+.research-panel-map .research-factory-pin.is-cluster{
+ display:grid!important;
+ place-items:center!important;
+ width:25px!important;height:25px!important;
+ padding:0!important;
+ border:1px solid var(--factory-ink)!important;
+ border-radius:50%!important;
+ background:var(--factory-tint)!important;
+ color:var(--factory-ink)!important;
+ box-shadow:0 0 0 2px rgba(255,255,255,.86)!important;
+ opacity:.96!important;
+ font:650 10px/1 Pretendard,-apple-system,sans-serif!important;
+ font-variant-numeric:tabular-nums;
+ white-space:nowrap!important;
+ pointer-events:auto!important;
+ cursor:pointer;
+}
+.research-panel-map .research-factory-pin.is-cluster::after{
+ display:none!important;content:none!important;
+}
+.research-panel-map .research-factory-pin.is-cluster:hover,
+.research-panel-map .research-factory-pin.is-cluster:focus-visible{
+ background:#ffffff!important;
+ color:var(--factory-ink)!important;
+ border-color:var(--factory-ink)!important;
+ box-shadow:0 0 0 3px rgba(255,255,255,.94)!important;
+}
+.research-panel-map .research-factory-label{
+ display:block!important;
+ position:absolute!important;
+ z-index:22!important;
+ box-sizing:border-box!important;
+ max-width:130px!important;
+ width:max-content!important;
+ overflow:hidden!important;
+ text-overflow:ellipsis!important;
+ padding:1px 3px 2px!important;
+ margin:0!important;
+ border:0!important;
+ border-radius:0!important;
+ background:rgba(255,255,255,.80)!important;
+ box-shadow:none!important;
+ color:var(--factory-ink)!important;
+ font:500 9px/1.28 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.025em!important;
+ text-decoration:none!important;
+ text-align:center!important;
+ white-space:nowrap!important;
+ opacity:.90!important;
+ pointer-events:auto!important;
+ cursor:pointer!important;
+}
+.research-panel-map .research-factory-label:hover,
+.research-panel-map .research-factory-label:focus-visible{
+ opacity:1!important;
+ background:#ffffff!important;
+ text-decoration:underline!important;
+ text-underline-offset:2px!important;
+}
+@media(max-width:700px){
+ .research-panel-map .research-factory-pin.is-cluster{
+  width:23px!important;height:23px!important;
+  font-size:9px!important;
+ }
+ .research-panel-map .research-factory-label{
+  font-size:8px!important;
+  max-width:108px!important;
+  padding:1px 2px!important;
+ }
+}
