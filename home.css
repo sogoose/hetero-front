@@ -479,3 +479,9 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
 @media(prefers-reduced-motion:reduce){
  .home-light-zone{animation:none!important;opacity:0!important}
 }
+
+/* Keep the architect's original colored pen lines crisp above the neon wash. */
+.home-house>.home-lighting{z-index:2!important}
+.home-house>.home-exact-contours{z-index:3!important}
+.home-house>.home-hotspots{z-index:4!important}
+.home-house>.home-large-menu{z-index:5!important}
