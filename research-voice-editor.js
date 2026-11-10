@@ -1,7 +1,6 @@
-/* 03 / Makers' voices — a fixed 4x4 archive.
-   No accounts or editor permissions are used. Public edits are restricted by
-   Supabase RLS to the 16 existing quote rows; no arbitrary inserts/deletes.
-   Keep all user content in textContent / input.value, never innerHTML. */
+/* HETERO FRONT / Makers' voices — open-ended cards, permission-gated edits.
+   Rows are stored in Supabase; editor follows the existing editing_enabled flag.
+   User text is always inserted via textContent, never HTML. */
 (() => {
  'use strict';
  const API='https://xjhwzhqiixbombbudlpl.supabase.co/rest/v1';
@@ -18,125 +17,166 @@
  const tagField=$('#research-voice-edit-tag');
  const modalStatus=$('#research-voice-edit-status');
  const saveButton=$('#research-voice-edit-save');
- let rows=[],inEditMode=false,activeSlot=null,initDone=false,saving=false;
-
+ const deleteButton=$('#research-voice-edit-delete');
+ let rows=[],inEditMode=false,editingAllowed=false,activeSlot=null,initDone=false,saving=false;
  function node(tag,cls,text){
-  const el=document.createElement(tag);
-  if(cls)el.className=cls;
-  if(text!==undefined)el.textContent=String(text);
-  return el;
+  const e=document.createElement(tag);if(cls)e.className=cls;
+  if(text!==undefined&&text!==null)e.textContent=String(text);
+  return e;
  }
  function setStatus(text='',error=false){
-  status.textContent=text;
-  status.classList.toggle('is-error',error);
+  if(!status)return;
+  status.textContent=text;status.classList.toggle('is-error',error);
  }
  function draw(){
+  if(!board)return;
   board.replaceChildren();
-  for(let slot=1;slot<=16;slot++){
-   const item=rows.find(x=>x.slot===slot)||{slot,quote:'',credit:'',tag:''};
-   const card=node('button','research-voice-tile'+(inEditMode?' is-editable':''));card.type='button';
-   card.disabled=!inEditMode;
-   card.dataset.slot=String(slot);
-   card.title=(inEditMode?'문장 수정: ':'')+item.quote;
-   card.setAttribute('aria-label',slot+'번 증언'+(inEditMode?' 수정':'')+': '+item.quote);
-   card.append(node('span','research-voice-tile-tag',item.tag||''));
-   card.append(node('span','research-voice-tile-quote',item.quote||''));
-   card.append(node('span','research-voice-tile-credit',item.credit||''));
-   card.addEventListener('click',()=>openEditor(slot));
+  rows.slice().sort((a,b)=>a.slot-b.slot).forEach(item=>{
+   const card=node('button','research-voice-tile'+(inEditMode?' is-editable':''));
+   card.type='button';card.disabled=!inEditMode;
+   card.dataset.slot=String(item.slot);
+   card.title=inEditMode?'이 카드 수정':'';
+   card.setAttribute('aria-label',(inEditMode?'수정: ':'')+item.quote);
+   card.append(
+    node('span','research-voice-tile-tag',item.tag||'기록'),
+    node('span','research-voice-tile-quote',item.quote),
+    node('span','research-voice-tile-credit',item.credit)
+   );
+   card.addEventListener('click',()=>openEditor(item.slot));
    board.append(card);
+  });
+  if(inEditMode&&editingAllowed){
+   const add=node('button','research-voice-tile research-voice-add','＋ 새 증언 카드 추가');
+   add.type='button';add.setAttribute('aria-label','새 증언 카드 추가');
+   add.addEventListener('click',()=>openEditor(null));
+   board.append(add);
   }
+  board.setAttribute('aria-label','제작자들의 말 '+rows.length+'개, 아래로 스크롤하여 읽기');
  }
  function openEditor(slot){
-  if(!inEditMode||!dialog||saving)return;
-  const item=rows.find(x=>x.slot===slot);
-  if(!item)return;
+  if(!inEditMode||!editingAllowed||!dialog||saving)return;
+  const item=slot===null?null:rows.find(x=>x.slot===slot);
+  if(slot!==null&&!item)return;
   activeSlot=slot;
-  $('#research-voice-editor-title').textContent=String(slot).padStart(2,'0')+' / 증언 수정';
-  quoteField.value=item.quote;
-  creditField.value=item.credit;
-  tagField.value=item.tag||'';
+  $('#research-voice-editor-title').textContent=slot===null?'새 증언 추가':String(slot).padStart(2,'0')+' / 증언 수정';
+  quoteField.value=item?.quote||'';
+  creditField.value=item?.credit||'';
+  tagField.value=item?.tag||'';
+  if(deleteButton)deleteButton.hidden=slot===null;
   modalStatus.textContent='';
-  dialog.showModal();
-  quoteField.focus();
+  dialog.showModal();quoteField.focus();
+ }
+ async function loadRows(){
+  const response=await fetch(API+'/hetero_research_voice_cells?select=slot,quote,credit,tag&order=slot.asc',{
+   headers:{apikey:KEY},cache:'no-store'
+  });
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  const json=await response.json();
+  if(!Array.isArray(json))throw new Error('증언 데이터 형식 오류');
+  rows=json.map(x=>({slot:Number(x.slot),quote:String(x.quote||''),credit:String(x.credit||''),tag:String(x.tag||'')}));
+  draw();
  }
  async function hydrate(){
-  try{
-   const response=await fetch(API+'/hetero_research_voice_cells?select=slot,quote,credit,tag&order=slot.asc',
-    {headers:{apikey:KEY},cache:'no-store'});
-   if(!response.ok)throw new Error('HTTP '+response.status);
-   const json=await response.json();
-   if(!Array.isArray(json)||json.length!==16)throw new Error('16개 증언을 불러오지 못했습니다.');
-   rows=json.map(x=>({slot:Number(x.slot),quote:String(x.quote||''),credit:String(x.credit||''),tag:String(x.tag||'')}));
-   draw();
-  }catch(error){
-   console.warn('증언 저장 데이터 로딩 오류; 정적 자료 표시:',error);
-   setStatus('온라인 수정 자료를 불러오지 못했습니다.',true);
+  try{await loadRows()}catch(error){
+   console.warn('증언 데이터 로딩 오류:',error);
+   setStatus('온라인 자료를 불러오지 못해 기본 자료를 표시합니다.',true);
   }
-  // When edits are permanently closed, the server controls the permission
-  // and this UI also hides the edit affordance.
   try{
-   const response=await fetch(API+'/hetero_research_voice_edit_settings?select=editing_enabled&id=eq.1',
-    {headers:{apikey:KEY},cache:'no-store'});
-   if(response.ok){
-    const settings=await response.json();
-    if(settings[0]?.editing_enabled===false){
-     inEditMode=false;editToggle.hidden=true;draw();
-    }
-   }
-  }catch(error){console.warn('Edit status unavailable:',error)}
+   const response=await fetch(API+'/hetero_research_voice_edit_settings?select=editing_enabled&id=eq.1',{
+    headers:{apikey:KEY},cache:'no-store'
+   });
+   if(!response.ok)throw new Error('HTTP '+response.status);
+   const settings=await response.json();
+   editingAllowed=settings[0]?.editing_enabled===true;
+  }catch(error){
+   editingAllowed=false;
+   console.warn('증언 편집 설정 확인 불가:',error);
+  }
+  if(!editingAllowed){
+   inEditMode=false;
+   if(editToggle)editToggle.hidden=true;
+  }else if(editToggle)editToggle.hidden=false;
+  draw();
  }
  function toggleEdit(){
+  if(!editingAllowed)return;
   inEditMode=!inEditMode;
   editToggle.textContent=inEditMode?'DONE':'EDIT';
   editToggle.setAttribute('aria-pressed',String(inEditMode));
-  setStatus(inEditMode?'수정할 정사각형을 선택하세요.':'');
+  setStatus(inEditMode?'카드를 클릭해 수정하거나, 맨 아래에서 새 카드를 추가하세요.':'');
   draw();
  }
  async function save(event){
   event.preventDefault();
-  if(saving||activeSlot===null)return;
-  const quote=quoteField.value.trim();
-  const credit=creditField.value.trim();
-  const tag=tagField.value.trim();
+  if(saving||!editingAllowed)return;
+  const quote=quoteField.value.trim(),credit=creditField.value.trim(),tag=tagField.value.trim();
   if(!quote||!credit){modalStatus.textContent='문장과 출처를 입력해 주세요.';return}
+  if(quote.length>2000||credit.length>120||tag.length>40){modalStatus.textContent='입력 글자 수를 확인해 주세요.';return}
   saving=true;saveButton.disabled=true;modalStatus.textContent='저장 중…';
   try{
-   const response=await fetch(API+'/hetero_research_voice_cells?slot=eq.'+activeSlot,{
-    method:'PATCH',
-    headers:{apikey:KEY,'Content-Type':'application/json','Prefer':'return=representation'},
-    body:JSON.stringify({quote,credit,tag})
+   const isNew=activeSlot===null;
+   let endpoint,method,body;
+   if(isNew){
+    const nextSlot=Math.max(0,...rows.map(r=>r.slot))+1;
+    if(nextSlot>32767)throw new Error('저장 가능한 카드 번호를 초과했습니다.');
+    endpoint=API+'/hetero_research_voice_cells';
+    method='POST';body={slot:nextSlot,quote,credit,tag};
+   }else{
+    endpoint=API+'/hetero_research_voice_cells?slot=eq.'+activeSlot;
+    method='PATCH';body={quote,credit,tag};
+   }
+   const response=await fetch(endpoint,{
+    method,headers:{apikey:KEY,'Content-Type':'application/json','Prefer':'return=representation'},
+    body:JSON.stringify(body)
    });
    if(!response.ok){
-    let message='HTTP '+response.status;
-    try{const issue=await response.json();message=issue.message||issue.error||message}catch(e){}
-    throw new Error(message);
+    const detail=await response.text();
+    throw new Error('HTTP '+response.status+' '+detail.slice(0,160));
    }
-   const saved=await response.json();
-   if(!Array.isArray(saved)||saved.length!==1)throw new Error('변경된 문장을 확인할 수 없습니다.');
-   const idx=rows.findIndex(x=>x.slot===activeSlot);
-   if(idx>=0)rows[idx]={slot:activeSlot,quote,credit,tag};
-   draw();dialog.close();setStatus('저장됨');
+   const written=await response.json();
+   if(!Array.isArray(written)||written.length!==1)throw new Error('저장을 확인하지 못했습니다.');
+   await loadRows();
+   dialog.close();setStatus('저장됨 · '+rows.length+'개 카드');
   }catch(error){
    modalStatus.textContent='저장 실패: '+error.message;
   }finally{saving=false;saveButton.disabled=false}
  }
- function close(){if(!saving&&dialog.open)dialog.close()}
+ async function remove(){
+  if(saving||activeSlot===null||!editingAllowed)return;
+  if(!confirm('이 증언 카드를 삭제할까요? 삭제 후 되돌릴 수 없습니다.'))return;
+  saving=true;saveButton.disabled=true;if(deleteButton)deleteButton.disabled=true;
+  modalStatus.textContent='삭제 중…';
+  try{
+   const response=await fetch(API+'/hetero_research_voice_cells?slot=eq.'+activeSlot,{
+    method:'DELETE',headers:{apikey:KEY,'Prefer':'return=representation'}
+   });
+   if(!response.ok)throw new Error('HTTP '+response.status+' '+(await response.text()).slice(0,150));
+   const removed=await response.json();
+   if(!Array.isArray(removed)||removed.length!==1)throw new Error('삭제를 확인하지 못했습니다.');
+   await loadRows();dialog.close();setStatus('삭제됨 · '+rows.length+'개 카드');
+  }catch(error){modalStatus.textContent='삭제 실패: '+error.message}
+  finally{saving=false;saveButton.disabled=false;if(deleteButton)deleteButton.disabled=false}
+ }
+ function close(){if(!saving&&dialog?.open)dialog.close()}
  function init(config){
   if(initDone||!board)return;
   initDone=true;
-  rows=(config.grid||[]).map(x=>({slot:Number(x.slot),quote:String(x.quote||''),credit:String(x.credit||''),tag:String(x.tag||'')}));
+  rows=(config.grid||[]).map(x=>({
+   slot:Number(x.slot),quote:String(x.quote||''),credit:String(x.credit||''),tag:String(x.tag||'')
+  }));
   const link=$('#research-witness-link');
   if(link){link.href=config.archiveLink||'interviews.html';link.textContent=config.archiveText||'인터뷰 전문에서 더 읽기'}
   sources.replaceChildren();
   (config.sources||[]).forEach(item=>{
-   const row=node('div','research-witness-source-row');
-   row.append(node('span','research-witness-source-material',item.material));
-   row.append(node('span','research-witness-source-name',item.name));
-   sources.append(row);
+   const entry=node('div','research-witness-source-row');
+   entry.append(node('span','research-witness-source-material',item.material),
+    node('span','research-witness-source-name',item.name));
+   sources.append(entry);
   });
   draw();
   editToggle?.addEventListener('click',toggleEdit);
   form?.addEventListener('submit',save);
+  deleteButton?.addEventListener('click',remove);
   $('#research-voice-edit-cancel')?.addEventListener('click',close);
   $('#research-voice-edit-close')?.addEventListener('click',close);
   dialog?.addEventListener('click',event=>{if(event.target===dialog)close()});
