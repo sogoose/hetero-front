@@ -20,6 +20,104 @@ const chapter=$('#chapter-menu');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const state={page:0,map:0,year:1991,voice:0,data:null,pointer:null,lastWheel:0};
 const stageNames=['DISTRIBUTION','PRODUCTION','TESTIMONY'];
+const mapZoom={scale:1,x:0,y:0,drag:null,suppressClick:false,positionPending:false};
+const MAP_ZOOM_MAX=5;
+function clampMapPan(){
+ const rect=mapArt.getBoundingClientRect();
+ const mx=Math.max(0,(mapZoom.scale-1)*rect.width*.5);
+ const my=Math.max(0,(mapZoom.scale-1)*rect.height*.5);
+ mapZoom.x=Math.max(-mx,Math.min(mx,mapZoom.x));
+ mapZoom.y=Math.max(-my,Math.min(my,mapZoom.y));
+}
+function queueZoomPins(){
+ if(mapZoom.positionPending)return;
+ mapZoom.positionPending=true;
+ requestAnimationFrame(()=>{
+  mapZoom.positionPending=false;
+  window.ResearchPoints?.reposition?.();
+ });
+}
+function applyMapZoom(){
+ const stack=mapArt.querySelector('.research-map-stack');
+ if(!stack)return;
+ stack.dataset.zoomScale=String(mapZoom.scale);
+ stack.style.transformOrigin='center center';
+ stack.style.transform='translate3d('+mapZoom.x+'px,'+mapZoom.y+'px,0) scale('+mapZoom.scale+')';
+ mapArt.classList.toggle('is-map-zoomed',mapZoom.scale>1.001);
+ const reset=$('#research-map-reset');
+ if(reset){
+  reset.hidden=mapZoom.scale<=1.001;
+  reset.textContent=Math.round(mapZoom.scale*100)+'% · 원래 크기';
+ }
+ queueZoomPins();
+}
+function resetMapZoom(){
+ mapZoom.scale=1;mapZoom.x=0;mapZoom.y=0;mapZoom.drag=null;
+ applyMapZoom();
+}
+function zoomMapAt(nextScale,localX,localY){
+ const before=mapZoom.scale;
+ const after=Math.max(1,Math.min(MAP_ZOOM_MAX,nextScale));
+ if(Math.abs(after-before)<.0001)return;
+ const rect=mapArt.getBoundingClientRect();
+ const ax=localX-rect.width/2,ay=localY-rect.height/2;
+ const factor=after/before;
+ mapZoom.x=ax-(ax-mapZoom.x)*factor;
+ mapZoom.y=ay-(ay-mapZoom.y)*factor;
+ mapZoom.scale=after;
+ if(after<=1.001){mapZoom.scale=1;mapZoom.x=0;mapZoom.y=0}
+ clampMapPan();applyMapZoom();
+}
+function initializeMapZoom(){
+ const reset=$('#research-map-reset');
+ reset?.addEventListener('click',resetMapZoom);
+ mapArt.addEventListener('wheel',event=>{
+  if(state.page!==0||overlayIsOpen())return;
+  event.preventDefault();
+  event.stopPropagation(); // never turn pages while zooming the map
+  const multiplier=event.deltaMode===1?16:event.deltaMode===2?mapArt.clientHeight:1;
+  const delta=Math.max(-400,Math.min(400,event.deltaY*multiplier));
+  const rect=mapArt.getBoundingClientRect();
+  zoomMapAt(mapZoom.scale*Math.exp(-delta*.0016),event.clientX-rect.left,event.clientY-rect.top);
+ },{passive:false});
+ mapArt.addEventListener('pointerdown',event=>{
+  if(mapZoom.scale<=1||event.button!==0||overlayIsOpen())return;
+  if(event.target.closest('button,a,input'))return;
+  mapZoom.drag={id:event.pointerId,x:event.clientX,y:event.clientY,moved:false};
+  mapArt.setPointerCapture(event.pointerId);
+  event.stopPropagation();
+ });
+ mapArt.addEventListener('pointermove',event=>{
+  const drag=mapZoom.drag;
+  if(!drag||drag.id!==event.pointerId)return;
+  const dx=event.clientX-drag.x,dy=event.clientY-drag.y;
+  drag.x=event.clientX;drag.y=event.clientY;
+  if(Math.abs(dx)+Math.abs(dy)>1)drag.moved=true;
+  mapZoom.x+=dx;mapZoom.y+=dy;
+  clampMapPan();applyMapZoom();
+  event.preventDefault();event.stopPropagation();
+ });
+ const endDrag=event=>{
+  const drag=mapZoom.drag;
+  if(!drag||drag.id!==event.pointerId)return;
+  mapZoom.suppressClick=drag.moved;
+  mapZoom.drag=null;
+  if(mapArt.hasPointerCapture(event.pointerId))mapArt.releasePointerCapture(event.pointerId);
+  event.stopPropagation();
+ };
+ mapArt.addEventListener('pointerup',endDrag);
+ mapArt.addEventListener('pointercancel',endDrag);
+ mapArt.addEventListener('click',event=>{
+  if(!mapZoom.suppressClick)return;
+  mapZoom.suppressClick=false;
+  event.preventDefault();event.stopImmediatePropagation();
+ },true);
+ mapArt.addEventListener('dblclick',event=>{
+  if(state.page!==0||overlayIsOpen())return;
+  event.preventDefault();event.stopImmediatePropagation();resetMapZoom();
+ },true);
+}
+
 const accents={all:'#747971',red:'#c06b67',blue:'#5e86bc',green:'#6b9d84'};
 
 function el(tag,cls,content){
@@ -154,6 +252,7 @@ function setMap(index){
  mapArt.setAttribute('aria-label',state.year+'년 '+(map.label||map.id)+' 공장 분포 지도');
  mapArt.append(layeredMap(state.data.mapBase,layers,false));
  mapArt.classList.remove('is-zoomable');
+ resetMapZoom();
  window.ResearchPoints?.update();
  // Buttons are displayed in material order (brick / cast / tile), which is
  // deliberately different from the JSON data order. Resolve by stable ID.
@@ -347,6 +446,7 @@ function goTo(index){
 }
 function overlayIsOpen(){return detail.open||chapter.open}
 function initializeNavigation(){
+ initializeMapZoom();
  prev.addEventListener('click',()=>goTo(state.page-1));
  next.addEventListener('click',()=>goTo(state.page+1));
  pageButtons.forEach(button=>button.addEventListener('click',()=>goTo(Number(button.dataset.page))));
@@ -375,6 +475,8 @@ function initializeNavigation(){
   const oldTransition=rail.style.transition;
   rail.style.transition='none';
   updatePage();
+  clampMapPan();
+  applyMapZoom();
   requestAnimationFrame(()=>{rail.style.transition=oldTransition});
  });
  window.addEventListener('keydown',event=>{
