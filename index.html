@@ -7,8 +7,38 @@
 <title>혼종의 정면 — 대한민국 산업화 과도기 건축재료의 기록과 해석</title>
 <meta name="description" content="혼종의 정면. 건물의 지붕, 난간, 벽돌, 대문을 따라 풍경과 재료, 연구와 인터뷰를 읽는 전시 아카이브.">
 <link rel="stylesheet" href="style.css?v=3">
-<link rel="stylesheet" href="home.css?v=3">
+<link rel="stylesheet" href="home.css?v=4">
 <script src="home.js?v=2" defer></script>
+<!-- Critical homepage UI fallback: keep controls correctly sized even when cached stylesheet lags. -->
+<style>
+.home-exhibition-folder{position:absolute;right:3.8vw;bottom:10.1vh;z-index:9;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:#181818;width:76px!important;height:auto!important}
+.home-exhibition-folder>svg{display:block!important;width:54px!important;height:48px!important;max-width:54px!important;max-height:48px!important;min-width:0!important;min-height:0!important;flex:none!important;overflow:visible}
+.home-exhibition-folder>span{font:500 10px/1.4 Pretendard,sans-serif!important;white-space:nowrap}
+.home-large-menu{position:absolute!important;inset:0!important;z-index:7!important;pointer-events:none!important}
+.home-large-menu .home-menu-title{position:absolute!important;display:flex!important;flex-direction:column!important;gap:3px!important;white-space:nowrap!important;opacity:0!important;visibility:hidden!important;transform:translateY(9px)!important;transition:opacity .22s ease,transform .22s ease!important}
+.home-large-menu .home-menu-title span{font:500 clamp(9px,.8vw,12px)/1.5 Pretendard,sans-serif!important;letter-spacing:.045em!important;color:#777!important}
+.home-large-menu .home-menu-title strong{font:760 clamp(30px,3.3vw,57px)/1.13 Pretendard,sans-serif!important;letter-spacing:-.055em!important;color:#171717!important}
+.home-large-menu .home-menu-roof{left:8%!important;top:15%!important}
+.home-large-menu .home-menu-railing{left:-4%!important;top:39%!important}
+.home-large-menu .home-menu-brick{left:71%!important;top:75%!important}
+.home-large-menu .home-menu-gate{left:85%!important;top:37%!important}
+.home-house[data-active="roof"] .home-menu-roof,.home-house[data-active="railing"] .home-menu-railing,.home-house[data-active="brick"] .home-menu-brick,.home-house[data-active="gate"] .home-menu-gate{opacity:1!important;visibility:visible!important;transform:translateY(0)!important}
+.home-street-neighbours{position:absolute!important;inset:0!important;overflow:hidden!important;pointer-events:none!important;z-index:1!important}
+.home-street-neighbours>.home-neighbour{position:absolute!important;display:block!important;pointer-events:none!important;height:auto!important;max-height:63vh!important;opacity:.38!important;filter:grayscale(1)!important}
+.home-street-neighbours>.home-neighbour-left{left:-1.2vw!important;bottom:12.7vh!important;width:33vw!important}
+.home-street-neighbours>.home-neighbour-right{right:-1.35vw!important;bottom:12.7vh!important;width:31vw!important}
+.home-essay-trigger .home-essay-title{font:650 clamp(16px,1.43vw,23px)/1.4 Pretendard,sans-serif!important}
+.home-house .home-hotspot-label{display:none!important}
+@media(max-width:700px){
+ .home-exhibition-folder{right:16px!important;bottom:74px!important;width:55px!important}
+ .home-exhibition-folder>svg{width:40px!important;height:36px!important;max-width:40px!important}
+ .home-large-menu .home-menu-title strong{font-size:25px!important}
+ .home-large-menu .home-menu-roof{left:18%!important;top:16%!important}
+ .home-large-menu .home-menu-railing{left:8%!important;top:39%!important}
+ .home-large-menu .home-menu-brick{left:55%!important;top:81%!important}
+ .home-large-menu .home-menu-gate{left:66%!important;top:38%!important}
+}
+</style>
 </head>
 <body class="home-body">
 <main class="home-shell" id="home">
@@ -53,7 +83,7 @@
     <img src="assets/home/identity-sponsors.svg" alt="2026 아르코 건축예술랩 · 아르코미술관">
   </div>
   <a class="home-exhibition-folder" href="exhibition.html" aria-label="전시 안내 보기" title="전시 안내 보기">
-    <svg viewBox="0 0 72 63" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+    <svg width="54" height="48" style="width:54px;height:48px;max-width:54px;max-height:48px;display:block;flex:none" viewBox="0 0 72 63" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
       <path d="M5 14V8h19l7 7h35v39H5z"/>
       <path d="M5 19h61"/>
       <path d="M20 37h9l16-9v20l-16-9h-9z"/>
