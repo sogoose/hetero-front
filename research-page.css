@@ -2456,3 +2456,137 @@ body{background:#ffffff;color:#272724}
 @media(prefers-reduced-motion:reduce){
  .research-voice-tile{transition:none!important}
 }
+
+
+/* RESEARCH 04 / Final editorial composition.
+   Original artwork is split into 19 clipped viewports of the same SVG;
+   every element fits inside one landscape board without bitmap resampling.
+   The full submitted exhibition essay flows in two real text columns. */
+.research-panel-paradox .research-paradox-layout{
+ display:grid!important;
+ grid-template-columns:minmax(0,53%) minmax(0,47%)!important;
+ height:100%!important;min-width:0!important;min-height:0!important;
+}
+.research-panel-paradox .research-paradox-board{
+ display:flex!important;
+ align-items:center!important;justify-content:center!important;
+ overflow:hidden!important;min-width:0!important;min-height:0!important;
+ padding:clamp(9px,1.3vw,23px)!important;
+ box-sizing:border-box!important;
+}
+.research-panel-paradox .research-paradox-svg-link{
+ display:flex!important;
+ align-items:center!important;justify-content:center!important;
+ width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;
+ overflow:hidden!important;
+ cursor:zoom-in!important;
+}
+.research-panel-paradox .research-paradox-reassembly{
+ position:relative!important;
+ box-sizing:border-box!important;
+ flex:none!important;
+ display:block!important;
+ aspect-ratio:1100 / 1040!important;
+ width:min(100%,calc((100dvh - 125px) * 1.057692))!important;
+ height:auto!important;max-height:100%!important;
+ overflow:hidden!important;
+}
+.research-panel-paradox .research-paradox-cut{
+ position:absolute!important;
+ display:block!important;
+ box-sizing:border-box!important;
+ overflow:hidden!important;
+ border:0!important;padding:0!important;margin:0!important;
+ pointer-events:none!important;
+}
+.research-panel-paradox .research-paradox-cut-image{
+ display:block!important;
+ position:absolute!important;
+ min-width:0!important;
+ max-width:none!important;max-height:none!important;
+ margin:0!important;padding:0!important;border:0!important;
+ object-fit:fill!important;object-position:left top!important;
+ mix-blend-mode:normal!important;
+ filter:none!important;
+ pointer-events:none!important;user-select:none!important;
+ -webkit-user-drag:none!important;
+}
+.research-panel-paradox .research-paradox-svg-fallback{
+ display:block!important;
+ width:100%!important;height:100%!important;
+ object-fit:contain!important;
+}
+.research-panel-paradox .research-paradox-copy{
+ display:flex!important;flex-direction:column!important;
+ padding:clamp(29px,5vh,62px) clamp(20px,2.35vw,46px) clamp(25px,4vh,50px) clamp(20px,2vw,40px)!important;
+ min-width:0!important;min-height:0!important;
+ overflow-x:hidden!important;overflow-y:auto!important;
+ scrollbar-width:thin;scrollbar-color:#d9d8d0 transparent;
+}
+.research-panel-paradox .research-paradox-heading{
+ flex:none!important;
+ font-size:clamp(25px,2.15vw,37px)!important;
+ margin:0 0 clamp(19px,3vh,33px)!important;
+}
+.research-panel-paradox .research-paradox-essay{
+ display:block!important;
+ column-count:2!important;
+ column-width:auto!important;
+ column-fill:balance!important;
+ column-gap:clamp(18px,1.65vw,32px)!important;
+ min-height:0!important;height:auto!important;
+ margin:0!important;padding:0!important;
+ overflow:visible!important;
+}
+.research-panel-paradox .research-paradox-paragraph{
+ display:block!important;
+ break-inside:avoid-column!important;
+ page-break-inside:avoid!important;
+ margin:0 0 clamp(13px,2vh,24px)!important;padding:0!important;
+ font:400 clamp(10.4px,.74vw,12.8px)/1.75 Pretendard,-apple-system,sans-serif!important;
+ color:#373831!important;
+ letter-spacing:-.035em!important;
+ word-break:keep-all!important;overflow-wrap:break-word!important;
+}
+.research-panel-paradox .research-paradox-paragraph:last-child{
+ margin-bottom:0!important;
+}
+@media (min-width:701px) and (max-width:1100px){
+ .research-panel-paradox .research-paradox-copy{
+  padding:clamp(20px,3.5vh,36px) 17px 22px!important;
+ }
+ .research-panel-paradox .research-paradox-paragraph{
+  font-size:clamp(10px,.9vw,11.5px)!important;line-height:1.6!important;
+ }
+ .research-panel-paradox .research-paradox-essay{
+  column-gap:15px!important;
+ }
+}
+@media(max-width:700px){
+ .research-panel-paradox .research-paradox-layout{
+  display:flex!important;flex-direction:column!important;
+ }
+ .research-panel-paradox .research-paradox-board{
+  flex:0 0 50%!important;height:50%!important;
+  padding:7px 15px!important;
+ }
+ .research-panel-paradox .research-paradox-reassembly{
+  width:min(100%,calc((50dvh - 55px) * 1.057692))!important;
+  max-height:100%!important;
+ }
+ .research-panel-paradox .research-paradox-copy{
+  flex:1 1 auto!important;
+  padding:13px 24px 30px!important;min-height:0!important;
+  overflow-y:auto!important;
+ }
+ .research-panel-paradox .research-paradox-heading{
+  font-size:22px!important;margin-bottom:16px!important;
+ }
+ .research-panel-paradox .research-paradox-essay{
+  column-count:1!important;
+ }
+ .research-panel-paradox .research-paradox-paragraph{
+  font-size:11px!important;line-height:1.72!important;
+  margin-bottom:16px!important;
+ }
+}
