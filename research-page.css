@@ -1871,3 +1871,41 @@ body{background:#ffffff;color:#272724}
 @media(prefers-reduced-motion:reduce){
  .research-panel-production .research-origin-hotspot{transition:none!important}
 }
+
+/* Diagram interaction — glow on the artwork itself, not a rectangle.
+   A duplicate of the vector SVG becomes neon only where original ink exists;
+   its transparent click targets remain invisible at all states. */
+.research-panel-production .research-origin-graphic{
+ isolation:isolate;
+}
+.research-panel-production .research-origin-highlight{
+ position:absolute!important;
+ inset:0!important;
+ display:block!important;
+ width:100%!important;
+ height:100%!important;
+ overflow:visible;
+ pointer-events:none!important;
+ opacity:0;
+ z-index:1;
+ transition:opacity .14s ease-out;
+}
+.research-panel-production .research-origin-highlight.is-active{
+ opacity:1;
+}
+.research-panel-production .research-origin-hotspots{
+ z-index:2;
+}
+.research-panel-production .research-origin-hotspot,
+.research-panel-production .research-origin-hotspot:hover,
+.research-panel-production .research-origin-hotspot:focus,
+.research-panel-production .research-origin-hotspot:focus-visible,
+.research-panel-production .research-origin-hotspot.is-selected{
+ border:0!important;
+ outline:none!important;
+ box-shadow:none!important;
+ background:transparent!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .research-panel-production .research-origin-highlight{transition:none!important}
+}
