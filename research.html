@@ -11,10 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=27">
+<link rel="stylesheet" href="research-page.css?v=28">
 <script src="research-points.js?v=8" defer></script>
 <script src="research-origin-open-upload.js?v=20261110-minimal3" defer></script>
-<script src="research-voice-editor.js?v=1" defer></script>
+<script src="research-voice-editor.js?v=2" defer></script>
 <script src="research-page.js?v=27" defer></script>
 </head>
 <body>
@@ -100,7 +100,7 @@
       <section class="research-panel research-panel-testimony" aria-label="세 번째 도판, 제작자들의 말">
         <div class="research-witness-layout">
           <div class="research-witness-grid-area">
-            <div class="research-witness-grid" id="research-witness-grid" aria-label="제작자의 말 16개, 4열 4행"></div>
+            <div class="research-witness-grid" id="research-witness-grid" aria-label="제작자의 말, 세로 스크롤 카드 아카이브"></div>
           </div>
           <aside class="research-witness-copy">
             <h2 class="research-serif research-witness-heading" id="research-voices-title">제작자들의 말</h2>
@@ -170,11 +170,11 @@
       <h2 id="research-voice-editor-title">증언 수정</h2>
       <button type="button" id="research-voice-edit-close" aria-label="닫기">×</button>
     </div>
-    <label>문장<textarea id="research-voice-edit-quote" rows="5" maxlength="450" required></textarea></label>
+    <label>문장<textarea id="research-voice-edit-quote" rows="5" maxlength="2000" required></textarea></label>
     <label>출처<input id="research-voice-edit-credit" type="text" maxlength="120" required></label>
     <label>주제<input id="research-voice-edit-tag" type="text" maxlength="40"></label>
     <div class="research-voice-edit-actions">
-      <button type="button" id="research-voice-edit-cancel">취소</button>
+      <button type="button" id="research-voice-edit-delete" hidden>삭제</button>\n      <button type="button" id="research-voice-edit-cancel">취소</button>
       <button type="submit" id="research-voice-edit-save">저장</button>
     </div>
     <p id="research-voice-edit-status" role="status" aria-live="polite"></p>
