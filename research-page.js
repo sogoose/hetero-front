@@ -573,18 +573,76 @@ function renderVoices(data){
 function renderParadox(data){
  const entry=data.paradox||{};
  setText('#research-paradox-title',entry.title||'혼종의 역설');
- setText('#research-paradox-lead',entry.lead||'');
- setText('#research-paradox-conclusion',entry.conclusion||'');
  const essay=$('#research-paradox-essay');
  if(essay){
   essay.replaceChildren();
   (entry.body||[]).forEach(text=>essay.append(el('p','research-paradox-paragraph',text)));
  }
- const svg=$('#research-paradox-svg');
+ const source=entry.svg||'assets/research/hetero-paradox.svg';
  const link=$('#research-paradox-svg-link');
- const path=entry.svg||'assets/research/hetero-paradox.svg';
- if(svg){svg.src=path;svg.alt=entry.svgAlt||'혼종의 역설을 보여주는 전시 도식'}
- if(link)link.href=path;
+ if(link)link.href=source;
+ const canvas=$('#research-paradox-reassembly');
+ if(!canvas)return;
+
+ // The Illustrator drawing is one tall SVG (2172.52 × 3044.53). Each
+ // independent cutout below is a *viewport* into that original vector,
+ // not a raster screenshot or a new quotation/card. The source artwork
+ // stays intact and resolution-independent even when enlarged.
+ // Source rectangles are measured on a proportional 850 × 1191 preview.
+ // Destination boxes form a 1100 × 1040 landscape printed-sheet montage.
+ const parts=[
+  ['tile',104,55,323,256,28,21,225,208],
+  ['topmid',346,61,572,201,290,36,244,154],
+  ['topright',592,71,766,202,576,25,233,172],
+  ['year',673,203,764,307,865,12,105,119],
+  ['leftmid',88,282,237,421,25,248,229,212],
+  ['door',251,249,460,512,290,210,214,274],
+  ['center',467,210,652,441,575,217,222,270],
+  ['brick',661,310,776,459,855,144,195,250],
+  ['leftbottom',83,430,248,604,23,477,207,218],
+  ['bottommid',268,487,520,646,283,505,252,156],
+  ['machine',538,470,775,813,570,502,230,365],
+  ['clay',87,643,277,792,23,715,222,178],
+  ['kiln',321,680,515,805,286,683,242,159],
+  ['castal',77,880,337,1011,284,850,243,127],
+  ['castside',337,875,470,1146,861,743,105,222],
+  ['short',470,880,585,1009,861,560,132,155],
+  ['sample',587,872,778,1007,845,396,226,160],
+  ['castdiag',72,1026,321,1148,20,903,234,115],
+  ['last',479,1017,783,1151,570,891,261,115]
+ ];
+ const originalW=850,originalH=1191,boardW=1100,boardH=1040;
+ const percent=(value,total)=> (value/total*100).toFixed(5)+'%';
+ const fragment=document.createDocumentFragment();
+ parts.forEach(([name,x1,y1,x2,y2,dx,dy,dw,dh])=>{
+  const cropW=x2-x1,cropH=y2-y1;
+  const scale=Math.min(dw/cropW,dh/cropH);
+  const frameW=cropW*scale,frameH=cropH*scale;
+  const left=dx+(dw-frameW)*.5,top=dy+(dh-frameH)*.5;
+  const tile=el('span','research-paradox-cut');
+  tile.dataset.fragment=name;
+  tile.setAttribute('aria-hidden','true');
+  tile.style.left=percent(left,boardW);
+  tile.style.top=percent(top,boardH);
+  tile.style.width=percent(frameW,boardW);
+  tile.style.height=percent(frameH,boardH);
+  // The Illustrator panels are closely packed; crop the neighboring
+  // sheet away with the panels' actual tilted quadrilateral outlines.
+  if(name==='door')tile.style.clipPath='polygon(.5% 6.8%,94.7% .8%,98% 90.9%,5.3% 98.5%)';
+  if(name==='bottommid')tile.style.clipPath='polygon(0% 41%,96% 2%,100% 97%,3% 100%)';
+  const img=el('img','research-paradox-cut-image');
+  img.src=source;
+  img.alt='';
+  img.decoding='async';
+  img.draggable=false;
+  img.style.width=percent(originalW,cropW);
+  img.style.height=percent(originalH,cropH);
+  img.style.left=percent(-x1,cropW);
+  img.style.top=percent(-y1,cropH);
+  tile.append(img);
+  fragment.append(tile);
+ });
+ canvas.replaceChildren(fragment);
 }
 function updatePage(){
  rail.style.transform='translate3d('+(-state.page*windowEl.clientWidth)+'px,0,0)';
