@@ -2213,3 +2213,246 @@ body{background:#ffffff;color:#272724}
 @media(prefers-reduced-motion:reduce){
  .research-witness-fragment{transition:none!important}
 }
+
+
+/* RESEARCH / 03 — precise 4 × 4 quote register, not an interpretive collage */
+.research-panel-testimony .research-witness-layout{
+ display:grid!important;
+ grid-template-columns:minmax(0,70%) minmax(0,30%)!important;
+ width:100%;height:100%;min-height:0;
+}
+.research-witness-grid-area{
+ box-sizing:border-box;min-width:0;min-height:0;overflow:hidden;
+ display:flex;align-items:center;justify-content:center;
+ padding:clamp(16px,2.8vw,45px)!important;
+}
+.research-witness-grid{
+ --voice-cell:min(18vh,12.9vw,172px);
+ display:grid!important;
+ grid-template-columns:repeat(4,var(--voice-cell))!important;
+ grid-template-rows:repeat(4,var(--voice-cell))!important;
+ gap:clamp(5px,.55vw,9px)!important;
+ box-sizing:border-box;
+}
+.research-voice-tile{
+ appearance:none;box-sizing:border-box;
+ display:flex!important;flex-direction:column!important;
+ min-width:0;min-height:0;width:100%;height:100%;
+ margin:0!important;padding:clamp(9px,.82vw,14px)!important;
+ align-items:flex-start;text-align:left;justify-content:space-between;
+ border:1px solid #d9d9d3!important;border-radius:0!important;
+ background:#fff!important;box-shadow:none!important;
+ color:#252520!important;cursor:default;
+ transition:background-color .15s ease,border-color .15s ease;
+}
+.research-voice-tile:disabled{opacity:1!important;filter:none!important}
+.research-voice-tile-tag{
+ display:block;flex:none;
+ font:450 clamp(8px,.6vw,10px)/1.2 Pretendard,-apple-system,sans-serif!important;
+ color:#92938b!important;letter-spacing:-.02em!important;
+}
+.research-voice-tile-quote{
+ display:-webkit-box;overflow:hidden;
+ -webkit-box-orient:vertical;-webkit-line-clamp:6;
+ line-clamp:6;min-height:0;
+ margin:auto 0!important;
+ font:550 clamp(10.3px,.8vw,13.2px)/1.47 Pretendard,-apple-system,sans-serif!important;
+ color:#252522!important;letter-spacing:-.047em!important;
+ word-break:keep-all;overflow-wrap:anywhere;
+}
+.research-voice-tile-credit{
+ display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+ line-clamp:2;overflow:hidden;
+ flex:none;width:100%;text-align:left;
+ margin:5px 0 0!important;
+ font:400 clamp(8px,.57vw,9.4px)/1.3 Pretendard,-apple-system,sans-serif!important;
+ color:#96978f!important;letter-spacing:-.045em!important;
+ overflow-wrap:anywhere;word-break:keep-all;
+}
+.research-voice-tile.is-editable{cursor:text}
+.research-voice-tile.is-editable:hover,
+.research-voice-tile.is-editable:focus-visible{
+ background:#f4ffcf!important;
+ border-color:#83a45e!important;
+ outline:none!important;
+}
+.research-witness-copy{display:flex!important;flex-direction:column!important;overflow-y:auto!important}
+.research-witness-sources{
+ display:flex;flex-direction:column;
+ margin-top:clamp(26px,5vh,57px);
+ border-top:1px solid #e5e5df;
+}
+.research-witness-source-row{
+ display:grid;grid-template-columns:minmax(56px,28%) minmax(0,1fr);
+ gap:14px;align-items:baseline;
+ padding:clamp(10px,1.55vh,17px) 0;
+ border-bottom:1px solid #e8e8e2;
+}
+.research-witness-source-material{
+ font:450 clamp(10px,.75vw,12px)/1.4 Pretendard,-apple-system,sans-serif!important;
+ color:#8b8b82!important;letter-spacing:-.02em!important;
+}
+.research-witness-source-name{
+ font:500 clamp(10px,.78vw,12.5px)/1.5 Pretendard,-apple-system,sans-serif!important;
+ color:#34352f!important;letter-spacing:-.04em!important;
+ word-break:keep-all;
+}
+.research-witness-actions{
+ display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+ gap:18px;margin-top:auto;padding-top:clamp(22px,5vh,50px);
+}
+.research-witness-edit-toggle{
+ appearance:none;display:inline-block;
+ padding:4px 0!important;margin:0!important;
+ border:0!important;border-bottom:1px solid #a7a69f!important;
+ border-radius:0!important;background:transparent!important;box-shadow:none!important;
+ color:#707168!important;cursor:pointer;
+ font:450 clamp(10px,.75vw,12px)/1.4 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:.04em!important;
+}
+.research-witness-edit-toggle[aria-pressed=true]{color:#252620!important;border-bottom-color:#252620!important}
+.research-witness-edit-toggle[hidden]{display:none!important}
+.research-witness-actions .research-witness-link{
+ padding:4px 0!important;margin:0!important;
+ align-self:auto!important;
+ white-space:nowrap;
+}
+.research-witness-save-status{
+ margin:10px 0 0!important;
+ font:400 10px/1.5 Pretendard,-apple-system,sans-serif!important;
+ color:#848779!important;
+}
+.research-witness-save-status:empty{display:none!important}
+.research-witness-save-status.is-error{color:#ab514d!important}
+
+/* Minimal no-login editing dialog */
+.research-voice-editor{
+ position:fixed!important;inset:0!important;
+ width:min(490px,calc(100vw - 34px))!important;
+ max-width:none!important;max-height:calc(100dvh - 34px)!important;
+ margin:auto!important;padding:clamp(22px,3vw,36px)!important;
+ box-sizing:border-box!important;
+ border:1px solid #d9d9d2!important;border-radius:0!important;
+ background:#fff!important;box-shadow:0 22px 70px rgba(15,15,12,.14)!important;
+ color:#292923!important;font-family:Pretendard,-apple-system,sans-serif!important;
+}
+.research-voice-editor::backdrop{background:rgba(255,255,251,.7)!important;backdrop-filter:blur(5px)}
+.research-voice-edit-form{display:flex;flex-direction:column;gap:16px}
+.research-voice-edit-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.research-voice-edit-head h2{
+ margin:0!important;font:650 17px/1.5 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.045em!important;
+}
+.research-voice-edit-head button{
+ background:none!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;padding:0!important;color:#777!important;
+ font:400 24px/1 Pretendard,-apple-system,sans-serif!important;
+}
+.research-voice-edit-form label{
+ display:flex;flex-direction:column;gap:7px;
+ font:500 11px/1.4 Pretendard,-apple-system,sans-serif!important;
+ color:#6d6f67!important;
+}
+.research-voice-edit-form textarea,
+.research-voice-edit-form input{
+ width:100%;box-sizing:border-box;
+ padding:10px 11px!important;
+ border:1px solid #d3d4cd!important;border-radius:0!important;
+ outline:none;box-shadow:none!important;background:#fff!important;
+ color:#292a25!important;
+ font:400 13px/1.6 Pretendard,-apple-system,sans-serif!important;
+ resize:vertical;
+}
+.research-voice-edit-form textarea:focus,
+.research-voice-edit-form input:focus{border-color:#84877a!important}
+.research-voice-edit-actions{display:flex;justify-content:flex-end;gap:18px;align-items:center}
+.research-voice-edit-actions button{
+ appearance:none;padding:7px 0!important;border:0!important;border-radius:0!important;
+ border-bottom:1px solid #9f9f94!important;box-shadow:none!important;
+ color:#292923!important;background:transparent!important;
+ font:500 12px/1.4 Pretendard,-apple-system,sans-serif!important;
+}
+.research-voice-edit-actions button:disabled{opacity:.45!important}
+#research-voice-edit-status{
+ margin:0!important;min-height:16px;
+ font:400 11px/1.5 Pretendard,-apple-system,sans-serif!important;
+ color:#a65b57!important;
+}
+
+/* RESEARCH / 04 — original Illustrator SVG. Preserve vector, never make
+   synthetic cards or duplicate quotations over the provided composition. */
+.research-panel-paradox .research-paradox-layout{
+ display:grid!important;
+ grid-template-columns:minmax(0,55%) minmax(0,45%)!important;
+ height:100%;width:100%;
+}
+.research-panel-paradox .research-paradox-board{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ min-height:0;min-width:0;overflow:hidden!important;
+ padding:clamp(10px,2.3vh,25px) clamp(16px,3vw,52px)!important;
+ box-sizing:border-box;
+}
+.research-paradox-svg-link{
+ display:flex;align-items:center;justify-content:center;
+ width:100%;height:100%;max-height:100%;
+ min-height:0;min-width:0;
+ text-decoration:none!important;
+ cursor:zoom-in!important;
+}
+.research-paradox-svg{
+ display:block!important;
+ max-width:100%;max-height:100%;width:100%;height:100%;
+ object-fit:contain;object-position:center;
+ mix-blend-mode:normal!important;
+ filter:none!important;
+}
+.research-paradox-svg-link:focus-visible{outline:1px solid #656960!important;outline-offset:6px}
+.research-panel-paradox .research-paradox-copy{
+ padding-top:clamp(32px,7vh,85px)!important;
+ padding-left:clamp(24px,3vw,55px)!important;
+ padding-right:clamp(30px,4vw,90px)!important;
+}
+@media(max-width:700px){
+ .research-panel-testimony .research-witness-layout,
+ .research-panel-paradox .research-paradox-layout{
+  display:flex!important;flex-direction:column!important;
+  height:100%!important;
+ }
+ .research-witness-grid-area{
+  display:block!important;flex:0 0 53%!important;height:53%!important;
+  padding:12px 20px!important;
+  overflow-y:auto!important;overscroll-behavior:contain;
+  scrollbar-width:thin;
+ }
+ .research-witness-grid{
+  --voice-cell:auto;
+  width:100%;margin:0 auto!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:none!important;
+  grid-auto-rows:auto!important;
+  gap:6px!important;
+ }
+ .research-voice-tile{aspect-ratio:1/1!important;padding:12px!important}
+ .research-voice-tile-quote{font-size:clamp(11px,3.05vw,14px)!important;line-height:1.45!important}
+ .research-voice-tile-tag,.research-voice-tile-credit{font-size:9px!important}
+ .research-panel-testimony .research-witness-copy{
+  flex:1 1 auto!important;min-height:0!important;max-height:none!important;
+  padding:16px 23px 21px!important;
+ }
+ .research-witness-sources{margin-top:14px}
+ .research-witness-source-row{padding:7px 0}
+ .research-witness-actions{margin-top:14px;padding-top:0}
+ .research-panel-paradox .research-paradox-board{
+  flex:0 0 57%;height:57%;
+  padding:8px 12px!important;
+ }
+ .research-panel-paradox .research-paradox-copy{
+  flex:1 1 auto;min-height:0;max-height:none;
+  padding:13px 24px 24px!important;
+  overflow-y:auto!important;
+ }
+ .research-voice-editor{padding:23px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .research-voice-tile{transition:none!important}
+}
