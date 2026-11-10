@@ -11,10 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=22">
+<link rel="stylesheet" href="research-page.css?v=23">
 <script src="research-points.js?v=8" defer></script>
 <script src="research-origin-open-upload.js?v=20261110-minimal3" defer></script>
-<script src="research-page.js?v=22" defer></script>
+<script src="research-page.js?v=23" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -25,7 +25,7 @@
   <symbol id="ic-close" viewBox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"/></symbol>
 </svg>
 <main class="photo-main research-main">
-  <div class="research-window" id="research-window" tabindex="0" aria-label="연구 도판 세 장. 좌우 이동하여 탐색합니다.">
+  <div class="research-window" id="research-window" tabindex="0" aria-label="연구 도판 네 장. 좌우 이동하여 탐색합니다.">
     <div class="research-rail" id="research-rail">
       <section class="research-panel research-panel-production" aria-label="첫 번째 도판, 형태와 재료의 두 경로">
         <div class="research-origin-layout">
@@ -96,21 +96,29 @@
           </header>
         </div>
       </section>
-      <section class="research-panel research-panel-testimony" aria-label="세 번째 도판, 혼종을 만든 사람들의 말">
+      <section class="research-panel research-panel-testimony" aria-label="세 번째 도판, 제작자들의 말">
         <div class="research-witness-layout">
-          <div class="research-witness-board" id="research-witness-board" aria-label="제작자 인터뷰에서 발췌한 짧은 인용문 콜라주"></div>
+          <div class="research-witness-grid-area">
+            <div class="research-witness-grid" id="research-witness-grid" aria-label="제작자의 말 16개, 4열 4행"></div>
+          </div>
           <aside class="research-witness-copy">
-            <h2 class="research-serif research-witness-heading" id="research-voices-title">혼종을 만든 사람들의 말</h2>
+            <h2 class="research-serif research-witness-heading" id="research-voices-title">제작자들의 말</h2>
             <p class="research-witness-intro" id="research-voices-lead"></p>
-            <div class="research-witness-readings" id="research-witness-readings"></div>
-            <a class="research-witness-link" id="research-witness-link" href="interviews.html">인터뷰 전문에서 더 읽기</a>
+            <div class="research-witness-sources" id="research-witness-sources" aria-label="인터뷰 출처"></div>
+            <div class="research-witness-actions">
+              <button type="button" class="research-witness-edit-toggle" id="research-voice-edit-toggle" aria-pressed="false">EDIT</button>
+              <a class="research-witness-link" id="research-witness-link" href="interviews.html">인터뷰 전문에서 더 읽기</a>
+            </div>
+            <p id="research-witness-save-status" class="research-witness-save-status" role="status" aria-live="polite"></p>
           </aside>
         </div>
       </section>
       <section class="research-panel research-panel-paradox" aria-label="네 번째 도판, 혼종의 역설">
         <div class="research-paradox-layout">
-          <div class="research-paradox-board" id="research-paradox-board" aria-label="혼종을 구성하는 재료와 형태의 역설을 보여주는 조각들">
-            <div class="research-paradox-board-end" id="research-paradox-board-end"></div>
+          <div class="research-paradox-board" id="research-paradox-board">
+            <a class="research-paradox-svg-link" id="research-paradox-svg-link" href="assets/research/hetero-paradox.svg" target="_blank" rel="noopener" title="혼종의 역설 SVG 크게 보기" aria-label="혼종의 역설 SVG를 원본 크기로 열기">
+              <img id="research-paradox-svg" class="research-paradox-svg" src="assets/research/hetero-paradox.svg" alt="혼종의 역설, 재료와 장식의 기록을 모은 콜라주" loading="lazy" decoding="async">
+            </a>
           </div>
           <aside class="research-paradox-copy">
             <h2 class="research-serif research-paradox-heading" id="research-paradox-title">혼종의 역설</h2>
@@ -153,6 +161,23 @@
   <button type="button" class="research-essay-close" id="research-essay-close" aria-label="글 닫기">×</button>
   <h2 class="research-serif" id="research-essay-title">혼종 재료의 출처</h2>
   <div class="research-essay-dialog-content" id="research-essay-dialog-content"></div>
+</dialog>
+
+<dialog id="research-voice-editor" class="research-voice-editor" aria-labelledby="research-voice-editor-title">
+  <form id="research-voice-edit-form" class="research-voice-edit-form">
+    <div class="research-voice-edit-head">
+      <h2 id="research-voice-editor-title">증언 수정</h2>
+      <button type="button" id="research-voice-edit-close" aria-label="닫기">×</button>
+    </div>
+    <label>문장<textarea id="research-voice-edit-quote" rows="5" maxlength="450" required></textarea></label>
+    <label>출처<input id="research-voice-edit-credit" type="text" maxlength="120" required></label>
+    <label>주제<input id="research-voice-edit-tag" type="text" maxlength="40"></label>
+    <div class="research-voice-edit-actions">
+      <button type="button" id="research-voice-edit-cancel">취소</button>
+      <button type="submit" id="research-voice-edit-save">저장</button>
+    </div>
+    <p id="research-voice-edit-status" role="status" aria-live="polite"></p>
+  </form>
 </dialog>
 
 <dialog id="research-detail" class="research-detail" aria-label="자료 자세히 보기">
