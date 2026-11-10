@@ -485,3 +485,36 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
 .home-house>.home-exact-contours{z-index:3!important}
 .home-house>.home-hotspots{z-index:4!important}
 .home-house>.home-large-menu{z-index:5!important}
+
+/* 2026-11-10 / Shared elevation datum and finished right-hand boundary.
+   All three drawings share the same 1133.86 x 850.39 SVG coordinates.
+   Building footprints finish at y≈782-783, not at an arbitrary vh offset. */
+.home-house>.home-ground-line{
+ position:absolute!important;
+ top:92.05%!important;
+ bottom:auto!important;
+ left:50%!important;
+ right:auto!important;
+ width:100vw!important;
+ height:1px!important;
+ border:0!important;
+ background:rgba(68,68,66,.52)!important;
+ transform:translateX(-50%)!important;
+ z-index:0!important;
+ pointer-events:none!important;
+}
+/* Draw the neighbor from behind the central gate. This conceals the
+   unfinished left-hand end of its source wall and keeps the road frontage continuous. */
+.home-house>.home-street-sibling-right{
+ transform:translateX(68%)!important;
+}
+@media(max-width:900px){
+ .home-house>.home-street-sibling-right{
+  transform:translateX(68%)!important;
+ }
+}
+@media(max-width:600px){
+ .home-house>.home-street-sibling-right{
+  transform:translateX(65%)!important;
+ }
+}
