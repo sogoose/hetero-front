@@ -11,10 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=20">
+<link rel="stylesheet" href="research-page.css?v=21">
 <script src="research-points.js?v=8" defer></script>
 <script src="research-origin-open-upload.js?v=20261110-minimal3" defer></script>
-<script src="research-page.js?v=20" defer></script>
+<script src="research-page.js?v=21" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -96,14 +96,29 @@
           </header>
         </div>
       </section>
-      <section class="research-panel research-panel-testimony" aria-label="세 번째 도판, 제작자의 증언">
-        <div class="research-section-head">
-          <span class="research-kicker" id="research-voices-kicker">03 / TESTIMONY</span>
-          <h2 class="research-serif" id="research-voices-title">만드는 사람에게 듣다.</h2>
-          <p id="research-voices-lead"></p>
+      <section class="research-panel research-panel-testimony" aria-label="세 번째 도판, 혼종을 만든 사람들의 말">
+        <div class="research-witness-layout">
+          <div class="research-witness-board" id="research-witness-board" aria-label="제작자 인터뷰에서 발췌한 짧은 인용문 콜라주"></div>
+          <aside class="research-witness-copy">
+            <h2 class="research-serif research-witness-heading" id="research-voices-title">혼종을 만든 사람들의 말</h2>
+            <p class="research-witness-intro" id="research-voices-lead"></p>
+            <div class="research-witness-readings" id="research-witness-readings"></div>
+            <a class="research-witness-link" id="research-witness-link" href="interviews.html">인터뷰 전문에서 더 읽기</a>
+          </aside>
         </div>
-        <div class="research-voices" id="research-voices" aria-label="재료별 질문과 발언"></div>
-        <div class="research-voice-tabs" id="research-voice-tabs" aria-label="모바일 인터뷰 선택"></div>
+      </section>
+      <section class="research-panel research-panel-paradox" aria-label="네 번째 도판, 혼종의 역설">
+        <div class="research-paradox-layout">
+          <div class="research-paradox-board" id="research-paradox-board" aria-label="혼종을 구성하는 재료와 형태의 역설을 보여주는 조각들">
+            <div class="research-paradox-board-end" id="research-paradox-board-end"></div>
+          </div>
+          <aside class="research-paradox-copy">
+            <h2 class="research-serif research-paradox-heading" id="research-paradox-title">혼종의 역설</h2>
+            <p class="research-paradox-intro" id="research-paradox-lead"></p>
+            <div class="research-paradox-essay" id="research-paradox-essay"></div>
+            <p class="research-paradox-conclusion" id="research-paradox-conclusion"></p>
+          </aside>
+        </div>
       </section>
     </div>
   </div>
@@ -114,13 +129,14 @@
     </div>
     <div class="photo-toolbar research-toolbar" role="group" aria-label="연구 도판 이동">
       <button type="button" class="icon-button" id="research-prev" aria-label="이전 도판" title="이전 도판"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-left"></use></svg></button>
-      <span class="research-page-counter" id="research-counter" aria-live="polite">01 / 03</span>
+      <span class="research-page-counter" id="research-counter" aria-live="polite">01 / 04</span>
       <button type="button" class="icon-button" id="research-next" aria-label="다음 도판" title="다음 도판"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-right"></use></svg></button>
     </div>
     <nav class="research-page-links" aria-label="연구 도판 바로 가기">
       <button type="button" class="research-page-link is-active" data-page="0" aria-current="page">01 <span>과정</span></button>
       <button type="button" class="research-page-link" data-page="1">02 <span>지도</span></button>
       <button type="button" class="research-page-link" data-page="2">03 <span>증언</span></button>
+      <button type="button" class="research-page-link" data-page="3">04 <span>역설</span></button>
     </nav>
   </footer>
 </main>
