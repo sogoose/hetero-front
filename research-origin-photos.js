@@ -20,10 +20,33 @@
  const form=$('#research-origin-login-form');
  const loginMessage=$('#research-origin-login-status');
  const pendingKey='hetero-origin-pending-stage';
- const auth=window.supabase?.createClient?.(ENDPOINT,KEY,{
-  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
- })||null;
+ let auth=null;
+ let authLoader=null;
  let current=null,loadingId=0,busy=false;
+ // Lazy-load the optional upload provider only after an editor requests it.
+ // Never block the public Research essay, diagram or icon event handlers.
+ async function ensureAuth(){
+  if(auth)return auth;
+  if(!authLoader){
+   authLoader=new Promise((resolve,reject)=>{
+    if(window.supabase?.createClient){resolve();return}
+    const script=document.createElement('script');
+    script.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js';
+    script.async=true;
+    script.onload=()=>{
+     if(window.supabase?.createClient)resolve();
+     else reject(new Error('편집자 로그인 도구를 불러오지 못했습니다.'));
+    };
+    script.onerror=()=>reject(new Error('편집자 로그인 서버에 연결하지 못했습니다.'));
+    document.head.append(script);
+   });
+  }
+  await authLoader;
+  auth=window.supabase.createClient(ENDPOINT,KEY,{
+   auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+  });
+  return auth;
+ }
 
  function message(content,error=false){
   if(!status)return;
@@ -113,10 +136,8 @@
  }
  async function onUploadClick(){
   if(!current||busy)return;
-  if(!auth){
-   message('로그인 기능을 불러오지 못했습니다. 페이지를 새로고침해 주세요.',true);
-   return;
-  }
+  try{await ensureAuth()}
+  catch(error){message(error.message,true);return}
   const {data:{user},error}=await auth.auth.getUser();
   if(error||!user){
    try{localStorage.setItem(pendingKey,current)}catch(e){}
@@ -151,7 +172,8 @@
  }
  async function submitLogin(event){
   event.preventDefault();
-  if(!auth){loginMessage.textContent='로그인 기능을 불러오지 못했습니다.';return}
+  try{await ensureAuth()}
+  catch(error){loginMessage.textContent=error.message;return}
   const email=$('#research-origin-login-email')?.value.trim();
   const password=$('#research-origin-login-password')?.value||'';
   if(!email)return;
