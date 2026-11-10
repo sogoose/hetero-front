@@ -986,3 +986,24 @@ body.home-body::-webkit-scrollbar{display:none!important}
  .home-exhibition-folder{top:17px!important;right:16px!important}
  .home-exhibition-folder>svg{width:45px!important;height:40px!important}
 }
+
+/* 2026-11-10 / Landscape-format editorial identity across the full page width.
+   This replaces the older floating logo attached to the drawing coordinates. */
+.home-shell>.home-identity{
+ position:absolute!important;top:clamp(7px,1.15vh,18px)!important;
+ left:clamp(14px,2.5vw,44px)!important;
+ width:calc(100vw - 2 * clamp(14px,2.5vw,44px))!important;
+ max-width:none!important;min-width:0!important;height:auto!important;
+ z-index:18!important;display:block!important;
+ opacity:1!important;animation:none!important;
+ transform:none!important;translate:none!important;
+ pointer-events:auto!important;
+}
+.home-shell>.home-identity img{
+ display:block!important;width:100%!important;
+ max-width:none!important;height:auto!important;
+ object-fit:contain!important;object-position:center top!important;
+}
+@media(max-width:600px){
+ .home-shell>.home-identity{top:12px!important;left:12px!important;width:calc(100vw - 24px)!important}
+}

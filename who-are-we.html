@@ -41,6 +41,12 @@ body{min-height:100vh;min-height:100dvh;color:#171717;background:#fff;font-famil
  .about-title{font-size:clamp(64px,17vw,96px)}
  .about-footer{align-items:start;flex-direction:column}
 }
+
+/* Custom horizontal identity replaces the former oversize English headline. */
+.about-title.about-logo{width:min(100%,630px);max-width:100%;margin:0 0 clamp(36px,7vh,82px);font-size:inherit;line-height:1}
+.about-title.about-logo img{display:block;width:100%;max-width:100%;height:auto;object-fit:contain}
+@media(max-width:800px){.about-title.about-logo{width:min(100%,590px)}}
+@media(max-width:480px){.about-title.about-logo{width:min(100%,440px);margin-bottom:45px}}
 </style>
 </head>
 <body>
@@ -51,7 +57,7 @@ body{min-height:100vh;min-height:100dvh;color:#171717;background:#fff;font-famil
   </header>
   <div class="about-content">
     <div>
-      <h1 class="about-title"><span>WHO</span><span>ARE</span><span class="blue">WE?</span></h1>
+      <h1 class="about-title about-logo"><img src="assets/home/logo-horizontal-team.svg" alt="아틀리에 作" draggable="false"></h1>
       <p class="about-description"><strong>아틀리에 作</strong>은 한국 산업화 과정의 건축재료와 그로 만들어진 도시 풍경을 기록하는 전시 〈혼종의 정면〉에 함께한 네 사람입니다.</p>
     </div>
     <section aria-label="참여자">
