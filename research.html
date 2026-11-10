@@ -11,10 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=19">
+<link rel="stylesheet" href="research-page.css?v=20">
 <script src="research-points.js?v=8" defer></script>
-<script src="research-origin-open-upload.js?v=20261110-public2" defer></script>
-<script src="research-page.js?v=19" defer></script>
+<script src="research-origin-open-upload.js?v=20261110-minimal3" defer></script>
+<script src="research-page.js?v=20" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -42,12 +42,9 @@
               </svg>
               <div class="research-origin-hotspots" id="research-origin-hotspots" role="group" aria-label="연구 도식의 단계 선택"></div>
             </div>
-            <div class="research-origin-selected" id="research-origin-selected" aria-live="polite" aria-atomic="true">
-              <p class="research-origin-hint">도식의 아이콘을 선택하면 각 단계의 이야기가 나타납니다.</p>
-            </div>
+            <div class="research-origin-selected" id="research-origin-selected" aria-live="polite" aria-atomic="true"></div>
           </div>
           <aside class="research-origin-copy" aria-labelledby="research-production-title">
-            <span class="research-origin-kicker" id="research-production-kicker">01 / PRODUCTION</span>
             <h2 class="research-serif research-origin-heading" id="research-production-title">혼종은 어디에서 왔을까?</h2>
             <div class="research-origin-essay" id="research-production-essay" aria-label="연구의 배경과 경로">
               <p class="research-origin-paragraph">혼종 주택의 정면은 어디에서 왔을까. 하나의 정면이 만들어지기까지 형태와 재료는 서로 다른 길을 따라 이동했다.</p>
@@ -58,10 +55,9 @@
             <section class="research-origin-photo" id="research-origin-photo" aria-label="선택된 단계의 참고 이미지">
               <div class="research-origin-photo-stage" id="research-origin-photo-stage">
                 <img class="research-origin-photo-image" id="research-origin-photo-image" alt="" hidden>
-                <p class="research-origin-photo-placeholder" id="research-origin-photo-placeholder">아이콘을 선택하면 해당 단계의 이미지가 나타납니다.</p>
+                <p class="research-origin-photo-placeholder" id="research-origin-photo-placeholder" hidden></p>
               </div>
               <div class="research-origin-photo-footer" id="research-origin-photo-footer" hidden>
-                <span class="research-origin-photo-label" id="research-origin-photo-label"></span>
                 <button type="button" class="research-origin-photo-upload" id="research-origin-photo-upload" title="로그인 없이 이미지 업로드">이미지 등록</button>
                 <input type="file" id="research-origin-photo-file" accept="image/jpeg,image/png,image/webp,image/avif" hidden>
               </div>
