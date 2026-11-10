@@ -2596,3 +2596,103 @@ body{background:#ffffff;color:#272724}
  font-weight:700!important;
  color:#222320!important;
 }
+
+/* 2026-11-10 / Expanded makers' voices: variable-length, legible reading cards. */
+.research-panel-testimony .research-witness-layout{
+ grid-template-columns:minmax(0,67%) minmax(290px,33%)!important;
+ height:100%!important;min-height:0!important;
+}
+.research-panel-testimony .research-witness-grid-area{
+ position:relative!important;isolation:isolate;display:block!important;
+ padding:clamp(22px,3.3vw,56px)!important;
+ overflow-x:hidden!important;overflow-y:auto!important;
+ overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#a7a59e transparent;
+ background:#8a8882!important;
+}
+.research-panel-testimony .research-witness-grid-area::before{
+ content:"";position:fixed;inset:0;pointer-events:none;
+ background:linear-gradient(rgba(25,25,23,.48),rgba(25,25,23,.48)),
+ url('assets/archive/brick-factory.webp') center/cover no-repeat;
+ opacity:.96;z-index:-1;
+}
+.research-panel-testimony .research-witness-grid{
+ --voice-cell:auto!important;position:relative;z-index:1;
+ display:grid!important;width:100%!important;max-width:890px!important;
+ margin:0 auto!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ grid-template-rows:none!important;grid-auto-rows:auto!important;
+ align-content:start;align-items:stretch;
+ gap:clamp(14px,1.65vw,25px)!important;
+}
+.research-panel-testimony .research-voice-tile{
+ display:flex!important;align-items:flex-start!important;justify-content:flex-start!important;
+ width:100%!important;height:auto!important;min-height:255px!important;
+ aspect-ratio:auto!important;gap:17px!important;
+ padding:clamp(24px,2.15vw,38px)!important;
+ background:rgba(255,254,249,.96)!important;
+ border:1px solid rgba(255,255,255,.68)!important;
+ box-shadow:0 3px 18px rgba(0,0,0,.07)!important;
+ text-align:left!important;
+}
+.research-panel-testimony .research-voice-tile-tag{
+ font-size:11px!important;letter-spacing:.025em!important;color:#77776f!important;
+}
+.research-panel-testimony .research-voice-tile-quote{
+ display:block!important;overflow:visible!important;
+ -webkit-line-clamp:unset!important;line-clamp:unset!important;
+ margin:0!important;font:560 clamp(14px,1.05vw,18px)/1.73 Pretendard,-apple-system,sans-serif!important;
+ letter-spacing:-.035em!important;word-break:keep-all!important;overflow-wrap:break-word!important;
+}
+.research-panel-testimony .research-voice-tile-credit{
+ display:block!important;overflow:visible!important;
+ -webkit-line-clamp:unset!important;line-clamp:unset!important;
+ margin:auto 0 0!important;padding-top:8px!important;
+ font-size:11px!important;line-height:1.5!important;color:#75776f!important;
+}
+.research-panel-testimony .research-voice-add{
+ min-height:255px!important;align-items:center!important;justify-content:center!important;
+ border:1px dashed rgba(255,255,255,.85)!important;
+ background:rgba(255,254,249,.19)!important;box-shadow:none!important;
+ color:white!important;font:450 14px Pretendard,sans-serif!important;cursor:pointer!important;
+}
+.research-panel-testimony .research-voice-add:hover{background:rgba(255,254,249,.3)!important}
+.research-panel-testimony .research-witness-copy{
+ overflow-x:hidden!important;overflow-y:auto!important;
+}
+.research-voice-edit-actions #research-voice-edit-delete{
+ margin-right:auto;color:#9d5449!important;border-color:#c7aea8!important;
+}
+.research-voice-local-note{font:400 11px/1.5 Pretendard,sans-serif;color:#8b8178;margin:0 0 7px}
+.research-panel-production .research-origin-heading,
+.research-panel-map #research-map-heading,
+.research-panel-testimony .research-witness-heading,
+.research-panel-paradox .research-paradox-heading{
+ font-family:"Noto Serif KR",serif!important;font-weight:800!important;
+ font-size:clamp(20px,1.58vw,28px)!important;
+ line-height:1.4!important;letter-spacing:-.068em!important;
+}
+@media(max-width:1050px){
+ .research-panel-testimony .research-witness-layout{grid-template-columns:minmax(0,62%) minmax(240px,38%)!important}
+ .research-panel-testimony .research-witness-grid{grid-template-columns:minmax(0,1fr)!important}
+ .research-panel-testimony .research-voice-tile{min-height:190px!important}
+}
+@media(max-width:700px){
+ .research-panel-testimony .research-witness-layout{display:flex!important;flex-direction:column-reverse!important;height:100%!important}
+ .research-panel-testimony .research-witness-copy{
+  flex:0 0 auto!important;max-height:32%!important;padding:19px 23px 12px!important;overflow-y:auto!important
+ }
+ .research-panel-testimony .research-witness-grid-area{
+  flex:1 1 auto!important;height:auto!important;min-height:0!important;
+  padding:22px 20px 38px!important
+ }
+ .research-panel-testimony .research-witness-grid{grid-template-columns:1fr!important;gap:14px!important}
+ .research-panel-testimony .research-voice-tile{
+  min-height:165px!important;padding:25px 24px!important;gap:14px!important
+ }
+ .research-panel-testimony .research-voice-tile-quote{font-size:15px!important;line-height:1.7!important}
+ .research-panel-testimony .research-voice-add{min-height:130px!important}
+ .research-panel-production .research-origin-heading,
+ .research-panel-map #research-map-heading,
+ .research-panel-testimony .research-witness-heading,
+ .research-panel-paradox .research-paradox-heading{font-size:clamp(20px,5vw,26px)!important}
+}
