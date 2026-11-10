@@ -20,3 +20,7 @@ it really committed files; it must not run on every push.
 
 The Node.js 20 deprecation notice is a separate upstream action warning,
 not the deployment collision error.
+
+## Verification
+
+After setting Pages Source to GitHub Actions, a documentation-only commit verifies that only `Publish lightweight HETERO FRONT` starts on push. The generated Pages artifacts and source images are unchanged.
