@@ -129,7 +129,7 @@ dialog.hf-index::backdrop{
 .hf-index .hf-index-row[aria-current="page"] .hf-index-row-no,
 .hf-index .hf-index-row[aria-current="page"] .hf-index-row-ko{color:#0033ff!important}
 .hf-index .hf-index-foot{
- display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+ display:flex!important;justify-content:space-between!important;align-items:baseline!important;flex-wrap:nowrap!important;gap:10px!important;
  padding:19px 0 0!important;margin:2px 0 0!important;
  font:400 9px/1.3 Pretendard,-apple-system,sans-serif!important;
  color:#a0a29b!important;
