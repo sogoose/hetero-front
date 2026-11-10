@@ -690,42 +690,68 @@ function initializeNavigation(){
  updatePage();
 }
 async function start(){
- initializeNavigation();
+ try{
+  initializeNavigation();
+ }catch(error){
+  console.error('Research navigation initialization failed:',error);
+ }
  try{
   const response=await fetch('assets/research/research-data.json',{cache:'no-cache'});
   if(!response.ok)throw new Error('Data not found ('+response.status+')');
   const data=await response.json();
   if(!Array.isArray(data.maps)||!data.production||!data.testimonies)throw new Error('Invalid research data');
   state.data=data;
+  // The opening diagram MUST become interactive before slow map resources,
+  // vector downloads, third-party services or factory-point initialization.
+  // A failure in any secondary panel can no longer suppress this narrative.
+  try{
+   renderProduction(data);
+  }catch(error){
+   console.error('Origin diagram initialization failed:',error);
+  }
+  try{
+   renderMaps(data);
+  }catch(error){
+   console.error('Map panel rendering failed:',error);
+  }
+  try{
+   renderVoices(data);
+  }catch(error){
+   console.error('Testimony panel rendering failed:',error);
+  }
   try{
    const distribution=await fetch('assets/research/region-tables.json',{cache:'no-cache'});
    if(distribution.ok){
     const tables=await distribution.json();
     if(tables.materials&&tables.years)state.regionTables=tables;
    }
-  }catch(error){console.warn('Region tables unavailable:',error)}
-  if(window.ResearchPoints){
-   await window.ResearchPoints.init({
-    getSelection:()=>({year:state.year,material:data.maps[state.map]?.id||'brick'}),
-    selectMaterial:(material,year)=>{
-     state.year=Number(year);
-     const i=data.maps.findIndex(m=>m.id===material);
-     if(i>=0)setMap(i);
-    },
-    isAvailable:(material,year)=>{
-     const map=data.maps.find(m=>m.id===material);
-     return map?mapAvailable(map,Number(year)):false;
-    }
-   });
+  }catch(error){
+   console.warn('Region tables unavailable:',error);
   }
-  renderMaps(data);
-  renderProduction(data);
-  renderVoices(data);
+  try{
+   if(window.ResearchPoints){
+    await window.ResearchPoints.init({
+     getSelection:()=>({year:state.year,material:data.maps[state.map]?.id||'brick'}),
+     selectMaterial:(material,year)=>{
+      state.year=Number(year);
+      const i=data.maps.findIndex(m=>m.id===material);
+      if(i>=0)setMap(i);
+     },
+     isAvailable:(material,year)=>{
+      const map=data.maps.find(m=>m.id===material);
+      return map?mapAvailable(map,Number(year)):false;
+     }
+    });
+    window.ResearchPoints.update?.();
+   }
+  }catch(error){
+   console.warn('Factory point data unavailable:',error);
+  }
  }catch(error){
   console.error('Unable to load Research archive:',error);
   setText('#research-map-description','자료를 불러올 수 없습니다. assets/research/research-data.json 파일을 확인해 주세요.');
-  setText('#research-production-lead','자료 연결을 확인해 주세요.');
   setText('#research-voices-lead','자료 연결을 확인해 주세요.');
+  // Keep the original production essay in research.html as a static fallback.
  }
 }
 start();
