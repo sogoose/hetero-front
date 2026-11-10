@@ -11,9 +11,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=16">
+<link rel="stylesheet" href="research-page.css?v=17">
 <script src="research-points.js?v=8" defer></script>
-<script src="research-page.js?v=16" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js" defer></script>
+<script src="research-origin-photos.js?v=1" defer></script>
+<script src="research-page.js?v=17" defer></script>
 </head>
 <body>
 <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -37,7 +39,7 @@
                     <feColorMatrix type="matrix" values="0 0 0 0 .72   0 0 0 0 1   0 0 0 0 .02   -.2126 -.7152 -.0722 1 0" />
                   </filter>
                 </defs>
-                <image id="research-origin-highlight-image" href="assets/research/hetero-origin-diagram.svg" x="0" y="0" width="3369.1" height="1727.37" filter="url(#research-origin-neon-filter)" />
+                <g id="research-origin-highlight-shape" filter="url(#research-origin-neon-filter)"></g>
               </svg>
               <div class="research-origin-hotspots" id="research-origin-hotspots" role="group" aria-label="연구 도식의 단계 선택"></div>
             </div>
@@ -47,8 +49,20 @@
           </div>
           <aside class="research-origin-copy" aria-labelledby="research-production-title">
             <span class="research-origin-kicker" id="research-production-kicker">01 / PRODUCTION</span>
-            <h2 class="research-serif research-origin-heading" id="research-production-title">두 갈래의 길, 하나의 정면.</h2>
+            <h2 class="research-serif research-origin-heading" id="research-production-title">혼종은 어디에서 왔을까?</h2>
             <div class="research-origin-essay" id="research-production-essay" aria-label="연구의 배경과 경로"></div>
+            <section class="research-origin-photo" id="research-origin-photo" aria-label="선택된 단계의 참고 이미지">
+              <div class="research-origin-photo-stage" id="research-origin-photo-stage">
+                <img class="research-origin-photo-image" id="research-origin-photo-image" alt="" hidden>
+                <p class="research-origin-photo-placeholder" id="research-origin-photo-placeholder">아이콘을 선택하면 해당 단계의 이미지가 나타납니다.</p>
+              </div>
+              <div class="research-origin-photo-footer" id="research-origin-photo-footer" hidden>
+                <span class="research-origin-photo-label" id="research-origin-photo-label"></span>
+                <button type="button" class="research-origin-photo-upload" id="research-origin-photo-upload">이미지 등록</button>
+                <input type="file" id="research-origin-photo-file" accept="image/jpeg,image/png,image/webp,image/avif" hidden>
+              </div>
+              <p class="research-origin-photo-status" id="research-origin-photo-status" role="status" aria-live="polite"></p>
+            </section>
           </aside>
         </div>
       </section>
@@ -125,6 +139,19 @@
   <div class="research-essay-dialog-content" id="research-essay-dialog-content"></div>
 </dialog>
 
+<dialog id="research-origin-login-dialog" class="research-origin-login-dialog" aria-labelledby="research-origin-login-title">
+ <div class="research-origin-login-head">
+  <h2 id="research-origin-login-title">이미지 업로드 · 편집자 로그인</h2>
+  <button type="button" id="research-origin-login-close" aria-label="닫기">×</button>
+ </div>
+ <p>승인된 편집자 계정으로 로그인하면 각 단계에 이미지 한 장을 등록하거나 교체할 수 있습니다.</p>
+ <form id="research-origin-login-form">
+  <label>이메일<input id="research-origin-login-email" type="email" autocomplete="email" required placeholder="이메일 주소"></label>
+  <label>비밀번호 <span>(있는 경우)</span><input id="research-origin-login-password" type="password" autocomplete="current-password" placeholder="비워두면 이메일 로그인 링크 전송"></label>
+  <button type="submit" id="research-origin-login-submit">로그인</button>
+ </form>
+ <p id="research-origin-login-status" role="status" aria-live="polite"></p>
+</dialog>
 <dialog id="research-detail" class="research-detail" aria-label="자료 자세히 보기">
   <button type="button" id="research-detail-close" class="research-detail-close" aria-label="닫기"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-close"></use></svg></button>
   <div class="research-detail-inner">
