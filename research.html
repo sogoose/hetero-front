@@ -11,10 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="research-page.css?v=28">
+<link rel="stylesheet" href="research-page.css?v=29">
 <script src="research-points.js?v=8" defer></script>
 <script src="research-origin-open-upload.js?v=20261110-minimal3" defer></script>
-<script src="research-voice-editor.js?v=2" defer></script>
+<script src="research-voice-editor.js?v=3" defer></script>
 <script src="research-page.js?v=27" defer></script>
 </head>
 <body>
@@ -105,6 +105,7 @@
           <aside class="research-witness-copy">
             <h2 class="research-serif research-witness-heading" id="research-voices-title">제작자들의 말</h2>
             <p class="research-witness-intro" id="research-voices-lead"></p>
+            <button type="button" class="research-voice-intro-edit" id="research-voice-intro-edit" hidden>소개 본문 수정</button>
             <div class="research-witness-sources" id="research-witness-sources" aria-label="인터뷰 출처"></div>
             <div class="research-witness-actions">
               <button type="button" class="research-witness-edit-toggle" id="research-voice-edit-toggle" aria-pressed="false">EDIT</button>
@@ -164,6 +165,20 @@
   <div class="research-essay-dialog-content" id="research-essay-dialog-content"></div>
 </dialog>
 
+<dialog id="research-voice-intro-dialog" class="research-voice-editor" aria-labelledby="research-voice-intro-dialog-title">
+  <form id="research-voice-intro-form" class="research-voice-edit-form">
+    <div class="research-voice-edit-head">
+      <h2 id="research-voice-intro-dialog-title">제작자들의 말 · 소개 본문 수정</h2>
+      <button type="button" id="research-voice-intro-close" aria-label="닫기">×</button>
+    </div>
+    <label>본문<textarea id="research-voice-intro-field" rows="8" maxlength="3000" required></textarea></label>
+    <div class="research-voice-edit-actions">
+      <button type="button" id="research-voice-intro-cancel">취소</button>
+      <button type="submit" id="research-voice-intro-save">저장</button>
+    </div>
+    <p id="research-voice-intro-status" role="status" aria-live="polite"></p>
+  </form>
+</dialog>
 <dialog id="research-voice-editor" class="research-voice-editor" aria-labelledby="research-voice-editor-title">
   <form id="research-voice-edit-form" class="research-voice-edit-form">
     <div class="research-voice-edit-head">
@@ -174,7 +189,8 @@
     <label>출처<input id="research-voice-edit-credit" type="text" maxlength="120" required></label>
     <label>주제<input id="research-voice-edit-tag" type="text" maxlength="40"></label>
     <div class="research-voice-edit-actions">
-      <button type="button" id="research-voice-edit-delete" hidden>삭제</button>\n      <button type="button" id="research-voice-edit-cancel">취소</button>
+      <button type="button" id="research-voice-edit-delete" hidden>삭제</button>
+      <button type="button" id="research-voice-edit-cancel">취소</button>
       <button type="submit" id="research-voice-edit-save">저장</button>
     </div>
     <p id="research-voice-edit-status" role="status" aria-live="polite"></p>
