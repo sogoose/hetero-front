@@ -660,7 +660,7 @@ function initializeNavigation(){
   if(overlayIsOpen()||Math.abs(event.deltaX)+Math.abs(event.deltaY)<10)return;
   // Allow the production explanation and icon detail to scroll independently.
   // Turning the wheel over copy must never unexpectedly change research plates.
-  if(event.target.closest('.research-origin-essay,.research-origin-selected'))return;
+  if(event.target.closest('.research-origin-essay,.research-origin-selected,.research-witness-board,.research-witness-copy,.research-paradox-board,.research-paradox-copy'))return;
   event.preventDefault();
   const now=Date.now();
   if(now-state.lastWheel<760)return;
