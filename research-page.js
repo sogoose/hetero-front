@@ -576,7 +576,34 @@ function renderParadox(data){
  const essay=$('#research-paradox-essay');
  if(essay){
   essay.replaceChildren();
-  (entry.body||[]).forEach(text=>essay.append(el('p','research-paradox-paragraph',text)));
+  // Reproduce the editorial weight hierarchy of the original exhibition essay.
+  // Work from plain text nodes, so the editable JSON remains valid and safe.
+  const emphasisByParagraph=[
+   [],
+   ['한국 전통문화에서 기인한 형태','S형기와','흑회색의 전돌','적벽돌'],
+   ['‘혼종’을 구성하는 재료들의 흥망성쇠','이 잡종이 또다시 지금 한국의 도시건축 생태계에서 주류를 차지하는 새로운 토착종으로 자리 잡아 2020년대 한국의 도시 풍경의 토대가 된','‘혼종을 만든 혼종’'],
+   ['그것들이 만들어진 연유는 거창하지 않다.','(적벽돌)','(시멘트 기와 및 난간)','(주물 대문)','기와지붕','십장생']
+  ];
+  (entry.body||[]).forEach((text,index)=>{
+   const paragraph=el('p','research-paradox-paragraph');
+   if(index===0){
+    paragraph.append(el('strong','research-paradox-emphasis',text));
+   }else{
+    const marks=(emphasisByParagraph[index]||[]).map(phrase=>{
+     const start=text.indexOf(phrase);
+     return {start,end:start+phrase.length};
+    }).filter(mark=>mark.start>=0).sort((a,b)=>a.start-b.start);
+    let cursor=0;
+    marks.forEach(mark=>{
+     if(mark.start<cursor)return;
+     paragraph.append(document.createTextNode(text.slice(cursor,mark.start)));
+     paragraph.append(el('strong','research-paradox-emphasis',text.slice(mark.start,mark.end)));
+     cursor=mark.end;
+    });
+    paragraph.append(document.createTextNode(text.slice(cursor)));
+   }
+   essay.append(paragraph);
+  });
  }
  const source=entry.svg||'assets/research/hetero-paradox-reassembled.svg';
  const image=$('#research-paradox-svg');
