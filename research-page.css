@@ -2607,13 +2607,7 @@ body{background:#ffffff;color:#272724}
  padding:clamp(22px,3.3vw,56px)!important;
  overflow-x:hidden!important;overflow-y:auto!important;
  overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#a7a59e transparent;
- background:#8a8882!important;
-}
-.research-panel-testimony .research-witness-grid-area::before{
- content:"";position:absolute;inset:0;pointer-events:none;
- background:linear-gradient(rgba(25,25,23,.48),rgba(25,25,23,.48)),
- url('assets/archive/brick-factory.webp') center/cover no-repeat;
- opacity:.96;z-index:-1;
+ background:#f5f4ef!important;
 }
 .research-panel-testimony .research-witness-grid{
  --voice-cell:auto!important;position:relative;z-index:1;
