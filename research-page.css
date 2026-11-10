@@ -2690,3 +2690,86 @@ body{background:#ffffff;color:#272724}
  .research-panel-testimony .research-witness-heading,
  .research-panel-paradox .research-paradox-heading{font-size:clamp(20px,5vw,26px)!important}
 }
+
+/* 2026-11-10 / Individual archival-card photographs; never a page-wide photo. */
+.research-panel-testimony .research-witness-grid-area{
+ background:#f7f6f2!important;
+}
+.research-panel-testimony .research-witness-grid-area::before{content:none!important;display:none!important}
+.research-panel-testimony .research-voice-tile:not(.research-voice-add){
+ position:relative!important;isolation:isolate;overflow:hidden!important;
+ background:#f9f8f5!important;
+ border:1px solid #e4e0d7!important;
+}
+.research-panel-testimony .research-voice-tile:not(.research-voice-add)::before{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ opacity:.095;filter:grayscale(1) contrast(1.1);
+ background-size:cover;background-position:center;
+}
+.research-panel-testimony .research-voice-tile[data-material="brick"]::before{
+ background-image:url('assets/archive/brick-factory.webp')
+}
+.research-panel-testimony .research-voice-tile[data-material="cast"]::before{
+ background-image:url('assets/archive/casting.webp')
+}
+.research-panel-testimony .research-voice-tile[data-material="roof"]::before{
+ background-image:url('assets/archive/tiles-photo.webp')
+}
+.research-panel-testimony .research-voice-tile[data-material="tile"]::before{
+ background-image:repeating-linear-gradient(90deg,transparent 0,transparent 44px,#4e5146 45px,#4e5146 46px),
+ repeating-linear-gradient(0deg,transparent 0,transparent 44px,#4e5146 45px,#4e5146 46px)
+}
+.research-panel-testimony .research-voice-tile[data-material="merchant"]::before{
+ background-image:repeating-linear-gradient(-24deg,transparent 0,transparent 28px,#52514c 29px,#52514c 31px)
+}
+.research-panel-testimony .research-voice-tile-tag,
+.research-panel-testimony .research-voice-tile-quote,
+.research-panel-testimony .research-voice-tile-credit{
+ position:relative;z-index:1;
+}
+.research-panel-testimony .research-voice-tile-credit{
+ padding-right:clamp(62px,7vw,100px)!important;
+}
+.research-panel-testimony .research-voice-tile-icon{
+ display:block!important;position:absolute!important;right:19px;bottom:16px;
+ z-index:0;width:clamp(59px,7.2vw,102px);height:clamp(59px,7.2vw,102px);
+ object-fit:contain;opacity:.21;filter:grayscale(1) contrast(1.3);
+ mix-blend-mode:multiply;pointer-events:none;
+}
+.research-panel-testimony .research-witness-intro{
+ font-size:clamp(10px,.72vw,12px)!important;
+ line-height:1.7!important;color:#77776f!important;
+ white-space:pre-line!important;
+}
+.research-panel-testimony .research-witness-sources{
+ margin-top:clamp(18px,3.1vh,32px)!important;
+}
+.research-panel-testimony .research-witness-source-row{
+ padding:clamp(5px,.85vh,9px) 0!important;
+ gap:9px!important;
+}
+.research-panel-testimony .research-witness-source-material,
+.research-panel-testimony .research-witness-source-name{
+ font:400 clamp(9px,.65vw,10.5px)/1.45 Pretendard,-apple-system,sans-serif!important;
+ color:#85847b!important;
+}
+.research-panel-testimony .research-witness-source-material{
+ color:#aaa79e!important;
+}
+.research-voice-intro-edit{
+ appearance:none;border:0!important;border-bottom:1px solid #aaa79e!important;
+ border-radius:0!important;background:none!important;box-shadow:none!important;
+ align-self:flex-start!important;margin:12px 0 0!important;padding:3px 0!important;
+ font:460 10px/1.5 Pretendard,sans-serif!important;color:#6b6c63!important;cursor:pointer;
+}
+.research-voice-intro-edit[hidden]{display:none!important}
+#research-voice-intro-dialog textarea{
+ min-height:180px!important;line-height:1.75!important;
+}
+@media(max-width:700px){
+ .research-panel-testimony .research-voice-tile-icon{width:83px;height:83px;right:15px;bottom:13px}
+ .research-panel-testimony .research-witness-sources{margin-top:12px!important}
+ .research-panel-testimony .research-witness-source-row{padding:4px 0!important}
+ .research-panel-testimony .research-witness-source-material,
+ .research-panel-testimony .research-witness-source-name{font-size:9px!important}
+}
