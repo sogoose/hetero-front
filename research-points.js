@@ -116,27 +116,28 @@ function positionPins(){
    top:(bounds.top-root.top+point.y*bounds.height)/scale
   };
  }).filter(Boolean);
- const clusters=clusterByScreenDistance(projected,28/scale);
+ // The original map PNG already contains each site marker. At overview
+ // zoom, show none of the synthetic pin circles; the raster remains clickable.
+ // Only dense unresolved groups become number bubbles at deeper zoom.
+ const clusters=clusterByScreenDistance(projected,(scale>=3?14:19)/scale);
  wrap.replaceChildren();
+ if(scale<1.85)return;
  clusters.forEach(group=>{
   const points=group.map(x=>x.point);
+  if(points.length<(scale>=2.8?2:3))return;
   const left=group.reduce((s,x)=>s+x.left,0)/group.length;
   const top=group.reduce((s,x)=>s+x.top,0)/group.length;
-  const clustered=group.length>1;
-  const button=el('button','research-factory-pin'+(clustered?' is-cluster':''),
-    clustered?String(group.length):'');
+  const button=el('button','research-factory-pin is-cluster',String(points.length));
   button.type='button';
-  button.dataset.material=points[0].material;
+  button.dataset.material=points.every(p=>p.material===points[0].material)?points[0].material:'combined';
   button.style.left=left+'px';button.style.top=top+'px';
   button.style.transform='translate(-50%,-50%) scale('+(1/scale)+')';
-  if(!clustered)button.dataset.pointId=points[0].id;
-  button.title=clustered?points.length+'곳의 업체 보기':points[0].name;
+  button.title=points.length+'곳의 업체 보기';
   button.setAttribute('aria-label',button.title);
   if(state.selected&&points.some(p=>p.id===state.selected))button.classList.add('is-active');
   button.addEventListener('click',event=>{
    event.preventDefault();event.stopPropagation();
-   if(clustered)showCluster(points);
-   else selectPoint(points[0]);
+   showCluster(points);
   });
   wrap.append(button);
  });
@@ -230,7 +231,7 @@ function mapClick(event){
    panel.replaceChildren();
    panel.append(
     el('h2','research-factory-name','업체 정보 미등록'),
-    el('p','research-factory-note','이 위치에는 아직 연결된 업체 정보가 없습니다. ‘업체 위치 입력’에서 조사자료를 등록할 수 있습니다.')
+    el('p','research-factory-note','이 기호에 대응하는 업체 정보는 아직 등록되지 않았습니다.')
    );
    panel.hidden=false;
   }
@@ -288,8 +289,10 @@ async function init({getSelection,selectMaterial,isAvailable}){
  const byId=new Map(published.filter(p=>!state.deletedIds.includes(p.id)).map(p=>[p.id,p]));
  draft.forEach(p=>byId.set(p.id,p));
  state.points=[...byId.values()];
- editButton.addEventListener('click',toggleEditing);
- exportButton.addEventListener('click',exportJSON);
+ // The editing tools have been retired from the public page. Keep the
+ // underlying import/export helpers for future archival maintenance.
+ editButton?.addEventListener('click',toggleEditing);
+ exportButton?.addEventListener('click',exportJSON);
  $('#research-factory-cancel').addEventListener('click',()=>dlg.close());
  dlg.addEventListener('click',event=>{if(event.target===dlg)dlg.close()});
  form.addEventListener('submit',event=>{
