@@ -29,6 +29,7 @@ function cleanPoint(p){
   material:p.material,year:Number(p.year),
   x:Number(x.toFixed(6)),y:Number(y.toFixed(6)),
   region:String(p.region||'').slice(0,140),
+  tileType:p.material==='tile'&&['점토기와','시멘트기와'].includes(p.tileType)?p.tileType:'',
   note:String(p.note||'').slice(0,600),
   source:String(p.source||'').slice(0,250)
  };
@@ -172,7 +173,8 @@ function showPoint(point){
  close.type='button';close.setAttribute('aria-label','업체 정보 닫기');
  close.addEventListener('click',()=>{state.selected=null;panel.hidden=true;update()});
  const heading=el('h2','research-factory-name',point.name);
- const subtitle=el('p','research-factory-subtitle',point.year+'년 · '+materialLabels[point.material]+'공장'+(point.region?' · '+point.region:''));
+ const label=point.material==='tile'&&point.tileType?point.tileType:materialLabels[point.material]+'공장';
+ const subtitle=el('p','research-factory-subtitle',point.year+'년 · '+label+(point.region?' · '+point.region:''));
  const top=el('div','research-factory-summary');
  top.append(heading,close);panel.append(top,subtitle);
  if(point.note)panel.append(el('p','research-factory-note',point.note));
