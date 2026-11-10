@@ -44,7 +44,6 @@ function applyMapZoom(){
  stack.style.transformOrigin='center center';
  stack.style.transform='translate3d('+mapZoom.x+'px,'+mapZoom.y+'px,0) scale('+mapZoom.scale+')';
  mapArt.classList.toggle('is-map-zoomed',mapZoom.scale>1.001);
- mapArt.parentElement?.classList.toggle('research-area-zoomed',mapZoom.scale>1.001);
  const reset=$('#research-map-reset');
  if(reset){
   reset.hidden=mapZoom.scale<=1.001;
@@ -289,13 +288,11 @@ function makeRegionTable(material){
 }
 function renderRegionTables(){
  const selected=state.data?.maps?.[state.map]?.id||'brick';
- const figure=$('#research-region-figure'),modal=$('#research-region-dialog-content');
- for(const host of [figure,modal]){
-  if(!host)continue;
-  host.replaceChildren();
-  const sheet=makeRegionTable(selected);
-  if(sheet)host.append(sheet);
- }
+ const modal=$('#research-region-dialog-content');
+ if(!modal)return;
+ modal.replaceChildren();
+ const sheet=makeRegionTable(selected);
+ if(sheet)modal.append(sheet);
 }
 
 function setMap(index){
