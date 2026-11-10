@@ -7,38 +7,9 @@
 <title>혼종의 정면 — 대한민국 산업화 과도기 건축재료의 기록과 해석</title>
 <meta name="description" content="혼종의 정면. 건물의 지붕, 난간, 벽돌, 대문을 따라 풍경과 재료, 연구와 인터뷰를 읽는 전시 아카이브.">
 <link rel="stylesheet" href="style.css?v=3">
-<link rel="stylesheet" href="home.css?v=5">
+<link rel="stylesheet" href="home.css?v=6">
 <script src="home.js?v=2" defer></script>
-<!-- Critical homepage UI fallback: keep controls correctly sized even when cached stylesheet lags. -->
-<style>
-.home-exhibition-folder{position:absolute;right:3.8vw;bottom:10.1vh;z-index:9;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:#181818;width:76px!important;height:auto!important}
-.home-exhibition-folder>svg{display:block!important;width:54px!important;height:48px!important;max-width:54px!important;max-height:48px!important;min-width:0!important;min-height:0!important;flex:none!important;overflow:visible}
-.home-exhibition-folder>span{font:500 10px/1.4 Pretendard,sans-serif!important;white-space:nowrap}
-.home-large-menu{position:absolute!important;inset:0!important;z-index:7!important;pointer-events:none!important}
-.home-large-menu .home-menu-title{position:absolute!important;display:flex!important;flex-direction:column!important;gap:3px!important;white-space:nowrap!important;opacity:0!important;visibility:hidden!important;transform:translateY(9px)!important;transition:opacity .22s ease,transform .22s ease!important}
-.home-large-menu .home-menu-title span{font:500 clamp(9px,.8vw,12px)/1.5 Pretendard,sans-serif!important;letter-spacing:.045em!important;color:#777!important}
-.home-large-menu .home-menu-title strong{font:760 clamp(30px,3.3vw,57px)/1.13 Pretendard,sans-serif!important;letter-spacing:-.055em!important;color:#171717!important}
-.home-large-menu .home-menu-roof{left:8%!important;top:15%!important}
-.home-large-menu .home-menu-railing{left:-4%!important;top:39%!important}
-.home-large-menu .home-menu-brick{left:71%!important;top:75%!important}
-.home-large-menu .home-menu-gate{left:85%!important;top:37%!important}
-.home-house[data-active="roof"] .home-menu-roof,.home-house[data-active="railing"] .home-menu-railing,.home-house[data-active="brick"] .home-menu-brick,.home-house[data-active="gate"] .home-menu-gate{opacity:1!important;visibility:visible!important;transform:translateY(0)!important}
-.home-street-neighbours{position:absolute!important;inset:0!important;overflow:hidden!important;pointer-events:none!important;z-index:1!important}
-.home-street-neighbours>.home-neighbour{position:absolute!important;display:block!important;pointer-events:none!important;height:auto!important;max-height:63vh!important;opacity:.38!important;filter:grayscale(1)!important}
-.home-street-neighbours>.home-neighbour-left{left:-1.2vw!important;bottom:12.7vh!important;width:33vw!important}
-.home-street-neighbours>.home-neighbour-right{right:-1.35vw!important;bottom:12.7vh!important;width:31vw!important}
-.home-essay-trigger .home-essay-title{font:650 clamp(16px,1.43vw,23px)/1.4 Pretendard,sans-serif!important}
-.home-house .home-hotspot-label{display:none!important}
-@media(max-width:700px){
- .home-exhibition-folder{right:16px!important;bottom:74px!important;width:55px!important}
- .home-exhibition-folder>svg{width:40px!important;height:36px!important;max-width:40px!important}
- .home-large-menu .home-menu-title strong{font-size:25px!important}
- .home-large-menu .home-menu-roof{left:18%!important;top:16%!important}
- .home-large-menu .home-menu-railing{left:8%!important;top:39%!important}
- .home-large-menu .home-menu-brick{left:55%!important;top:81%!important}
- .home-large-menu .home-menu-gate{left:66%!important;top:38%!important}
-}
-</style>
+
 </head>
 <body class="home-body">
 <main class="home-shell" id="home">
@@ -51,12 +22,7 @@
       <img class="home-street-sibling home-street-sibling-left" src="assets/home/neighbour-left.svg?v=2" alt="" aria-hidden="true" draggable="false">
       <img class="home-street-sibling home-street-sibling-right" src="assets/home/neighbour-right.svg?v=2" alt="" aria-hidden="true" draggable="false">
       <img class="home-house-line" src="assets/home/house-line.svg" alt="1980~90년대의 기와지붕, 주물 난간, 벽돌 벽과 대문이 결합된 혼종 주택 정면 도면" draggable="false">
-      <div class="home-contours" aria-hidden="true">
-        <span class="home-contour home-contour-roof"></span>
-        <span class="home-contour home-contour-railing"></span>
-        <span class="home-contour home-contour-brick"></span>
-        <span class="home-contour home-contour-gate"></span>
-      </div>
+      <img class="home-exact-contours" src="assets/home/house-contours-exact.svg" alt="" aria-hidden="true" draggable="false">
       <div class="home-lighting" aria-hidden="true">
         <span class="home-light-zone home-light-roof"></span>
         <span class="home-light-zone home-light-railing"></span>
@@ -77,6 +43,7 @@
       </div>
     </div>
   </div>
+  <div class="home-ground-line" aria-hidden="true"></div>
   <div class="home-bottom">
     <button type="button" id="home-essay-trigger" class="home-essay-trigger" aria-haspopup="dialog" aria-controls="home-essay">
       <span class="home-essay-title">전시 개요 및 목적 읽기</span><span class="home-essay-open" aria-hidden="true">↗</span>
