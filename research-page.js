@@ -453,16 +453,15 @@ function openDetail(item){
 function renderProduction(data){
  const proc=data.production||{};
  setText('#research-production-kicker',proc.kicker||'01 / PRODUCTION');
- setText('#research-production-title',proc.title||'');
+ setText('#research-production-title',proc.title||'혼종은 어디에서 왔을까?');
  const essay=$('#research-production-essay');
  const hotspots=$('#research-origin-hotspots');
  const selected=$('#research-origin-selected');
  const diagram=$('#research-origin-image');
  const highlight=$('#research-origin-highlight');
- const highlightImage=$('#research-origin-highlight-image');
- if(!essay||!hotspots||!selected||!diagram||!highlight||!highlightImage)return;
+ const shape=$('#research-origin-highlight-shape');
+ if(!essay||!hotspots||!selected||!diagram||!highlight||!shape)return;
  diagram.src=proc.diagram||'assets/research/hetero-origin-diagram.svg';
- highlightImage.setAttribute('href',diagram.src);
  diagram.alt=proc.diagramAlt||'형태와 재료의 두 길이 혼종 주택에 모이는 도식';
  essay.replaceChildren();
  (proc.body||[]).forEach(text=>essay.append(el('p','research-origin-paragraph',text)));
@@ -470,27 +469,50 @@ function renderProduction(data){
  const buttons=[];
  const stages=Array.isArray(proc.stages)?proc.stages:[];
  let selectedId=null,hoveredId=null,focusedId=null;
+ let iconSource=null;
+ const cachedShapes=new Map();
+ let lastDrawn=null;
  const refreshHighlight=()=>{
-  // The image itself is used as an alpha mask: only ink becomes fluorescent.
-  // The transparent click regions never draw a rectangular boundary.
+  // Exact icon path groups from the original Illustrator SVG. The arrows,
+  // stage labels, and all unrelated icons are completely absent from the
+  // selected group, rather than approximated with rectangular crop regions.
   const activeId=hoveredId||focusedId||selectedId;
-  const stage=stages.find(item=>item.id===activeId);
-  if(!stage){
+  if(!activeId||!iconSource){
    highlight.classList.remove('is-active');
    return;
   }
-  const {x,y,w,h}=stage.hotspot||{};
-  if(![x,y,w,h].every(value=>Number.isFinite(Number(value)))){
-   highlight.classList.remove('is-active');
-   return;
+  if(lastDrawn!==activeId){
+   let vector=cachedShapes.get(activeId);
+   if(!vector){
+    const source=iconSource.getElementById('origin-'+activeId);
+    if(!source){highlight.classList.remove('is-active');return}
+    vector=document.importNode(source,true);
+    vector.removeAttribute('id');
+    cachedShapes.set(activeId,vector);
+   }
+   shape.replaceChildren(vector);
+   lastDrawn=activeId;
   }
-  const left=Math.max(0,Math.min(100,Number(x)));
-  const top=Math.max(0,Math.min(100,Number(y)));
-  const right=Math.max(0,Math.min(100,100-Number(x)-Number(w)));
-  const bottom=Math.max(0,Math.min(100,100-Number(y)-Number(h)));
-  highlight.style.clipPath='inset('+top+'% '+right+'% '+bottom+'% '+left+'%)';
   highlight.classList.add('is-active');
  };
+ // A one-time source fetch keeps the original detailed vector linework,
+ // without coloring any of the connector arrows or label glyphs.
+ fetch('assets/research/origin-icon-paths.svg',{cache:'force-cache'})
+  .then(response=>{if(!response.ok)throw new Error('Icon outlines HTTP '+response.status);return response.text()})
+  .then(source=>{
+   const parsed=new DOMParser().parseFromString(source,'image/svg+xml');
+   if(parsed.querySelector('parsererror'))throw new Error('Icon SVG parse error');
+   const sourceDefs=parsed.querySelector('svg > defs');
+   if(!sourceDefs)throw new Error('Icon SVG styles not found');
+   const sourceStyle=sourceDefs.querySelector('style');
+   if(sourceStyle){
+    const style=document.importNode(sourceStyle,true);
+    style.id='research-origin-source-style';
+    highlight.querySelector('defs')?.append(style);
+   }
+   iconSource=parsed;
+   refreshHighlight();
+  }).catch(error=>console.warn('아이콘 강조 경로 로딩 실패:',error));
  const showPrompt=()=>{
   selected.replaceChildren(el('p','research-origin-hint','도식의 아이콘을 선택하면 각 단계의 이야기가 나타납니다.'));
  };
@@ -529,16 +551,22 @@ function renderProduction(data){
     other.setAttribute('aria-pressed',String(other.dataset.originId===selectedId));
    });
    refreshHighlight();
-   if(toggleOff){showPrompt();return}
+   if(toggleOff){
+    showPrompt();
+    window.ResearchOriginPhotos?.clear?.();
+    return;
+   }
    const meta=el('span','research-origin-selection-meta',stage.number+' / '+(stage.path||'경로'));
    const heading=el('h3','research-origin-selection-title',stage.label);
    const body=el('p','research-origin-selection-body',stage.description||'');
    selected.replaceChildren(meta,heading,body);
+   window.ResearchOriginPhotos?.select?.(stage);
   });
   buttons.push(button);
   hotspots.append(button);
  });
  showPrompt();
+ window.ResearchOriginPhotos?.clear?.();
  refreshHighlight();
 }
 function selectVoice(index){
