@@ -453,23 +453,51 @@ function renderProduction(data){
  const proc=data.production||{};
  setText('#research-production-kicker',proc.kicker||'02 / PRODUCTION');
  setText('#research-production-title',proc.title||'');
- setText('#research-production-lead',proc.lead||'');
- setText('#research-production-footnote',proc.footnote||'');
- const host=$('#research-process');
- host.replaceChildren();
+ const essay=$('#research-production-essay');
+ const hotspots=$('#research-origin-hotspots');
+ const selected=$('#research-origin-selected');
+ const diagram=$('#research-origin-image');
+ if(!essay||!hotspots||!selected||!diagram)return;
+ diagram.src=proc.diagram||'assets/research/hetero-origin-diagram.svg';
+ diagram.alt=proc.diagramAlt||'형태와 재료의 두 길이 혼종 주택에 모이는 도식';
+ essay.replaceChildren();
+ (proc.body||[]).forEach(text=>essay.append(el('p','research-origin-paragraph',text)));
+ hotspots.replaceChildren();
+ const buttons=[];
+ const showPrompt=()=>{
+  selected.replaceChildren(el('p','research-origin-hint','도식의 아이콘을 선택하면 각 단계의 이야기가 나타납니다.'));
+ };
+ let selectedId=null;
  (proc.stages||[]).forEach(stage=>{
-  const button=el('button','research-process-item');
+  const region=stage.hotspot||{};
+  const button=el('button','research-origin-hotspot');
   button.type='button';
-  button.setAttribute('aria-label',stage.label+' 상세 설명');
-  const visual=el('span','research-process-visual');
-  if(stage.image){
-   const box=imageOrFallback(stage.image,stage.alt,'research-process-image',()=>visual.append(smallPlaceholder(stage.id)));
-   visual.append(box);
-  }else visual.append(smallPlaceholder(stage.id));
-  button.append(visual,el('span','research-process-number',stage.number),el('span','research-process-name',stage.label),el('span','research-process-sub',stage.sub));
-  button.addEventListener('click',()=>openDetail({kicker:stage.number+' / PRODUCTION',title:stage.label,image:stage.image,alt:stage.alt,description:stage.description,id:stage.id}));
-  host.append(button);
+  button.title=stage.label;
+  button.dataset.originId=stage.id;
+  button.setAttribute('aria-label',stage.label+' 설명 보기');
+  button.setAttribute('aria-controls','research-origin-selected');
+  button.setAttribute('aria-pressed','false');
+  ['x','y','w','h'].forEach((key)=>{
+   const value=Number(region[key]);
+   if(Number.isFinite(value))button.style.setProperty('--origin-'+key,value+'%');
+  });
+  button.addEventListener('click',()=>{
+   const toggleOff=selectedId===stage.id;
+   selectedId=toggleOff?null:stage.id;
+   buttons.forEach(other=>{
+    other.classList.toggle('is-selected',other.dataset.originId===selectedId);
+    other.setAttribute('aria-pressed',String(other.dataset.originId===selectedId));
+   });
+   if(toggleOff){showPrompt();return}
+   const meta=el('span','research-origin-selection-meta',stage.number+' / '+(stage.path||'경로'));
+   const heading=el('h3','research-origin-selection-title',stage.label);
+   const body=el('p','research-origin-selection-body',stage.description||'');
+   selected.replaceChildren(meta,heading,body);
+  });
+  buttons.push(button);
+  hotspots.append(button);
  });
+ showPrompt();
 }
 function selectVoice(index){
  const cards=[...document.querySelectorAll('.research-voice')];
