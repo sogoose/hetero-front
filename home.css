@@ -296,3 +296,40 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
  .home-house[data-active] .home-light-zone{opacity:0!important}
  .home-menu-title{transition:none!important}
 }
+
+/* 2026-11-10 / Contextual street elevation: two user-supplied neighbors. */
+.home-street-neighbours{
+ position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;
+}
+.home-neighbour{
+ position:absolute;display:block;height:auto;max-height:63vh;
+ object-fit:contain;object-position:bottom center;
+ opacity:.38;filter:grayscale(1);pointer-events:none;user-select:none;
+ animation:home-neighbour-appear 1.4s ease-out both;
+}
+.home-neighbour-left{
+ left:-1.2vw;bottom:12.7vh;width:33vw;max-width:650px;
+}
+.home-neighbour-right{
+ right:-1.35vw;bottom:12.7vh;width:31vw;max-width:610px;
+ animation-delay:.2s;
+}
+.home-drawing-stage{z-index:3!important}
+.home-house-line{filter:none}
+@keyframes home-neighbour-appear{
+ from{opacity:0;transform:translateY(12px)}
+ to{opacity:.38;transform:translateY(0)}
+}
+@media(max-width:1000px){
+ .home-neighbour-left{left:-13vw;width:42vw;bottom:13vh}
+ .home-neighbour-right{right:-13vw;width:41vw;bottom:13vh}
+ .home-neighbour{opacity:.29}
+}
+@media(max-width:600px){
+ .home-neighbour-left{left:-39vw;width:66vw;bottom:20vh}
+ .home-neighbour-right{right:-39vw;width:66vw;bottom:20vh}
+ .home-neighbour{opacity:.23;max-height:50vh}
+}
+@media(prefers-reduced-motion:reduce){
+ .home-neighbour{animation:none!important}
+}
