@@ -1016,9 +1016,9 @@ body.home-body::-webkit-scrollbar{display:none!important}
  gap:15px!important;z-index:24!important;pointer-events:none!important;
 }
 .home-masthead a{pointer-events:auto!important;display:block!important;text-decoration:none!important}
-.home-masthead .home-mark-title img{display:block!important;width:clamp(165px,16vw,265px)!important;height:auto!important;max-width:100%!important}
+.home-masthead .home-mark-title img{display:block!important;width:auto!important;height:clamp(24px,2.1vw,33px)!important;max-width:none!important}
 .home-masthead-right{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:clamp(17px,2.8vw,55px)!important}
-.home-masthead .home-mark-program img{display:block!important;width:clamp(182px,20vw,288px)!important;height:auto!important;max-width:100%!important}
+.home-masthead .home-mark-program img{display:block!important;width:auto!important;height:clamp(24px,2.1vw,33px)!important;max-width:none!important}
 .home-masthead .home-exhibition-folder{
  position:static!important;inset:auto!important;
  display:flex!important;flex-direction:column!important;
@@ -1046,15 +1046,15 @@ body.home-body::-webkit-scrollbar{display:none!important}
 .home-figure-section .home-reference[open] .home-reference-index{color:#0000ff!important}
 @media(max-width:800px){
  .home-shell>.home-masthead{top:16px!important;left:18px!important;right:18px!important}
- .home-masthead .home-mark-title img{width:clamp(125px,21vw,220px)!important}
- .home-masthead .home-mark-program img{width:clamp(125px,22vw,210px)!important}
+ .home-masthead .home-mark-title img,
+ .home-masthead .home-mark-program img{height:24px!important}
  .home-masthead-right{gap:clamp(10px,2vw,25px)!important}
  .home-masthead .home-exhibition-folder>svg{width:37px!important}
 }
 @media(max-width:530px){
  .home-shell>.home-masthead{top:13px!important;left:12px!important;right:12px!important;gap:7px!important}
- .home-masthead .home-mark-title img{width:clamp(100px,30vw,158px)!important}
- .home-masthead .home-mark-program img{width:clamp(102px,27vw,140px)!important}
+ .home-masthead .home-mark-title img,
+ .home-masthead .home-mark-program img{height:20px!important}
  .home-masthead-right{gap:8px!important}
  .home-masthead .home-exhibition-folder>svg{width:28px!important}
  .home-masthead .home-exhibition-folder span{font-size:7px!important}
