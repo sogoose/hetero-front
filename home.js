@@ -1,6 +1,16 @@
 (() => {
  'use strict';
  const house=document.getElementById('home-house');
+ // Prefer self-hosted reference plates, but show the attributed source image
+ // when a page is viewed before the binary assets are cached by GitHub Actions.
+ document.querySelectorAll('.home-figure-art img[data-fallback-src]').forEach(img=>{
+  img.addEventListener('error',()=>{
+   if(img.dataset.fallbackUsed)return;
+   img.dataset.fallbackUsed='1';
+   img.src=img.dataset.fallbackSrc;
+  },{once:true});
+ });
+
  const hotspots=[...document.querySelectorAll('.home-hotspot')];
  // Refreshing the homepage selects one passer-by from each side of the building.
  // The pair is not stored or reshuffled while a user is reading the page.
