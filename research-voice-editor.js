@@ -18,6 +18,19 @@
  const modalStatus=$('#research-voice-edit-status');
  const saveButton=$('#research-voice-edit-save');
  const deleteButton=$('#research-voice-edit-delete');
+ const introText=$('#research-voices-lead'),introEdit=$('#research-voice-intro-edit'),introDialog=$('#research-voice-intro-dialog');
+ const introForm=$('#research-voice-intro-form'),introField=$('#research-voice-intro-field');
+ const introStatus=$('#research-voice-intro-status'),introSave=$('#research-voice-intro-save');
+ const ICONS={brick:'assets/interviews/icons/brick.svg',cast:'assets/interviews/icons/cast.svg',roof:'assets/interviews/icons/roof.svg',tile:'assets/interviews/icons/tile.svg',merchant:'assets/interviews/icons/gangbuk-roof-tile.svg'};
+ function materialOf(credit){
+  const s=String(credit||'');
+  if(/청화요업|벽돌/.test(s))return 'brick';
+  if(/정우금속|주물/.test(s))return 'cast';
+  if(/고령기와|기와/.test(s))return 'roof';
+  if(/타일|도자기/.test(s))return 'tile';
+  if(/강북산업|건재상/.test(s))return 'merchant';
+  return 'other';
+ }
  let rows=[],inEditMode=false,editingAllowed=false,activeSlot=null,initDone=false,saving=false;
  function node(tag,cls,text){
   const e=document.createElement(tag);if(cls)e.className=cls;
@@ -35,6 +48,7 @@
    const card=node('button','research-voice-tile'+(inEditMode?' is-editable':''));
    card.type='button';card.disabled=!inEditMode;
    card.dataset.slot=String(item.slot);
+   card.dataset.material=materialOf(item.credit);
    card.title=inEditMode?'이 카드 수정':'';
    card.setAttribute('aria-label',(inEditMode?'수정: ':'')+item.quote);
    card.append(
@@ -42,6 +56,12 @@
     node('span','research-voice-tile-quote',item.quote),
     node('span','research-voice-tile-credit',item.credit)
    );
+   const iconSrc=ICONS[card.dataset.material];
+   if(iconSrc){
+    const icon=node('img','research-voice-tile-icon');
+    icon.src=iconSrc;icon.alt='';icon.loading='lazy';icon.decoding='async';
+    icon.setAttribute('aria-hidden','true');card.append(icon);
+   }
    card.addEventListener('click',()=>openEditor(item.slot));
    board.append(card);
   });
@@ -96,14 +116,48 @@
    inEditMode=false;
    if(editToggle)editToggle.hidden=true;
   }else if(editToggle)editToggle.hidden=false;
+  if(introEdit)introEdit.hidden=!editingAllowed||!inEditMode;
   draw();
+ }
+ async function hydrateIntro(){
+  try{
+   const response=await fetch(API+'/hetero_research_voice_intro?select=body&id=eq.1',{headers:{apikey:KEY},cache:'no-store'});
+   if(!response.ok)throw new Error('HTTP '+response.status);
+   const data=await response.json();
+   if(data[0]?.body&&introText)introText.textContent=data[0].body;
+  }catch(error){console.warn('소개 본문 로딩 실패:',error)}
+ }
+ function openIntroEditor(){
+  if(!editingAllowed||!inEditMode||saving||!introDialog)return;
+  introField.value=introText?.textContent||'';
+  introStatus.textContent='';introDialog.showModal();introField.focus();
+ }
+ async function saveIntro(event){
+  event.preventDefault();
+  if(!editingAllowed||saving)return;
+  const body=introField.value.trim();
+  if(!body||body.length>3000){introStatus.textContent='본문을 1~3000자로 입력해 주세요.';return}
+  saving=true;introSave.disabled=true;introStatus.textContent='저장 중…';
+  try{
+   const response=await fetch(API+'/hetero_research_voice_intro?id=eq.1',{
+    method:'PATCH',headers:{apikey:KEY,'Content-Type':'application/json','Prefer':'return=representation'},
+    body:JSON.stringify({body,updated_at:new Date().toISOString()})
+   });
+   if(!response.ok)throw new Error('HTTP '+response.status+' '+(await response.text()).slice(0,140));
+   const saved=await response.json();
+   if(!Array.isArray(saved)||saved.length!==1)throw new Error('변경 사항을 확인할 수 없습니다.');
+   if(introText)introText.textContent=saved[0].body;
+   introDialog.close();setStatus('소개 본문 저장됨');
+  }catch(error){introStatus.textContent='저장 실패: '+error.message}
+  finally{saving=false;introSave.disabled=false}
  }
  function toggleEdit(){
   if(!editingAllowed)return;
   inEditMode=!inEditMode;
   editToggle.textContent=inEditMode?'DONE':'EDIT';
   editToggle.setAttribute('aria-pressed',String(inEditMode));
-  setStatus(inEditMode?'카드를 클릭해 수정하거나, 맨 아래에서 새 카드를 추가하세요.':'');
+  setStatus(inEditMode?'카드를 선택하거나 소개 본문을 수정할 수 있습니다.':'');
+  if(introEdit)introEdit.hidden=!inEditMode;
   draw();
  }
  async function save(event){
@@ -175,12 +229,18 @@
   });
   draw();
   editToggle?.addEventListener('click',toggleEdit);
+  introEdit?.addEventListener('click',openIntroEditor);
+  introForm?.addEventListener('submit',saveIntro);
+  const closeIntro=()=>{if(!saving&&introDialog?.open)introDialog.close()};
+  $('#research-voice-intro-cancel')?.addEventListener('click',closeIntro);
+  $('#research-voice-intro-close')?.addEventListener('click',closeIntro);
+  introDialog?.addEventListener('click',event=>{if(event.target===introDialog)closeIntro()});
   form?.addEventListener('submit',save);
   deleteButton?.addEventListener('click',remove);
   $('#research-voice-edit-cancel')?.addEventListener('click',close);
   $('#research-voice-edit-close')?.addEventListener('click',close);
   dialog?.addEventListener('click',event=>{if(event.target===dialog)close()});
-  hydrate();
+  hydrate();hydrateIntro();
  }
- window.ResearchVoiceGrid={init,isOpen:()=>Boolean(dialog?.open)};
+ window.ResearchVoiceGrid={init,isOpen:()=>Boolean(dialog?.open||introDialog?.open)};
 })();
