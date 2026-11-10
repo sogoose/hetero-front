@@ -664,3 +664,73 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
 @media(prefers-reduced-motion:reduce){
  .home-light-zone{animation:none!important;opacity:0!important}
 }
+
+/* 2026-11-10 / Natural tree silhouettes and the clickable Who Are We passers-by. */
+/* Tree geometry occupies source y=410..795; 1.2x around y=850 puts
+   the actual foot of the trunks at y≈784, matching the street datum y=783.
+   No artificial tree clipping or nonuniform scaling. */
+.home-house>.home-tree-background{
+ overflow:visible!important;
+ clip-path:none!important;
+}
+.home-house .home-tree{
+ transform-origin:center bottom!important;
+ object-fit:contain!important;
+ opacity:.26!important;
+}
+.home-house .home-tree-left{
+ transform:translateX(-89%) scale(1.2)!important;
+}
+.home-house .home-tree-center{
+ transform:translateX(0) scale(1.2)!important;
+}
+.home-house .home-tree-right{
+ transform:translateX(89%) scale(1.2)!important;
+}
+/* Only two figures are displayed at a time; the pair always spans the facade. */
+.home-house>.home-people{
+ position:absolute!important;inset:0!important;
+ display:block!important;z-index:15!important;
+ pointer-events:none!important;
+}
+.home-house>.home-people .home-person-link{
+ position:absolute!important;
+ display:block!important;
+ width:6.771%!important;height:17.005%!important;
+ max-width:none!important;max-height:none!important;
+ bottom:7.12%!important;
+ margin:0!important;padding:0!important;
+ text-decoration:none!important;
+ pointer-events:auto!important;cursor:pointer!important;
+ opacity:1!important;z-index:1!important;
+ transition:transform .2s ease,filter .2s ease;
+}
+.home-house>.home-people .home-person-link[hidden]{
+ display:none!important;
+}
+/* Keep the knocking figure's original ground placement. */
+.home-house>.home-people .home-person-01{left:15.5%!important;bottom:7.925%!important}
+.home-house>.home-people .home-person-02{left:35.5%!important}
+.home-house>.home-people .home-person-03{left:73.5%!important}
+.home-house>.home-people .home-person-04{left:90%!important}
+.home-house>.home-people .home-person-link img{
+ display:block!important;width:100%!important;height:100%!important;
+ max-width:none!important;max-height:none!important;
+ object-fit:contain!important;object-position:center bottom!important;
+ pointer-events:none!important;
+}
+.home-house>.home-people .home-person-link:hover,
+.home-house>.home-people .home-person-link:focus-visible{
+ transform:translateY(-3px)!important;filter:drop-shadow(0 2px 0 rgba(0,0,255,.25))!important;
+}
+.home-house>.home-people .home-person-link:focus-visible{
+ outline:1px dotted #0000ff!important;outline-offset:2px!important;
+}
+@media(max-width:600px){
+ .home-house .home-tree-left{transform:translateX(-88%) scale(1.2)!important}
+ .home-house .home-tree-center{transform:translateX(0) scale(1.2)!important}
+ .home-house .home-tree-right{transform:translateX(88%) scale(1.2)!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .home-house>.home-people .home-person-link{transition:none!important}
+}
