@@ -2702,7 +2702,7 @@ body{background:#ffffff;color:#272724}
  border:1px solid #e4e0d7!important;
 }
 .research-panel-testimony .research-voice-tile:not(.research-voice-add)::before{
- content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
  opacity:.095;filter:grayscale(1) contrast(1.1);
  background-size:cover;background-position:center;
 }
