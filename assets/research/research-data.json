@@ -169,5 +169,6 @@
   "mapYears": [
     1991,
     2026
-  ]
+  ],
+  "mapVector": "assets/research/map-vector.svg?v=1"
 }
