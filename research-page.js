@@ -41,8 +41,21 @@ function applyMapZoom(){
  const stack=mapArt.querySelector('.research-map-stack');
  if(!stack)return;
  stack.dataset.zoomScale=String(mapZoom.scale);
- stack.style.transformOrigin='center center';
- stack.style.transform='translate3d('+mapZoom.x+'px,'+mapZoom.y+'px,0) scale('+mapZoom.scale+')';
+ // Resize the actual image/SVG layout rather than scaling a cached compositor
+ // texture. In particular, the Illustrator SVG must be repainted at the
+ // requested pixel size; a CSS scale() can blur it like a low-res PNG.
+ const rect=mapArt.getBoundingClientRect();
+ const width=rect.width*mapZoom.scale;
+ const height=rect.height*mapZoom.scale;
+ const left=(rect.width-width)*.5+mapZoom.x;
+ const top=(rect.height-height)*.5+mapZoom.y;
+ stack.style.setProperty('position','absolute','important');
+ stack.style.setProperty('width',width+'px','important');
+ stack.style.setProperty('height',height+'px','important');
+ stack.style.setProperty('left',left+'px','important');
+ stack.style.setProperty('top',top+'px','important');
+ stack.style.setProperty('transform','none','important');
+ stack.style.setProperty('transform-origin','top left','important');
  mapArt.classList.toggle('is-map-zoomed',mapZoom.scale>1.001);
  const reset=$('#research-map-reset');
  if(reset){
