@@ -232,17 +232,29 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
 .home-hotspot-label{display:none!important}
 .home-large-menu{position:absolute;inset:0;pointer-events:none;z-index:5}
 .home-menu-title{
- position:absolute;display:flex;flex-direction:column;gap:3px;
- color:#191918;white-space:nowrap;opacity:0;
+ position:absolute;display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+ color:#0033ff!important;white-space:nowrap;opacity:0;
  transform:translateY(10px);transition:opacity .24s ease,transform .35s cubic-bezier(.2,.8,.2,1);
 }
+/* A single type family and cobalt identity for both lines.
+   Strong tracking supplies the hierarchy rather than oversized bold letters. */
+.home-menu-title span,
+.home-menu-title strong{
+ display:block;
+ font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif!important;
+ font-weight:520!important;
+ color:#0033ff!important;
+ white-space:nowrap;
+}
 .home-menu-title span{
- font:500 clamp(9px,.8vw,12px)/1.45 Pretendard,sans-serif!important;
- letter-spacing:.065em;color:#75756e;
+ font-size:clamp(11px,1.05vw,14px)!important;
+ line-height:1.5!important;
+ letter-spacing:.25em!important;
 }
 .home-menu-title strong{
- font:750 clamp(28px,3.45vw,61px)/1.18 Pretendard,sans-serif!important;
- letter-spacing:-.065em;
+ font-size:clamp(17px,1.65vw,22px)!important;
+ line-height:1.4!important;
+ letter-spacing:.28em!important;
 }
 .home-menu-roof{left:8%;top:15%}
 .home-menu-railing{left:-4%;top:39%}
@@ -270,7 +282,7 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
 @media(max-width:900px){
  .home-drawing-stage{inset:75px 0 92px!important}
  .home-house{width:min(99vw,calc((100dvh - 180px)*1.3334))!important}
- .home-menu-title strong{font-size:clamp(25px,4.3vw,44px)!important}
+ .home-menu-title strong{font-size:clamp(16px,2.1vw,20px)!important}
  .home-menu-railing{left:0}
  .home-menu-gate{left:78%}
  .home-menu-brick{left:68%;top:77%}
@@ -279,8 +291,8 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
 @media(max-width:600px){
  .home-drawing-stage{inset:14vh 0 22vh!important}
  .home-house{width:122vw!important;max-height:none!important}
- .home-menu-title strong{font-size:clamp(23px,6vw,31px)!important}
- .home-menu-title span{font-size:8px!important}
+ .home-menu-title strong{font-size:clamp(15px,4vw,19px)!important}
+ .home-menu-title span{font-size:clamp(9px,2.6vw,12px)!important}
  .home-menu-roof{left:18%;top:16%}
  .home-menu-railing{left:8%;top:39%}
  .home-menu-brick{left:55%;top:81%}
