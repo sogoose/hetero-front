@@ -22,14 +22,14 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;-webkit-
 .event-poster{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-width:0;margin:0}
 .event-poster img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;object-position:center;filter:none}
 .event-information{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:clamp(28px,4.3vh,44px);min-width:0;width:100%}
-.event-fact{margin:0;max-width:100%;font:680 clamp(23px,2.1vw,30px)/1.55 Pretendard,-apple-system,sans-serif;letter-spacing:-.064em;color:#1c1c1b;word-break:keep-all}
+.event-fact{margin:0;max-width:100%;font:770 clamp(23px,2.1vw,30px)/1.55 Pretendard,-apple-system,sans-serif;letter-spacing:-.064em;color:#000;word-break:keep-all}
 .event-dates{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .3em}
 .event-dates time{white-space:nowrap}
-.event-dates .event-separator{font-weight:350;color:#555;white-space:nowrap}
-.event-place{font-weight:680}
-.event-seminars{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:clamp(18px,4vh,36px);color:#787872}
-.event-seminars p{margin:0;font:400 clamp(11px,.85vw,13px)/1.7 Pretendard,-apple-system,sans-serif;letter-spacing:-.01em;white-space:normal;word-break:keep-all}
-.event-seminars time{font-weight:600;color:#444540;white-space:nowrap}
+.event-dates .event-separator{font-weight:500;color:#000;white-space:nowrap}
+.event-place{font-weight:770}
+.event-seminars{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:clamp(18px,4vh,36px);color:#000}
+.event-seminars p{margin:0;font:500 clamp(11px,.85vw,13px)/1.7 Pretendard,-apple-system,sans-serif;letter-spacing:-.01em;white-space:normal;word-break:keep-all;color:#000}
+.event-seminars time,.event-seminar-kind{font-weight:740;color:#000}.event-seminars time{white-space:nowrap}
 .event-footer{position:fixed!important;z-index:50;bottom:0;left:0;right:0;height:70px;min-height:70px;display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:nowrap!important;gap:20px;padding:0 clamp(14px,2.6vw,42px)!important;background:#fff;border-top:1px solid rgba(62,60,50,.08);color:#77776f}
 .event-footer-left{display:flex;align-items:center;gap:13px;flex:0 0 auto}
 .event-icon-button{display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;min-height:0;border:0;border-radius:0;box-shadow:none;padding:0;background:none;color:#77776f;text-decoration:none;cursor:pointer}
@@ -97,8 +97,8 @@ body{font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;-webkit-
         </p>
         <p class="event-fact event-place">아르코미술관 공간열림</p>
         <div class="event-seminars" aria-label="연계 세미나 두 건">
-          <p><time datetime="2026-11-20T20:00">11. 20 (금) 20:00</time> · 아틀리에 作 작업실</p>
-          <p><time datetime="2026-11-22T15:00">11. 22 (일) 15:00</time> · 아르코미술관 3층 세미나실</p>
+          <p><time datetime="2026-11-20T20:00">11. 20 (금) 20:00</time> · <strong class="event-seminar-kind">학생 세미나</strong> · 아틀리에 作 작업실</p>
+          <p><time datetime="2026-11-22T15:00">11. 22 (일) 15:00</time> · <strong class="event-seminar-kind">일반인 세미나</strong> · 아르코미술관 3층 세미나실</p>
         </div>
       </div>
     </div>
