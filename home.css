@@ -402,3 +402,80 @@ html:has(.home-body),body.home-body{height:100%;margin:0;overflow:hidden!importa
  .home-house>.home-street-sibling-left{transform:translateX(-88%)!important}
  .home-house>.home-street-sibling-right{transform:translateX(88%)!important}
 }
+
+/* 2026-11-10: Source-accurate interaction layers, unified curb and corrected research label.
+   Illustrator separated each of the four regions into outline/fill groups.
+   No rectangular color masks are used on the artwork anymore. */
+.home-house>.home-exact-contours{
+ position:absolute!important;inset:0!important;display:block!important;
+ width:100%!important;height:100%!important;
+ max-width:none!important;max-height:none!important;
+ object-fit:contain!important;z-index:2!important;
+ pointer-events:none!important;user-select:none!important;
+}
+.home-house>.home-contours{display:none!important}
+.home-lighting{z-index:3!important}
+.home-light-zone{
+ background-image:url('assets/home/house-neon-exact.svg')!important;
+ background-position:center!important;
+ background-repeat:no-repeat!important;
+ background-size:100% 100%!important;
+}
+.home-light-roof{
+ clip-path:polygon(13.5% 27.3%,59.5% 27.3%,59.5% 35.4%,13.5% 35.4%)!important;
+}
+.home-light-railing{
+ clip-path:polygon(13.9% 49.7%,50% 49.7%,50% 58%,13.9% 58%)!important;
+}
+.home-light-brick{
+ clip-path:polygon(48.8% 59.35%,71% 59.35%,71% 78.4%,48.8% 78.4%)!important;
+}
+.home-light-gate{
+ clip-path:polygon(70.5% 47.7%,90.6% 47.7%,90.6% 61.5%,70.5% 61.5%)!important;
+}
+.home-hotspot-roof{
+ left:13.6%!important;top:27.5%!important;width:45.8%!important;height:7.7%!important;
+ clip-path:polygon(0 8%,90% 0,100% 67%,0 100%)!important;
+}
+.home-hotspot-railing{
+ left:14.05%!important;top:49.8%!important;width:35.7%!important;height:8.1%!important;
+ clip-path:none!important;
+}
+.home-hotspot-brick{
+ left:48.9%!important;top:59.5%!important;width:22.1%!important;height:18.8%!important;
+ clip-path:polygon(0 0,14% 0,100% 81%,100% 100%,0 100%)!important;
+}
+.home-hotspot-gate{
+ left:70.65%!important;top:47.8%!important;width:19.8%!important;height:13.55%!important;
+ clip-path:none!important;
+}
+/* The research title belongs to the right-hand white space, not on the gate. */
+.home-large-menu .home-menu-brick{
+ left:97%!important;top:66%!important;
+ transform:translateY(8px)!important;
+}
+.home-house[data-active="brick"] .home-large-menu .home-menu-brick{
+ transform:translateY(0)!important;
+}
+.home-house>.home-street-sibling{
+ opacity:.48!important;
+}
+/* A single, unobtrusive horizontal ground level shared by the street elevations. */
+.home-ground-line{
+ position:absolute!important;
+ left:0!important;right:0!important;bottom:12.3vh!important;
+ height:1px!important;z-index:2!important;
+ background:rgba(72,72,70,.68)!important;
+ pointer-events:none!important;
+}
+@media(max-width:1250px){
+ .home-large-menu .home-menu-brick{left:92%!important;top:68%!important}
+}
+@media(max-width:700px){
+ .home-house>.home-street-sibling{opacity:.39!important}
+ .home-large-menu .home-menu-brick{left:74%!important;top:81%!important}
+ .home-ground-line{bottom:12.3vh!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .home-light-zone{animation:none!important;opacity:0!important}
+}
