@@ -18,7 +18,7 @@ const detailKicker=$('#research-detail-kicker'),detailTitle=$('#research-detail-
 const detailDescription=$('#research-detail-description');
 const chapter=$('#chapter-menu');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-const state={page:0,map:0,year:1991,voice:0,data:null,pointer:null,lastWheel:0};
+const state={page:0,map:0,year:1991,voice:0,data:null,regionTables:null,pointer:null,lastWheel:0};
 const stageNames=['DISTRIBUTION','PRODUCTION','TESTIMONY'];
 const mapZoom={scale:1,x:0,y:0,drag:null,suppressClick:false,positionPending:false};
 const MAP_ZOOM_MAX=5;
@@ -44,6 +44,7 @@ function applyMapZoom(){
  stack.style.transformOrigin='center center';
  stack.style.transform='translate3d('+mapZoom.x+'px,'+mapZoom.y+'px,0) scale('+mapZoom.scale+')';
  mapArt.classList.toggle('is-map-zoomed',mapZoom.scale>1.001);
+ mapArt.parentElement?.classList.toggle('research-area-zoomed',mapZoom.scale>1.001);
  const reset=$('#research-map-reset');
  if(reset){
   reset.hidden=mapZoom.scale<=1.001;
@@ -227,6 +228,76 @@ function layeredMap(base,layers,detailMode){
  });
  return stack;
 }
+
+/* Small typeset research tables, sourced from the supplied print layouts.
+   Registry pins and the printed regional count can differ for records with
+   no precisely placed symbol. */
+function makeRegionTable(material){
+ const dataset=state.regionTables?.materials;
+ if(!dataset)return null;
+ const activeYear=state.year;
+ const years=state.regionTables.years||[1991,2026];
+ const lookup=dataset[material];
+ const sheet=el('div','research-region-sheet');
+ const header=el('div','research-region-heading');
+ header.append(el('span','research-region-caption','지역별 공장 분포'));
+ header.append(el('strong','research-region-material',material==='combined'?'재료별 비교':(lookup?.label||'공장')+'공장'));
+ sheet.append(header);
+ const table=el('table','research-region-table');
+ const thead=el('thead');
+ const headingRow=el('tr');
+ headingRow.append(el('th','','지역'));
+ years.forEach(year=>{
+  const cell=el('th','research-region-year'+(activeYear===year?' is-current':''),String(year));
+  cell.scope='col';
+  headingRow.append(cell);
+ });
+ thead.append(headingRow);table.append(thead);
+ const tbody=el('tbody');
+ const rows=material==='combined'
+  ?['brick','tile','cast'].map(id=>[dataset[id].label,...dataset[id].totals])
+  :lookup?.rows||[];
+ rows.forEach(row=>{
+  const tr=el('tr');
+  row.forEach((value,col)=>{
+   const cell=el(col===0?'th':'td',col>0&&years[col-1]===activeYear?'is-current':'',value===null?'—':String(value));
+   if(col===0)cell.scope='row';
+   tr.append(cell);
+  });
+  tbody.append(tr);
+ });
+ table.append(tbody);
+ const tfoot=el('tfoot'),total=el('tr');
+ const totalValues=material==='combined'
+ ?['합계*',177,69]
+ :['합계',...(lookup?.totals||[null,null])];
+ totalValues.forEach((value,col)=>{
+  const cell=el(col===0?'th':'td',col>0&&years[col-1]===activeYear?'is-current':'',value===null?'—':String(value));
+  total.append(cell);
+ });
+ tfoot.append(total);table.append(tfoot);sheet.append(table);
+ if(material==='tile'){
+  sheet.append(el('p','research-region-breakdown','점토 / 시멘트 · 1991년 5 / 113 · 2026년 11 / 13'));
+ }else if(material==='brick'){
+  sheet.append(el('p','research-region-footnote','1991년 59곳 중 58곳 지도 연결'));
+ }else if(material==='cast'){
+  sheet.append(el('p','research-region-footnote','2026년 28곳 중 27곳 지도 연결'));
+ }else{
+  sheet.append(el('p','research-region-footnote','* 1991년 주물 자료 없음 · 자료별 집계 합산'));
+ }
+ return sheet;
+}
+function renderRegionTables(){
+ const selected=state.data?.maps?.[state.map]?.id||'brick';
+ const figure=$('#research-region-figure'),modal=$('#research-region-dialog-content');
+ for(const host of [figure,modal]){
+  if(!host)continue;
+  host.replaceChildren();
+  const sheet=makeRegionTable(selected);
+  if(sheet)host.append(sheet);
+ }
+}
+
 function setMap(index){
  const list=state.data&&state.data.maps;
  if(!Array.isArray(list)||!list.length)return;
@@ -281,6 +352,7 @@ function setMap(index){
  });
  const showAll=$('#research-map-all');
  if(showAll)showAll.setAttribute('aria-pressed',String(map.id==='combined'));
+ renderRegionTables();
 }
 function setYear(year){
  const allowed=state.data&&state.data.mapYears;
@@ -304,6 +376,10 @@ function renderMaps(data){
  $('#research-essay-more')?.addEventListener('click',()=>essayDialog?.showModal());
  $('#research-essay-close')?.addEventListener('click',()=>essayDialog?.close());
  essayDialog?.addEventListener('click',event=>{if(event.target===essayDialog)essayDialog.close()});
+ const regionDialog=$('#research-region-dialog');
+ $('#research-region-mobile-button')?.addEventListener('click',()=>regionDialog?.showModal());
+ $('#research-region-close')?.addEventListener('click',()=>regionDialog?.close());
+ regionDialog?.addEventListener('click',event=>{if(event.target===regionDialog)regionDialog.close()});
  yearControls.replaceChildren();
  (data.mapYears||[]).forEach(year=>{
   const button=el('button','research-map-year-choice',String(year));
@@ -503,6 +579,13 @@ async function start(){
   const data=await response.json();
   if(!Array.isArray(data.maps)||!data.production||!data.testimonies)throw new Error('Invalid research data');
   state.data=data;
+  try{
+   const distribution=await fetch('assets/research/region-tables.json',{cache:'no-cache'});
+   if(distribution.ok){
+    const tables=await distribution.json();
+    if(tables.materials&&tables.years)state.regionTables=tables;
+   }
+  }catch(error){console.warn('Region tables unavailable:',error)}
   if(window.ResearchPoints){
    await window.ResearchPoints.init({
     getSelection:()=>({year:state.year,material:data.maps[state.map]?.id||'brick'}),
