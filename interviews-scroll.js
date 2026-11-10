@@ -178,7 +178,7 @@ async function init(){
   if(!Array.isArray(data.interviews)||data.interviews.length!==5)throw new Error('인터뷰 자료 구조 오류');
   host.replaceChildren();
   data.interviews.forEach(renderInterview);
-  window.InterviewPhotoUpload?.mount();
+  window.InterviewArchiveContent?.mount();
   const hash=decodeURIComponent(location.hash.slice(1));
   const index=sections.findIndex(section=>section.id===hash);
   if(index>=0)jump(index,false);
