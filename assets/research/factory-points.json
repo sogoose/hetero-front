@@ -966,6 +966,193 @@
       "region": "김해 한림면",
       "note": "DXF 원자료 번호 59 · 협동조합 회원사 (지점 위치는 행정구역 기준 근사치)",
       "source": "중소기업협동조합중앙회, 『中小企業協同組合 組合員業體名簿』, 1991."
+    },
+    {
+      "id": "brick-2026-01",
+      "name": "우성세라믹스공업",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.412725,
+      "y": 0.49138,
+      "region": "경기도 평택시 포승읍 서둔물길 30-34",
+      "note": "DXF 원자료 번호 01 · 위치 정확도: exact · 원본 표시 좌표(위도/경도): 36.9942, 126.8940",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-02",
+      "name": "엠케이세라믹",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.429933,
+      "y": 0.363375,
+      "region": "경기도 연천군 청산면 청연로 31-30",
+      "note": "DXF 원자료 번호 02 · 위치 정확도: exact · 원본 표시 좌표(위도/경도): 38.0355, 127.1007",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-03",
+      "name": "이레벽돌",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.43023,
+      "y": 0.363427,
+      "region": "경기도 연천군 청산면 청연로 30-4",
+      "note": "DXF 원자료 번호 03 · 위치 정확도: exact · 원본 표시 좌표(위도/경도): 38.0349, 127.1032",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-04",
+      "name": "상산쎄라믹",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.486586,
+      "y": 0.512031,
+      "region": "충청북도 진천군 덕산읍 귀농1길 121-46",
+      "note": "DXF 원자료 번호 04 · 위치 정확도: exact · 원본 표시 좌표(위도/경도): 36.8850, 127.5020",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-05",
+      "name": "토우",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.376506,
+      "y": 0.507495,
+      "region": "충청남도 당진시 면천면 산업단지길 50",
+      "note": "DXF 원자료 번호 05 · 위치 정확도: approx · 원본 표시 좌표(위도/경도): 36.6970, 126.7470",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-06",
+      "name": "현성세라믹",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.363026,
+      "y": 0.54417,
+      "region": "충청남도 홍성군 장곡면 홍장남로 51-10",
+      "note": "DXF 원자료 번호 06 · 위치 정확도: approx · 원본 표시 좌표(위도/경도): 36.4830, 126.7060",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-07",
+      "name": "삼한씨원",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.602687,
+      "y": 0.540511,
+      "region": "경상북도 예천군 풍양면 상풍로 1368-50",
+      "note": "DXF 원자료 번호 07 · 위치 정확도: exact · 원본 표시 좌표(위도/경도): 36.5009, 128.2941",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-08",
+      "name": "선일로에스",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.612569,
+      "y": 0.647971,
+      "region": "대구광역시 달성군 논공읍 비슬로361길 69",
+      "note": "DXF 원자료 번호 08 · 위치 정확도: approx · 원본 표시 좌표(위도/경도): 35.7390, 128.4300",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-09",
+      "name": "비젼세라믹",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.367977,
+      "y": 0.650663,
+      "region": "전북특별자치도 부안군 보안면 부안로 1256",
+      "note": "DXF 원자료 번호 09 · 위치 정확도: approx · 원본 표시 좌표(위도/경도): 35.7110, 126.6760",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-10",
+      "name": "삼양세라믹",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.412199,
+      "y": 0.636332,
+      "region": "전북특별자치도 김제시 용지면 서두길 52",
+      "note": "DXF 원자료 번호 10 · 위치 정확도: exact · 원본 표시 좌표(위도/경도): 35.8251, 126.9482",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-11",
+      "name": "중앙벽돌",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.410976,
+      "y": 0.636852,
+      "region": "전북특별자치도 김제시 용지면 석정로 706",
+      "note": "DXF 원자료 번호 11 · 위치 정확도: approx · 원본 표시 좌표(위도/경도): 35.8190, 126.9380",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-12",
+      "name": "현대씨엠 익산공장",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.425185,
+      "y": 0.610246,
+      "region": "전북특별자치도 익산시 왕궁면 평장길 32",
+      "note": "DXF 원자료 번호 12 · 위치 정확도: exact · 원본 표시 좌표(위도/경도): 35.9574, 127.0563",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-13",
+      "name": "대평세라믹스산업",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.388487,
+      "y": 0.610793,
+      "region": "전북특별자치도 군산시 성산면 수림로 375-1",
+      "note": "DXF 원자료 번호 13 · 위치 정확도: exact-ish · 원본 표시 좌표(위도/경도): 35.9773, 126.8192",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-14",
+      "name": "부강세라믹",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.394235,
+      "y": 0.613875,
+      "region": "전북특별자치도 군산시 임피면 축산리 490",
+      "note": "DXF 원자료 번호 14 · 위치 정확도: approx · 원본 표시 좌표(위도/경도): 35.9410, 126.8670",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-15",
+      "name": "삼정비알",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.530705,
+      "y": 0.679813,
+      "region": "경상남도 산청군 단성면 지리산대로3362번길 14-4",
+      "note": "DXF 원자료 번호 15 · 위치 정확도: approx · 원본 표시 좌표(위도/경도): 35.2840, 127.8970",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-16",
+      "name": "코코세라믹",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.51237,
+      "y": 0.705538,
+      "region": "경상남도 하동군 옥종면 옥단로 820",
+      "note": "DXF 원자료 번호 16 · 위치 정확도: approx · 원본 표시 좌표(위도/경도): 35.5670, 127.8780",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
+    },
+    {
+      "id": "brick-2026-17",
+      "name": "<청화요업>",
+      "material": "brick",
+      "year": 2026,
+      "x": 0.382584,
+      "y": 0.546938,
+      "region": "충청남도 홍성군 장곡면 상송리 758-1",
+      "note": "DXF 원자료 번호 17 · 위치 정확도: exact · 원본 표시 좌표(위도/경도): 36.4830, 126.7060",
+      "source": "벽돌 2026(1).dxf — 공장 범례·위치 기호"
     }
   ],
   "coordinateCalibrations": {
@@ -984,6 +1171,22 @@
       "rasterMeanErrorPixels": 0.57,
       "rasterMaxErrorPixels": 1.98,
       "note": "Original DXF states locations are approximate present-day city/county/eup/myeon reference centers, not surveyed historical factory parcel addresses."
+    },
+    "brick2026": {
+      "source": "벽돌 2026(1).dxf",
+      "mapImage": "assets/research/brick_2026xxxhdpi.png",
+      "imageSize": [
+        2382,
+        3368
+      ],
+      "method": "DXF indexed CIRCLE anchors projected to PNG with linear x/y scale and offset; 10 separate PNG marker checks",
+      "markerCount": 17,
+      "independentControlCount": 10,
+      "rasterRmsErrorPixels": 0.443,
+      "rasterMaxErrorPixels": 0.743,
+      "xFormula": "(11.33123783 * dxf_x - 32.26701469) / 2382",
+      "yFormula": "(-11.33819076 * dxf_y + 97.75561102) / 3368",
+      "dataAccuracyCaveat": "The DXF has exact, approx, and exact-ish location labels. These are geospatial provenance estimates, separate from pixel registration accuracy. One original name is shown in angle brackets."
     }
   }
 }
