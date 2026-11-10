@@ -2590,3 +2590,9 @@ body{background:#ffffff;color:#272724}
   margin-bottom:16px!important;
  }
 }
+
+/* RESEARCH 04 / Restore the original exhibition essay's selective bold hierarchy. */
+.research-panel-paradox .research-paradox-paragraph strong.research-paradox-emphasis{
+ font-weight:700!important;
+ color:#222320!important;
+}
