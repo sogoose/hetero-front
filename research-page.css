@@ -1983,49 +1983,6 @@ body{background:#ffffff;color:#272724}
 }
 .research-panel-production .research-origin-highlight-shape{pointer-events:none!important}
 
-.research-origin-login-dialog{
- position:fixed!important;inset:0!important;
- width:min(420px,calc(100vw - 30px))!important;
- max-width:none!important;max-height:calc(100dvh - 32px)!important;
- box-sizing:border-box!important;padding:clamp(24px,3vw,36px)!important;
- margin:auto!important;border:0!important;border-radius:0!important;
- color:#282823!important;background:#fff!important;
- box-shadow:0 12px 65px rgba(0,0,0,.12)!important;
- font-family:Pretendard,-apple-system,sans-serif!important;
-}
-.research-origin-login-dialog::backdrop{background:rgba(250,250,247,.76)!important;backdrop-filter:blur(3px)}
-.research-origin-login-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.research-origin-login-head h2{
- margin:0!important;font:750 17px/1.5 "Noto Serif KR",serif!important;
- letter-spacing:-.06em!important;
-}
-.research-origin-login-head button{
- border:0!important;border-radius:0!important;background:none!important;
- color:#777!important;box-shadow:none!important;padding:0 3px!important;
- font:300 23px/1 Pretendard,sans-serif!important;
-}
-.research-origin-login-dialog p{
- margin:16px 0!important;font:400 12px/1.65 Pretendard,sans-serif!important;
- color:#77776f!important;
-}
-.research-origin-login-dialog form{display:flex;flex-direction:column;gap:13px}
-.research-origin-login-dialog label{
- display:flex;flex-direction:column;gap:5px;
- font:550 11px/1.4 Pretendard,sans-serif!important;
-}
-.research-origin-login-dialog label span{color:#aaa;font-weight:400}
-.research-origin-login-dialog input{
- width:100%;height:39px;box-sizing:border-box;border:1px solid #d3d1c8!important;
- border-radius:0!important;background:#fff!important;box-shadow:none!important;
- padding:8px 10px;font:400 12px/1.5 Pretendard,sans-serif!important;
-}
-.research-origin-login-dialog [type=submit]{
- margin-top:4px!important;padding:10px!important;
- border:0!important;border-radius:0!important;background:#292923!important;
- box-shadow:none!important;color:white!important;
- font:550 12px/1.5 Pretendard,sans-serif!important;
-}
-.research-origin-login-dialog [type=submit]:disabled{opacity:.55}
 @media(max-width:700px){
  .research-panel-production .research-origin-copy{
   max-height:clamp(230px,43vh,390px)!important;
