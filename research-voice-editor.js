@@ -15,6 +15,11 @@
  const quoteField=$('#research-voice-edit-quote');
  const creditField=$('#research-voice-edit-credit');
  const tagField=$('#research-voice-edit-tag');
+ const imageField=$('#research-voice-edit-image-file');
+ const imageChoose=$('#research-voice-edit-image-choose');
+ const imageRemove=$('#research-voice-edit-image-remove');
+ const imagePreview=$('#research-voice-image-preview');
+ const imagePreviewImg=$('#research-voice-image-preview-img');
  const modalStatus=$('#research-voice-edit-status');
  const saveButton=$('#research-voice-edit-save');
  const deleteButton=$('#research-voice-edit-delete');
@@ -31,7 +36,98 @@
   if(/강북산업|건재상/.test(s))return 'merchant';
   return 'other';
  }
+ const STORAGE='https://xjhwzhqiixbombbudlpl.supabase.co/storage/v1';
+ const IMAGE_BUCKET='hetero-voice-photos';
+ const PHOTO_PATH=/^cards\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.webp$/;
  let rows=[],inEditMode=false,editingAllowed=false,activeSlot=null,initDone=false,saving=false;
+ let pendingImage=null,imageRemoved=false,previewObjectURL=null;
+ function photoURL(path){
+  return typeof path==='string'&&PHOTO_PATH.test(path)
+   ?STORAGE+'/object/public/'+IMAGE_BUCKET+'/'+path:null;
+ }
+ function clearImagePreview(){
+  if(previewObjectURL){URL.revokeObjectURL(previewObjectURL);previewObjectURL=null;}
+  imagePreview.hidden=true;
+  imagePreviewImg.removeAttribute('src');
+ }
+ function showImagePreview(url){
+  if(!url){clearImagePreview();return}
+  imagePreviewImg.src=url;
+  imagePreview.hidden=false;
+ }
+ function resetImageState(path){
+  clearImagePreview();
+  pendingImage=null;imageRemoved=false;
+  if(imageField)imageField.value='';
+  const url=photoURL(path);
+  if(url)showImagePreview(url);
+  if(imageRemove)imageRemove.disabled=!url;
+ }
+ async function compressImage(file){
+  if(!file||!['image/jpeg','image/png','image/webp','image/avif'].includes(file.type))
+   throw new Error('JPG, PNG, WebP 또는 AVIF 파일만 업로드할 수 있어요.');
+  if(file.size>20*1024*1024)throw new Error('원본 파일은 20MB 이하여야 해요.');
+  const objectUrl=URL.createObjectURL(file);
+  try{
+   const image=new Image();image.src=objectUrl;
+   await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(new Error('이미지를 읽을 수 없어요.'))});
+   async function encode(edge,quality){
+    const scale=Math.min(1,edge/Math.max(image.naturalWidth,image.naturalHeight));
+    const canvas=document.createElement('canvas');
+    canvas.width=Math.max(1,Math.round(image.naturalWidth*scale));
+    canvas.height=Math.max(1,Math.round(image.naturalHeight*scale));
+    const ctx=canvas.getContext('2d');
+    if(!ctx)throw new Error('브라우저에서 이미지를 변환하지 못했어요.');
+    ctx.drawImage(image,0,0,canvas.width,canvas.height);
+    return new Promise((resolve,reject)=>canvas.toBlob(blob=>{
+     if(blob&&blob.type==='image/webp')resolve(blob);
+     else reject(new Error('WebP 변환을 지원하지 않는 브라우저예요.'));
+    },'image/webp',quality));
+   }
+   let blob=await encode(1600,.82);
+   if(blob.size>2.8*1024*1024)blob=await encode(1250,.7);
+   if(blob.size>2.8*1024*1024)blob=await encode(960,.62);
+   if(blob.size>2.8*1024*1024)throw new Error('압축 후 용량이 2.8MB를 초과해요.');
+   return blob;
+  }finally{URL.revokeObjectURL(objectUrl)}
+ }
+ async function uploadImage(file){
+  const blob=await compressImage(file);
+  const path='cards/'+crypto.randomUUID()+'.webp';
+  const response=await fetch(STORAGE+'/object/'+IMAGE_BUCKET+'/'+path,{
+   method:'POST',headers:{apikey:KEY,'Content-Type':'image/webp','cache-control':'3600'},body:blob
+  });
+  if(!response.ok){
+   let details='HTTP '+response.status;
+   try{const problem=await response.json();details=problem.message||problem.error||details}catch(error){}
+   throw new Error('이미지 업로드 실패: '+details);
+  }
+  return path;
+ }
+ function chooseImage(){
+  if(!saving&&editingAllowed&&inEditMode)imageField?.click();
+ }
+ function selectedImage(event){
+  if(saving)return;
+  const file=event.target.files?.[0];
+  if(!file)return;
+  if(!['image/jpeg','image/png','image/webp','image/avif'].includes(file.type)||file.size>20*1024*1024){
+   modalStatus.textContent='JPG, PNG, WebP, AVIF / 20MB 이하만 업로드해 주세요.';
+   imageField.value='';return;
+  }
+  clearImagePreview();
+  pendingImage=file;imageRemoved=false;
+  previewObjectURL=URL.createObjectURL(file);
+  showImagePreview(previewObjectURL);
+  imageRemove.disabled=false;
+  modalStatus.textContent='이미지를 선택했어요. 저장하면 카드에 반영됩니다.';
+ }
+ function discardImage(){
+  if(saving)return;
+  resetImageState(null);
+  imageRemoved=true;
+  modalStatus.textContent='저장하면 이 카드의 배경 이미지를 제거합니다.';
+ }
  function node(tag,cls,text){
   const e=document.createElement(tag);if(cls)e.className=cls;
   if(text!==undefined&&text!==null)e.textContent=String(text);
@@ -49,6 +145,14 @@
    card.type='button';card.disabled=!inEditMode;
    card.dataset.slot=String(item.slot);
    card.dataset.material=materialOf(item.credit);
+   const bg=photoURL(item.background_image_path);
+   if(bg){
+    card.classList.add('has-photo');
+    const photo=node('span','research-voice-tile-photo');
+    photo.style.backgroundImage='url("'+bg+'")';
+    photo.setAttribute('aria-hidden','true');
+    card.append(photo);
+   }
    card.title=inEditMode?'이 카드 수정':'';
    card.setAttribute('aria-label',(inEditMode?'수정: ':'')+item.quote);
    card.append(
@@ -82,18 +186,19 @@
   quoteField.value=item?.quote||'';
   creditField.value=item?.credit||'';
   tagField.value=item?.tag||'';
+  resetImageState(item?.background_image_path||null);
   if(deleteButton)deleteButton.hidden=slot===null;
   modalStatus.textContent='';
   dialog.showModal();quoteField.focus();
  }
  async function loadRows(){
-  const response=await fetch(API+'/hetero_research_voice_cells?select=slot,quote,credit,tag&order=slot.asc',{
+  const response=await fetch(API+'/hetero_research_voice_cells?select=slot,quote,credit,tag,background_image_path&order=slot.asc',{
    headers:{apikey:KEY},cache:'no-store'
   });
   if(!response.ok)throw new Error('HTTP '+response.status);
   const json=await response.json();
   if(!Array.isArray(json))throw new Error('증언 데이터 형식 오류');
-  rows=json.map(x=>({slot:Number(x.slot),quote:String(x.quote||''),credit:String(x.credit||''),tag:String(x.tag||'')}));
+  rows=json.map(x=>({slot:Number(x.slot),quote:String(x.quote||''),credit:String(x.credit||''),tag:String(x.tag||''),background_image_path:PHOTO_PATH.test(x.background_image_path||'')?x.background_image_path:null}));
   draw();
  }
  async function hydrate(){
@@ -167,17 +272,26 @@
   if(!quote||!credit){modalStatus.textContent='문장과 출처를 입력해 주세요.';return}
   if(quote.length>2000||credit.length>120||tag.length>40){modalStatus.textContent='입력 글자 수를 확인해 주세요.';return}
   saving=true;saveButton.disabled=true;modalStatus.textContent='저장 중…';
+  if(imageChoose)imageChoose.disabled=true;
+  if(imageRemove)imageRemove.disabled=true;
   try{
    const isNew=activeSlot===null;
+   const previous=rows.find(x=>x.slot===activeSlot);
+   let background_image_path=imageRemoved?null:(previous?.background_image_path||null);
+   if(pendingImage){
+    modalStatus.textContent='이미지 크기를 최적화하고 업로드하는 중…';
+    background_image_path=await uploadImage(pendingImage);
+    modalStatus.textContent='카드 내용을 저장하는 중…';
+   }
    let endpoint,method,body;
    if(isNew){
     const nextSlot=Math.max(0,...rows.map(r=>r.slot))+1;
     if(nextSlot>32767)throw new Error('저장 가능한 카드 번호를 초과했습니다.');
     endpoint=API+'/hetero_research_voice_cells';
-    method='POST';body={slot:nextSlot,quote,credit,tag};
+    method='POST';body={slot:nextSlot,quote,credit,tag,background_image_path};
    }else{
     endpoint=API+'/hetero_research_voice_cells?slot=eq.'+activeSlot;
-    method='PATCH';body={quote,credit,tag};
+    method='PATCH';body={quote,credit,tag,background_image_path};
    }
    const response=await fetch(endpoint,{
     method,headers:{apikey:KEY,'Content-Type':'application/json','Prefer':'return=representation'},
@@ -190,10 +304,15 @@
    const written=await response.json();
    if(!Array.isArray(written)||written.length!==1)throw new Error('저장을 확인하지 못했습니다.');
    await loadRows();
+   resetImageState(null);
    dialog.close();setStatus('저장됨 · '+rows.length+'개 카드');
   }catch(error){
    modalStatus.textContent='저장 실패: '+error.message;
-  }finally{saving=false;saveButton.disabled=false}
+  }finally{
+   saving=false;saveButton.disabled=false;
+   if(imageChoose)imageChoose.disabled=false;
+   if(imageRemove)imageRemove.disabled=!(pendingImage||photoURL(rows.find(x=>x.slot===activeSlot)?.background_image_path));
+  }
  }
  async function remove(){
   if(saving||activeSlot===null||!editingAllowed)return;
@@ -211,12 +330,12 @@
   }catch(error){modalStatus.textContent='삭제 실패: '+error.message}
   finally{saving=false;saveButton.disabled=false;if(deleteButton)deleteButton.disabled=false}
  }
- function close(){if(!saving&&dialog?.open)dialog.close()}
+ function close(){if(!saving&&dialog?.open){dialog.close();resetImageState(null)}}
  function init(config){
   if(initDone||!board)return;
   initDone=true;
   rows=(config.grid||[]).map(x=>({
-   slot:Number(x.slot),quote:String(x.quote||''),credit:String(x.credit||''),tag:String(x.tag||'')
+   slot:Number(x.slot),quote:String(x.quote||''),credit:String(x.credit||''),tag:String(x.tag||''),background_image_path:PHOTO_PATH.test(x.background_image_path||'')?x.background_image_path:null
   }));
   const link=$('#research-witness-link');
   if(link){link.href=config.archiveLink||'interviews.html';link.textContent=config.archiveText||'인터뷰 전문에서 더 읽기'}
@@ -236,6 +355,9 @@
   $('#research-voice-intro-close')?.addEventListener('click',closeIntro);
   introDialog?.addEventListener('click',event=>{if(event.target===introDialog)closeIntro()});
   form?.addEventListener('submit',save);
+  imageChoose?.addEventListener('click',chooseImage);
+  imageField?.addEventListener('change',selectedImage);
+  imageRemove?.addEventListener('click',discardImage);
   deleteButton?.addEventListener('click',remove);
   $('#research-voice-edit-cancel')?.addEventListener('click',close);
   $('#research-voice-edit-close')?.addEventListener('click',close);
