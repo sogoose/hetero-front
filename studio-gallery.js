@@ -14,7 +14,8 @@
     const img=document.createElement('img');
     img.src=base+encodeURIComponent(name);
     img.alt='아뜰리에 작 작업 기록 '+(i+1);
-    img.loading='eager';
+    // Keep the first photographs instant; defer the rest on long mobile pages.
+    img.loading=i<4?'eager':'lazy';
     img.decoding='async';
     img.draggable=false;
     fig.append(img);
