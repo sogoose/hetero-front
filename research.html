@@ -12,9 +12,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
 <link rel="stylesheet" href="research-page.css?v=33">
-<script src="research-points.js?v=8" defer></script>
-<script src="research-origin-open-upload.js?v=20261110-minimal3" defer></script>
-<script src="research-voice-editor.js?v=5" defer></script>
+<script src="research-points.js?v=9" defer></script>
+<script src="research-origin-open-upload.js?v=20261111-readonly" defer></script>
+<script src="research-voice-editor.js?v=6" defer></script>
 <script src="research-page.js?v=27" defer></script>
 <link rel="stylesheet" href="archive-index.css?v=2">
 <script src="archive-index.js?v=2" defer></script>
@@ -66,11 +66,6 @@
                 <img class="research-origin-photo-image" id="research-origin-photo-image" alt="" hidden>
                 <p class="research-origin-photo-placeholder" id="research-origin-photo-placeholder" hidden></p>
               </div>
-              <div class="research-origin-photo-footer" id="research-origin-photo-footer" hidden>
-                <button type="button" class="research-origin-photo-upload" id="research-origin-photo-upload" title="로그인 없이 이미지 업로드">이미지 등록</button>
-                <input type="file" id="research-origin-photo-file" accept="image/jpeg,image/png,image/webp,image/avif" hidden>
-              </div>
-              <p class="research-origin-photo-status" id="research-origin-photo-status" role="status" aria-live="polite"></p>
             </section>
           </aside>
         </div>
@@ -113,13 +108,10 @@
           <aside class="research-witness-copy">
             <h2 class="research-serif research-witness-heading" id="research-voices-title">제작자들의 이야기</h2>
             <p class="research-witness-intro" id="research-voices-lead"></p>
-            <button type="button" class="research-voice-intro-edit" id="research-voice-intro-edit" hidden>소개 본문 수정</button>
             <div class="research-witness-sources" id="research-witness-sources" aria-label="인터뷰 출처"></div>
             <div class="research-witness-actions">
-              <button type="button" class="research-witness-edit-toggle" id="research-voice-edit-toggle" aria-pressed="false">EDIT</button>
               <a class="research-witness-link" id="research-witness-link" href="interviews.html">인터뷰 전문에서 더 읽기</a>
             </div>
-            <p id="research-witness-save-status" class="research-witness-save-status" role="status" aria-live="polite"></p>
           </aside>
         </div>
       </section>
@@ -173,52 +165,6 @@
   <div class="research-essay-dialog-content" id="research-essay-dialog-content"></div>
 </dialog>
 
-<dialog id="research-voice-intro-dialog" class="research-voice-editor" aria-labelledby="research-voice-intro-dialog-title">
-  <form id="research-voice-intro-form" class="research-voice-edit-form">
-    <div class="research-voice-edit-head">
-      <h2 id="research-voice-intro-dialog-title">제작자들의 이야기 · 소개 본문 수정</h2>
-      <button type="button" id="research-voice-intro-close" aria-label="닫기">×</button>
-    </div>
-    <label>본문<textarea id="research-voice-intro-field" rows="8" maxlength="3000" required></textarea></label>
-    <div class="research-voice-edit-actions">
-      <button type="button" id="research-voice-intro-cancel">취소</button>
-      <button type="submit" id="research-voice-intro-save">저장</button>
-    </div>
-    <p id="research-voice-intro-status" role="status" aria-live="polite"></p>
-  </form>
-</dialog>
-<dialog id="research-voice-editor" class="research-voice-editor" aria-labelledby="research-voice-editor-title">
-  <form id="research-voice-edit-form" class="research-voice-edit-form">
-    <div class="research-voice-edit-head">
-      <h2 id="research-voice-editor-title">증언 수정</h2>
-      <button type="button" id="research-voice-edit-close" aria-label="닫기">×</button>
-    </div>
-    <label>문장<textarea id="research-voice-edit-quote" rows="5" maxlength="2000" required></textarea></label>
-    <label>출처<input id="research-voice-edit-credit" type="text" maxlength="120" required></label>
-    <label>주제<input id="research-voice-edit-tag" type="text" maxlength="40"></label>
-    <section class="research-voice-image-field" aria-label="증언 카드 배경 이미지">
-      <span class="research-voice-image-title">배경 이미지</span>
-      <input id="research-voice-edit-image-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" hidden>
-      <div class="research-voice-image-tools">
-        <button type="button" id="research-voice-edit-image-choose">이미지 추가 / 교체</button>
-        <button type="button" id="research-voice-edit-image-remove" disabled>이미지 제거</button>
-      </div>
-      <div class="research-voice-image-preview" id="research-voice-image-preview" hidden>
-        <img id="research-voice-image-preview-img" alt="카드 배경 미리보기">
-        <div class="research-voice-image-preview-shade"></div>
-        <span>어두운 배경이 적용된 미리보기</span>
-      </div>
-      <p class="research-voice-image-hint">JPG · PNG · WebP · AVIF / 자동 압축 / 카드 한 장당 한 이미지</p>
-    </section>
-    <div class="research-voice-edit-actions">
-      <button type="button" id="research-voice-edit-delete" hidden>삭제</button>
-      <button type="button" id="research-voice-edit-cancel">취소</button>
-      <button type="submit" id="research-voice-edit-save">저장</button>
-    </div>
-    <p id="research-voice-edit-status" role="status" aria-live="polite"></p>
-  </form>
-</dialog>
-
 <dialog id="research-detail" class="research-detail" aria-label="자료 자세히 보기">
   <button type="button" id="research-detail-close" class="research-detail-close" aria-label="닫기"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-close"></use></svg></button>
   <div class="research-detail-inner">
@@ -231,29 +177,6 @@
   </div>
 </dialog>
 
-
-<dialog id="research-factory-editor" class="research-factory-editor" aria-labelledby="research-factory-editor-title">
-  <form id="research-factory-form" class="research-factory-form">
-    <div class="research-factory-editor-head">
-      <h2 id="research-factory-editor-title">업체 위치 기록</h2>
-      <button type="button" id="research-factory-cancel" aria-label="닫기">×</button>
-    </div>
-    <p class="research-factory-hint">지도에서 선택한 기호의 위치와 업체 정보를 연결합니다.</p>
-    <label>업체명 <input id="research-factory-name" name="name" type="text" required maxlength="130" autocomplete="off" placeholder="업체명 입력"></label>
-    <div class="research-factory-form-pair">
-      <label>재료 <select id="research-factory-material" name="material"><option value="brick">벽돌</option><option value="cast">주물</option><option value="tile">기와</option></select></label>
-      <label>연도 <select id="research-factory-year" name="year"><option value="1991">1991</option><option value="2026">2026</option></select></label>
-    </div>
-    <label>지역 <input id="research-factory-region" name="region" type="text" maxlength="140" placeholder="예: 서울특별시"></label>
-    <label>참고·메모 <textarea id="research-factory-note" name="note" rows="2" maxlength="600" placeholder="생산품목, 이전 여부 등"></textarea></label>
-    <label>자료 출처 <input id="research-factory-source" name="source" type="text" maxlength="250" placeholder="조사표, 인터뷰 등"></label>
-    <p id="research-factory-coordinate" class="research-factory-coordinate"></p>
-    <div class="research-factory-form-actions">
-      <button type="button" id="research-factory-delete" class="research-factory-delete" hidden>삭제</button>
-      <button type="submit" class="research-factory-save">저장</button>
-    </div>
-  </form>
-</dialog>
 
 <dialog id="chapter-menu" class="chapter-menu" aria-labelledby="chapter-title">
   <div class="chapter-top"><span class="dialog-kicker">HETERO FRONT / INDEX</span><button type="button" class="icon-button" id="chapter-close" aria-label="목차 닫기"><svg class="ui-icon" viewBox="0 0 24 24"><use href="#ic-close"></use></svg></button></div>
