@@ -1235,3 +1235,41 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
  .material-annotation-name{font-size:10.2px!important;line-height:1.17!important;}
  .material-annotation-description{font-size:9px!important;line-height:1.19!important;}
 }
+
+/* 2026-11-11 / balanced material atlas ending and unified serial typography.
+   Last sheet columns are generated from its actual items in materials-scroll.js.
+   The small object's number, bottom reference list, and pager all use the
+   same Pretendard family (never Special Elite / monospace). */
+.material-main .material-piece .material-piece-index,
+.material-main .material-piece .material-label-no,
+.material-main .material-piece .material-piece-number,
+.material-main .material-annotation-number,
+.material-main .archive-taskbar .photo-pagination .material-counter,
+.material-main .archive-taskbar .material-edit-toggle,
+.material-editor #material-edit-number {
+ font-family:Pretendard,-apple-system,BlinkMacSystemFont,sans-serif!important;
+ font-variant-numeric:tabular-nums!important;
+ font-feature-settings:"tnum" 1!important;
+}
+.material-main .material-piece .material-piece-index{
+ font-weight:500!important;
+ letter-spacing:0!important;
+}
+.material-main .archive-taskbar .photo-pagination .material-counter{
+ font-weight:500!important;
+ letter-spacing:-.015em!important;
+}
+.material-editor #material-edit-number{
+ font-weight:550!important;
+ font-size:17px!important;
+}
+.material-editor #material-edit-number::-webkit-outer-spin-button,
+.material-editor #material-edit-number::-webkit-inner-spin-button{
+ -webkit-appearance:none;
+ margin:0;
+}
+.material-editor #material-edit-number{-moz-appearance:textfield;appearance:textfield}
+@media(max-width:700px){
+ .material-main .material-annotation-number{font-size:9px!important}
+ .material-main .material-piece .material-piece-index{font-size:8px!important}
+}
