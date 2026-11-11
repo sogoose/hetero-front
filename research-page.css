@@ -2913,3 +2913,9 @@ body{background:#ffffff;color:#272724}
 @media(max-width:700px){
  .research-voice-editor .research-voice-image-preview{height:92px!important}
 }
+
+/* Read-only research archive: the sole witness action stays aligned to the
+   right after removing the editing control. No layout shift to other pages. */
+.research-panel-testimony .research-witness-actions{
+ justify-content:flex-end!important;
+}
