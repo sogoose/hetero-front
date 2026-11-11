@@ -20,6 +20,7 @@ const editDialog=document.querySelector('#material-editor');
 const editToggle=document.querySelector('#material-edit-toggle');
 const editForm=document.querySelector('#material-edit-form');
 const editName=document.querySelector('#material-edit-title');
+const editNumber=document.querySelector('#material-edit-number');
 const editCategory=document.querySelector('#material-edit-category');
 const editDescription=document.querySelector('#material-edit-description');
 const editStatus=document.querySelector('#material-edit-status');
@@ -48,9 +49,12 @@ function readChanges(){
 function saveChanges(){
  try{localStorage.setItem(storageKey,JSON.stringify(changes));return true}catch{return false}
 }
+function itemKey(item){return item.original||item.source_file||item._sourceId||item.id}
 function applyChanges(item){
- const draft=changes[item.original||item.source_file||item.id];
+ const draft=changes[itemKey(item)];
  if(!draft)return;
+ if(/^\d{1,3}$/.test(String(draft.id||''))&&Number(draft.id)>0)
+  item.id=String(Number(draft.id)).padStart(2,'0');
  for(const field of ['title','category','description']){
   if(typeof draft[field]==='string')item[field]=draft[field];
  }
@@ -174,7 +178,7 @@ function sampleImage(item){
 }
 const coverIDs=['09','12','01','04','36','22'];
 function curateCover(list){
- const chosen=coverIDs.map(id=>list.find(v=>String(v.id).padStart(2,'0')===id)).filter(Boolean);
+ const chosen=coverIDs.map(id=>list.find(v=>String(v._sourceId||v.id).padStart(2,'0')===id)).filter(Boolean);
  const seen=new Set(chosen);
  list.splice(0,list.length,...chosen,...list.filter(v=>!seen.has(v)));
 }
@@ -184,7 +188,7 @@ function paletteCompare(a,b){
  return ac.family-bc.family
   ||(typeRanks[a.category]??8)-(typeRanks[b.category]??8)
   ||ac.tone-bc.tone
-  ||Number(a.id)-Number(b.id);
+  ||Number(a._sourceId||a.id)-Number(b._sourceId||b.id);
 }
 async function sortByPalette(entries){
  let cached={};
@@ -231,7 +235,7 @@ function renderAnnotations(){
  for(let sheet=0;sheet<sheets.length;sheet++){
   // Keep the cover index in two columns so it reads 01,02,03 downward,
   // then 04,05,06 in the next column. Remaining plates use five-row columns.
-  const cover=sheet===0,ncols=cover?2:cols;
+  const cover=sheet===0,board=sheets[sheet],ncols=cover?2:(board.cols||cols);
   const panel=document.createElement('section');panel.className='material-annotation-board';
   if(cover)panel.classList.add('material-cover-annotations');
   panel.style.left=(sheets[sheet].start+(cover?10:0))+'px';
@@ -241,7 +245,7 @@ function renderAnnotations(){
   panel.style.bottom=(viewport.clientWidth<700?16:24)+'px';
   panel.style.width=(cover?coverWidth-20:sheetWidth)+'px';
   panel.style.gridTemplateColumns='repeat('+ncols+',minmax(0,1fr))';
-  const slots=cover?coverCount:perBoard;
+  const slots=cover?coverCount:board.count;
   for(let col=0;col<ncols;col++){
    const column=document.createElement('div');column.className='material-annotation-column';
    for(let row=0;row<Math.ceil(slots/ncols);row++){
@@ -266,7 +270,7 @@ function layout(){
  coverCount=Math.min(coverIDs.length,pieces.length,perBoard-1);
  const coverWidth=mobile?clamp(vw*.99,330,460):clamp(vw*.52,620,820);
  const sheetWidth=mobile?clamp(vw*1.16,420,620):clamp(vw*1.025,940,1540);
- const gap=mobile?16:28,spacing=mobile?15:29,tail=mobile?vw*.25:vw*.29;
+ const gap=mobile?16:28,spacing=mobile?15:29;
  const boardTop=clamp(vh*.035,12,32);
  const legendTop=Math.round(vh*(mobile?.735:.755));
  const imageBottom=legendTop-(mobile?16:23);
@@ -295,10 +299,17 @@ function layout(){
  intro.style.width=coverWidth+'px';intro.style.height=imageBottom+'px';
  sheets=[{start:0,centre:coverWidth/2,width:coverWidth,top:boardTop,height:imageHeight}];
  for(let g=0;g<nBoards;g++){
-  const start=coverWidth+gap+g*(sheetWidth+spacing);
-  sheets.push({start,centre:start+sheetWidth/2,width:sheetWidth,top:boardTop,height:imageHeight});
- }
- const sx=[-.035,.04,-.035,.025,.045,-.035,.025,-.035],sy=[-.035,.045,-.02,.015,.04,-.035,.015,-.02],sc=[.96,1.02,.93,1.04,.98,1.03,.94,1];
+   const start=coverWidth+gap+g*(sheetWidth+spacing);
+   const remaining=Math.min(perBoard,pieces.length-coverCount-g*perBoard);
+   // Final plate uses only as many columns/rows as its actual contents need.
+   const last=g===nBoards-1;
+   const gridCols=last&&remaining<perBoard
+     ?Math.min(cols,Math.max(1,Math.ceil(Math.sqrt(remaining*1.7)))):cols;
+   const gridRows=last&&remaining<perBoard?Math.ceil(remaining/gridCols):rows;
+   sheets.push({start,centre:start+sheetWidth/2,width:sheetWidth,
+     top:boardTop,height:imageHeight,cols:gridCols,rows:gridRows,count:remaining});
+  }
+  const sx=[-.035,.04,-.035,.025,.045,-.035,.025,-.035],sy=[-.035,.045,-.02,.015,.04,-.035,.015,-.02],sc=[.96,1.02,.93,1.04,.98,1.03,.94,1];
  pieces.forEach(piece=>{
   const {index,item,art,button}=piece;
   const aspect=Math.max(1,Number(item.imageWidth)||300)/Math.max(1,Number(item.imageHeight)||300);
@@ -311,22 +322,29 @@ function layout(){
    y=Math.round(boardTop+imageHeight*py+(maxH-height)/2);
   }else{
    const n=index-coverCount,group=Math.floor(n/perBoard),cell=n%perBoard;
-   const col=cell%cols,row=Math.floor(cell/cols),board=sheets[group+1];
-   const x0=board.start+col*cellW,y0=boardTop+row*cellH;
-   const maxW=cellW-(mobile?13:23),maxH=cellH-(mobile?7:13),scale=sc[n%sc.length];
-   width=Math.max(14,Math.round(Math.min(maxW*scale,maxH*scale*aspect)));
-   height=Math.max(14,Math.round(width/aspect));
-   x=Math.round(clamp(x0+(cellW-width)/2+sx[n%sx.length]*cellW,x0+3,x0+cellW-width-4));
-   y=Math.round(clamp(y0+(cellH-height)/2+sy[n%sy.length]*cellH,y0+2,y0+cellH-height-3));
-  }
-  piece.sizing={width,height};
+    const board=sheets[group+1],col=cell%board.cols,row=Math.floor(cell/board.cols);
+    const actualCellW=board.width/board.cols,actualCellH=board.height/board.rows;
+    const itemsInRow=Math.min(board.cols,board.count-row*board.cols);
+    const centreRow=(board.cols-itemsInRow)*actualCellW*.5;
+    const x0=board.start+centreRow+col*actualCellW,y0=boardTop+row*actualCellH;
+    const maxW=actualCellW-(mobile?13:23),maxH=actualCellH-(mobile?7:13),scale=sc[n%sc.length];
+    width=Math.max(14,Math.round(Math.min(maxW*scale,maxH*scale*aspect)));
+    height=Math.max(14,Math.round(width/aspect));
+    x=Math.round(clamp(x0+(actualCellW-width)/2+sx[n%sx.length]*actualCellW,x0+3,x0+actualCellW-width-4));
+    y=Math.round(clamp(y0+(actualCellH-height)/2+sy[n%sy.length]*actualCellH,y0+2,y0+actualCellH-height-3));
+   }
+   piece.sizing={width,height};
   if(piece.lastWidth!==width||piece.lastHeight!==height){art.replaceChildren();piece.loaded=false;piece.lastWidth=width;piece.lastHeight=height}
   art.style.width=width+'px';art.style.height=height+'px';
   button.style.left=x+'px';button.style.top=y+'px';button.style.width=width+'px';button.style.height=height+'px';
   button.style.setProperty('--art-height',height+'px');
   piece.center=x+width/2;
  });
- strip.style.width=Math.ceil(Math.max(vw,coverWidth+gap+nBoards*(sheetWidth+spacing)+tail))+'px';
+ // Stop immediately after the final specimen sheet instead of an empty viewport.
+  const finalSheet=sheets[sheets.length-1];
+  const end=finalSheet.start+finalSheet.width;
+  const endPad=Math.max(14,(vw-finalSheet.width)/2);
+  strip.style.width=Math.ceil(Math.max(vw,end+endPad))+'px';
  atlasMetrics={cols,rows,legendTop,sheetWidth,coverWidth};renderAnnotations();
  maxOffset=Math.max(0,strip.offsetWidth-vw);
  offset=clamp(offset,0,maxOffset);target=clamp(target,0,maxOffset);
@@ -399,10 +417,11 @@ function showDetail(piece){
 }
 function openEditor(item){
  activeItem=item;
+ editNumber.value=String(Number(item.id)||'');
  editName.value=item.title||'';
  editCategory.value=item.category||'';
  editDescription.value=item.description||'';
- editStatus.textContent='이 브라우저에 임시 저장됩니다. GitHub 반영은 JSON 내보내기를 사용하세요.';
+ editStatus.textContent='번호·이름 수정은 이 브라우저에 저장됩니다. 전체 공개 반영은 JSON 내보내기가 필요해요.';
  editDialog.showModal();
  editName.focus();
  editName.select();
@@ -505,7 +524,7 @@ editToggle.addEventListener('click',()=>{
  main.classList.toggle('is-editing',editing);
  editToggle.setAttribute('aria-pressed',String(editing));
  editToggle.textContent=editing?'DONE':'EDIT';
- editToggle.title=editing?'편집 종료':'재료 이름 편집';
+ editToggle.title=editing?'편집 종료':'재료 번호와 이름 편집';
 });
 document.querySelector('#material-editor-close').addEventListener('click',()=>editDialog.close());
 editDialog.addEventListener('click',e=>{if(e.target===editDialog)editDialog.close()});
@@ -513,12 +532,23 @@ editForm.addEventListener('submit',e=>{
  e.preventDefault();
  if(!activeItem)return;
  const title=editName.value.trim().slice(0,90);
+ const rawNumber=editNumber.value.trim();
  if(!title){editName.focus();return}
+ if(!/^\d{1,3}$/.test(rawNumber)||Number(rawNumber)<1||Number(rawNumber)>999){
+  editStatus.textContent='번호는 1부터 999 사이의 정수로 입력해 주세요.';
+  editNumber.focus();return;
+ }
+ const nextId=String(Number(rawNumber)).padStart(2,'0');
+ if(items.some(item=>item!==activeItem&&Number(item.id)===Number(nextId))){
+  editStatus.textContent='이미 다른 재료가 사용하는 번호예요. 중복되지 않게 선택해 주세요.';
+  editNumber.focus();return;
+ }
+ activeItem.id=nextId;
  activeItem.title=title;
  activeItem.category=editCategory.value.trim().slice(0,60);
  activeItem.description=editDescription.value.trim().slice(0,1000);
- const key=activeItem.original||activeItem.source_file||activeItem.id;
- changes[key]={title:activeItem.title,category:activeItem.category,description:activeItem.description};
+ const key=itemKey(activeItem);
+ changes[key]={id:activeItem.id,title:activeItem.title,category:activeItem.category,description:activeItem.description};
  renamePiece(activeItem);
  const saved=saveChanges();
  editDialog.close();
@@ -529,8 +559,8 @@ document.querySelector('#material-editor-reset').addEventListener('click',()=>{
  if(!activeItem)return;
  const source=baseItems.find(v=>v.original===activeItem.original||v.id===activeItem.id);
  if(!source)return;
- for(const key of ['title','category','description'])activeItem[key]=source[key]||'';
- delete changes[activeItem.original||activeItem.source_file||activeItem.id];
+ for(const key of ['id','title','category','description'])activeItem[key]=source[key]||'';
+ delete changes[itemKey(activeItem)];
  saveChanges();renamePiece(activeItem);
  editDialog.close();
 });
@@ -553,7 +583,7 @@ async function start(){
   baseItems=fallbackItems;
  }
  changes=readChanges();
- items=baseItems.map(v=>({...v}));
+ items=baseItems.map(v=>({...v,_sourceId:String(v.id)}));
  items.forEach(applyChanges);
  // Show the atlas immediately. Cached real-color samples are used on return visits.
  let cache={};
