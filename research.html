@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="research-page.css?v=30">
 <script src="research-points.js?v=8" defer></script>
 <script src="research-origin-open-upload.js?v=20261110-minimal3" defer></script>
-<script src="research-voice-editor.js?v=3" defer></script>
+<script src="research-voice-editor.js?v=4" defer></script>
 <script src="research-page.js?v=27" defer></script>
 <link rel="stylesheet" href="archive-index.css?v=2">
 <script src="archive-index.js?v=2" defer></script>
@@ -195,6 +195,20 @@
     <label>문장<textarea id="research-voice-edit-quote" rows="5" maxlength="2000" required></textarea></label>
     <label>출처<input id="research-voice-edit-credit" type="text" maxlength="120" required></label>
     <label>주제<input id="research-voice-edit-tag" type="text" maxlength="40"></label>
+    <section class="research-voice-image-field" aria-label="증언 카드 배경 이미지">
+      <span class="research-voice-image-title">배경 이미지</span>
+      <input id="research-voice-edit-image-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" hidden>
+      <div class="research-voice-image-tools">
+        <button type="button" id="research-voice-edit-image-choose">이미지 추가 / 교체</button>
+        <button type="button" id="research-voice-edit-image-remove" disabled>이미지 제거</button>
+      </div>
+      <div class="research-voice-image-preview" id="research-voice-image-preview" hidden>
+        <img id="research-voice-image-preview-img" alt="카드 배경 미리보기">
+        <div class="research-voice-image-preview-shade"></div>
+        <span>어두운 배경이 적용된 미리보기</span>
+      </div>
+      <p class="research-voice-image-hint">JPG · PNG · WebP · AVIF / 자동 압축 / 카드 한 장당 한 이미지</p>
+    </section>
     <div class="research-voice-edit-actions">
       <button type="button" id="research-voice-edit-delete" hidden>삭제</button>
       <button type="button" id="research-voice-edit-cancel">취소</button>
