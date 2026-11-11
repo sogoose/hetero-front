@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="polaroids.css?v=38">
-<link rel="stylesheet" href="materials-scroll.css?v=23">
-<script src="materials-scroll.js?v=23" defer></script>
+<link rel="stylesheet" href="materials-scroll.css?v=24">
+<script src="materials-scroll.js?v=24" defer></script>
 <link rel="stylesheet" href="archive-index.css?v=2">
 <script src="archive-index.js?v=2" defer></script>
 <link rel="stylesheet" href="archive-masthead.css?v=2">
@@ -99,8 +99,11 @@
   <span>TEXT / EDIT</span>
   <button type="button" id="material-editor-close" class="material-editor-x" aria-label="편집 닫기">×</button>
  </div>
- <h2 id="material-editor-heading">이름 고치기</h2>
+ <h2 id="material-editor-heading">재료 정보 수정</h2>
  <form id="material-edit-form">
+  <label class="material-editor-field" for="material-edit-number">번호
+   <input id="material-edit-number" name="number" type="number" min="1" max="999" step="1" required inputmode="numeric" autocomplete="off">
+  </label>
   <label class="material-editor-field" for="material-edit-title">이름
    <input id="material-edit-title" name="title" maxlength="90" required autocomplete="off">
   </label>
@@ -110,7 +113,7 @@
   <label class="material-editor-field" for="material-edit-description">설명
    <textarea id="material-edit-description" name="description" rows="4" maxlength="1000"></textarea>
   </label>
-  <p id="material-edit-status" class="material-edit-status">변경 내용은 이 브라우저에 저장됩니다.</p>
+  <p id="material-edit-status" class="material-edit-status" role="status" aria-live="polite">변경 내용은 이 브라우저에 저장됩니다. 전체 반영은 JSON 내보내기를 이용하세요.</p>
   <div class="material-editor-actions">
    <button type="button" id="material-editor-reset">원복</button>
    <button type="button" id="material-editor-export">JSON 내보내기</button>
