@@ -27,6 +27,8 @@
  const introForm=$('#research-voice-intro-form'),introField=$('#research-voice-intro-field');
  const introStatus=$('#research-voice-intro-status'),introSave=$('#research-voice-intro-save');
  const ICONS={brick:'assets/interviews/icons/brick.svg',cast:'assets/interviews/icons/cast.svg',roof:'assets/interviews/icons/roof.svg',tile:'assets/interviews/icons/tile.svg',merchant:'assets/interviews/icons/gangbuk-roof-tile.svg'};
+ // SVGs made specifically for photo cards: bright faces and thicker dark engraving.
+ const PHOTO_ICONS={brick:'assets/research/voice-icons/brick-photo.svg',cast:'assets/research/voice-icons/cast-photo.svg',roof:'assets/research/voice-icons/roof-photo.svg',tile:'assets/research/voice-icons/tile-photo.svg',merchant:'assets/research/voice-icons/gangbuk-roof-tile-photo.svg'};
  function materialOf(credit){
   const s=String(credit||'');
   if(/청화요업|벽돌/.test(s))return 'brick';
@@ -137,10 +139,18 @@
   if(!status)return;
   status.textContent=text;status.classList.toggle('is-error',error);
  }
+ // Mix archive cards in a fixed, deterministic order. Slots continue to be
+ // stable editing identifiers even after new cards are added to the collection.
+ function displayRank(slot){
+  let v=(Number(slot)>>>0)^0x93e29a71;
+  v=Math.imul(v^(v>>>16),0x85ebca6b);
+  v=Math.imul(v^(v>>>13),0xc2b2ae35);
+  return (v^(v>>>16))>>>0;
+ }
  function draw(){
   if(!board)return;
   board.replaceChildren();
-  rows.slice().sort((a,b)=>a.slot-b.slot).forEach(item=>{
+  rows.slice().sort((a,b)=>displayRank(a.slot)-displayRank(b.slot)||a.slot-b.slot).forEach(item=>{
    const card=node('button','research-voice-tile'+(inEditMode?' is-editable':''));
    card.type='button';card.disabled=!inEditMode;
    card.dataset.slot=String(item.slot);
@@ -163,7 +173,7 @@
    const iconSrc=ICONS[card.dataset.material];
    if(iconSrc){
     const icon=node('img','research-voice-tile-icon');
-    icon.src=iconSrc;icon.alt='';icon.loading='lazy';icon.decoding='async';
+    icon.src=bg?(PHOTO_ICONS[card.dataset.material]||iconSrc):iconSrc;icon.alt='';icon.loading='lazy';icon.decoding='async';
     icon.setAttribute('aria-hidden','true');card.append(icon);
    }
    card.addEventListener('click',()=>openEditor(item.slot));
@@ -175,7 +185,7 @@
    add.addEventListener('click',()=>openEditor(null));
    board.append(add);
   }
-  board.setAttribute('aria-label','제작자들의 말 '+rows.length+'개, 아래로 스크롤하여 읽기');
+  board.setAttribute('aria-label','제작자들의 이야기 '+rows.length+'개, 고정된 혼합 순서로 배치된 증언. 아래로 스크롤하여 읽기');
  }
  function openEditor(slot){
   if(!inEditMode||!editingAllowed||!dialog||saving)return;
