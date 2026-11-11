@@ -76,9 +76,11 @@ function renderInterview(record,index){
 
  const transcript=element('div','interview-flow');
  transcript.setAttribute('aria-label',record.company+' 인터뷰 질문과 답변');
- (record.turns||[]).forEach(turn=>{
+ (record.turns||[]).forEach((turn,index)=>{
   const isAnswer=turn.role==='A';
   const paragraph=element('p','interview-turn '+(isAnswer?'is-answer':'is-question'));
+  // Preserve original indexes for stored editorial corrections after trimming.
+  paragraph.dataset.sourceTurnIndex=String(Number.isInteger(turn.sourceTurnIndex)?turn.sourceTurnIndex:index);
   paragraph.append(element('span','interview-turn-mark',isAnswer?'A.':'Q.'));
   paragraph.append(document.createTextNode(String(turn.text||'')));
   transcript.append(paragraph);
