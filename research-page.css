@@ -2843,9 +2843,18 @@ body{background:#ffffff;color:#272724}
 .research-panel-testimony .research-voice-tile.has-photo .research-voice-tile-icon{
  display:block!important;
  z-index:2!important;
- opacity:.7!important;
- filter:grayscale(1) brightness(0) invert(1)!important;
+ right:14px!important;bottom:12px!important;
+ width:clamp(76px,8.4vw,116px)!important;
+ height:clamp(76px,8.4vw,116px)!important;
+ opacity:1!important;
+ /* The dedicated SVG already has white faces and enlarged dark detail lines. */
+ filter:drop-shadow(0 2px 1px rgba(0,0,0,.48))!important;
  mix-blend-mode:normal!important;
+}
+@media(max-width:700px){
+ .research-panel-testimony .research-voice-tile.has-photo .research-voice-tile-icon{
+  width:92px!important;height:92px!important;right:13px!important;bottom:12px!important;
+ }
 }
 .research-panel-testimony .research-voice-tile.has-photo.is-editable:hover,
 .research-panel-testimony .research-voice-tile.has-photo.is-editable:focus-visible{
