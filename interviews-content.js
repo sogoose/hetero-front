@@ -68,7 +68,7 @@
   if(!Array.isArray(data))return;
   data.forEach(record=>{
    if(!VALID_IDS.has(record.interview_id)||!Number.isInteger(record.turn_index)||typeof record.content!=='string')return;
-   const paragraph=document.getElementById(record.interview_id)?.querySelectorAll('.interview-turn')[record.turn_index];
+   const paragraph=document.getElementById(record.interview_id)?.querySelector('.interview-turn[data-source-turn-index="'+record.turn_index+'"]');
    if(!paragraph)return;
    const contentNode=[...paragraph.childNodes].find(node=>node.nodeType===Node.TEXT_NODE);
    if(contentNode)contentNode.textContent=record.content;
