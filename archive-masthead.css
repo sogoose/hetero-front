@@ -3,7 +3,7 @@
    The content viewport—not the whole page—is shortened, preserving its existing
    independent dragging, horizontal paging and vertical scrolling. */
 .photo-main:has(> .hf-site-masthead){
- --hf-content-top:clamp(104px,13vh,132px);
+ --hf-content-top:clamp(82px,9.5vh,96px);
  --hf-masthead-top:clamp(20px,3vh,40px);
  --hf-masthead-side:clamp(20px,3vw,55px);
 }
@@ -93,14 +93,14 @@
 }
 @media(max-width:800px){
  .photo-main:has(> .hf-site-masthead){
-  --hf-content-top:clamp(94px,12vh,122px);
+  --hf-content-top:clamp(76px,9vh,88px);
   --hf-masthead-top:16px;
   --hf-masthead-side:18px;
  }
 }
 @media(max-width:700px){
  .photo-main:has(> .hf-site-masthead){
-  --hf-content-top:clamp(83px,11vh,110px);
+  --hf-content-top:clamp(68px,8.5vh,82px);
  }
  .photo-main:has(> .hf-site-masthead) .archive-essay-paper{
   padding-top:clamp(205px,27vh,248px)!important;
@@ -120,7 +120,7 @@
  }
 }
 @media(max-height:650px) and (min-width:701px){
- .photo-main:has(> .hf-site-masthead){--hf-content-top:100px}
+ .photo-main:has(> .hf-site-masthead){--hf-content-top:78px}
  .photo-main:has(> .hf-site-masthead) .archive-essay-paper{
   padding-top:210px!important;
  }
