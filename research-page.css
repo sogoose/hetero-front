@@ -2841,7 +2841,11 @@ body{background:#ffffff;color:#272724}
  color:#e3e3e3!important;
 }
 .research-panel-testimony .research-voice-tile.has-photo .research-voice-tile-icon{
- display:none!important;
+ display:block!important;
+ z-index:2!important;
+ opacity:.7!important;
+ filter:grayscale(1) brightness(0) invert(1)!important;
+ mix-blend-mode:normal!important;
 }
 .research-panel-testimony .research-voice-tile.has-photo.is-editable:hover,
 .research-panel-testimony .research-voice-tile.has-photo.is-editable:focus-visible{
