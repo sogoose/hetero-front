@@ -1,0 +1,260 @@
+/* HETERO FRONT / responsive companion.
+   One deliberate mobile grammar, without disturbing desktop scene compositions.
+   Document-like pages scroll within the header/footer; canvas pages retain
+   their original drag, horizontal paging and internal scrolling behaviour. */
+@media (max-width:900px){
+ /* TEAM / the desktop constellation is intentionally replaced by a genuine
+    mobile editorial page. All twelve photographs keep their natural proportions. */
+ html:has(.studio-page),body:has(.studio-page){
+  width:100%!important;height:100%!important;
+  overflow:hidden!important;overscroll-behavior:none!important;
+ }
+ .studio-page{width:100%!important;height:100dvh!important;min-height:0!important;overflow:hidden!important}
+ .studio-canvas{
+  position:absolute!important;
+  top:clamp(81px,10vh,96px)!important;
+  right:0!important;bottom:70px!important;left:0!important;
+  inset:clamp(81px,10vh,96px) 0 70px!important;
+  display:block!important;overflow-x:hidden!important;
+  overflow-y:auto!important;overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch;scrollbar-width:thin;
+ }
+ .studio-world{
+  position:relative!important;display:flex!important;flex-direction:column!important;
+  width:min(100%,760px)!important;height:auto!important;min-height:0!important;
+  padding:14px clamp(24px,5.8vw,52px) 75px!important;
+  margin:0 auto!important;gap:0!important;isolation:isolate;
+ }
+ .studio-identity,.studio-intro,.studio-team,.studio-gallery-grid{
+  position:relative!important;inset:auto!important;left:auto!important;right:auto!important;
+  top:auto!important;bottom:auto!important;z-index:auto!important;
+  width:100%!important;max-width:none!important;min-width:0!important;
+  margin:0!important;transform:none!important;
+ }
+ .studio-identity{order:1!important;align-self:flex-start!important;max-width:320px!important;margin:0 0 33px!important}
+ .studio-logo{display:block!important;width:min(100%,275px)!important;height:auto!important}
+ .studio-intro{
+  order:2!important;display:block!important;
+  font:430 15px/1.85 Pretendard,-apple-system,sans-serif!important;
+  letter-spacing:-.03em!important;color:#252623!important;
+  word-break:keep-all!important;
+  margin:0 0 49px!important;
+ }
+ .studio-intro p{font:inherit!important;margin:0 0 19px!important}
+ .studio-intro p:last-child{margin-bottom:0!important}
+ .studio-team{order:3!important;margin:0 0 57px!important}
+ .studio-people{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:clamp(8px,2vw,22px)!important;align-items:end!important;
+ }
+ .studio-person{display:flex!important;flex-direction:column!important;align-items:center!important;min-width:0!important}
+ .studio-person img{
+  display:block!important;width:100%!important;
+  height:clamp(105px,17vw,160px)!important;
+  object-fit:contain!important;object-position:center bottom!important;
+ }
+ .studio-person figcaption{margin-top:12px!important;gap:4px!important}
+ .studio-person-name{font-size:12px!important;letter-spacing:-.035em!important;font-weight:600!important}
+ .studio-person-role{font-size:10px!important;line-height:1.4!important;color:#84857e!important}
+ .studio-gallery-grid{
+  order:4!important;pointer-events:none!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-flow:row dense!important;grid-auto-rows:auto!important;
+  align-items:start!important;justify-items:stretch!important;
+  gap:clamp(10px,1.7vw,18px)!important;
+  height:auto!important;
+ }
+ .studio-gallery-item:nth-child(n){
+  position:relative!important;inset:auto!important;left:auto!important;top:auto!important;
+  bottom:auto!important;right:auto!important;
+  display:flex!important;align-items:start!important;justify-content:center!important;
+  grid-column:auto!important;grid-row:auto!important;
+  width:100%!important;height:auto!important;min-height:0!important;
+  margin:0!important;padding:0!important;overflow:visible!important;
+  transform:none!important;
+ }
+ .studio-gallery-item img{
+  display:block!important;width:100%!important;height:auto!important;
+  max-width:100%!important;max-height:none!important;
+  object-fit:contain!important;object-position:center top!important;
+  filter:none!important;transform:none!important;
+ }
+ .studio-gallery-item:nth-child(2),.studio-gallery-item:nth-child(12){
+  grid-column:span 2!important;
+ }
+ .studio-gallery-item:nth-child(2) img,
+ .studio-gallery-item:nth-child(12) img{
+  width:auto!important;max-width:100%!important;
+  max-height:380px!important;
+ }
+}
+@media (max-width:700px){
+ /* Prevent 45px-high desktop wordmarks from competing for 400px of width. */
+ .studio-masthead,.event-masthead{
+  position:fixed!important;top:13px!important;left:12px!important;right:12px!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:9px!important;height:40px!important;min-height:0!important;z-index:10400!important;
+  pointer-events:none!important;
+ }
+ .studio-masthead a,.event-masthead a{
+  display:block!important;min-width:0!important;pointer-events:auto!important;
+ }
+ .studio-masthead a:first-child,.event-masthead a:first-child{
+  width:43%!important;flex:0 1 43%!important;
+ }
+ .studio-masthead a:last-child,.event-masthead a:last-child{
+  width:55%!important;flex:0 1 55%!important;
+ }
+ .studio-masthead img,.event-masthead img{
+  display:block!important;width:100%!important;height:auto!important;
+  max-width:100%!important;max-height:35px!important;
+  object-fit:contain!important;object-position:left center!important;
+ }
+ .studio-masthead a:last-child img,.event-masthead a:last-child img{
+  object-position:right center!important;
+ }
+ .studio-canvas{
+  inset:74px 0 calc(67px + env(safe-area-inset-bottom))!important;
+  top:74px!important;bottom:calc(67px + env(safe-area-inset-bottom))!important;
+ }
+ .studio-world{width:100%!important;padding:19px 24px 64px!important}
+ .studio-identity{margin-bottom:29px!important;max-width:none!important}
+ .studio-logo{width:min(83%,240px)!important}
+ .studio-intro{
+  font-size:14.5px!important;line-height:1.83!important;
+  margin-bottom:43px!important;
+ }
+ .studio-intro p{margin-bottom:16px!important}
+ .studio-team{margin-bottom:45px!important}
+ .studio-person img{height:clamp(86px,23vw,125px)!important}
+ .studio-person figcaption{margin-top:9px!important;gap:2px!important}
+ .studio-person-name{font-size:11px!important}
+ .studio-person-role{font-size:9.5px!important}
+ .studio-gallery-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;grid-template-rows:none!important;
+ }
+ .studio-gallery-item:nth-child(2),
+ .studio-gallery-item:nth-child(12){grid-column:span 2!important}
+ .studio-gallery-item:nth-child(2) img,
+ .studio-gallery-item:nth-child(12) img{max-height:min(55vh,365px)!important}
+ .studio-footer{
+  position:fixed!important;height:calc(67px + env(safe-area-inset-bottom))!important;
+  min-height:67px!important;padding:0 12px env(safe-area-inset-bottom)!important;
+  background:#fff!important;
+ }
+ .studio-footer .studio-icon-button{
+  width:38px!important;min-width:38px!important;height:38px!important;flex-basis:38px!important;
+ }
+ .studio-footer .studio-ui-icon{width:17px!important;height:17px!important}
+ /* Shared 2-logo masthead on the four interactive pages. */
+ .photo-main > .hf-site-masthead{
+  top:13px!important;left:12px!important;right:12px!important;
+  gap:9px!important;height:40px!important;min-height:0!important;
+  align-items:center!important;justify-content:space-between!important;
+ }
+ .photo-main > .hf-site-masthead a:first-child{
+  width:43%!important;flex:0 1 43%!important;
+ }
+ .photo-main > .hf-site-masthead a:last-child{
+  width:55%!important;flex:0 1 55%!important;
+ }
+ .photo-main > .hf-site-masthead img{
+  display:block!important;width:100%!important;height:auto!important;
+  max-width:100%!important;max-height:35px!important;
+  object-fit:contain!important;object-position:left center!important;
+ }
+ .photo-main > .hf-site-masthead a:last-child img{object-position:right center!important}
+ .photo-main:has(> .hf-site-masthead){--hf-content-top:69px!important}
+ /* Home: save space for the folder, avoid logo overlap in the centre. */
+ .home-shell > .home-masthead{
+  position:absolute!important;top:13px!important;left:12px!important;right:12px!important;
+  height:40px!important;min-height:0!important;align-items:center!important;gap:7px!important;
+ }
+ .home-masthead .home-mark-title{
+  flex:0 1 37%!important;width:37%!important;min-width:0!important;
+ }
+ .home-masthead .home-masthead-right{
+  flex:0 1 61%!important;width:61%!important;min-width:0!important;
+  display:flex!important;gap:6px!important;justify-content:flex-end!important;
+ }
+ .home-masthead .home-mark-program{
+  flex:1 1 auto!important;min-width:0!important;
+ }
+ .home-masthead .home-mark-title img,
+ .home-masthead .home-mark-program img{
+  display:block!important;width:100%!important;height:auto!important;
+  max-width:100%!important;max-height:35px!important;
+  object-fit:contain!important;
+ }
+ .home-masthead .home-mark-title img{object-position:left center!important}
+ .home-masthead .home-mark-program img{object-position:right center!important}
+ .home-masthead .home-exhibition-folder{
+  flex:0 0 35px!important;width:35px!important;min-width:35px!important;
+  min-height:40px!important;
+ }
+ .home-masthead .home-exhibition-folder>svg{width:30px!important;height:auto!important}
+ .home-masthead .home-exhibition-folder span{font-size:7px!important}
+ .home-center-hint{
+  width:calc(100vw - 30px)!important;max-width:calc(100vw - 30px)!important;
+  white-space:normal!important;word-break:keep-all!important;
+  font-size:clamp(12px,3.5vw,15px)!important;line-height:1.48!important;
+  bottom:clamp(89px,13vh,124px)!important;
+ }
+ /* Photo-scatter controls remain a two-line dock with readable touch targets. */
+ .photo-main:not(.material-main):not(.research-main):not(.interview-main) .archive-taskbar{
+  box-sizing:border-box!important;
+  min-height:74px!important;height:74px!important;
+ }
+ .photo-main:not(.material-main):not(.research-main):not(.interview-main) .photo-board{
+  bottom:calc(90px + env(safe-area-inset-bottom))!important;
+ }
+ .photo-main:not(.material-main):not(.research-main):not(.interview-main) .archive-floor-quote{
+  font-size:clamp(13px,3.7vw,18px)!important;
+  max-width:calc(100vw - 34px)!important;
+ }
+ /* Materials: opening title is centred rather than pushed right off screen. */
+ .material-strip .material-intro .material-essay-trigger{
+  transform:none!important;
+  padding:0 12px!important;
+  font-size:clamp(18px,5vw,24px)!important;
+ }
+ /* Witness cards are already one-column on mobile, keep the quoted text legible. */
+ .research-panel-testimony .research-voice-tile{
+  height:auto!important;aspect-ratio:auto!important;min-height:190px!important;
+ }
+ .research-panel-testimony .research-voice-tile-quote{
+  -webkit-line-clamp:unset!important;line-clamp:unset!important;
+  display:block!important;overflow:visible!important;
+  font-size:14px!important;line-height:1.65!important;margin:10px 0!important;
+ }
+ .research-panel-testimony .research-witness-grid-area{
+  -webkit-overflow-scrolling:touch;
+ }
+ /* Interviews: readable body copy and vertically relaxed captions. */
+ .interview-main .interview-turn{
+  font-size:14px!important;line-height:1.79!important;letter-spacing:-.022em!important;
+ }
+ .interview-main .interview-metadata{font-size:13px!important;line-height:1.68!important}
+ .interview-main .interview-gallery-caption{font-size:10.5px!important}
+ .interview-main .interview-taskbar .icon-button{
+  min-width:30px!important;min-height:33px!important;
+ }
+ /* Exhibition page: full poster and two bold facts remain in the normal flow. */
+ .event-main{padding-left:24px!important;padding-right:24px!important}
+}
+@media (max-width:380px){
+ .studio-world{padding-left:19px!important;padding-right:19px!important}
+ .studio-intro{font-size:14px!important;line-height:1.77!important}
+ .studio-person img{height:clamp(76px,23vw,95px)!important}
+ .studio-person-name{font-size:10.5px!important}
+ .studio-gallery-grid{gap:9px!important}
+ .home-masthead .home-mark-title{flex-basis:36%!important;width:36%!important}
+ .home-masthead .home-masthead-right{flex-basis:62%!important;width:62%!important}
+}
+@media (max-width:700px) and (max-height:650px){
+ .studio-canvas{top:67px!important;inset:67px 0 calc(67px + env(safe-area-inset-bottom))!important}
+ .studio-world{padding-top:10px!important}
+ .photo-main:has(> .hf-site-masthead){--hf-content-top:65px!important}
+}
